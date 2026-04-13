@@ -48,12 +48,15 @@ export function CTA() {
 
     setSubmitting(true)
     try {
-      const res = await fetch(FORM_ENDPOINT, {
+      // Google Apps Script redirects (302) on POST, which triggers CORS in browsers.
+      // Using no-cors mode: the POST still reaches the script, but the response is
+      // opaque (status 0, unreadable body). We treat any non-exception as success.
+      await fetch(FORM_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source: 'cta' }),
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ email, source: 'cta' }).toString(),
       })
-      if (!res.ok) throw new Error('Submission failed')
       setSubmitted(true)
     } catch {
       setError('Something went wrong. Please try again.')
@@ -190,7 +193,7 @@ export function CTA() {
                     </svg>
                     <span className="text-base font-medium text-ink">You're on the list.</span>
                   </div>
-                  <p className="text-sm text-ink-secondary">We'll reach out within 48 hours to schedule your onboarding.</p>
+                  <p className="text-sm text-ink-secondary">Thanks for showing interest, we will reach out to you once we are ready to onboard you.</p>
                 </div>
               )}
 
