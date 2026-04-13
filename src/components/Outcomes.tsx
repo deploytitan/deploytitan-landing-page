@@ -143,7 +143,7 @@ export function Outcomes() {
   const ref = useScrollReveal()
 
   return (
-    <section className="py-24 lg:py-32 border-t border-line bg-surface-alt/50 relative" ref={ref}>
+    <section id="outcomes" className="py-24 lg:py-32 border-t border-line bg-surface-alt/50 relative" ref={ref}>
       {/* Blueprint grid background */}
       <div className="absolute inset-0 blueprint-grid opacity-20 pointer-events-none" aria-hidden="true" />
 

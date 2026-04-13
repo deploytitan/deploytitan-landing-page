@@ -11,7 +11,7 @@ export function Footer() {
         {/* Gold accent separator — visible on desktop */}
         <div className="hidden md:block w-16 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
 
-        <span className="text-xs text-ink-tertiary font-mono">&copy; 2026 DeployTitan. All rights reserved.</span>
+        <span className="text-xs text-ink-tertiary font-mono">&copy; 2026 Kizhak Inc. All rights reserved.</span>
       </div>
     </footer>
   )

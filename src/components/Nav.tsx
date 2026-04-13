@@ -44,6 +44,7 @@ export function Nav() {
             <a href="#problem" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">Problem</a>
             <a href="#solution" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">Solution</a>
             <a href="#how-it-works" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">How it works</a>
+            <a href="#outcomes" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">Outcomes</a>
           </div>
 
           {/* Desktop CTA — sharp edges, gold hover accent */}
@@ -91,6 +92,7 @@ export function Nav() {
         <a href="#problem" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-gold-dark transition-colors">Problem</a>
         <a href="#solution" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-gold-dark transition-colors">Solution</a>
         <a href="#how-it-works" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-gold-dark transition-colors">How it works</a>
+        <a href="#outcomes" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-gold-dark transition-colors">Outcomes</a>
         <a
           href="#waitlist"
           onClick={closeMobile}

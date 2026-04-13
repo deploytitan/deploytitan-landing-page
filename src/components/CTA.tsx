@@ -4,9 +4,9 @@ import { useScrollReveal } from '../utils'
 const GOLD = '#c9a84c'
 
 const trustSignals = [
-  { label: 'SOC 2 Type II', detail: 'Compliant' },
   { label: 'Self-hosted secrets', detail: 'Your keys never leave your infra' },
   { label: 'No vendor lock-in', detail: 'Works with any CI/CD' },
+  { label: 'Read-only by default', detail: 'Agent observes — you approve actions' },
 ]
 
 const costStats = [
@@ -175,7 +175,7 @@ export function CTA() {
                     <span className="relative inline-flex h-2 w-2 bg-gold" style={{ borderRadius: '1px' }} />
                   </div>
                   <span className="text-xs text-ink-secondary">
-                    <span className="font-medium text-ink">12 of 25 spots</span> claimed for Q1 cohort
+                    Accepting early access partners — <span className="font-medium text-ink">limited availability</span>
                   </span>
                 </div>
               </div>

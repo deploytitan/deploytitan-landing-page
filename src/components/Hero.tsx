@@ -862,9 +862,372 @@ function PlatformInteraction() {
   )
 }
 
+/* ========== PR Review — Dependency Check Visualization ========== */
+
+type PRPhase = 'opened' | 'scanning' | 'breaking' | 'parked' | 'resolved' | 'approved'
+
+const prPhaseInfo: Record<PRPhase, { label: string; color: string }> = {
+  opened: { label: 'PR #1204 opened — awaiting analysis', color: '#3b82f6' },
+  scanning: { label: 'Analyzing dependency graph...', color: GOLD },
+  breaking: { label: 'Breaking change: 2 downstream services affected', color: '#ef4444' },
+  parked: { label: 'Deployment parked — deploy order required', color: '#f59e0b' },
+  resolved: { label: 'Dependencies deployed — unblocked', color: '#22c55e' },
+  approved: { label: 'All checks passed — safe to merge', color: '#22c55e' },
+}
+
+interface PRFile {
+  name: string
+  additions: number
+  deletions: number
+  risk: 'safe' | 'breaking'
+}
+
+const prFiles: PRFile[] = [
+  { name: 'src/schema/orders.ts', additions: 24, deletions: 8, risk: 'breaking' },
+  { name: 'src/api/order-handler.ts', additions: 47, deletions: 12, risk: 'breaking' },
+  { name: 'src/utils/validation.ts', additions: 11, deletions: 3, risk: 'safe' },
+  { name: 'tests/orders.test.ts', additions: 38, deletions: 0, risk: 'safe' },
+]
+
+interface DepCheck {
+  service: string
+  status: 'pending' | 'checking' | 'blocked' | 'resolved' | 'ok'
+  reason: string
+}
+
+const depChecks: DepCheck[] = [
+  { service: 'payments', status: 'pending', reason: 'Reads orders.amount_cents (renamed field)' },
+  { service: 'fulfillment', status: 'pending', reason: 'Reads orders.shipping_address (type changed)' },
+  { service: 'analytics', status: 'pending', reason: 'No breaking contract' },
+  { service: 'notifications', status: 'pending', reason: 'No breaking contract' },
+]
+
+function PRReview() {
+  const [phase, setPhase] = useState<PRPhase>('opened')
+  const [visibleFiles, setVisibleFiles] = useState(0)
+  const [checks, setChecks] = useState<DepCheck[]>(depChecks)
+  const [scanIdx, setScanIdx] = useState(-1)
+  const [showComment, setShowComment] = useState(false)
+  const [resolvedCount, setResolvedCount] = useState(0)
+  const runningRef = useRef(true)
+
+  const runLoop = useCallback(async () => {
+    while (runningRef.current) {
+      // Reset
+      setPhase('opened')
+      setVisibleFiles(0)
+      setChecks(depChecks)
+      setScanIdx(-1)
+      setShowComment(false)
+      setResolvedCount(0)
+
+      // Phase 1: PR opened — reveal files
+      await sleep(800)
+      for (let i = 1; i <= prFiles.length; i++) {
+        if (!runningRef.current) return
+        setVisibleFiles(i)
+        await sleep(250)
+      }
+      await sleep(1000)
+      if (!runningRef.current) return
+
+      // Phase 2: Scanning — check each dependency
+      setPhase('scanning')
+      for (let i = 0; i < depChecks.length; i++) {
+        if (!runningRef.current) return
+        setScanIdx(i)
+        setChecks((prev) => prev.map((c, j) => j === i ? { ...c, status: 'checking' as const } : c))
+        await sleep(600)
+        if (!runningRef.current) return
+        // Mark result
+        const isBlocked = i < 2 // first two are breaking
+        setChecks((prev) => prev.map((c, j) => j === i ? { ...c, status: isBlocked ? 'blocked' as const : 'ok' as const } : c))
+        await sleep(300)
+      }
+      setScanIdx(-1)
+      await sleep(600)
+      if (!runningRef.current) return
+
+      // Phase 3: Breaking change detected
+      setPhase('breaking')
+      setShowComment(true)
+      await sleep(2500)
+      if (!runningRef.current) return
+
+      // Phase 4: Auto-parked
+      setPhase('parked')
+      await sleep(2000)
+      if (!runningRef.current) return
+
+      // Phase 5: Dependencies resolved one by one
+      setPhase('resolved')
+      for (let i = 0; i < 2; i++) {
+        if (!runningRef.current) return
+        await sleep(800)
+        setChecks((prev) => prev.map((c, j) => j === i ? { ...c, status: 'resolved' as const } : c))
+        setResolvedCount(i + 1)
+      }
+      await sleep(1000)
+      if (!runningRef.current) return
+
+      // Phase 6: Approved
+      setPhase('approved')
+      await sleep(3500)
+      if (!runningRef.current) return
+    }
+  }, [])
+
+  useEffect(() => {
+    runningRef.current = true
+    runLoop()
+    return () => { runningRef.current = false }
+  }, [runLoop])
+
+  const pInfo = prPhaseInfo[phase]
+
+  const depStatusColor = (status: DepCheck['status']) => {
+    switch (status) {
+      case 'pending': return 'rgba(8,5,3,0.2)'
+      case 'checking': return GOLD
+      case 'blocked': return '#ef4444'
+      case 'resolved': return '#22c55e'
+      case 'ok': return '#22c55e'
+    }
+  }
+
+  const depStatusLabel = (status: DepCheck['status']) => {
+    switch (status) {
+      case 'pending': return 'pending'
+      case 'checking': return 'checking...'
+      case 'blocked': return 'blocked'
+      case 'resolved': return 'deployed ✓'
+      case 'ok': return 'compatible'
+    }
+  }
+
+  return (
+    <div
+      className="relative w-full h-full border border-line/50 bg-white overflow-hidden flex flex-col"
+      style={{ borderRadius: '2px' }}
+    >
+      {/* Header bar */}
+      <div className="flex items-center justify-between px-4 py-2 border-b border-line/50 bg-surface-alt/50 shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-ink flex items-center justify-center" style={{ borderRadius: '1px' }}>
+            <svg className="w-2.5 h-2.5 text-surface" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M6 3v12"/>
+              <circle cx="18" cy="6" r="3"/>
+              <circle cx="6" cy="18" r="3"/>
+              <path d="M18 9a9 9 0 0 1-9 9"/>
+            </svg>
+          </div>
+          <span className="text-[10px] font-mono text-ink-tertiary tracking-wider uppercase">DeployTitan — PR Analysis</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div
+            className="w-1.5 h-1.5 transition-all duration-300"
+            style={{
+              backgroundColor: pInfo.color,
+              borderRadius: '1px',
+              boxShadow: `0 0 6px ${pInfo.color}40`,
+            }}
+          />
+          <span
+            className="text-[9px] font-mono transition-colors duration-300"
+            style={{ color: pInfo.color }}
+          >
+            {pInfo.label}
+          </span>
+        </div>
+      </div>
+
+      {/* Content area */}
+      <div className="flex-1 overflow-hidden p-4 flex flex-col gap-2.5 relative">
+
+        {/* PR header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-[11px] font-mono font-medium text-ink">
+              refactor: rename amount → amount_cents
+            </div>
+            <div className="text-[9px] font-mono text-ink-tertiary mt-0.5">
+              orders-service · PR #1204 · 4 files changed
+            </div>
+          </div>
+          <div
+            className="px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider"
+            style={{
+              borderRadius: '1px',
+              backgroundColor: phase === 'approved' ? 'rgba(34,197,94,0.08)'
+                : phase === 'breaking' || phase === 'parked' ? 'rgba(239,68,68,0.08)'
+                : `${GOLD_RGBA},0.08)`,
+              color: phase === 'approved' ? '#22c55e'
+                : phase === 'breaking' ? '#ef4444'
+                : phase === 'parked' ? '#f59e0b'
+                : GOLD,
+              border: `1px solid ${
+                phase === 'approved' ? 'rgba(34,197,94,0.2)'
+                : phase === 'breaking' ? 'rgba(239,68,68,0.2)'
+                : phase === 'parked' ? 'rgba(245,158,11,0.2)'
+                : `${GOLD_RGBA},0.2)`
+              }`,
+            }}
+          >
+            {phase === 'opened' ? 'open' : phase === 'scanning' ? 'analyzing' : phase === 'breaking' ? 'blocked' : phase === 'parked' ? 'parked' : phase === 'resolved' ? 'unblocked' : 'approved'}
+          </div>
+        </div>
+
+        {/* File changes — always visible after phase 1 */}
+        <div className="flex flex-col gap-1">
+          <div className="text-[8px] font-mono text-ink-quaternary uppercase tracking-wider">Changed files</div>
+          <div className="flex flex-col gap-0.5">
+            {prFiles.map((f, i) => (
+              <div
+                key={f.name}
+                className="flex items-center gap-2 px-2 py-1 transition-all duration-300"
+                style={{
+                  opacity: i < visibleFiles ? 1 : 0,
+                  transform: i < visibleFiles ? 'translateX(0)' : 'translateX(-6px)',
+                  borderRadius: '1px',
+                  backgroundColor: f.risk === 'breaking' && phase !== 'opened' ? 'rgba(239,68,68,0.02)' : 'transparent',
+                  borderLeft: f.risk === 'breaking' && phase !== 'opened' ? '2px solid rgba(239,68,68,0.3)' : '2px solid transparent',
+                }}
+              >
+                <span className="text-[9px] font-mono text-ink-secondary flex-1 truncate">{f.name}</span>
+                <span className="text-[8px] font-mono text-signal-success">+{f.additions}</span>
+                <span className="text-[8px] font-mono text-signal-danger">−{f.deletions}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Dependency checks — visible from scanning onwards */}
+        {phase !== 'opened' && (
+          <div className="flex flex-col gap-1">
+            <div className="text-[8px] font-mono text-ink-quaternary uppercase tracking-wider flex items-center gap-2">
+              Downstream dependency check
+              {phase === 'scanning' && (
+                <div className="w-1.5 h-1.5" style={{ backgroundColor: GOLD, borderRadius: '0.5px', animation: 'pulse-anim 1s ease-in-out infinite' }} />
+              )}
+            </div>
+            <div className="flex flex-col gap-1">
+              {checks.map((c, i) => (
+                <div
+                  key={c.service}
+                  className="flex items-center gap-2.5 px-2 py-1 border transition-all duration-400"
+                  style={{
+                    borderRadius: '1px',
+                    borderColor: c.status === 'blocked' ? 'rgba(239,68,68,0.2)'
+                      : c.status === 'checking' ? `${GOLD_RGBA},0.2)`
+                      : c.status === 'resolved' || c.status === 'ok' ? 'rgba(34,197,94,0.15)'
+                      : 'rgba(8,5,3,0.05)',
+                    backgroundColor: c.status === 'blocked' ? 'rgba(239,68,68,0.02)'
+                      : c.status === 'checking' ? `${GOLD_RGBA},0.02)`
+                      : c.status === 'resolved' ? 'rgba(34,197,94,0.02)'
+                      : 'transparent',
+                    opacity: scanIdx >= 0 && i > scanIdx && c.status === 'pending' ? 0.4 : 1,
+                  }}
+                >
+                  <div
+                    className="w-1.5 h-1.5 transition-colors duration-300 shrink-0"
+                    style={{ backgroundColor: depStatusColor(c.status), borderRadius: '0.5px' }}
+                  >
+                    {c.status === 'checking' && (
+                      <div className="w-full h-full" style={{ animation: 'pulse-anim 0.8s ease-in-out infinite', backgroundColor: GOLD, borderRadius: '0.5px' }} />
+                    )}
+                  </div>
+                  <span className="text-[9px] font-mono font-medium text-ink w-[72px] shrink-0">{c.service}</span>
+                  <span
+                    className="text-[7px] font-mono uppercase tracking-wider px-1.5 py-0.5 shrink-0"
+                    style={{
+                      color: depStatusColor(c.status),
+                      backgroundColor: `${depStatusColor(c.status)}10`,
+                      borderRadius: '1px',
+                    }}
+                  >
+                    {depStatusLabel(c.status)}
+                  </span>
+                  <span className="text-[7px] font-mono text-ink-quaternary ml-auto truncate hidden sm:inline">{c.reason}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* DeployTitan comment — shows during breaking/parked phases */}
+        {showComment && (phase === 'breaking' || phase === 'parked') && (
+          <div
+            className="mt-auto border px-3 py-2 transition-all duration-500"
+            style={{
+              borderRadius: '1px',
+              borderColor: phase === 'parked' ? 'rgba(245,158,11,0.2)' : 'rgba(239,68,68,0.2)',
+              backgroundColor: phase === 'parked' ? 'rgba(245,158,11,0.02)' : 'rgba(239,68,68,0.02)',
+            }}
+          >
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <div className="w-3 h-3 bg-ink flex items-center justify-center" style={{ borderRadius: '1px' }}>
+                <span className="text-[6px] text-surface font-mono font-bold">DT</span>
+              </div>
+              <span className="text-[8px] font-mono font-medium text-ink">deploytitan[bot]</span>
+              <span className="text-[7px] font-mono text-ink-quaternary">just now</span>
+            </div>
+            {phase === 'breaking' ? (
+              <div className="text-[8px] font-mono text-ink-secondary leading-relaxed">
+                <span className="text-signal-danger font-medium">⚠ Merge blocked.</span> This PR renames <code className="px-1 py-0.5 bg-surface-alt text-[7px]" style={{ borderRadius: '1px' }}>orders.amount</code> → <code className="px-1 py-0.5 bg-surface-alt text-[7px]" style={{ borderRadius: '1px' }}>amount_cents</code>.
+                2 downstream services still reference the old field.
+              </div>
+            ) : (
+              <div className="text-[8px] font-mono text-ink-secondary leading-relaxed">
+                <span style={{ color: '#f59e0b' }} className="font-medium">⏸ Deployment parked.</span> Deploy <code className="px-1 py-0.5 bg-surface-alt text-[7px]" style={{ borderRadius: '1px' }}>payments v3.8.1</code> and <code className="px-1 py-0.5 bg-surface-alt text-[7px]" style={{ borderRadius: '1px' }}>fulfillment v2.5.0</code> first. {resolvedCount}/2 deployed.
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Approved state */}
+        {phase === 'approved' && (
+          <div className="mt-auto flex items-center gap-3 px-3 py-2 border border-signal-success/20 bg-signal-success/[0.02]" style={{ borderRadius: '1px' }}>
+            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
+            <div>
+              <div className="text-[9px] font-mono font-medium text-signal-success">All checks passed — safe to merge</div>
+              <div className="text-[7px] font-mono text-ink-quaternary mt-0.5">4/4 dependencies compatible · 0 breaking changes remaining</div>
+            </div>
+          </div>
+        )}
+
+        {/* Resolved state — shows deploy order completed */}
+        {phase === 'resolved' && (
+          <div className="mt-auto flex items-center gap-3 px-3 py-2 border" style={{ borderRadius: '1px', borderColor: `${GOLD_RGBA},0.2)`, backgroundColor: `${GOLD_RGBA},0.02)` }}>
+            <div className="w-4 h-4 flex items-center justify-center shrink-0" style={{ borderRadius: '1px', border: `1px solid ${GOLD}30` }}>
+              <span className="text-[8px] font-mono" style={{ color: GOLD }}>↺</span>
+            </div>
+            <div>
+              <div className="text-[9px] font-mono font-medium" style={{ color: GOLD }}>Dependencies deploying... {resolvedCount}/2 complete</div>
+              <div className="text-[7px] font-mono text-ink-quaternary mt-0.5">Downstream services updating to match new schema</div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Subtle gold scan line overlay */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div
+          className="absolute top-0 bottom-0 w-20 opacity-[0.015]"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)`,
+            animation: 'scan-line 10s linear infinite',
+          }}
+        />
+      </div>
+    </div>
+  )
+}
+
 /* ========== Hero Carousel ========== */
 
-const SLIDE_COUNT = 2
+const SLIDE_COUNT = 3
 const AUTO_ROTATE_MS = 18000
 
 function HeroCarousel() {
@@ -897,7 +1260,7 @@ function HeroCarousel() {
     }
   }
 
-  const slideLabels = ['Control Plane', 'Deploy Review']
+  const slideLabels = ['Control Plane', 'Deploy Review', 'PR Analysis']
 
   return (
     <div
@@ -916,6 +1279,9 @@ function HeroCarousel() {
           </div>
           <div className="w-full h-full shrink-0">
             <PlatformInteraction />
+          </div>
+          <div className="w-full h-full shrink-0">
+            <PRReview />
           </div>
         </div>
       </div>
