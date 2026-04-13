@@ -1,0 +1,413 @@
+@import "tailwindcss";
+
+/* ===== Custom Theme ===== */
+@theme {
+  --font-sans: "Instrument Sans", system-ui, sans-serif;
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-surface: #fafaf9;
+  --color-surface-alt: #f5f4f1;
+
+  --color-ink: #080503;
+  --color-ink-secondary: #5e534a;
+  --color-ink-tertiary: #8a8078;
+  --color-ink-quaternary: #b5aea6;
+
+  --color-line: #e5e2dc;
+  --color-line-subtle: #eeece8;
+
+  --color-signal-success: #22c55e;
+  --color-signal-warning: #f59e0b;
+  --color-signal-danger: #ef4444;
+  --color-signal-deploy: #3b82f6;
+
+  --color-gold: #c9a84c;
+  --color-gold-light: #e8d48b;
+  --color-gold-dark: #a68a3e;
+  --color-gold-muted: rgba(201,168,76,0.15);
+
+  --max-width-page: 1400px;
+
+  --animate-fade-up: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ===== Keyframes ===== */
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ping-anim {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes pulse-anim {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes bounce-anim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+@keyframes ai-scan {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+@keyframes ai-pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  50% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(0.8); opacity: 0; }
+}
+
+@keyframes neural-pulse {
+  0%, 100% { opacity: 0.08; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes data-flow {
+  0% { stroke-dashoffset: 12; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes gold-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes crosshair-pulse {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes scan-line {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ===== Global Styles ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Noise overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Scroll reveal is handled by anime.js in utils.ts */
+
+/* ===== Hero Grid Background ===== */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(8,5,3,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8,5,3,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ===== Engineering Blueprint Grid ===== */
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px),
+    linear-gradient(rgba(201,168,76,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.02) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+}
+
+/* ===== Corner Accents (Technical Blueprint) ===== */
+.corner-accent {
+  position: relative;
+}
+.corner-accent::before,
+.corner-accent::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--color-gold);
+  opacity: 0.3;
+}
+.corner-accent::before {
+  top: 0;
+  left: 0;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+.corner-accent::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+/* ===== Gold Accent Line ===== */
+.gold-line {
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  height: 1px;
+  opacity: 0.2;
+}
+
+/* ===== Gold Shimmer Text ===== */
+.gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-ink-secondary) 0%,
+    var(--color-gold) 40%,
+    var(--color-gold-light) 50%,
+    var(--color-gold) 60%,
+    var(--color-ink-secondary) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gold-shimmer 4s linear infinite;
+}
+
+/* ===== Nav Link Underline ===== */
+.nav-link-underline {
+  position: relative;
+}
+.nav-link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-link-underline:hover::after {
+  width: 100%;
+}
+
+/* ===== Feature Row Hover ===== */
+.feature-row:hover .feature-title {
+  transform: translateX(4px);
+}
+.feature-title {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ===== Capability Row ===== */
+.cap-row {
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+.cap-row:hover {
+  border-color: rgba(201,168,76,0.25);
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px rgba(201,168,76,0.08);
+}
+
+/* ===== Problem Row ===== */
+.problem-card {
+  transition: background 0.3s, border-color 0.3s;
+}
+.problem-card:hover {
+  background: var(--color-surface-alt);
+}
+
+/* ===== StackGap ===== */
+.stack-row {
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.stack-row:hover {
+  border-color: rgba(34, 197, 94, 0.4);
+  background: rgba(34, 197, 94, 0.03);
+}
+
+/* ===== WorkflowAnimation Log Entry ===== */
+@keyframes slideInLog {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.log-entry {
+  animation: slideInLog 0.3s ease forwards;
+}
+
+/* ===== Sharp Card ===== */
+.sharp-card {
+  border-radius: 2px;
+  border: 1px solid var(--color-line);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.sharp-card:hover {
+  border-color: rgba(201,168,76,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 0 0 1px rgba(201,168,76,0.06);
+}
+
+/* ===== Deep Dive Integration Pulse ===== */
+.dd-integration-pulse {
+  animation: dd-int-pulse 2s ease-in-out infinite;
+}
+@keyframes dd-int-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); }
+  50% { box-shadow: 0 0 0 3px rgba(201,168,76,0.08); }
+}
+
+/* ===== Capability Visualization Animations ===== */
+.cap-edge-appear {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: cap-edge-draw 0.6s ease forwards;
+}
+@keyframes cap-edge-draw {
+  to { stroke-dashoffset: 0; }
+}
+.cap-node-appear {
+  animation: cap-node-pop 0.3s ease forwards;
+}
+@keyframes cap-node-pop {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.cap-scan-ring {
+  animation: cap-scan-expand 0.8s ease-out forwards;
+}
+@keyframes cap-scan-expand {
+  0% { r: 10; opacity: 0.6; }
+  100% { r: 24; opacity: 0; }
+}
+.cap-scan-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: #c9a84c;
+  animation: pulse-anim 1s infinite;
+}
+.cap-analysis-bar {
+  animation: cap-bar-bounce 0.6s ease infinite alternate;
+}
+@keyframes cap-bar-bounce {
+  0% { transform: scaleY(0.4); }
+  100% { transform: scaleY(1); }
+}
+.cap-rollback-ring {
+  animation: cap-rollback-spin 3s linear infinite;
+}
+@keyframes cap-rollback-spin {
+  to { transform: rotate(360deg); }
+}
+.cap-rollback-arrow {
+  animation: cap-arrow-fade 1.5s ease infinite;
+}
+@keyframes cap-arrow-fade {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* ===== Crosshair Marker ===== */
+.crosshair {
+  position: relative;
+}
+.crosshair::before {
+  content: '+';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1;
+  color: var(--color-gold);
+  opacity: 0.25;
+}
+
+/* ===== Capability Modal ===== */
+.cap-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(8, 5, 3, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.cap-modal-backdrop.open {
+  opacity: 1;
+}
+.cap-modal-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 2px;
+  max-width: 880px;
+  width: 100%;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  transform: translateY(12px) scale(0.98);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+}
+.cap-modal-backdrop.open .cap-modal-panel {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+body.modal-open {
+  overflow: hidden;
+}
+
+/* ===== Cursor Pointer on All Interactive Elements ===== */
+a, button, [role="button"], [onclick], .cursor-pointer,
+input[type="submit"], input[type="button"], input[type="reset"],
+select, label[for], summary {
+  cursor: pointer;
+}
+
+/* ===== Cursor Spotlight / Gold Glow Effect ===== */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle at center,
+    rgba(201,168,76,0.08) 0%,
+    rgba(201,168,76,0.03) 30%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  transform: translate(-50%, -50%);
+  top: var(--spotlight-y, 50%);
+  left: var(--spotlight-x, 50%);
+}
+.spotlight-card:hover::before {
+  opacity: 1;
+}

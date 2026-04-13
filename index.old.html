@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeployTitan - Stop Deployments From Breaking Production</title>
+  <meta name="description" content="DeployTitan is the deployment safety layer for distributed systems. Prevent production outages by understanding system dependencies before you ship.">
+  <meta property="og:title" content="DeployTitan - The Deployment Safety Layer">
+  <meta property="og:description" content="A deployment control plane that understands system dependencies and prevents unsafe releases.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DeployTitan - The Deployment Safety Layer">
+  <meta name="twitter:description" content="A deployment control plane that understands system dependencies and prevents unsafe releases.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Instrument Sans"', 'system-ui', 'sans-serif'],
+            display: ['"Inter"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            surface: {
+              DEFAULT: '#fafaf9',
+              alt: '#f5f4f1',
+            },
+            ink: {
+              DEFAULT: '#080503',
+              secondary: '#5e534a',
+              tertiary: '#8a8078',
+              quaternary: '#b5aea6',
+            },
+            line: {
+              DEFAULT: '#e5e2dc',
+              subtle: '#eeece8',
+            }
+          },
+          maxWidth: {
+            'page': '1400px',
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Noise overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* Scroll-triggered reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger delays */
+    .delay-1 { transition-delay: 80ms; }
+    .delay-2 { transition-delay: 160ms; }
+    .delay-3 { transition-delay: 240ms; }
+    .delay-4 { transition-delay: 320ms; }
+    .delay-5 { transition-delay: 400ms; }
+
+    /* Grid background for hero */
+    .hero-grid {
+      background-image:
+        linear-gradient(rgba(8,5,3,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(8,5,3,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    /* Nav link underline hover */
+    .nav-link-underline {
+      position: relative;
+    }
+    .nav-link-underline::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #080503;
+      transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .nav-link-underline:hover::after {
+      width: 100%;
+    }
+
+    /* Feature row hover */
+    .feature-row:hover .feature-title {
+      transform: translateX(4px);
+    }
+    .feature-title {
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  </style>
+</head>
+
+<body class="bg-surface text-ink antialiased font-sans overflow-x-hidden">
+
+  <!-- ============================
+       NAVIGATION
+       ============================ -->
+  <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <div class="max-w-page mx-auto px-6 lg:px-12 flex items-center justify-between h-20">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-1.5">
+        <span class="font-display text-2xl font-medium tracking-[-0.02em]">DeployTitan</span>
+        <span class="font-mono text-[10px] text-ink-tertiary mt-1">TM</span>
+      </a>
+
+      <!-- Desktop links -->
+      <div class="hidden md:flex items-center gap-10">
+        <a href="#problem" class="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">Problem</a>
+        <a href="#solution" class="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">Solution</a>
+        <a href="#how-it-works" class="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">How it works</a>
+      </div>
+
+      <!-- Desktop CTA -->
+      <div class="hidden md:block">
+        <a href="#waitlist" class="inline-flex items-center bg-ink text-surface px-6 py-2.5 rounded-full text-sm font-medium hover:bg-ink/85 transition-all active:scale-[0.97]">
+          Join Waitlist
+        </a>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button id="mobileToggle" class="md:hidden flex flex-col gap-[5px] p-2" aria-label="Menu">
+        <span class="block w-5 h-[1.5px] bg-ink transition-all origin-center" id="bar1"></span>
+        <span class="block w-5 h-[1.5px] bg-ink transition-all" id="bar2"></span>
+        <span class="block w-5 h-[1.5px] bg-ink transition-all origin-center" id="bar3"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" class="fixed inset-0 bg-surface z-40 flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none transition-opacity duration-400">
+    <a href="#problem" onclick="closeMobile()" class="font-display font-medium text-4xl tracking-[-0.02em] hover:text-ink-secondary transition-colors">Problem</a>
+    <a href="#solution" onclick="closeMobile()" class="font-display font-medium text-4xl tracking-[-0.02em] hover:text-ink-secondary transition-colors">Solution</a>
+    <a href="#how-it-works" onclick="closeMobile()" class="font-display font-medium text-4xl tracking-[-0.02em] hover:text-ink-secondary transition-colors">How it works</a>
+    <a href="#waitlist" onclick="closeMobile()" class="mt-4 inline-flex items-center bg-ink text-surface px-8 py-4 rounded-full text-base font-medium hover:bg-ink/85 transition-all">Join Waitlist</a>
+  </div>
+
+
+  <!-- ============================
+       HERO
+       ============================ -->
+  <section class="relative min-h-screen flex flex-col justify-center overflow-hidden">
+    <!-- Grid bg -->
+    <div class="absolute inset-0 hero-grid opacity-60 pointer-events-none" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-page mx-auto px-6 lg:px-12 py-32 lg:py-40">
+      <!-- Label -->
+      <div class="reveal mb-8">
+        <span class="inline-flex items-center gap-3 text-sm font-mono text-ink-secondary">
+          <span class="w-8 h-px bg-ink/20"></span>
+          The Deployment Safety Layer
+        </span>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="reveal delay-1 font-display font-medium text-[clamp(2.75rem,9vw,7.5rem)] leading-[1] tracking-[-0.022em] mb-10 max-w-5xl">
+        <span class="block">Stop deployments</span>
+        <span class="block">from <span class="relative inline-block">breaking<span class="absolute -bottom-1 left-0 right-0 h-[5px] bg-ink/[0.07]"></span></span></span>
+        <span class="block">production.</span>
+      </h1>
+
+      <!-- Subtitle + CTAs in a grid -->
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-24 items-end">
+        <p class="reveal delay-2 text-lg lg:text-xl text-ink-secondary leading-relaxed max-w-xl">
+          A deployment control plane that understands your system dependencies and prevents unsafe releases before they reach production.
+        </p>
+
+        <div class="reveal delay-3 flex flex-col sm:flex-row items-start gap-4">
+          <a href="#waitlist" class="inline-flex items-center gap-2.5 bg-ink text-surface px-8 py-4 rounded-full text-base font-medium hover:bg-ink/85 transition-all active:scale-[0.97] group">
+            Join the Waitlist
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-0.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="#solution" class="inline-flex items-center px-8 py-4 rounded-full text-base font-medium border border-ink/15 hover:border-ink/30 hover:bg-ink/[0.03] transition-all">
+            Learn more
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================
+       PROBLEM
+       ============================ -->
+  <section id="problem" class="py-24 lg:py-32 border-t border-line">
+    <div class="max-w-page mx-auto px-6 lg:px-12">
+      <!-- Header -->
+      <span class="reveal inline-flex items-center gap-3 text-sm font-mono text-ink-secondary mb-6">
+        <span class="w-8 h-px bg-ink/20"></span>
+        The problem
+      </span>
+
+      <h2 class="reveal delay-1 font-display font-medium text-4xl lg:text-6xl tracking-[-0.022em] leading-[1.08] mb-5 max-w-3xl">
+        Deployments are the #1 cause of
+        <span class="text-ink-secondary">production outages.</span>
+      </h2>
+
+      <p class="reveal delay-2 text-lg text-ink-secondary leading-relaxed max-w-2xl mb-16 lg:mb-20">
+        Even with CI/CD, feature flags, and observability, teams still experience cascading failures from hidden dependencies between services.
+      </p>
+
+      <!-- Failure cards grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
+        <div class="reveal bg-surface p-8 lg:p-10 hover:bg-surface-alt transition-colors">
+          <div class="w-9 h-9 mb-5 text-ink/60">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="4" y1="4" x2="20" y2="20" stroke-opacity="0.3"/></svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-2 tracking-[-0.01em]">API Contract Breaks</h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">Upstream services change response formats without downstream consumers knowing.</p>
+        </div>
+
+        <div class="reveal delay-1 bg-surface p-8 lg:p-10 hover:bg-surface-alt transition-colors">
+          <div class="w-9 h-9 mb-5 text-ink/60">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-2 tracking-[-0.01em]">Schema Mismatches</h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">Database migrations deploy out of order with application code that depends on them.</p>
+        </div>
+
+        <div class="reveal delay-2 bg-surface p-8 lg:p-10 hover:bg-surface-alt transition-colors">
+          <div class="w-9 h-9 mb-5 text-ink/60">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-2 tracking-[-0.01em]">Event Payload Changes</h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">Event producers update schemas while consumers still expect the old format.</p>
+        </div>
+
+        <div class="reveal delay-3 bg-surface p-8 lg:p-10 hover:bg-surface-alt transition-colors">
+          <div class="w-9 h-9 mb-5 text-ink/60">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="7" cy="12" r="0.5" fill="currentColor"/><circle cx="12" cy="12" r="0.5" fill="currentColor"/><circle cx="17" cy="12" r="0.5" fill="currentColor"/></svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-2 tracking-[-0.01em]">Worker Incompatibility</h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">Background workers and consumers fall out of sync with the services that feed them.</p>
+        </div>
+
+        <div class="reveal delay-4 bg-surface p-8 lg:p-10 hover:bg-surface-alt transition-colors">
+          <div class="w-9 h-9 mb-5 text-ink/60">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-2 tracking-[-0.01em]">Configuration Drift</h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">Environment config changes silently break services that depend on specific values.</p>
+        </div>
+
+        <div class="reveal delay-5 bg-surface p-8 lg:p-10 hover:bg-surface-alt transition-colors">
+          <div class="w-9 h-9 mb-5 text-ink/60">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-2 tracking-[-0.01em]">Cascading Failures</h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">One bad deploy triggers a chain reaction across APIs, databases, queues, and workers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================
+       THE GAP / MISSING LAYER
+       ============================ -->
+  <section id="gap" class="py-24 lg:py-32 border-t border-line">
+    <div class="max-w-page mx-auto px-6 lg:px-12">
+      <span class="reveal inline-flex items-center gap-3 text-sm font-mono text-ink-secondary mb-6">
+        <span class="w-8 h-px bg-ink/20"></span>
+        The missing layer
+      </span>
+
+      <h2 class="reveal delay-1 font-display font-medium text-4xl lg:text-6xl tracking-[-0.022em] leading-[1.08] mb-16 lg:mb-20 max-w-3xl">
+        Your DevOps stack has
+        <span class="text-ink-secondary">a blind spot.</span>
+      </h2>
+
+      <!-- Stack table -->
+      <div class="reveal delay-2 border border-line mb-12 lg:mb-16 overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-ink/[0.025]">
+              <th class="px-6 py-4 font-mono text-xs font-medium text-ink-tertiary uppercase tracking-wider border-b border-r border-line w-[140px] lg:w-[180px]">Layer</th>
+              <th class="px-6 py-4 font-mono text-xs font-medium text-ink-tertiary uppercase tracking-wider border-b border-r border-line">Tools</th>
+              <th class="px-6 py-4 font-mono text-xs font-medium text-ink-tertiary uppercase tracking-wider border-b border-line">What they do</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-line hover:bg-ink/[0.01] transition-colors">
+              <td class="px-6 py-4 font-semibold text-sm border-r border-line">CI/CD</td>
+              <td class="px-6 py-4 font-mono text-[13px] text-ink-secondary border-r border-line">GitHub Actions, GitLab, Jenkins</td>
+              <td class="px-6 py-4 text-ink-secondary">Build and deploy individual services</td>
+            </tr>
+            <tr class="border-b border-line hover:bg-ink/[0.01] transition-colors">
+              <td class="px-6 py-4 font-semibold text-sm border-r border-line">Feature Flags</td>
+              <td class="px-6 py-4 font-mono text-[13px] text-ink-secondary border-r border-line">LaunchDarkly, Statsig</td>
+              <td class="px-6 py-4 text-ink-secondary">Control feature rollout</td>
+            </tr>
+            <tr class="border-b border-line hover:bg-ink/[0.01] transition-colors">
+              <td class="px-6 py-4 font-semibold text-sm border-r border-line">Observability</td>
+              <td class="px-6 py-4 font-mono text-[13px] text-ink-secondary border-r border-line">Datadog, New Relic</td>
+              <td class="px-6 py-4 text-ink-secondary">Detect incidents after the fact</td>
+            </tr>
+            <tr class="bg-ink/[0.035] hover:bg-ink/[0.05] transition-colors">
+              <td class="px-6 py-4 font-semibold text-sm border-r border-line">Deployment Safety</td>
+              <td class="px-6 py-4 font-display font-medium text-base border-r border-line">DeployTitan</td>
+              <td class="px-6 py-4 font-medium">Prevent unsafe releases at the system level</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="reveal delay-3 max-w-2xl">
+        <p class="text-lg lg:text-xl text-ink-secondary leading-relaxed">
+          <strong class="text-ink font-semibold">CI/CD automates deployments.</strong> Observability detects failures. But nothing ensures deployments are actually safe across your entire system. That's the layer DeployTitan creates.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================
+       SOLUTION (Inverted Section)
+       ============================ -->
+  <section id="solution" class="relative py-24 lg:py-32 bg-ink text-surface overflow-hidden">
+    <!-- Diagonal hatching bg -->
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: repeating-linear-gradient(-45deg, transparent, transparent 40px, currentColor 40px, currentColor 41px);"></div>
+
+    <div class="relative z-10 max-w-page mx-auto px-6 lg:px-12">
+      <span class="reveal inline-flex items-center gap-3 text-sm font-mono text-surface/50 mb-6">
+        <span class="w-8 h-px bg-surface/20"></span>
+        The solution
+      </span>
+
+      <h2 class="reveal delay-1 font-display font-medium text-4xl lg:text-6xl tracking-[-0.022em] leading-[1.08] mb-5 max-w-3xl">
+        A control plane between
+        <span class="text-surface/50">CI/CD and production.</span>
+      </h2>
+
+      <p class="reveal delay-2 text-lg text-surface/50 leading-relaxed max-w-2xl mb-16 lg:mb-20">
+        DeployTitan sits between your deployment pipeline and your infrastructure, ensuring every release is safe before it reaches production.
+      </p>
+
+      <!-- Feature rows -->
+      <div class="divide-y divide-surface/[0.08] border-y border-surface/[0.08]">
+        <div class="reveal feature-row group flex flex-col md:flex-row gap-4 md:gap-12 py-10 lg:py-14 items-start">
+          <span class="font-mono text-sm text-surface/30 shrink-0 pt-1 w-8">01</span>
+          <div class="flex-1">
+            <h3 class="feature-title font-display font-medium text-xl lg:text-2xl tracking-[-0.02em] mb-3">Automatic Dependency Mapping</h3>
+            <p class="text-[15px] text-surface/45 leading-relaxed max-w-xl">Continuously builds a live dependency graph of your entire system using telemetry. Understands service-to-service APIs, databases, queues, event streams, and serverless functions.</p>
+          </div>
+        </div>
+
+        <div class="reveal delay-1 feature-row group flex flex-col md:flex-row gap-4 md:gap-12 py-10 lg:py-14 items-start">
+          <span class="font-mono text-sm text-surface/30 shrink-0 pt-1 w-8">02</span>
+          <div class="flex-1">
+            <h3 class="feature-title font-display font-medium text-xl lg:text-2xl tracking-[-0.02em] mb-3">Deterministic Deployment Manifests</h3>
+            <p class="text-[15px] text-surface/45 leading-relaxed max-w-xl">Define rollout requirements across services. Deployments only proceed when all dependencies are ready, ensuring correct order and compatibility.</p>
+          </div>
+        </div>
+
+        <div class="reveal delay-2 feature-row group flex flex-col md:flex-row gap-4 md:gap-12 py-10 lg:py-14 items-start">
+          <span class="font-mono text-sm text-surface/30 shrink-0 pt-1 w-8">03</span>
+          <div class="flex-1">
+            <h3 class="feature-title font-display font-medium text-xl lg:text-2xl tracking-[-0.02em] mb-3">Intelligent Rollout Control</h3>
+            <p class="text-[15px] text-surface/45 leading-relaxed max-w-xl">Canary deployments, cohort rollouts, and progressive traffic shifting that adapt automatically based on runtime health signals.</p>
+          </div>
+        </div>
+
+        <div class="reveal delay-3 feature-row group flex flex-col md:flex-row gap-4 md:gap-12 py-10 lg:py-14 items-start">
+          <span class="font-mono text-sm text-surface/30 shrink-0 pt-1 w-8">04</span>
+          <div class="flex-1">
+            <h3 class="feature-title font-display font-medium text-xl lg:text-2xl tracking-[-0.02em] mb-3">Dependency-Aware Rollback</h3>
+            <p class="text-[15px] text-surface/45 leading-relaxed max-w-xl">When failures happen, precisely identifies impacted components and rolls back only what's affected. No more system-wide panic rollbacks.</p>
+          </div>
+        </div>
+
+        <div class="reveal delay-4 feature-row group flex flex-col md:flex-row gap-4 md:gap-12 py-10 lg:py-14 items-start">
+          <span class="font-mono text-sm text-surface/30 shrink-0 pt-1 w-8">05</span>
+          <div class="flex-1">
+            <h3 class="feature-title font-display font-medium text-xl lg:text-2xl tracking-[-0.02em] mb-3">System-Wide Recovery</h3>
+            <p class="text-[15px] text-surface/45 leading-relaxed max-w-xl">For major incidents, revert the entire system to the last known stable state. Restores service versions, configuration, and dependency compatibility in one action.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================
+       HOW IT WORKS
+       ============================ -->
+  <section id="how-it-works" class="py-24 lg:py-32 border-t border-line">
+    <div class="max-w-page mx-auto px-6 lg:px-12">
+      <span class="reveal inline-flex items-center gap-3 text-sm font-mono text-ink-secondary mb-6">
+        <span class="w-8 h-px bg-ink/20"></span>
+        How it works
+      </span>
+
+      <h2 class="reveal delay-1 font-display font-medium text-4xl lg:text-6xl tracking-[-0.022em] leading-[1.08] mb-16 lg:mb-24 max-w-2xl">
+        Three steps to
+        <span class="text-ink-secondary">safe deployments.</span>
+      </h2>
+
+      <!-- Steps grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-line md:border md:border-line mb-16 lg:mb-20">
+        <div class="reveal bg-surface p-8 lg:p-12">
+          <span class="block font-display font-medium text-5xl lg:text-6xl text-ink/[0.06] mb-6 leading-none">I</span>
+          <span class="block font-mono text-[11px] uppercase tracking-[0.1em] text-ink-tertiary mb-3">Step One</span>
+          <h3 class="font-display font-medium text-xl lg:text-2xl tracking-[-0.02em] mb-3">Analyze</h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">DeployTitan maps your system dependencies and analyzes every deployment for risk. It understands the blast radius before any code hits production.</p>
+        </div>
+
+        <div class="reveal delay-1 bg-surface p-8 lg:p-12">
+          <span class="block font-display font-medium text-5xl lg:text-6xl text-ink/[0.06] mb-6 leading-none">II</span>
+          <span class="block font-mono text-[11px] uppercase tracking-[0.1em] text-ink-tertiary mb-3">Step Two</span>
+          <h3 class="font-display font-medium text-xl lg:text-2xl tracking-[-0.02em] mb-3">Control</h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">Enforces safe deployment ordering and compatibility rules across services. Deployments proceed only when the system is ready to accept them.</p>
+        </div>
+
+        <div class="reveal delay-2 bg-surface p-8 lg:p-12">
+          <span class="block font-display font-medium text-5xl lg:text-6xl text-ink/[0.06] mb-6 leading-none">III</span>
+          <span class="block font-mono text-[11px] uppercase tracking-[0.1em] text-ink-tertiary mb-3">Step Three</span>
+          <h3 class="font-display font-medium text-xl lg:text-2xl tracking-[-0.02em] mb-3">Protect</h3>
+          <p class="text-sm text-ink-secondary leading-relaxed">Monitors rollout health in real time. If something goes wrong, targeted rollback kicks in automatically, minimizing blast radius and recovery time.</p>
+        </div>
+      </div>
+
+      <!-- Code block -->
+      <div class="reveal max-w-lg border border-line">
+        <div class="flex items-center gap-3 px-5 py-3.5 border-b border-line">
+          <div class="flex gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-ink/10"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-ink/10"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-ink/10"></span>
+          </div>
+          <span class="font-mono text-xs text-ink-tertiary">deploy.titan.yml</span>
+        </div>
+        <div class="p-6 font-mono text-[13px] leading-[1.9] text-ink-secondary overflow-x-auto">
+          <span class="text-ink font-medium">service:</span> order-service<br>
+          <span class="text-ink font-medium">requires:</span><br>
+          <span class="text-ink-tertiary">&nbsp;&nbsp;-</span> payment-service@<span class="text-ink font-medium">v2.4.1</span><br>
+          <span class="text-ink-tertiary">&nbsp;&nbsp;-</span> inventory-db@<span class="text-ink font-medium">migration_032</span><br>
+          <span class="text-ink font-medium">rollout:</span> canary<br>
+          <span class="text-ink font-medium">health_check:</span> /api/health<br>
+          <span class="text-ink font-medium">auto_rollback:</span> true
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================
+       BUILT FOR
+       ============================ -->
+  <section class="py-24 lg:py-32 border-t border-line">
+    <div class="max-w-page mx-auto px-6 lg:px-12">
+      <span class="reveal inline-flex items-center gap-3 text-sm font-mono text-ink-secondary mb-6">
+        <span class="w-8 h-px bg-ink/20"></span>
+        Built for
+      </span>
+
+      <h2 class="reveal delay-1 font-display font-medium text-4xl lg:text-6xl tracking-[-0.022em] leading-[1.08] mb-16 lg:mb-20 max-w-2xl">
+        Modern teams.<br>
+        <span class="text-ink-secondary">Complex systems.</span>
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-12">
+        <div class="reveal delay-2">
+          <h3 class="font-mono text-xs uppercase tracking-[0.1em] text-ink-tertiary mb-5">Teams</h3>
+          <div class="flex flex-wrap gap-2.5">
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">Platform Engineering</span>
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">DevOps</span>
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">SRE</span>
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">Infrastructure</span>
+          </div>
+        </div>
+
+        <div class="reveal delay-3">
+          <h3 class="font-mono text-xs uppercase tracking-[0.1em] text-ink-tertiary mb-5">Infrastructure</h3>
+          <div class="flex flex-wrap gap-2.5">
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">Kubernetes</span>
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">AWS</span>
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">Google Cloud</span>
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">Lambda</span>
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">Multi-Cloud</span>
+          </div>
+        </div>
+
+        <div class="reveal delay-4">
+          <h3 class="font-mono text-xs uppercase tracking-[0.1em] text-ink-tertiary mb-5">Architectures</h3>
+          <div class="flex flex-wrap gap-2.5">
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">Microservices</span>
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">Event-Driven</span>
+            <span class="px-4 py-2.5 border border-line text-sm font-medium hover:border-ink/25 hover:bg-ink/[0.02] transition-all cursor-default">Hybrid Platforms</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================
+       FINAL CTA
+       ============================ -->
+  <section id="waitlist" class="py-24 lg:py-32 border-t border-line">
+    <div class="max-w-page mx-auto px-6 lg:px-12">
+      <div class="relative border border-line p-12 md:p-16 lg:p-24 text-center overflow-hidden">
+        <!-- Corner accents -->
+        <div class="absolute top-0 left-0 w-6 h-6 border-t border-l border-ink/15" aria-hidden="true"></div>
+        <div class="absolute top-0 right-0 w-6 h-6 border-t border-r border-ink/15" aria-hidden="true"></div>
+        <div class="absolute bottom-0 left-0 w-6 h-6 border-b border-l border-ink/15" aria-hidden="true"></div>
+        <div class="absolute bottom-0 right-0 w-6 h-6 border-b border-r border-ink/15" aria-hidden="true"></div>
+
+        <span class="reveal inline-flex items-center gap-3 text-sm font-mono text-ink-secondary mb-6">
+          <span class="w-8 h-px bg-ink/20"></span>
+          Early access
+        </span>
+
+        <h2 class="reveal delay-1 font-display font-medium text-4xl lg:text-6xl tracking-[-0.022em] leading-[1.08] mb-5 max-w-2xl mx-auto">
+          Be the first to deploy safely.
+        </h2>
+
+        <p class="reveal delay-2 text-lg text-ink-secondary leading-relaxed max-w-lg mx-auto mb-10">
+          Join the waitlist for early access. We're working with a small group of engineering teams to shape the product.
+        </p>
+
+        <form name="waitlist" method="POST" data-netlify="true" class="reveal delay-3 flex flex-col sm:flex-row gap-3 max-w-md mx-auto" id="ctaForm">
+          <input type="hidden" name="form-name" value="waitlist">
+          <input type="hidden" name="source" value="cta">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your work email"
+            required
+            autocomplete="email"
+            class="flex-1 px-5 py-3.5 border border-line rounded-full text-sm bg-white text-ink placeholder:text-ink-quaternary focus:outline-none focus:border-ink transition-colors min-w-0"
+          >
+          <button type="submit" class="inline-flex items-center justify-center gap-2 bg-ink text-surface px-7 py-3.5 rounded-full text-sm font-medium hover:bg-ink/85 transition-all active:scale-[0.97] whitespace-nowrap">
+            Join Waitlist
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </form>
+
+        <div id="ctaSuccess" class="hidden items-center justify-center gap-2 py-3 text-sm text-ink">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          You're on the list. We'll be in touch.
+        </div>
+
+        <p class="reveal delay-4 text-xs text-ink-tertiary mt-5">No credit card required. No spam. Just early access.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================
+       FOOTER
+       ============================ -->
+  <footer class="py-10 border-t border-line">
+    <div class="max-w-page mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-4">
+      <span class="font-display font-medium text-base tracking-[-0.02em]">DeployTitan</span>
+      <span class="text-xs text-ink-tertiary">&copy; 2026 DeployTitan. All rights reserved.</span>
+    </div>
+  </footer>
+
+
+  <!-- ============================
+       SCRIPTS
+       ============================ -->
+  <script>
+    // Scroll reveal
+    (function() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
+
+    // Nav scroll effect
+    (function() {
+      var nav = document.getElementById('nav');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 40) {
+          nav.style.background = 'rgba(250,250,249,0.88)';
+          nav.style.backdropFilter = 'blur(12px)';
+          nav.style.webkitBackdropFilter = 'blur(12px)';
+          nav.style.borderBottom = '1px solid #e5e2dc';
+        } else {
+          nav.style.background = 'transparent';
+          nav.style.backdropFilter = 'none';
+          nav.style.webkitBackdropFilter = 'none';
+          nav.style.borderBottom = '1px solid transparent';
+        }
+      }, { passive: true });
+    })();
+
+    // Mobile menu
+    var toggle = document.getElementById('mobileToggle');
+    var menu = document.getElementById('mobileMenu');
+    var bar1 = document.getElementById('bar1');
+    var bar2 = document.getElementById('bar2');
+    var bar3 = document.getElementById('bar3');
+    var isOpen = false;
+
+    toggle.addEventListener('click', function() {
+      isOpen = !isOpen;
+      if (isOpen) {
+        menu.style.opacity = '1';
+        menu.style.pointerEvents = 'all';
+        bar1.style.transform = 'rotate(45deg) translate(4.5px, 4.5px)';
+        bar2.style.opacity = '0';
+        bar3.style.transform = 'rotate(-45deg) translate(4.5px, -4.5px)';
+        document.body.style.overflow = 'hidden';
+      } else {
+        closeMobile();
+      }
+    });
+
+    function closeMobile() {
+      isOpen = false;
+      menu.style.opacity = '0';
+      menu.style.pointerEvents = 'none';
+      bar1.style.transform = '';
+      bar2.style.opacity = '1';
+      bar3.style.transform = '';
+      document.body.style.overflow = '';
+    }
+
+    // Form handling (Netlify-compatible AJAX submit)
+    var form = document.getElementById('ctaForm');
+    var success = document.getElementById('ctaSuccess');
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var data = new FormData(form);
+
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(data).toString()
+        })
+        .then(function() {
+          form.style.display = 'none';
+          success.style.display = 'flex';
+        })
+        .catch(function() {
+          form.style.display = 'none';
+          success.style.display = 'flex';
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>
