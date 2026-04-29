@@ -27,6 +27,11 @@
   --color-gold-dark: #a68a3e;
   --color-gold-muted: rgba(201,168,76,0.15);
 
+  --color-primary: #c9a84c;
+  --color-primary-light: #e8d48b;
+  --color-primary-dark: #a68a3e;
+  --color-primary-muted: rgba(201,168,76,0.15);
+
   --max-width-page: 1400px;
 
   --animate-fade-up: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
@@ -150,7 +155,7 @@ body::after {
   position: absolute;
   width: 12px;
   height: 12px;
-  border-color: var(--color-gold);
+  border-color: var(--color-primary);
   opacity: 0.3;
 }
 .corner-accent::before {
@@ -168,7 +173,7 @@ body::after {
 
 /* ===== Gold Accent Line ===== */
 .gold-line {
-  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
   height: 1px;
   opacity: 0.2;
 }
@@ -178,9 +183,9 @@ body::after {
   background: linear-gradient(
     90deg,
     var(--color-ink-secondary) 0%,
-    var(--color-gold) 40%,
-    var(--color-gold-light) 50%,
-    var(--color-gold) 60%,
+    var(--color-primary) 40%,
+    var(--color-primary-light) 50%,
+    var(--color-primary) 60%,
     var(--color-ink-secondary) 100%
   );
   background-size: 200% auto;
@@ -201,7 +206,7 @@ body::after {
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--color-gold);
+  background: var(--color-primary);
   transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .nav-link-underline:hover::after {
@@ -299,7 +304,7 @@ body::after {
   width: 6px;
   height: 6px;
   border-radius: 1px;
-  background: #c9a84c;
+  background: var(--color-primary);
   animation: pulse-anim 1s infinite;
 }
 .cap-analysis-bar {
@@ -335,7 +340,7 @@ body::after {
   font-family: var(--font-mono);
   font-size: 10px;
   line-height: 1;
-  color: var(--color-gold);
+  color: var(--color-primary);
   opacity: 0.25;
 }
 

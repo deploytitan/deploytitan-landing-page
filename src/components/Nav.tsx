@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 
+const DEMO_URL = import.meta.env.VITE_DEMO_URL as string || 'https://demo.deploytitan.com'
+
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -33,28 +35,35 @@ export function Nav() {
         }}
       >
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between h-20">
-          {/* Logo with gold accent */}
+          {/* Logo */}
           <a href="#" className="flex items-center group">
             <span className="font-display text-2xl font-medium tracking-[-0.02em]">Deploy</span>
-            <span className="font-display text-2xl font-medium tracking-[-0.02em] text-gold-dark">Titan</span>
+            <span className="font-display text-2xl font-medium tracking-[-0.02em] text-primary-dark">Titan</span>
           </a>
 
-          {/* Desktop links — gold underline on hover via .nav-link-underline CSS class */}
+          {/* Desktop links */}
           <div className="hidden md:flex items-center gap-10">
             <a href="#problem" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">Problem</a>
             <a href="#solution" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">Solution</a>
-            <a href="#how-it-works" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">How it works</a>
             <a href="#outcomes" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">Outcomes</a>
+            <a href="#use-cases" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">Use Cases</a>
           </div>
 
-          {/* Desktop CTA — sharp edges, gold hover accent */}
+          {/* Desktop CTA */}
           <div className="hidden md:block">
             <a
-              href="#waitlist"
-              className="inline-flex items-center bg-ink text-surface px-6 py-2.5 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
+              href={DEMO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-2.5 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] group"
               style={{ borderRadius: '2px' }}
             >
-              Join Waitlist
+              See live demo
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-60 group-hover:opacity-100 transition-opacity">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
             </a>
           </div>
 
@@ -77,7 +86,7 @@ export function Nav() {
 
         {/* Subtle gold line at bottom of nav when scrolled */}
         {scrolled && (
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
         )}
       </nav>
 
@@ -89,17 +98,19 @@ export function Nav() {
           pointerEvents: mobileOpen ? 'all' : 'none',
         }}
       >
-        <a href="#problem" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-gold-dark transition-colors">Problem</a>
-        <a href="#solution" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-gold-dark transition-colors">Solution</a>
-        <a href="#how-it-works" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-gold-dark transition-colors">How it works</a>
-        <a href="#outcomes" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-gold-dark transition-colors">Outcomes</a>
+        <a href="#problem" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-primary-dark transition-colors">Problem</a>
+        <a href="#solution" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-primary-dark transition-colors">Solution</a>
+        <a href="#outcomes" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-primary-dark transition-colors">Outcomes</a>
+        <a href="#use-cases" onClick={closeMobile} className="font-display font-medium text-4xl tracking-[-0.02em] hover:text-primary-dark transition-colors">Use Cases</a>
         <a
-          href="#waitlist"
+          href={DEMO_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={closeMobile}
-          className="mt-4 inline-flex items-center bg-ink text-surface px-8 py-4 text-base font-medium hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] transition-all"
+          className="mt-4 inline-flex items-center gap-2 bg-ink text-surface px-8 py-4 text-base font-medium hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] transition-all"
           style={{ borderRadius: '2px' }}
         >
-          Join Waitlist
+          See live demo
         </a>
       </div>
     </>
