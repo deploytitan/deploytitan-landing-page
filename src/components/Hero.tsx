@@ -5,6 +5,7 @@ const PRIMARY = 'var(--color-primary)'
 const PRIMARY_RGBA = 'rgba(201,168,76'
 
 const DEMO_URL = import.meta.env.VITE_DEMO_URL as string || 'https://demo.deploytitan.com'
+const APP_URL = import.meta.env.VITE_APP_URL as string || 'https://app.deploytitan.com'
 
 /* ========== Traffic Split Visual ========== */
 
@@ -327,11 +328,11 @@ export function Hero() {
           {/* CTAs */}
           <div data-reveal data-reveal-delay="3" className="flex flex-col sm:flex-row items-stretch sm:items-start gap-3">
             <a
-              href="#solution"
-              className="inline-flex items-center justify-center gap-2.5 bg-ink text-surface px-8 py-4 text-base font-medium hover:bg-ink/85 transition-all active:scale-[0.97] group"
+              href={`${APP_URL}/signup`}
+              className="inline-flex items-center justify-center gap-2.5 bg-ink text-surface px-8 py-4 text-base font-medium hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] transition-all active:scale-[0.97] group"
               style={{ borderRadius: '2px' }}
             >
-              See how it works
+              Start free trial
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5">
                 <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
               </svg>
@@ -343,9 +344,14 @@ export function Hero() {
               className="inline-flex items-center justify-center px-8 py-4 text-base font-medium border border-ink/15 hover:border-primary/40 hover:bg-primary-muted transition-all"
               style={{ borderRadius: '2px' }}
             >
-              Book a demo
+              Talk to an engineer
             </a>
           </div>
+
+          {/* Sub-text */}
+          <p data-reveal data-reveal-delay="3" className="mt-3 text-xs text-ink-quaternary font-mono">
+            No credit card required · 14-day free trial · <a href="/journey" className="text-primary/70 hover:text-primary transition-colors">Why we built this →</a>
+          </p>
 
           {/* Trust tags */}
           <div data-reveal data-reveal-delay="4" className="mt-10 pt-10 border-t border-line">
