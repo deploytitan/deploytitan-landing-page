@@ -1,6 +1,5 @@
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { Hero } from '../components/Hero'
-import { LogoCloud } from '../components/shared/LogoCloud'
 import { PlatformOverview } from '../components/platform/PlatformOverview'
 import { Outcomes } from '../components/Outcomes'
 import { Integrations } from '../components/Integrations'
@@ -19,10 +18,7 @@ export default function Home() {
       {/* 1. Hero — shortened, new CTAs */}
       <Hero />
 
-      {/* 2. Logo cloud — social proof above the fold */}
-      <LogoCloud />
-
-      {/* 3. Platform overview — 3 product teasers (Titan Rollout / Shield / Sentinel) */}
+      {/* 2. Platform overview — 3 product teasers (Titan Rollout / Shield / Sentinel) */}
       <PlatformOverview />
 
       {/* 4. Outcome stats */}

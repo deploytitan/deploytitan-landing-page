@@ -78,7 +78,7 @@ export function Problem() {
                   className="flex items-start gap-4 group"
                 >
                   <div
-                    className="shrink-0 w-8 h-8 flex items-center justify-center border border-line bg-white text-ink/40 group-hover:text-signal-warning group-hover:border-signal-warning/20 group-hover:bg-signal-warning/[0.03] transition-all duration-300"
+                    className="shrink-0 w-8 h-8 flex items-center justify-center border border-line bg-surface text-ink/40 group-hover:text-signal-warning group-hover:border-signal-warning/20 group-hover:bg-signal-warning/[0.03] transition-all duration-300"
                     style={{ borderRadius: '2px' }}
                   >
                     {b.icon}
@@ -92,7 +92,7 @@ export function Problem() {
           {/* Right: closing statement card */}
           <div data-reveal data-reveal-delay="7">
             <div
-              className="relative border border-line bg-white p-10 lg:p-12 corner-accent"
+              className="relative border border-line bg-surface p-10 lg:p-12 corner-accent"
               style={{ borderRadius: '2px' }}
             >
               {/* Extra corners */}

@@ -126,7 +126,7 @@ export function Solution() {
               key={cap.label}
               data-reveal
               data-reveal-delay={String(i + 3)}
-              className="sharp-card spotlight-card bg-white p-8 lg:p-10 group"
+              className="sharp-card spotlight-card bg-surface p-8 lg:p-10 group"
             >
               {/* Gold top corner on hover */}
               <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-primary/0 group-hover:border-primary/30 transition-all duration-300" />

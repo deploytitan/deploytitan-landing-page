@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* ===== Dark mode variant (toggled via .dark class on <html>) ===== */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ===== Custom Theme ===== */
 @theme {
   --font-sans: "Instrument Sans", system-ui, sans-serif;
@@ -415,4 +418,127 @@ select, label[for], summary {
 }
 .spotlight-card:hover::before {
   opacity: 1;
+}
+
+/* ===== Dark Mode Token Overrides ===== */
+.dark {
+  --color-surface: #0d0c0a;
+  --color-surface-alt: #161512;
+
+  --color-ink: #f5f4f1;
+  --color-ink-secondary: #c8c2b8;
+  --color-ink-tertiary: #8a8078;
+  --color-ink-quaternary: #4a453e;
+
+  --color-line: #2a2825;
+  --color-line-subtle: #1e1c19;
+
+  --color-signal-success: #4ade80;
+  --color-signal-warning: #fbbf24;
+  --color-signal-danger: #f87171;
+  --color-signal-deploy: #60a5fa;
+
+  --color-gold: #d4b454;
+  --color-gold-light: #e8d48b;
+  --color-gold-dark: #c9a84c;
+  --color-gold-muted: rgba(212,180,84,0.12);
+
+  --color-primary: #d4b454;
+  --color-primary-light: #e8d48b;
+  --color-primary-dark: #c9a84c;
+  --color-primary-muted: rgba(212,180,84,0.12);
+}
+
+/* ===== Dark mode body background ===== */
+.dark body {
+  background: #0d0c0a;
+  color: #f5f4f1;
+}
+
+/* ===== Dark mode noise overlay (lower opacity) ===== */
+.dark body::after {
+  opacity: 0.035;
+}
+
+/* ===== Dark mode hero grid ===== */
+.dark .hero-grid {
+  background-image:
+    linear-gradient(rgba(245,244,241,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,244,241,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ===== Dark mode blueprint grid ===== */
+.dark .blueprint-grid {
+  background-image:
+    linear-gradient(rgba(212,180,84,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,180,84,0.06) 1px, transparent 1px),
+    linear-gradient(rgba(212,180,84,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,180,84,0.03) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+}
+
+/* ===== Dark mode sharp card ===== */
+.dark .sharp-card:hover {
+  border-color: rgba(212,180,84,0.25);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3), 0 0 0 1px rgba(212,180,84,0.08);
+}
+
+/* ===== Dark mode cap-row ===== */
+.dark .cap-row:hover {
+  border-color: rgba(212,180,84,0.2);
+  background: #161512;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 0 0 1px rgba(212,180,84,0.06);
+}
+
+/* ===== Dark mode gold shimmer (brighter) ===== */
+.dark .gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-ink-secondary) 0%,
+    var(--color-primary) 40%,
+    var(--color-primary-light) 50%,
+    var(--color-primary) 60%,
+    var(--color-ink-secondary) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gold-shimmer 4s linear infinite;
+}
+
+/* ===== Dark mode spotlight glow (stronger) ===== */
+.dark .spotlight-card::before {
+  background: radial-gradient(
+    circle at center,
+    rgba(212,180,84,0.12) 0%,
+    rgba(212,180,84,0.05) 30%,
+    transparent 70%
+  );
+}
+
+/* ===== Dark mode capability modal ===== */
+.dark .cap-modal-backdrop {
+  background: rgba(8, 5, 3, 0.75);
+}
+
+.dark .cap-modal-panel {
+  background: var(--color-surface-alt);
+  border-color: var(--color-line);
+}
+
+/* ===== Dark mode nav scrolled background ===== */
+.dark [data-nav-scrolled="true"] {
+  background: rgba(13, 12, 10, 0.92) !important;
+}
+
+/* ===== Dark mode: override bg-white cards to surface-elevated ===== */
+.dark .bg-white {
+  background-color: var(--color-surface-alt) !important;
+}
+
+/* ===== Dark mode: override Quickstart dark code panel ===== */
+.dark .bg-\[#0d1117\] {
+  background-color: #0a0908 !important;
 }

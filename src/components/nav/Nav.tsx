@@ -1,19 +1,22 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ProductsDropdown } from './ProductsDropdown'
-import { ResourcesDropdown } from './ResourcesDropdown'
+import { SolutionsDropdown } from './SolutionsDropdown'
 import { MobileNav } from './MobileNav'
+import { ThemeToggle } from '../shared/ThemeToggle'
+import { useTheme } from '../../hooks/useTheme'
 
 const APP_URL = import.meta.env.VITE_APP_URL as string || 'https://app.deploytitan.com'
 
-type DropdownKey = 'products' | 'resources' | null
+type DropdownKey = 'products' | 'solutions' | null
 
-export function Nav() {
+export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   const [scrolled, setScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<DropdownKey>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const navRef = useRef<HTMLElement>(null)
   const location = useLocation()
+  const { resolved } = useTheme()
 
   // Close everything on route change
   useEffect(() => {
@@ -73,9 +76,14 @@ export function Nav() {
     <>
       <nav
         ref={navRef}
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+        className="fixed left-0 right-0 z-50 transition-all duration-500"
         style={{
-          background: scrolled ? 'rgba(250,250,249,0.92)' : 'transparent',
+          top: barHeight,
+          background: scrolled
+            ? resolved === 'dark'
+              ? 'rgba(13,12,10,0.92)'
+              : 'rgba(250,250,249,0.92)'
+            : 'transparent',
           backdropFilter: scrolled ? 'blur(12px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
           borderBottom: scrolled ? '1px solid var(--color-line)' : '1px solid transparent',
@@ -111,33 +119,25 @@ export function Nav() {
               {activeDropdown === 'products' && <ProductsDropdown onClose={closeDropdown} />}
             </div>
 
-            {/* Solutions */}
-            <Link
-              to="/solutions"
-              className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline"
-            >
-              Solutions
-            </Link>
-
-            {/* Resources dropdown */}
+            {/* Solutions dropdown */}
             <div className="relative">
               <button
-                onClick={() => toggleDropdown('resources')}
-                aria-expanded={activeDropdown === 'resources'}
+                onClick={() => toggleDropdown('solutions')}
+                aria-expanded={activeDropdown === 'solutions'}
                 aria-haspopup="true"
                 className="flex items-center gap-1 text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline"
               >
-                Resources
+                Solutions
                 <svg
                   width="12" height="12" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                   className="mt-px transition-transform duration-200"
-                  style={{ transform: activeDropdown === 'resources' ? 'rotate(180deg)' : 'none' }}
+                  style={{ transform: activeDropdown === 'solutions' ? 'rotate(180deg)' : 'none' }}
                 >
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </button>
-              {activeDropdown === 'resources' && <ResourcesDropdown onClose={closeDropdown} />}
+              {activeDropdown === 'solutions' && <SolutionsDropdown onClose={closeDropdown} />}
             </div>
 
             <Link to="/pricing" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">
@@ -151,6 +151,7 @@ export function Nav() {
 
           {/* Desktop auth */}
           <div className="hidden lg:flex items-center gap-2">
+            <ThemeToggle className="mr-1" />
             <a
               href={`${APP_URL}/signin`}
               className="text-sm text-ink-secondary hover:text-ink transition-colors px-4 py-2.5"
@@ -158,7 +159,7 @@ export function Nav() {
               Sign in
             </a>
             <a
-              href={`${APP_URL}/signup`}
+              href="/early-access"
               className="inline-flex items-center gap-2 bg-ink text-surface px-5 py-2.5 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
               style={{ borderRadius: '2px' }}
             >

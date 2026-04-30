@@ -1,21 +1,27 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ThemeToggle } from '../shared/ThemeToggle'
 
-const DEMO_URL = import.meta.env.VITE_DEMO_URL as string || 'https://demo.deploytitan.com'
 const APP_URL = import.meta.env.VITE_APP_URL as string || 'https://app.deploytitan.com'
 
 const productLinks = [
   { label: 'Titan Rollout', sub: 'Progressive deployments & rollback', route: '/products/titan-rollout' },
   { label: 'Titan Shield', sub: 'Multi-cloud failover & resilience', route: '/products/titan-shield' },
   { label: 'Titan Sentinel', sub: 'Risk scoring & observability', route: '/products/titan-sentinel' },
+  { label: 'Titan Pulse', sub: 'Deploy telemetry & DORA metrics', route: '/products/titan-pulse', preview: true },
 ]
 
-const resourceLinks = [
-  { label: 'Documentation', route: '/docs', external: false },
-  { label: 'Blog', route: '/blog', external: false },
-  { label: 'Customers', route: '/customers', external: false },
-  { label: 'Changelog', route: '/changelog', external: false },
-  { label: 'Live Demo', route: DEMO_URL, external: true },
+const solutionLinks = [
+  { label: 'Progressive Delivery', route: '/solutions/progressive-delivery' },
+  { label: 'Multi-Cloud Resilience', route: '/solutions/multi-cloud-resilience' },
+  { label: 'Deploy Risk Intelligence', route: '/solutions/risk-intelligence' },
+  { label: 'Platform Engineering', route: '/solutions/platform-engineering' },
+]
+
+const forLinks = [
+  { label: 'For SREs', route: '/for/sre' },
+  { label: 'For DevOps Engineers', route: '/for/devops' },
+  { label: 'For CTOs', route: '/for/cto' },
 ]
 
 interface Props {
@@ -55,10 +61,31 @@ export function MobileNav({ onClose }: Props) {
             key={l.route}
             to={l.route}
             onClick={onClose}
-            className="flex flex-col gap-0.5 px-8 py-3 hover:bg-surface-alt transition-colors"
+            className="flex items-center gap-2 px-8 py-3 hover:bg-surface-alt transition-colors"
           >
-            <span className="text-sm font-medium text-ink">{l.label}</span>
-            <span className="text-xs text-ink-tertiary">{l.sub}</span>
+            <div className="flex flex-col gap-0.5 flex-1">
+              <span className="text-sm font-medium text-ink">{l.label}</span>
+              <span className="text-xs text-ink-tertiary">{l.sub}</span>
+            </div>
+            {l.preview && (
+              <span className="font-mono text-[9px] border border-primary/40 text-primary px-1.5 py-0.5 shrink-0" style={{ borderRadius: '2px' }}>
+                Preview
+              </span>
+            )}
+          </Link>
+        ))}
+      </AccordionGroup>
+
+      {/* Solutions group */}
+      <AccordionGroup label="Solutions">
+        {solutionLinks.map((l) => (
+          <Link
+            key={l.route}
+            to={l.route}
+            onClick={onClose}
+            className="block px-8 py-3 text-sm text-ink-secondary hover:text-ink hover:bg-surface-alt transition-colors"
+          >
+            {l.label}
           </Link>
         ))}
         <Link
@@ -66,42 +93,30 @@ export function MobileNav({ onClose }: Props) {
           onClick={onClose}
           className="block px-8 py-3 text-sm text-primary font-medium hover:bg-surface-alt transition-colors"
         >
-          Browse by use case →
+          View all solutions →
         </Link>
       </AccordionGroup>
 
-      {/* Resources group */}
-      <AccordionGroup label="Resources">
-        {resourceLinks.map((l) =>
-          l.external ? (
-            <a
-              key={l.label}
-              href={l.route}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={onClose}
-              className="block px-8 py-3 text-sm text-ink-secondary hover:text-ink hover:bg-surface-alt transition-colors"
-            >
-              {l.label}
-            </a>
-          ) : (
-            <Link
-              key={l.route}
-              to={l.route}
-              onClick={onClose}
-              className="block px-8 py-3 text-sm text-ink-secondary hover:text-ink hover:bg-surface-alt transition-colors"
-            >
-              {l.label}
-            </Link>
-          )
-        )}
+      {/* For teams group */}
+      <AccordionGroup label="For Teams">
+        {forLinks.map((l) => (
+          <Link
+            key={l.route}
+            to={l.route}
+            onClick={onClose}
+            className="block px-8 py-3 text-sm text-ink-secondary hover:text-ink hover:bg-surface-alt transition-colors"
+          >
+            {l.label}
+          </Link>
+        ))}
       </AccordionGroup>
 
       {/* Flat links */}
       {[
-        { label: 'Solutions', route: '/solutions' },
+        { label: 'How it works', route: '/how-it-works' },
         { label: 'Pricing', route: '/pricing' },
         { label: 'Customers', route: '/customers' },
+        { label: 'Docs', route: '/docs' },
       ].map((l) => (
         <Link
           key={l.route}
@@ -115,6 +130,10 @@ export function MobileNav({ onClose }: Props) {
 
       {/* Auth buttons */}
       <div className="mt-auto px-6 py-8 flex flex-col gap-3 border-t border-line">
+        <div className="flex items-center justify-between mb-1">
+          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Appearance</span>
+          <ThemeToggle />
+        </div>
         <a
           href={`${APP_URL}/signin`}
           onClick={onClose}
@@ -123,14 +142,14 @@ export function MobileNav({ onClose }: Props) {
         >
           Sign in
         </a>
-        <a
-          href={`${APP_URL}/signup`}
+        <Link
+          to="/early-access"
           onClick={onClose}
           className="w-full inline-flex items-center justify-center px-6 py-3 bg-ink text-surface text-sm font-medium hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] transition-all active:scale-[0.97]"
           style={{ borderRadius: '2px' }}
         >
           Get started
-        </a>
+        </Link>
       </div>
     </div>
   )

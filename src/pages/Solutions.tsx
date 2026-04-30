@@ -139,13 +139,13 @@ function PainPointRow({ pair }: { pair: typeof PAIN_POINTS[0] }) {
   return (
     <div className="py-16 border-b border-line last:border-b-0 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16" data-reveal>
       {/* Before */}
-      <div className="sharp-card border border-line/60 p-6 bg-white/[0.01]">
+      <div className="sharp-card border border-line/60 p-6 bg-surface">
         <p className="text-[11px] font-mono tracking-widest uppercase text-red-400/70 mb-4">{pair.before.label}</p>
-        <h3 className="text-lg font-semibold text-surface mb-3 leading-snug">{pair.before.heading}</h3>
-        <p className="text-muted text-sm leading-relaxed mb-5">{pair.before.body}</p>
+        <h3 className="text-lg font-semibold text-ink mb-3 leading-snug">{pair.before.heading}</h3>
+        <p className="text-ink-secondary text-sm leading-relaxed mb-5">{pair.before.body}</p>
         <ul className="flex flex-col gap-2">
           {pair.before.bullets.map((b) => (
-            <li key={b} className="flex items-start gap-2 text-sm text-muted">
+            <li key={b} className="flex items-start gap-2 text-sm text-ink-secondary">
               <span className="mt-1 shrink-0 text-red-400/60">✗</span>
               {b}
             </li>
@@ -155,11 +155,11 @@ function PainPointRow({ pair }: { pair: typeof PAIN_POINTS[0] }) {
       {/* After */}
       <div className="sharp-card border border-primary/20 p-6 bg-primary/[0.03]">
         <p className="text-[11px] font-mono tracking-widest uppercase text-primary mb-4">{pair.after.label}</p>
-        <h3 className="text-lg font-semibold text-surface mb-3 leading-snug">{pair.after.heading}</h3>
-        <p className="text-muted text-sm leading-relaxed mb-5">{pair.after.body}</p>
+        <h3 className="text-lg font-semibold text-ink mb-3 leading-snug">{pair.after.heading}</h3>
+        <p className="text-ink-secondary text-sm leading-relaxed mb-5">{pair.after.body}</p>
         <ul className="flex flex-col gap-2 mb-6">
           {pair.after.bullets.map((b) => (
-            <li key={b} className="flex items-start gap-2 text-sm text-muted">
+            <li key={b} className="flex items-start gap-2 text-sm text-ink-secondary">
               <span className="mt-1 shrink-0 text-primary">✓</span>
               {b}
             </li>
@@ -175,15 +175,15 @@ function PainPointRow({ pair }: { pair: typeof PAIN_POINTS[0] }) {
 
 function PersonaCard({ p }: { p: typeof PERSONAS[0] }) {
   return (
-    <div className="sharp-card border border-line p-7 flex flex-col gap-5 bg-white/[0.01] hover:bg-white/[0.025] transition-colors" data-reveal>
-      <div className="flex items-center gap-3 text-primary">{p.icon}<span className="text-xs font-mono tracking-widest uppercase text-muted">{p.role}</span></div>
+    <div className="sharp-card border border-line p-7 flex flex-col gap-5 bg-surface hover:bg-surface-alt/50 transition-colors" data-reveal>
+      <div className="flex items-center gap-3 text-primary">{p.icon}<span className="text-xs font-mono tracking-widest uppercase text-ink-tertiary">{p.role}</span></div>
       <div>
-        <p className="text-base font-semibold text-surface mb-2 leading-snug">{p.tagline}</p>
-        <p className="text-sm text-muted leading-relaxed">{p.description}</p>
+        <p className="text-base font-semibold text-ink mb-2 leading-snug">{p.tagline}</p>
+        <p className="text-sm text-ink-secondary leading-relaxed">{p.description}</p>
       </div>
       <ul className="flex flex-col gap-2 mt-auto">
         {p.wins.map((w) => (
-          <li key={w} className="flex items-start gap-2 text-sm text-muted">
+          <li key={w} className="flex items-start gap-2 text-sm text-ink-secondary">
             <span className="mt-1 shrink-0 text-primary text-xs">▸</span>
             {w}
           </li>
@@ -208,10 +208,10 @@ export default function Solutions() {
       <section className="blueprint-grid pt-28 pb-20 border-b border-line">
         <div className="max-w-4xl mx-auto px-6 text-center" data-reveal>
           <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">Solutions</p>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-surface leading-tight mb-6">
+          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6">
             The problems we were<br className="hidden md:block" /> built to solve.
           </h1>
-          <p className="text-lg text-muted leading-relaxed max-w-2xl mx-auto">
+          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mx-auto">
             Slow deploys. Brittle rollbacks. Multi-cloud chaos. Invisible risk. DeployTitan addresses each one — without changing how your team ships code.
           </p>
         </div>
@@ -221,8 +221,8 @@ export default function Solutions() {
       <section className="py-4 border-b border-line">
         <div className="max-w-6xl mx-auto px-6">
           <div className="pt-8 pb-2" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-muted mb-2">Pain points</p>
-            <h2 className="text-2xl font-semibold text-surface">Before &amp; after — four common failure modes.</h2>
+            <p className="text-xs font-mono tracking-widest uppercase text-ink-tertiary mb-2">Pain points</p>
+            <h2 className="text-2xl font-semibold text-ink">Before &amp; after — four common failure modes.</h2>
           </div>
           {PAIN_POINTS.map((pair) => (
             <PainPointRow key={pair.id} pair={pair} />
@@ -235,8 +235,8 @@ export default function Solutions() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="mb-12" data-reveal>
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">By team</p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-surface mb-3">Built for the people who keep production running.</h2>
-            <p className="text-muted max-w-xl">DeployTitan adapts to how your team works — whether you're building the platform, owning reliability, or writing the pipeline glue.</p>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">Built for the people who keep production running.</h2>
+            <p className="text-ink-secondary max-w-xl">DeployTitan adapts to how your team works — whether you're building the platform, owning reliability, or writing the pipeline glue.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {PERSONAS.map((p) => <PersonaCard key={p.id} p={p} />)}

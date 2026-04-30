@@ -72,7 +72,7 @@ export function IntegrationSimplicity() {
                   className="flex items-start gap-4 group"
                 >
                   <div
-                    className="shrink-0 w-9 h-9 flex items-center justify-center border border-line bg-white text-ink/40 group-hover:text-primary group-hover:border-primary/20 group-hover:bg-primary-muted/50 transition-all duration-300"
+                    className="shrink-0 w-9 h-9 flex items-center justify-center border border-line bg-surface text-ink/40 group-hover:text-primary group-hover:border-primary/20 group-hover:bg-primary-muted/50 transition-all duration-300"
                     style={{ borderRadius: '2px' }}
                   >
                     {step.icon}
@@ -89,7 +89,7 @@ export function IntegrationSimplicity() {
           {/* Right: stack logos card */}
           <div data-reveal data-reveal-delay="6">
             <div
-              className="relative border border-line bg-white p-5 sm:p-8 lg:p-10"
+              className="relative border border-line bg-surface p-5 sm:p-8 lg:p-10"
               style={{ borderRadius: '2px' }}
             >
               <div className="absolute top-0 right-0 w-3 h-3 border-t border-r opacity-30" style={{ borderColor: PRIMARY }} />

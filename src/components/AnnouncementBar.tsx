@@ -4,22 +4,29 @@ interface AnnouncementBarProps {
   message?: string
   linkLabel?: string
   linkTo?: string
+  onDismiss?: () => void
 }
 
 export function AnnouncementBar({
   message = 'Titan Sentinel is now in public beta — shift-left risk scoring for every PR.',
   linkLabel = 'Learn more →',
   linkTo = '/products/titan-sentinel',
+  onDismiss,
 }: AnnouncementBarProps) {
   const [dismissed, setDismissed] = useState(false)
   if (dismissed) return null
+
+  const handleDismiss = () => {
+    setDismissed(true)
+    onDismiss?.()
+  }
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] bg-ink text-surface text-xs font-medium h-9 flex items-center justify-center px-4 gap-3">
       <span className="hidden sm:inline text-surface/70">{message}</span>
       <a href={linkTo} className="text-primary hover:text-primary-light transition-colors shrink-0">{linkLabel}</a>
       <button
-        onClick={() => setDismissed(true)}
+        onClick={handleDismiss}
         aria-label="Dismiss announcement"
         className="absolute right-4 text-surface/50 hover:text-surface/80 transition-colors"
       >

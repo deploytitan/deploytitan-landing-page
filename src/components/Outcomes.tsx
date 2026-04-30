@@ -167,7 +167,7 @@ export function Outcomes() {
               key={o.label}
               data-reveal
               data-reveal-delay={String(oi + 3)}
-              className="group relative border border-line bg-white p-8 lg:p-10 transition-all duration-300 hover:border-primary/30 hover:shadow-[0_2px_12px_rgba(0,0,0,0.04),0_0_0_1px_rgba(201,168,76,0.08)]"
+              className="group relative border border-line bg-surface p-8 lg:p-10 transition-all duration-300 hover:border-primary/30 hover:shadow-[0_2px_12px_rgba(0,0,0,0.04),0_0_0_1px_rgba(201,168,76,0.08)]"
               style={{ borderRadius: '2px' }}
             >
               {/* Gold corner accents */}
@@ -224,7 +224,7 @@ export function Outcomes() {
         </div>
 
         {/* Bottom summary strip */}
-        <div data-reveal data-reveal-delay="7" className="mt-8 border border-line bg-white/60 px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderRadius: '2px' }}>
+        <div data-reveal data-reveal-delay="7" className="mt-8 border border-line bg-surface px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderRadius: '2px' }}>
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 bg-signal-success" style={{ borderRadius: '1px' }} />
             <span className="text-sm text-ink-secondary">

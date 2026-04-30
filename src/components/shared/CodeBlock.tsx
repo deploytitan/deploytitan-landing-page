@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { cn } from '../../utils'
+import { useTheme } from '../../hooks/useTheme'
 
 // Lazy-load shiki so it doesn't block initial render
 let highlighterPromise: Promise<import('shiki').Highlighter> | null = null
@@ -8,8 +9,8 @@ async function getHighlighter() {
   if (!highlighterPromise) {
     highlighterPromise = import('shiki').then(({ createHighlighter }) =>
       createHighlighter({
-        themes: ['github-dark'],
-        langs: ['bash', 'yaml', 'powershell', 'dockerfile', 'tsx', 'hcl', 'diff'],
+        themes: ['github-dark', 'github-light'],
+        langs: ['bash', 'yaml', 'powershell', 'dockerfile', 'tsx', 'hcl', 'diff', 'json'],
       })
     )
   }
@@ -22,7 +23,7 @@ const SHIKI_OVERRIDES = `
   .shiki { background: transparent !important; }
 `
 
-type Lang = 'bash' | 'yaml' | 'powershell' | 'dockerfile' | 'tsx' | 'hcl' | 'diff'
+type Lang = 'bash' | 'yaml' | 'powershell' | 'dockerfile' | 'tsx' | 'hcl' | 'diff' | 'json'
 
 interface CodeBlockProps {
   code: string
@@ -34,22 +35,32 @@ interface CodeBlockProps {
 }
 
 export function CodeBlock({ code, lang = 'bash', filename, copy = true, className }: CodeBlockProps) {
+  const { resolved } = useTheme()
+  const shikiTheme = resolved === 'dark' ? 'github-dark' : 'github-light'
+  const bgColor = resolved === 'dark' ? '#0d1117' : '#f6f8fa'
+  const textMuted = resolved === 'dark' ? 'text-white/40' : 'text-black/40'
+  const textAction = resolved === 'dark'
+    ? 'text-white/30 hover:text-white/60'
+    : 'text-black/30 hover:text-black/60'
+  const headerBg = resolved === 'dark' ? 'border-white/[0.06] bg-white/[0.02]' : 'border-black/[0.06] bg-black/[0.02]'
+
   const [html, setHtml] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const trimmed = code.trim()
 
   useEffect(() => {
     let cancelled = false
+    setHtml(null)
     getHighlighter().then((hl) => {
       if (cancelled) return
       const rendered = hl.codeToHtml(trimmed, {
         lang,
-        theme: 'github-dark',
+        theme: shikiTheme,
       })
       setHtml(rendered)
     })
     return () => { cancelled = true }
-  }, [trimmed, lang])
+  }, [trimmed, lang, shikiTheme])
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(trimmed)
@@ -60,23 +71,23 @@ export function CodeBlock({ code, lang = 'bash', filename, copy = true, classNam
   return (
     <div
       className={cn(
-        'border border-line bg-[#0d1117] overflow-hidden',
+        'border border-line overflow-hidden',
         className,
       )}
-      style={{ borderRadius: '2px' }}
+      style={{ borderRadius: '2px', backgroundColor: bgColor }}
     >
       {/* Header bar */}
       {(filename || copy) && (
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06] bg-white/[0.02]">
+        <div className={cn('flex items-center justify-between px-4 py-2.5 border-b', headerBg)}>
           {filename ? (
-            <span className="font-mono text-[11px] text-white/40">{filename}</span>
+            <span className={cn('font-mono text-[11px]', textMuted)}>{filename}</span>
           ) : (
             <span />
           )}
           {copy && (
             <button
               onClick={handleCopy}
-              className="flex items-center gap-1.5 text-[11px] font-mono text-white/30 hover:text-white/60 transition-colors"
+              className={cn('flex items-center gap-1.5 text-[11px] font-mono transition-colors', textAction)}
               aria-label="Copy code"
             >
               {copied ? (
@@ -102,7 +113,7 @@ export function CodeBlock({ code, lang = 'bash', filename, copy = true, classNam
           <div dangerouslySetInnerHTML={{ __html: html }} />
         ) : (
           // Plain-text fallback while shiki loads
-          <pre className="font-mono text-[13px] leading-[1.7] text-white/70 whitespace-pre">{trimmed}</pre>
+          <pre className={cn('font-mono text-[13px] leading-[1.7] whitespace-pre', resolved === 'dark' ? 'text-white/70' : 'text-black/70')}>{trimmed}</pre>
         )}
       </div>
     </div>

@@ -88,7 +88,7 @@ export function BeforeAfter() {
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative">
         <div
-          className="border border-line bg-white overflow-hidden"
+          className="border border-line bg-surface overflow-hidden"
           style={{ borderRadius: '2px' }}
         >
           {/* Row 1 — Without */}

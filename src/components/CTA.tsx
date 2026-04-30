@@ -52,7 +52,7 @@ export function CTA() {
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative">
         <div
-          className="relative border border-line overflow-hidden bg-white/60 corner-accent"
+          className="relative border border-line overflow-hidden bg-surface corner-accent"
           style={{ borderRadius: '2px' }}
         >
           {/* Extra corners */}
@@ -151,7 +151,7 @@ export function CTA() {
                     required
                     autoComplete="email"
                     disabled={submitting}
-                    className="w-full px-5 py-4 border border-line text-sm bg-white text-ink placeholder:text-ink-quaternary focus:outline-none focus:border-primary/40 transition-colors disabled:opacity-50"
+                    className="w-full px-5 py-4 border border-line text-sm bg-surface-alt text-ink placeholder:text-ink-quaternary focus:outline-none focus:border-primary/40 transition-colors disabled:opacity-50"
                     style={{ borderRadius: '2px' }}
                   />
                   <button

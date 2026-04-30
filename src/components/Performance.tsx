@@ -38,7 +38,7 @@ export function Performance() {
             {points.map((p) => (
               <div
                 key={p.label}
-                className="border border-line bg-white p-6 text-left"
+                className="border border-line bg-surface p-6 text-left"
                 style={{ borderRadius: '2px' }}
               >
                 <div className="flex items-center gap-2 mb-3">
@@ -53,7 +53,7 @@ export function Performance() {
           </div>
 
           {/* p99 callout */}
-          <div data-reveal data-reveal-delay="4" className="mt-8 inline-flex items-center gap-3 px-5 py-3 border border-line bg-white" style={{ borderRadius: '2px' }}>
+          <div data-reveal data-reveal-delay="4" className="mt-8 inline-flex items-center gap-3 px-5 py-3 border border-line bg-surface" style={{ borderRadius: '2px' }}>
             <div className="w-1.5 h-1.5" style={{ backgroundColor: `${PRIMARY_RGBA},0.7)`, borderRadius: '0.5px' }} />
             <span className="text-sm font-mono text-ink-secondary">
               p99 latency impact: <span className="font-medium text-ink">0ms</span>

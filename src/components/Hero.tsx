@@ -127,7 +127,7 @@ function TrafficSplitVisual() {
 
   return (
     <div
-      className="relative w-full h-full border border-line/50 bg-white overflow-hidden flex flex-col"
+      className="relative w-full h-full border border-line/50 bg-surface overflow-hidden flex flex-col"
       style={{ borderRadius: '2px' }}
     >
       {/* Header bar */}
@@ -297,7 +297,7 @@ export function Hero() {
         <div className="max-w-xl">
           {/* Status pill */}
           <div data-reveal className="mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-line bg-white" style={{ borderRadius: '2px' }}>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-line bg-surface" style={{ borderRadius: '2px' }}>
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full bg-signal-success opacity-75" style={{ animation: 'ping-anim 1.5s cubic-bezier(0,0,0.2,1) infinite', borderRadius: '1px' }} />
                 <span className="relative inline-flex h-2 w-2 bg-signal-success" style={{ borderRadius: '1px' }} />

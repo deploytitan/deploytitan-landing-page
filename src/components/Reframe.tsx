@@ -51,7 +51,7 @@ export function Reframe() {
             {heavySteps.map((step, i) => (
               <div key={step.label} className="flex flex-col items-stretch">
                 <div
-                  className="border border-line bg-white px-4 py-3 flex items-center gap-3 group hover:border-signal-warning/30 hover:bg-signal-warning/[0.02] transition-all duration-300"
+                  className="border border-line bg-surface px-4 py-3 flex items-center gap-3 group hover:border-signal-warning/30 hover:bg-signal-warning/[0.02] transition-all duration-300"
                   style={{
                     borderRadius: i === 0 ? '2px 2px 0 0' : i === heavySteps.length - 1 ? '0 0 2px 2px' : '0',
                     borderTop: i > 0 ? 'none' : undefined,
@@ -82,7 +82,7 @@ export function Reframe() {
             {heavySteps.map((step, i) => (
               <div key={step.label} className="flex items-center flex-1 min-w-0">
                 <div
-                  className="flex-1 border border-line bg-white p-4 text-center group hover:border-signal-warning/30 hover:bg-signal-warning/[0.02] transition-all duration-300"
+                  className="flex-1 border border-line bg-surface p-4 text-center group hover:border-signal-warning/30 hover:bg-signal-warning/[0.02] transition-all duration-300"
                   style={{ borderRadius: i === 0 ? '2px 0 0 2px' : i === heavySteps.length - 1 ? '0 2px 2px 0' : '0', borderLeft: i > 0 ? 'none' : undefined }}
                 >
                   <div
@@ -117,7 +117,7 @@ export function Reframe() {
 
         {/* The three burdens */}
         <div data-reveal data-reveal-delay="4" className="max-w-2xl mx-auto">
-          <div className="border border-line bg-white p-5 sm:p-8 lg:p-10" style={{ borderRadius: '2px' }}>
+          <div className="border border-line bg-surface p-5 sm:p-8 lg:p-10" style={{ borderRadius: '2px' }}>
             <p className="text-sm font-mono text-ink-secondary uppercase tracking-wider mb-6 text-center">Every fix, rollout, or rollback:</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
               {burdens.map((b, i) => (

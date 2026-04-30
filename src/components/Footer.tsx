@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom'
 
-const DEMO_URL = import.meta.env.VITE_DEMO_URL as string || 'https://demo.deploytitan.com'
-
 export function Footer() {
   return (
     <footer className="border-t border-line bg-surface relative">
@@ -47,10 +45,10 @@ export function Footer() {
               { label: 'Titan Rollout', to: '/products/titan-rollout' },
               { label: 'Titan Shield', to: '/products/titan-shield' },
               { label: 'Titan Sentinel', to: '/products/titan-sentinel' },
+              { label: 'Titan Pulse', to: '/products/titan-pulse' },
               { label: 'Pricing', to: '/pricing' },
               { label: 'Customers', to: '/customers' },
               { label: 'Changelog', to: '/changelog' },
-              { label: 'Install', to: '/#quickstart' },
             ].map((l) => (
               <li key={l.label}>
                 <Link to={l.to} className="text-sm text-ink-secondary hover:text-ink transition-colors">
@@ -58,27 +56,22 @@ export function Footer() {
                 </Link>
               </li>
             ))}
-            <li>
-              <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-ink-secondary hover:text-ink transition-colors inline-flex items-center gap-1.5">
-                Live demo
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-40">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-              </a>
-            </li>
           </ul>
         </div>
 
         {/* Support column */}
         <div className="flex flex-col gap-4">
-          <h4 className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Support</h4>
+          <h4 className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Resources</h4>
           <ul className="flex flex-col gap-3">
             {[
               { label: 'Documentation', to: '/docs' },
+              { label: 'CLI Reference', to: '/cli' },
+              { label: 'API Reference', to: '/api' },
+              { label: 'Integrations', to: '/integrations' },
+              { label: 'Roadmap', to: '/roadmap' },
               { label: 'Blog', to: '/blog' },
-              { label: 'Solutions', to: '/solutions' },
-              { label: 'Help', to: '/docs' },
+              { label: 'How it works', to: '/how-it-works' },
+              { label: 'Security', to: '/security' },
               { label: 'System status', to: '/status' },
             ].map((l) => (
               <li key={l.label}>
@@ -97,19 +90,16 @@ export function Footer() {
             {[
               { label: 'About', to: '/about' },
               { label: 'Our journey', to: '/journey' },
-              { label: 'Careers', to: '/about' },
-              { label: 'Contact', to: 'mailto:hello@deploytitan.com', external: true },
+              { label: 'Careers', to: '/careers' },
+              { label: 'Contact', to: '/contact' },
+              { label: 'Press', to: '/press' },
+              { label: 'Brand', to: '/brand' },
+              { label: 'Partners', to: '/partners' },
             ].map((l) => (
               <li key={l.label}>
-                {'external' in l && l.external ? (
-                  <a href={l.to} className="text-sm text-ink-secondary hover:text-ink transition-colors">
-                    {l.label}
-                  </a>
-                ) : (
-                  <Link to={l.to} className="text-sm text-ink-secondary hover:text-ink transition-colors">
-                    {l.label}
-                  </Link>
-                )}
+                <Link to={l.to} className="text-sm text-ink-secondary hover:text-ink transition-colors">
+                  {l.label}
+                </Link>
               </li>
             ))}
           </ul>

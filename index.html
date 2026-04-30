@@ -13,6 +13,18 @@
     <meta name="twitter:title" content="DeployTitan - The Deployment Safety Layer">
     <meta name="twitter:description" content="A deployment control plane that understands system dependencies and prevents unsafe releases.">
 
+    <!-- Theme: prevent flash of unstyled content -->
+    <script>
+      (function(){
+        try {
+          var stored = localStorage.getItem('dt-theme');
+          var isDark = stored === 'dark' ||
+            ((!stored || stored === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) document.documentElement.classList.add('dark');
+        } catch(e) {}
+      })();
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q1CZ6Q7DVD"></script>
     <script>

@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "animejs": "^4.3.6",
+    "d3-force": "^3.0.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-force-graph-2d": "^1.29.1",
     "react-router-dom": "^7.14.2",
     "shiki": "^4.0.2"
   },
@@ -26,6 +28,7 @@
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
+    "glob": "^13.0.6",
     "globals": "^17.4.0",
     "tailwindcss": "^4.2.2",
     "typescript": "~6.0.2",

@@ -84,11 +84,11 @@ export function Quickstart() {
         {/* Heading */}
         <div className="mb-14 max-w-xl" data-reveal>
           <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">Get started</p>
-          <h2 className="text-3xl lg:text-4xl font-semibold text-surface leading-tight mb-4">
+          <h2 className="text-3xl lg:text-4xl font-semibold text-ink leading-tight mb-4">
             Deploy in minutes,<br />not days.
           </h2>
-          <p className="text-muted text-base leading-relaxed">
-            Install the <code className="font-mono text-sm text-surface/80 bg-white/[0.05] px-1.5 py-0.5 rounded">dt</code> CLI, authenticate, and ship your first canary deployment before lunch.
+          <p className="text-ink-secondary text-base leading-relaxed">
+            Install the <code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1.5 py-0.5 rounded">dt</code> CLI, authenticate, and ship your first canary deployment before lunch.
           </p>
         </div>
 
@@ -96,11 +96,11 @@ export function Quickstart() {
           {/* Left — install tabs */}
           <div className="flex flex-col gap-6">
             <div>
-              <p className="text-xs font-mono text-muted uppercase tracking-wider mb-3">Step 1 — Install</p>
+              <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">Step 1 — Install</p>
               <InstallTabs />
             </div>
             <div>
-              <p className="text-xs font-mono text-muted uppercase tracking-wider mb-3">Step 2–4 — Deploy</p>
+              <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">Step 2–4 — Deploy</p>
               <CodeBlock code={DEPLOY_SNIPPET} lang="bash" filename="terminal" />
             </div>
           </div>

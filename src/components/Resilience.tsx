@@ -87,7 +87,7 @@ export function Resilience() {
           {/* Right: visual card */}
           <div data-reveal data-reveal-delay="3" className="order-2">
             <div
-              className="relative border border-line bg-white p-5 sm:p-8 lg:p-10"
+              className="relative border border-line bg-surface p-5 sm:p-8 lg:p-10"
               style={{ borderRadius: '2px' }}
             >
               <div className="absolute top-0 left-0 w-3 h-3 border-t border-l opacity-30" style={{ borderColor: PRIMARY }} />
@@ -170,7 +170,7 @@ export function Resilience() {
 
             {/* Geo rollout card */}
             <div
-              className="relative border border-line bg-white p-5 sm:p-6 mt-4"
+              className="relative border border-line bg-surface p-5 sm:p-6 mt-4"
               style={{ borderRadius: '2px' }}
             >
               <p className="text-[10px] font-mono uppercase tracking-[0.1em] mb-4 text-ink-quaternary">Geo-aware rollout schedule</p>

@@ -4,6 +4,10 @@ const DEMO_URL = import.meta.env.VITE_DEMO_URL as string || 'https://demo.deploy
 
 const resources = [
   { label: 'Documentation', description: 'Guides, API reference, and quickstarts', route: '/docs', external: false },
+  { label: 'CLI Reference', description: 'The `dt` command-line tool — install and usage', route: '/cli', external: false },
+  { label: 'API Reference', description: 'REST endpoints, auth, webhooks', route: '/api', external: false },
+  { label: 'Integrations', description: 'Kubernetes, GitHub Actions, Datadog, and more', route: '/integrations', external: false },
+  { label: 'Roadmap', description: "What we're building — shipped and upcoming", route: '/roadmap', external: false },
   { label: 'Blog', description: 'Engineering posts and product updates', route: '/blog', external: false },
   { label: 'Customers', description: 'Case studies from teams using DeployTitan', route: '/customers', external: false },
   { label: 'Changelog', description: "What's new — releases and fixes", route: '/changelog', external: false },
