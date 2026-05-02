@@ -7,7 +7,7 @@ import { ScrollToTop } from '../components/ScrollToTop'
 
 export function SiteLayout() {
   const [barDismissed, setBarDismissed] = useState(false)
-  const announcementRef = useRef(null)
+  const announcementRef = useRef<HTMLDivElement>(null)
   const [barHeight, setBarHeight] = useState(0)
   useEffect(() => {
     setBarHeight(announcementRef.current?.offsetHeight || 0)

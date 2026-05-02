@@ -3,6 +3,10 @@ import { useDocumentMeta } from '../../hooks/useDocumentMeta'
 import { MidCTA } from '../../components/MidCTA'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { integrations, CATEGORY_LABELS } from '../../data/integrations'
+import { Section } from '../../components/shared/Section'
+import { Container } from '../../components/shared/Container'
+import { Card } from '../../components/shared/Card'
+import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
 
 export default function IntegrationDetail() {
   const { slug } = useParams<{ slug: string }>()
@@ -10,7 +14,7 @@ export default function IntegrationDetail() {
 
   useDocumentMeta(
     integration ? `${integration.name} Integration` : 'Integration',
-    integration?.longDescription ?? 'DeployTitan integration details.'
+    integration?.longDescription ?? 'DeployTitan integration details.',
   )
 
   if (!integration) {
@@ -18,28 +22,30 @@ export default function IntegrationDetail() {
       <div className="min-h-screen flex flex-col items-center justify-center px-6 py-32">
         <p className="font-mono text-xs text-primary uppercase tracking-widest mb-4">404</p>
         <h1 className="font-display text-3xl font-medium text-ink mb-4">Integration not found</h1>
-        <Link to="/integrations" className="text-sm text-primary hover:text-primary-dark transition-colors">
+        <Link
+          to="/integrations"
+          className="text-sm text-primary hover:text-primary-dark transition-colors"
+        >
           ← Back to integrations
         </Link>
       </div>
     )
   }
 
-  const related = integrations.filter(
-    (i) => i.slug !== integration.slug && i.products.some((p) => integration.products.includes(p))
-  ).slice(0, 3)
+  const related = integrations
+    .filter(
+      (i) =>
+        i.slug !== integration.slug && i.products.some((p) => integration.products.includes(p)),
+    )
+    .slice(0, 3)
 
   return (
     <div className="min-h-screen bg-surface">
       {/* Breadcrumb + hero */}
-      <section className="border-b border-line blueprint-grid">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12 lg:py-16">
+      <Section border="bottom" padding="none" className="blueprint-grid">
+        <Container className="py-12 lg:py-16">
           <div className="mb-4">
-            <Link to="/integrations" className="font-mono text-[11px] text-ink-quaternary hover:text-ink-secondary transition-colors">
-              ← Integrations
-            </Link>
-            <span className="font-mono text-[11px] text-ink-quaternary mx-2">/</span>
-            <span className="font-mono text-[11px] text-ink-quaternary">{integration.name}</span>
+            <Breadcrumbs />
           </div>
 
           <div className="flex items-start gap-6">
@@ -51,26 +57,35 @@ export default function IntegrationDetail() {
             </div>
             <div>
               <div className="flex items-center gap-3 mb-1">
-                <h1 className="text-3xl sm:text-4xl font-display font-medium tracking-tight text-ink">{integration.name}</h1>
-                <span className="font-mono text-[10px] border border-line text-ink-quaternary px-2 py-0.5" style={{ borderRadius: '2px' }}>
+                <h1 className="text-3xl sm:text-4xl font-display font-medium tracking-tight text-ink">
+                  {integration.name}
+                </h1>
+                <span
+                  className="font-mono text-[10px] border border-line text-ink-quaternary px-2 py-0.5"
+                  style={{ borderRadius: '2px' }}
+                >
                   {CATEGORY_LABELS[integration.category]}
                 </span>
               </div>
-              <p className="text-base text-ink-secondary leading-relaxed max-w-xl">{integration.description}</p>
+              <p className="text-base text-ink-secondary leading-relaxed max-w-xl">
+                {integration.description}
+              </p>
             </div>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* Main content */}
-      <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12">
+      <Container as="section" className="py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left: overview + setup */}
           <div className="lg:col-span-2 flex flex-col gap-8">
-            <div className="sharp-card p-6 bg-surface-alt">
+            <Card tone="muted">
               <h2 className="text-lg font-medium text-ink mb-3">Overview</h2>
-              <p className="text-sm text-ink-secondary leading-relaxed">{integration.longDescription}</p>
-            </div>
+              <p className="text-sm text-ink-secondary leading-relaxed">
+                {integration.longDescription}
+              </p>
+            </Card>
 
             {integration.setupSnippet && (
               <div>
@@ -79,15 +94,17 @@ export default function IntegrationDetail() {
                   code={integration.setupSnippet}
                   lang={integration.setupLang ?? 'yaml'}
                   filename={
-                    integration.setupLang === 'bash' ? 'terminal' :
-                    integration.setupLang === 'hcl' ? 'main.tf' :
-                    'dt.yaml'
+                    integration.setupLang === 'bash'
+                      ? 'terminal'
+                      : integration.setupLang === 'hcl'
+                        ? 'main.tf'
+                        : 'dt.yaml'
                   }
                 />
               </div>
             )}
 
-            <div className="sharp-card p-6 bg-surface-alt">
+            <Card tone="muted">
               <h2 className="text-base font-medium text-ink mb-4">How it works</h2>
               <ol className="flex flex-col gap-4">
                 {[
@@ -97,42 +114,58 @@ export default function IntegrationDetail() {
                   'View integration health and event history in the DeployTitan dashboard.',
                 ].map((step, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <span className="w-6 h-6 flex items-center justify-center font-mono text-[10px] text-primary border border-primary/30 shrink-0" style={{ borderRadius: '2px' }}>
+                    <span
+                      className="w-6 h-6 flex items-center justify-center font-mono text-[10px] text-primary border border-primary/30 shrink-0"
+                      style={{ borderRadius: '2px' }}
+                    >
                       {i + 1}
                     </span>
                     <p className="text-sm text-ink-secondary leading-relaxed">{step}</p>
                   </li>
                 ))}
               </ol>
-            </div>
+            </Card>
           </div>
 
           {/* Right: sidebar */}
           <div className="flex flex-col gap-5">
             {/* Products */}
-            <div className="sharp-card p-5 bg-surface-alt">
-              <h3 className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest mb-3">Works with</h3>
+            <Card tone="muted" padding="sm">
+              <h3 className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest mb-3">
+                Works with
+              </h3>
               <div className="flex flex-col gap-2">
                 {integration.products.map((p) => (
-                  <span key={p} className="text-sm text-ink-secondary">{p}</span>
+                  <span key={p} className="text-sm text-ink-secondary">
+                    {p}
+                  </span>
                 ))}
               </div>
-            </div>
+            </Card>
 
             {/* Status */}
-            <div className="sharp-card p-5 bg-surface-alt">
-              <h3 className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest mb-3">Status</h3>
+            <Card tone="muted" padding="sm">
+              <h3 className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest mb-3">
+                Status
+              </h3>
               <div className="flex items-center gap-2">
-                <span className={`w-2 h-2 rounded-full ${
-                  integration.status === 'ga' ? 'bg-signal-success' :
-                  integration.status === 'beta' ? 'bg-signal-warning' : 'bg-ink-quaternary'
-                }`} />
-                <span className="text-sm text-ink-secondary capitalize">{integration.status.replace('-', ' ')}</span>
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    integration.status === 'ga'
+                      ? 'bg-signal-success'
+                      : integration.status === 'beta'
+                        ? 'bg-signal-warning'
+                        : 'bg-ink-quaternary'
+                  }`}
+                />
+                <span className="text-sm text-ink-secondary capitalize">
+                  {integration.status.replace('-', ' ')}
+                </span>
               </div>
-            </div>
+            </Card>
 
             {/* CTA */}
-            <div className="sharp-card p-5 bg-surface-alt flex flex-col gap-3">
+            <Card tone="muted" padding="sm" className="flex flex-col gap-3">
               <Link
                 to="/early-access"
                 className="w-full inline-flex items-center justify-center bg-ink text-surface px-4 py-2.5 text-sm font-medium hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] transition-all"
@@ -147,15 +180,15 @@ export default function IntegrationDetail() {
               >
                 View docs
               </Link>
-            </div>
+            </Card>
           </div>
         </div>
-      </section>
+      </Container>
 
       {/* Related integrations */}
       {related.length > 0 && (
-        <section className="border-t border-line bg-surface-alt">
-          <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12">
+        <Section border="top" tone="muted" padding="none">
+          <Container className="py-12">
             <h2 className="text-lg font-medium text-ink mb-6">Related integrations</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {related.map((r) => (
@@ -171,14 +204,16 @@ export default function IntegrationDetail() {
                     >
                       {r.logoText}
                     </div>
-                    <span className="text-sm font-medium text-ink group-hover:text-primary transition-colors">{r.name}</span>
+                    <span className="text-sm font-medium text-ink group-hover:text-primary transition-colors">
+                      {r.name}
+                    </span>
                   </div>
                   <p className="text-xs text-ink-tertiary line-clamp-2">{r.description}</p>
                 </Link>
               ))}
             </div>
-          </div>
-        </section>
+          </Container>
+        </Section>
       )}
 
       <MidCTA

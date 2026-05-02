@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { MidCTA } from '../components/MidCTA'
 import { CodeBlock } from '../components/shared/CodeBlock'
+import { Section } from '../components/shared/Section'
+import { Container } from '../components/shared/Container'
+import { Card } from '../components/shared/Card'
 
 const endpoints = [
   {
@@ -92,20 +95,27 @@ const webhookCode = `// Payload delivered to your endpoint on deployment events
 }`
 
 export default function API() {
-  useDocumentMeta('API Reference', 'REST API endpoints, authentication, webhooks, and event streaming for DeployTitan.')
+  useDocumentMeta(
+    'API Reference',
+    'REST API endpoints, authentication, webhooks, and event streaming for DeployTitan.',
+  )
 
   return (
     <div className="min-h-screen bg-surface">
       {/* Hero */}
-      <section className="border-b border-line blueprint-grid">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16 lg:py-20">
+      <Section border="bottom" padding="none" className="blueprint-grid">
+        <Container className="py-16 lg:py-20">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">API Reference</span>
+            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+              API Reference
+            </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
               Build on DeployTitan.
             </h1>
             <p className="mt-5 text-lg text-ink-secondary leading-relaxed max-w-lg">
-              A REST API with consistent JSON payloads, bearer token auth, and Server-Sent Events for real-time deployment streaming. Build internal tooling, custom dashboards, or integrate with any orchestration system.
+              A REST API with consistent JSON payloads, bearer token auth, and Server-Sent Events
+              for real-time deployment streaming. Build internal tooling, custom dashboards, or
+              integrate with any orchestration system.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
@@ -114,8 +124,18 @@ export default function API() {
                 style={{ borderRadius: '2px' }}
               >
                 Browse endpoints
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
                 </svg>
               </a>
               <Link
@@ -127,79 +147,111 @@ export default function API() {
               </Link>
             </div>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* Auth */}
-      <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-14">
-        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Authentication</span>
-        <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">Bearer token auth</h2>
+      <Container as="section" className="py-14">
+        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          Authentication
+        </span>
+        <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+          Bearer token auth
+        </h2>
         <p className="mt-2 text-sm text-ink-secondary max-w-lg">
-          All API requests require an <code className="font-mono text-xs text-primary bg-primary-muted px-1 py-0.5 rounded-sm">Authorization: Bearer</code> header. Generate tokens from your workspace settings. Tokens are scoped — you can restrict them to read-only, deploy-only, or admin.
+          All API requests require an{' '}
+          <code className="font-mono text-xs text-primary bg-primary-muted px-1 py-0.5 rounded-sm">
+            Authorization: Bearer
+          </code>{' '}
+          header. Generate tokens from your workspace settings. Tokens are scoped — you can restrict
+          them to read-only, deploy-only, or admin.
         </p>
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           <div>
-            <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">Request</p>
+            <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+              Request
+            </p>
             <CodeBlock code={authCode} lang="bash" filename="POST /v1/deployments" />
           </div>
           <div>
-            <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">Response</p>
+            <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+              Response
+            </p>
             <CodeBlock code={responseCode} lang="json" filename="200 OK" />
           </div>
         </div>
-      </section>
+      </Container>
 
       {/* Endpoints */}
-      <section id="endpoints" className="border-t border-line bg-surface-alt">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Endpoints</span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">REST endpoints</h2>
+      <Section id="endpoints" border="top" tone="muted" padding="none">
+        <Container className="py-14">
+          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            Endpoints
+          </span>
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+            REST endpoints
+          </h2>
           <div className="mt-8 flex flex-col divide-y divide-line">
             {endpoints.map((e) => (
               <div key={e.path} className="py-4 flex flex-col sm:flex-row sm:items-center gap-3">
-                <span className={`inline-flex items-center px-2 py-0.5 font-mono text-[11px] font-bold shrink-0 rounded-sm ${methodColors[e.method] ?? ''}`}>
+                <span
+                  className={`inline-flex items-center px-2 py-0.5 font-mono text-[11px] font-bold shrink-0 rounded-sm ${methodColors[e.method] ?? ''}`}
+                >
                   {e.method}
                 </span>
                 <code className="font-mono text-sm text-ink shrink-0">{e.path}</code>
                 <span className="text-sm text-ink-secondary">{e.description}</span>
-                <span className="ml-auto font-mono text-[10px] text-ink-quaternary uppercase tracking-widest shrink-0">{e.tag}</span>
+                <span className="ml-auto font-mono text-[10px] text-ink-quaternary uppercase tracking-widest shrink-0">
+                  {e.tag}
+                </span>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* Webhooks */}
-      <section className="border-t border-line">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Webhooks</span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">Real-time events</h2>
+      <Section border="top" padding="none">
+        <Container className="py-14">
+          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            Webhooks
+          </span>
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+            Real-time events
+          </h2>
           <p className="mt-2 text-sm text-ink-secondary max-w-lg">
-            Register a webhook URL and DeployTitan will POST signed JSON payloads to your endpoint on every deployment lifecycle event — started, completed, failed, or rolled back.
+            Register a webhook URL and DeployTitan will POST signed JSON payloads to your endpoint
+            on every deployment lifecycle event — started, completed, failed, or rolled back.
           </p>
           <div className="mt-6 max-w-2xl">
             <CodeBlock code={webhookCode} lang="json" filename="Webhook payload" />
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* Rate limits / base URL info */}
-      <section className="border-t border-line bg-surface-alt">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-14">
+      <Section border="top" tone="muted" padding="none">
+        <Container className="py-14">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {[
               { label: 'Base URL', value: 'https://api.deploytitan.com', mono: true },
               { label: 'Rate limit', value: '2 000 req / min', mono: false },
               { label: 'API version', value: 'v1 (stable)', mono: false },
             ].map((stat) => (
-              <div key={stat.label} className="sharp-card bg-surface p-6">
-                <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">{stat.label}</p>
-                <p className={`mt-2 text-base text-ink font-medium ${stat.mono ? 'font-mono text-sm' : ''}`}>{stat.value}</p>
-              </div>
+              <Card key={stat.label}>
+                <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+                  {stat.label}
+                </p>
+                <p
+                  className={`mt-2 text-base text-ink font-medium ${stat.mono ? 'font-mono text-sm' : ''}`}
+                >
+                  {stat.value}
+                </p>
+              </Card>
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       <MidCTA
         heading="Start building on DeployTitan"

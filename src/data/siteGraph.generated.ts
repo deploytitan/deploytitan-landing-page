@@ -253,6 +253,21 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
+    "source": "/solutions/risk-intelligence",
+    "target": "/products/titan-sentinel",
+    "kind": "link"
+  },
+  {
+    "source": "/solutions/progressive-delivery",
+    "target": "/products/titan-rollout",
+    "kind": "link"
+  },
+  {
+    "source": "/solutions/multi-cloud-resilience",
+    "target": "/products/titan-shield",
+    "kind": "link"
+  },
+  {
     "source": "/products/titan-shield",
     "target": "/solutions",
     "kind": "link"
@@ -275,41 +290,6 @@ export const generatedLinks: GraphLink[] = [
   {
     "source": "/products/titan-pulse",
     "target": "/how-it-works",
-    "kind": "link"
-  },
-  {
-    "source": "/solutions/risk-intelligence",
-    "target": "/solutions",
-    "kind": "link"
-  },
-  {
-    "source": "/solutions/risk-intelligence",
-    "target": "/products/titan-sentinel",
-    "kind": "link"
-  },
-  {
-    "source": "/solutions/progressive-delivery",
-    "target": "/solutions",
-    "kind": "link"
-  },
-  {
-    "source": "/solutions/progressive-delivery",
-    "target": "/products/titan-rollout",
-    "kind": "link"
-  },
-  {
-    "source": "/solutions/platform-engineering",
-    "target": "/solutions",
-    "kind": "link"
-  },
-  {
-    "source": "/solutions/multi-cloud-resilience",
-    "target": "/solutions",
-    "kind": "link"
-  },
-  {
-    "source": "/solutions/multi-cloud-resilience",
-    "target": "/products/titan-shield",
     "kind": "link"
   }
 ]

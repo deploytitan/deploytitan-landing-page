@@ -5,7 +5,7 @@ interface AnnouncementBarProps {
   linkLabel?: string
   linkTo?: string
   onDismiss?: () => void
-  announcementRef?: React.RefObject<HTMLDivElement>
+  announcementRef?: React.RefObject<HTMLDivElement | null>
 }
 
 export function AnnouncementBar({

@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { MidCTA } from '../components/MidCTA'
 import { CodeBlock } from '../components/shared/CodeBlock'
+import { Section } from '../components/shared/Section'
+import { Container } from '../components/shared/Container'
 
 const installSnippets = {
   macos: `# Homebrew (recommended)
@@ -74,20 +76,27 @@ dt cluster connect my-prod-cluster \\
 dt deploy --service api-gateway --env production`
 
 export default function CLI() {
-  useDocumentMeta('CLI Reference', 'Full reference for the dt command-line tool — deploy, rollback, and manage your services from the terminal.')
+  useDocumentMeta(
+    'CLI Reference',
+    'Full reference for the dt command-line tool — deploy, rollback, and manage your services from the terminal.',
+  )
 
   return (
     <div className="min-h-screen bg-surface">
       {/* Hero */}
-      <section className="border-b border-line blueprint-grid">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16 lg:py-20">
+      <Section border="bottom" padding="none" className="blueprint-grid">
+        <Container className="py-16 lg:py-20">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">CLI Reference</span>
+            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+              CLI Reference
+            </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
               The <code className="font-mono text-primary-dark">dt</code> command.
             </h1>
             <p className="mt-5 text-lg text-ink-secondary leading-relaxed max-w-lg">
-              A single static binary that connects to your Kubernetes clusters, GitHub Actions pipelines, and cloud providers. Deploy, rollback, and inspect — all from your terminal.
+              A single static binary that connects to your Kubernetes clusters, GitHub Actions
+              pipelines, and cloud providers. Deploy, rollback, and inspect — all from your
+              terminal.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
@@ -96,8 +105,18 @@ export default function CLI() {
                 style={{ borderRadius: '2px' }}
               >
                 Install now
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
                 </svg>
               </a>
               <Link
@@ -109,59 +128,84 @@ export default function CLI() {
               </Link>
             </div>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* Quickstart */}
-      <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-14">
-        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Quickstart</span>
-        <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">Up in 60 seconds</h2>
+      <Container as="section" className="py-14">
+        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          Quickstart
+        </span>
+        <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+          Up in 60 seconds
+        </h2>
         <p className="mt-2 text-sm text-ink-secondary max-w-lg">
-          Install the CLI, connect your cluster, and trigger your first deployment in under a minute.
+          Install the CLI, connect your cluster, and trigger your first deployment in under a
+          minute.
         </p>
         <div className="mt-6 max-w-2xl">
           <CodeBlock code={quickstartCode} lang="bash" filename="terminal" />
         </div>
-      </section>
+      </Container>
 
       {/* Install */}
-      <section id="install" className="border-t border-line bg-surface-alt">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Install</span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">Get the binary</h2>
-          <p className="mt-2 text-sm text-ink-secondary">Available for macOS, Linux, Windows, and Docker.</p>
+      <Section id="install" border="top" tone="muted" padding="none">
+        <Container className="py-14">
+          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            Install
+          </span>
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+            Get the binary
+          </h2>
+          <p className="mt-2 text-sm text-ink-secondary">
+            Available for macOS, Linux, Windows, and Docker.
+          </p>
 
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
-              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">macOS</p>
+              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+                macOS
+              </p>
               <CodeBlock code={installSnippets.macos} lang="bash" filename="macOS" />
             </div>
             <div>
-              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">Linux</p>
+              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+                Linux
+              </p>
               <CodeBlock code={installSnippets.linux} lang="bash" filename="Linux" />
             </div>
             <div>
-              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">Windows</p>
+              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+                Windows
+              </p>
               <CodeBlock code={installSnippets.windows} lang="bash" filename="Windows" />
             </div>
             <div>
-              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">Docker</p>
+              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+                Docker
+              </p>
               <CodeBlock code={installSnippets.docker} lang="bash" filename="Docker" />
             </div>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* Commands */}
-      <section className="border-t border-line">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Commands</span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">Core commands</h2>
+      <Section border="top" padding="none">
+        <Container className="py-14">
+          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            Commands
+          </span>
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+            Core commands
+          </h2>
           <div className="mt-8 flex flex-col divide-y divide-line">
             {commands.map((c) => (
               <div key={c.cmd} className="py-6 grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
                 <div>
-                  <code className="font-mono text-sm font-semibold text-primary-dark bg-primary-muted px-2 py-1 rounded-sm">{c.cmd}</code>
+                  <code className="font-mono text-sm font-semibold text-primary-dark bg-primary-muted px-2 py-1 rounded-sm">
+                    {c.cmd}
+                  </code>
                   <p className="mt-2 text-sm text-ink-secondary">{c.description}</p>
                 </div>
                 <div className="max-w-md">
@@ -170,16 +214,25 @@ export default function CLI() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* CI/CD Integration */}
-      <section className="border-t border-line bg-surface-alt">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">CI/CD</span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">Drop into your pipeline</h2>
+      <Section border="top" tone="muted" padding="none">
+        <Container className="py-14">
+          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            CI/CD
+          </span>
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+            Drop into your pipeline
+          </h2>
           <p className="mt-2 text-sm text-ink-secondary max-w-lg">
-            The <code className="font-mono text-xs text-primary bg-primary-muted px-1 py-0.5 rounded-sm">dt</code> CLI is designed to run inside GitHub Actions, GitLab CI, CircleCI, and any shell-based runner.
+            The{' '}
+            <code className="font-mono text-xs text-primary bg-primary-muted px-1 py-0.5 rounded-sm">
+              dt
+            </code>{' '}
+            CLI is designed to run inside GitHub Actions, GitLab CI, CircleCI, and any shell-based
+            runner.
           </p>
           <div className="mt-6 max-w-2xl">
             <CodeBlock
@@ -198,12 +251,15 @@ export default function CLI() {
             />
           </div>
           <div className="mt-5">
-            <Link to="/integrations" className="text-sm text-primary font-medium hover:text-primary-dark transition-colors">
+            <Link
+              to="/integrations"
+              className="text-sm text-primary font-medium hover:text-primary-dark transition-colors"
+            >
               View all integrations →
             </Link>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       <MidCTA
         heading="Ready to deploy from your terminal?"

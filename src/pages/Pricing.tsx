@@ -3,8 +3,9 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { useScrollReveal } from '../utils'
 import { MidCTA } from '../components/MidCTA'
 import { InstallTabs } from '../components/shared/InstallTabs'
+import { Container } from '../components/shared/Container'
 
-const APP_URL = import.meta.env.VITE_APP_URL as string || 'https://app.deploytitan.com'
+const APP_URL = (import.meta.env.VITE_APP_URL as string) || 'https://app.deploytitan.com'
 
 // ── Plan data ─────────────────────────────────────────────────────────────────
 
@@ -105,7 +106,12 @@ const MATRIX = [
   {
     category: 'Titan Shield',
     rows: [
-      { feature: 'Multi-cloud failover', starter: false, team: '3 clouds', enterprise: 'Unlimited' },
+      {
+        feature: 'Multi-cloud failover',
+        starter: false,
+        team: '3 clouds',
+        enterprise: 'Unlimited',
+      },
       { feature: 'Geo-aware routing', starter: false, team: true, enterprise: true },
       { feature: 'DR drill mode', starter: false, team: true, enterprise: true },
     ],
@@ -156,11 +162,11 @@ const FAQS = [
   },
   {
     q: 'Is there a free trial for Team?',
-    a: 'Yes — 14 days, full Team features, no credit card required. After 14 days you\'re downgraded to Starter unless you add a payment method.',
+    a: "Yes — 14 days, full Team features, no credit card required. After 14 days you're downgraded to Starter unless you add a payment method.",
   },
   {
     q: 'Do you offer discounts for startups or open source projects?',
-    a: 'Yes. Email us at startups@deploytitan.com or opensource@deploytitan.com and we\'ll sort you out.',
+    a: "Yes. Email us at startups@deploytitan.com or opensource@deploytitan.com and we'll sort you out.",
   },
 ]
 
@@ -168,9 +174,32 @@ const FAQS = [
 
 function Check({ ok }: { ok: boolean | string }) {
   if (typeof ok === 'string') return <span className="text-xs text-ink-secondary">{ok}</span>
-  return ok
-    ? <svg className="text-primary shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-    : <svg className="text-ink/20 shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  return ok ? (
+    <svg
+      className="text-primary shrink-0"
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  ) : (
+    <svg
+      className="text-ink/20 shrink-0"
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  )
 }
 
 function FaqItem({ q, a }: { q: string; a: string }) {
@@ -184,9 +213,15 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         {q}
         <svg
           className={`shrink-0 transition-transform ${open ? 'rotate-45' : ''}`}
-          width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
         >
-          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
       </button>
       {open && <p className="pb-5 text-sm text-ink-secondary leading-relaxed">{a}</p>}
@@ -199,7 +234,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export default function Pricing() {
   useDocumentMeta(
     'Pricing — DeployTitan',
-    'Free for individuals. Flat-rate Team plan. Enterprise with SSO, on-prem, and dedicated support. No per-seat surprises.'
+    'Free for individuals. Flat-rate Team plan. Enterprise with SSO, on-prem, and dedicated support. No per-seat surprises.',
   )
   useScrollReveal()
   const [annual, setAnnual] = useState(true)
@@ -208,17 +243,21 @@ export default function Pricing() {
     <>
       {/* Hero */}
       <section className="blueprint-grid pt-28 pb-16 border-b border-line">
-        <div className="max-w-3xl mx-auto px-6 text-center" data-reveal>
+        <Container width="3xl" padding="default" className="text-center" data-reveal>
           <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">Pricing</p>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
-            Simple pricing.<br className="hidden md:block" /> No per-seat surprises.
+            Simple pricing.
+            <br className="hidden md:block" /> No per-seat surprises.
           </h1>
           <p className="text-lg text-ink-secondary mb-8">
             Start free. Scale to Team. Bring your whole org on Enterprise.
           </p>
           {/* Annual / monthly toggle */}
-          <div className="inline-flex items-center gap-3 border border-line p-1" style={{ borderRadius: '2px' }}>
-              <button
+          <div
+            className="inline-flex items-center gap-3 border border-line p-1"
+            style={{ borderRadius: '2px' }}
+          >
+            <button
               onClick={() => setAnnual(false)}
               className={`px-4 py-1.5 text-sm font-medium transition-colors ${!annual ? 'bg-surface-alt text-ink' : 'text-ink-tertiary hover:text-ink/70'}`}
               style={{ borderRadius: '2px' }}
@@ -231,15 +270,17 @@ export default function Pricing() {
               style={{ borderRadius: '2px' }}
             >
               Annual
-              <span className="text-[10px] font-mono text-primary border border-primary/30 px-1.5 py-0.5">Save 20%</span>
+              <span className="text-[10px] font-mono text-primary border border-primary/30 px-1.5 py-0.5">
+                Save 20%
+              </span>
             </button>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Plan cards */}
       <section className="py-16 border-b border-line">
-        <div className="max-w-6xl mx-auto px-6">
+        <Container width="6xl" padding="default">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {PLANS.map((plan) => (
               <div
@@ -248,10 +289,14 @@ export default function Pricing() {
                 data-reveal
               >
                 {plan.highlight && (
-                  <p className="text-[10px] font-mono tracking-widest uppercase text-primary border border-primary/30 px-2 py-1 self-start mb-4">Most popular</p>
+                  <p className="text-[10px] font-mono tracking-widest uppercase text-primary border border-primary/30 px-2 py-1 self-start mb-4">
+                    Most popular
+                  </p>
                 )}
                 <p className="text-sm font-semibold text-ink mb-1">{plan.name}</p>
-                <p className="text-xs text-ink-secondary mb-6 leading-relaxed">{plan.description}</p>
+                <p className="text-xs text-ink-secondary mb-6 leading-relaxed">
+                  {plan.description}
+                </p>
                 {/* Price */}
                 <div className="mb-6">
                   {plan.monthlyPrice === null ? (
@@ -260,8 +305,12 @@ export default function Pricing() {
                     <p className="text-3xl font-bold text-ink">Free</p>
                   ) : (
                     <div>
-                      <span className="text-3xl font-bold text-ink">${annual ? plan.annualPrice : plan.monthlyPrice}</span>
-                      <span className="text-sm text-ink-secondary ml-1">/ mo{annual ? ', billed annually' : ''}</span>
+                      <span className="text-3xl font-bold text-ink">
+                        ${annual ? plan.annualPrice : plan.monthlyPrice}
+                      </span>
+                      <span className="text-sm text-ink-secondary ml-1">
+                        / mo{annual ? ', billed annually' : ''}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -281,13 +330,34 @@ export default function Pricing() {
                 <ul className="flex flex-col gap-2.5">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2.5 text-sm text-ink-secondary">
-                      <svg className="text-primary shrink-0 mt-px" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                      <svg
+                        className="text-primary shrink-0 mt-px"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                      >
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
                       {f}
                     </li>
                   ))}
                   {plan.missing.map((f) => (
                     <li key={f} className="flex items-start gap-2.5 text-sm text-ink/25">
-                      <svg className="shrink-0 mt-px" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                      <svg
+                        className="shrink-0 mt-px"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
                       {f}
                     </li>
                   ))}
@@ -295,22 +365,29 @@ export default function Pricing() {
               </div>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Comparison matrix */}
       <section className="py-24 border-b border-line overflow-x-auto">
-        <div className="max-w-6xl mx-auto px-6">
+        <Container width="6xl" padding="default">
           <div className="mb-10" data-reveal>
             <h2 className="text-2xl font-semibold text-ink mb-2">Full feature comparison</h2>
-            <p className="text-ink-secondary text-sm">Everything side-by-side so there are no surprises.</p>
+            <p className="text-ink-secondary text-sm">
+              Everything side-by-side so there are no surprises.
+            </p>
           </div>
           <table className="w-full text-sm border-collapse" data-reveal>
             <thead>
               <tr className="border-b border-line">
                 <th className="text-left pb-4 text-ink-tertiary font-normal w-1/2">Feature</th>
                 {PLANS.map((p) => (
-                  <th key={p.id} className={`pb-4 text-center font-semibold ${p.highlight ? 'text-primary' : 'text-ink'}`}>{p.name}</th>
+                  <th
+                    key={p.id}
+                    className={`pb-4 text-center font-semibold ${p.highlight ? 'text-primary' : 'text-ink'}`}
+                  >
+                    {p.name}
+                  </th>
                 ))}
               </tr>
             </thead>
@@ -318,45 +395,71 @@ export default function Pricing() {
               {MATRIX.map((section) => (
                 <React.Fragment key={section.category}>
                   <tr className="border-t border-line/60">
-                    <td colSpan={4} className="pt-5 pb-2 text-[11px] font-mono tracking-widest uppercase text-ink-quaternary">{section.category}</td>
+                    <td
+                      colSpan={4}
+                      className="pt-5 pb-2 text-[11px] font-mono tracking-widest uppercase text-ink-quaternary"
+                    >
+                      {section.category}
+                    </td>
                   </tr>
                   {section.rows.map((row) => (
-                    <tr key={row.feature} className="border-b border-line/30 hover:bg-surface-alt/40 transition-colors">
+                    <tr
+                      key={row.feature}
+                      className="border-b border-line/30 hover:bg-surface-alt/40 transition-colors"
+                    >
                       <td className="py-3 text-sm text-ink-secondary">{row.feature}</td>
-                      <td className="py-3 text-center"><div className="flex justify-center"><Check ok={row.starter} /></div></td>
-                      <td className="py-3 text-center"><div className="flex justify-center"><Check ok={row.team} /></div></td>
-                      <td className="py-3 text-center"><div className="flex justify-center"><Check ok={row.enterprise} /></div></td>
+                      <td className="py-3 text-center">
+                        <div className="flex justify-center">
+                          <Check ok={row.starter} />
+                        </div>
+                      </td>
+                      <td className="py-3 text-center">
+                        <div className="flex justify-center">
+                          <Check ok={row.team} />
+                        </div>
+                      </td>
+                      <td className="py-3 text-center">
+                        <div className="flex justify-center">
+                          <Check ok={row.enterprise} />
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </React.Fragment>
               ))}
             </tbody>
           </table>
-        </div>
+        </Container>
       </section>
 
       {/* FAQ */}
       <section className="py-24 border-b border-line">
-        <div className="max-w-3xl mx-auto px-6">
+        <Container width="3xl" padding="default">
           <div className="mb-10" data-reveal>
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">FAQ</p>
             <h2 className="text-2xl font-semibold text-ink">Common questions</h2>
           </div>
           <div data-reveal>
-            {FAQS.map((faq) => <FaqItem key={faq.q} {...faq} />)}
+            {FAQS.map((faq) => (
+              <FaqItem key={faq.q} {...faq} />
+            ))}
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Install strip */}
       <section className="py-16 border-b border-line">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4" data-reveal>Get started now</p>
-          <p className="text-ink font-semibold mb-8 text-lg" data-reveal>Install the CLI and try it for free in under 2 minutes.</p>
+        <Container width="3xl" padding="default" className="text-center">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4" data-reveal>
+            Get started now
+          </p>
+          <p className="text-ink font-semibold mb-8 text-lg" data-reveal>
+            Install the CLI and try it for free in under 2 minutes.
+          </p>
           <div className="max-w-lg mx-auto" data-reveal>
             <InstallTabs />
           </div>
-        </div>
+        </Container>
       </section>
 
       <MidCTA

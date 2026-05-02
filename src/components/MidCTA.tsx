@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
+import { Section } from './shared/Section'
+import { Container } from './shared/Container'
 
-const APP_URL = import.meta.env.VITE_APP_URL as string || 'https://app.deploytitan.com'
-const DEMO_URL = import.meta.env.VITE_DEMO_URL as string || 'https://demo.deploytitan.com'
+const APP_URL = (import.meta.env.VITE_APP_URL as string) || 'https://app.deploytitan.com'
+const DEMO_URL = (import.meta.env.VITE_DEMO_URL as string) || 'https://demo.deploytitan.com'
 
 interface MidCTAProps {
   heading?: string
@@ -23,9 +25,12 @@ export function MidCTA({
   secondaryExternal = true,
 }: MidCTAProps) {
   return (
-    <section className="py-12 border-t border-b border-line bg-surface-alt/60 relative overflow-hidden">
-      <div className="absolute inset-0 blueprint-grid opacity-20 pointer-events-none" aria-hidden="true" />
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative flex flex-col sm:flex-row items-center justify-between gap-6">
+    <Section padding="sm" border="both" className="bg-surface-alt/60 relative overflow-hidden">
+      <div
+        className="absolute inset-0 blueprint-grid opacity-20 pointer-events-none"
+        aria-hidden="true"
+      />
+      <Container className="relative flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="flex flex-col gap-1">
           <p className="text-base font-medium text-ink">{heading}</p>
           <p className="text-sm text-ink-secondary leading-relaxed max-w-lg">{subheading}</p>
@@ -38,8 +43,8 @@ export function MidCTA({
           >
             {primaryLabel}
           </a>
-          {secondaryLabel && (
-            secondaryExternal ? (
+          {secondaryLabel &&
+            (secondaryExternal ? (
               <a
                 href={secondaryHref}
                 target="_blank"
@@ -48,9 +53,21 @@ export function MidCTA({
                 style={{ borderRadius: '2px' }}
               >
                 {secondaryLabel}
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-50">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="opacity-50"
+                >
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
                 </svg>
               </a>
             ) : (
@@ -61,10 +78,9 @@ export function MidCTA({
               >
                 {secondaryLabel}
               </Link>
-            )
-          )}
+            ))}
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   )
 }

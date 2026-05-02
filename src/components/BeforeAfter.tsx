@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { animate, stagger } from 'animejs'
+import { Section } from './shared/Section'
+import { Container } from './shared/Container'
 
 const PRIMARY = 'var(--color-primary)'
 
@@ -75,7 +77,7 @@ export function BeforeAfter() {
           },
         })
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     )
 
     observer.observe(container)
@@ -83,22 +85,25 @@ export function BeforeAfter() {
   }, [])
 
   return (
-    <section className="py-20 lg:py-24 border-t border-line bg-surface-alt/30 relative">
-      <div className="absolute inset-0 hero-grid opacity-20 pointer-events-none" aria-hidden="true" />
+    <Section border="top" padding="xl" tone="muted" className="relative">
+      <div ref={withoutRef} className="sr-only" aria-hidden="true" />
+      <div
+        className="absolute inset-0 hero-grid opacity-20 pointer-events-none"
+        aria-hidden="true"
+      />
 
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative">
+      <Container className="relative">
         <div
           className="border border-line bg-surface overflow-hidden"
           style={{ borderRadius: '2px' }}
         >
           {/* Row 1 — Without */}
-          <div
-            ref={withoutRef}
-            className="px-5 sm:px-8 lg:px-12 py-6 sm:py-8 border-b border-line"
-          >
+          <div ref={withoutRef} className="px-5 sm:px-8 lg:px-12 py-6 sm:py-8 border-b border-line">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8">
               <div className="shrink-0 sm:w-36">
-                <div className="text-[9px] font-mono uppercase tracking-[0.1em] text-ink-quaternary mb-0.5">Without</div>
+                <div className="text-[9px] font-mono uppercase tracking-[0.1em] text-ink-quaternary mb-0.5">
+                  Without
+                </div>
                 <div className="text-xs font-mono font-medium text-ink-tertiary">DeployTitan</div>
               </div>
               <div className="flex flex-wrap items-center gap-y-2 gap-x-1">
@@ -116,8 +121,20 @@ export function BeforeAfter() {
                       {chip.label}
                     </div>
                     {i < withoutChips.length - 1 && (
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="shrink-0">
-                        <path d="M2 6h8M7 3l3 3-3 3" stroke="rgba(8,5,3,0.2)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        className="shrink-0"
+                      >
+                        <path
+                          d="M2 6h8M7 3l3 3-3 3"
+                          stroke="rgba(8,5,3,0.2)"
+                          strokeWidth="1"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
                     )}
                   </div>
@@ -130,8 +147,15 @@ export function BeforeAfter() {
           <div ref={withRef} className="px-5 sm:px-8 lg:px-12 py-6 sm:py-8">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8">
               <div className="shrink-0 sm:w-36">
-                <div className="text-[9px] font-mono uppercase tracking-[0.1em]" style={{ color: 'rgba(201,168,76,0.6)' }}>With</div>
-                <div className="text-xs font-mono font-medium" style={{ color: PRIMARY }}>DeployTitan</div>
+                <div
+                  className="text-[9px] font-mono uppercase tracking-[0.1em]"
+                  style={{ color: 'rgba(201,168,76,0.6)' }}
+                >
+                  With
+                </div>
+                <div className="text-xs font-mono font-medium" style={{ color: PRIMARY }}>
+                  DeployTitan
+                </div>
               </div>
               <div className="flex flex-wrap items-center gap-y-2 gap-x-1">
                 {withChips.map((chip, i) => (
@@ -143,17 +167,35 @@ export function BeforeAfter() {
                         color: chip.color,
                         borderColor: `${chip.color}35`,
                         backgroundColor: `${chip.color}08`,
-                        boxShadow: chip.label === 'Stable system' ? `0 0 0 1px ${chip.color}20` : undefined,
+                        boxShadow:
+                          chip.label === 'Stable system' ? `0 0 0 1px ${chip.color}20` : undefined,
                       }}
                     >
                       {chip.label}
                       {chip.label === 'Stable system' && (
-                        <span className="ml-1 inline-block" style={{ animation: 'pulse-anim 2s ease-in-out infinite' }}>✓</span>
+                        <span
+                          className="ml-1 inline-block"
+                          style={{ animation: 'pulse-anim 2s ease-in-out infinite' }}
+                        >
+                          ✓
+                        </span>
                       )}
                     </div>
                     {i < withChips.length - 1 && (
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="shrink-0">
-                        <path d="M2 6h8M7 3l3 3-3 3" stroke="rgba(201,168,76,0.4)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        className="shrink-0"
+                      >
+                        <path
+                          d="M2 6h8M7 3l3 3-3 3"
+                          stroke="rgba(201,168,76,0.4)"
+                          strokeWidth="1"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
                     )}
                   </div>
@@ -162,7 +204,7 @@ export function BeforeAfter() {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   )
 }

@@ -1,23 +1,30 @@
 import { Link } from 'react-router-dom'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { MidCTA } from '../components/MidCTA'
+import { Section } from '../components/shared/Section'
+import { Container } from '../components/shared/Container'
+import { Card } from '../components/shared/Card'
 
 const values = [
   {
     title: 'Ship with confidence, not fear',
-    description: 'Deployments should be a non-event. We build tooling that makes releasing software feel safe — not like defusing a bomb.',
+    description:
+      'Deployments should be a non-event. We build tooling that makes releasing software feel safe — not like defusing a bomb.',
   },
   {
     title: 'Transparency by default',
-    description: "Every deployment decision, metric, and incident is surfaced to your team automatically. No black boxes.",
+    description:
+      'Every deployment decision, metric, and incident is surfaced to your team automatically. No black boxes.',
   },
   {
     title: 'Respect engineer time',
-    description: 'Every hour spent manually babysitting a rollout is an hour not spent building. We automate the toil.',
+    description:
+      'Every hour spent manually babysitting a rollout is an hour not spent building. We automate the toil.',
   },
   {
     title: 'Meet teams where they are',
-    description: 'Whether you run five microservices or five hundred, on one cloud or three, DeployTitan fits around your stack.',
+    description:
+      'Whether you run five microservices or five hundred, on one cloud or three, DeployTitan fits around your stack.',
   },
 ]
 
@@ -51,38 +58,52 @@ const investors = [
 ]
 
 export default function About() {
-  useDocumentMeta('About', 'Meet the team building DeployTitan — the deployment control plane for modern engineering teams.')
+  useDocumentMeta(
+    'About',
+    'Meet the team building DeployTitan — the deployment control plane for modern engineering teams.',
+  )
 
   return (
     <div className="min-h-screen bg-surface">
       {/* Hero */}
-      <section className="border-b border-line blueprint-grid">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-20 lg:py-28">
+      <Section border="bottom" padding="none" className="blueprint-grid">
+        <Container className="py-20 lg:py-28">
           <div className="max-w-3xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">About</span>
+            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+              About
+            </span>
             <h1 className="mt-3 text-4xl sm:text-5xl lg:text-6xl font-display font-medium tracking-tight text-ink leading-[1.05]">
-              We're building the deployment<br />control plane.
+              We're building the deployment
+              <br />
+              control plane.
             </h1>
             <p className="mt-6 text-xl text-ink-secondary leading-relaxed max-w-2xl">
-              DeployTitan started with a simple observation: deployment is the riskiest moment in software delivery, yet most teams treat it as an afterthought. We're changing that.
+              DeployTitan started with a simple observation: deployment is the riskiest moment in
+              software delivery, yet most teams treat it as an afterthought. We're changing that.
             </p>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* Mission */}
-      <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16">
+      <Container as="section" className="py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Mission</span>
+            <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+              Mission
+            </span>
             <h2 className="mt-3 text-3xl font-display font-medium text-ink tracking-tight">
               Make every deployment a non-event.
             </h2>
             <p className="mt-5 text-base text-ink-secondary leading-relaxed">
-              The best software teams in the world deploy hundreds of times a day. They're not special — they just have better tooling. DeployTitan gives every engineering team access to the same progressive delivery, automated rollback, and risk intelligence that elite teams built for themselves over years.
+              The best software teams in the world deploy hundreds of times a day. They're not
+              special — they just have better tooling. DeployTitan gives every engineering team
+              access to the same progressive delivery, automated rollback, and risk intelligence
+              that elite teams built for themselves over years.
             </p>
             <p className="mt-4 text-base text-ink-secondary leading-relaxed">
-              We're a small, focused team. We ship fast. We talk to our customers constantly. And we believe that the future of software delivery is calm, confident, and automated.
+              We're a small, focused team. We ship fast. We talk to our customers constantly. And we
+              believe that the future of software delivery is calm, confident, and automated.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -92,71 +113,89 @@ export default function About() {
               { value: 'Seed', label: 'Stage' },
               { value: '100% open core', label: 'Philosophy' },
             ].map((stat) => (
-              <div key={stat.label} className="sharp-card bg-surface-alt p-6">
+              <Card key={stat.label} tone="muted">
                 <p className="font-display text-2xl font-medium text-ink">{stat.value}</p>
                 <p className="mt-1 text-xs text-ink-tertiary">{stat.label}</p>
-              </div>
+              </Card>
             ))}
           </div>
         </div>
-      </section>
+      </Container>
 
       {/* Values */}
-      <section className="border-t border-line bg-surface-alt">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Values</span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">How we work</h2>
+      <Section border="top" tone="muted" padding="none">
+        <Container className="py-16">
+          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            Values
+          </span>
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+            How we work
+          </h2>
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {values.map((v) => (
-              <div key={v.title} className="sharp-card bg-surface p-6">
+              <Card key={v.title}>
                 <h3 className="text-base font-medium text-ink">{v.title}</h3>
                 <p className="mt-2 text-sm text-ink-secondary leading-relaxed">{v.description}</p>
-              </div>
+              </Card>
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* Team */}
-      <section className="border-t border-line">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Team</span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">The people building it</h2>
+      <Section border="top" padding="none">
+        <Container className="py-16">
+          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            Team
+          </span>
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+            The people building it
+          </h2>
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {team.map((person) => (
-              <div key={person.name} className="sharp-card bg-surface-alt p-6">
+              <Card key={person.name} tone="muted">
                 {/* Avatar placeholder */}
-                <div className="w-12 h-12 bg-primary-muted border border-primary/20 flex items-center justify-center mb-4 font-display text-lg font-medium text-primary-dark" style={{ borderRadius: '2px' }}>
+                <div
+                  className="w-12 h-12 bg-primary-muted border border-primary/20 flex items-center justify-center mb-4 font-display text-lg font-medium text-primary-dark"
+                  style={{ borderRadius: '2px' }}
+                >
                   {person.name.charAt(0)}
                 </div>
                 <h3 className="text-sm font-medium text-ink">{person.name}</h3>
-                <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest mt-0.5">{person.role}</p>
+                <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest mt-0.5">
+                  {person.role}
+                </p>
                 <p className="mt-3 text-xs text-ink-secondary leading-relaxed">{person.bio}</p>
-              </div>
+              </Card>
             ))}
           </div>
           <div className="mt-8">
-            <Link to="/careers" className="text-sm text-primary font-medium hover:text-primary-dark transition-colors">
+            <Link
+              to="/careers"
+              className="text-sm text-primary font-medium hover:text-primary-dark transition-colors"
+            >
               We're hiring — view open roles →
             </Link>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       {/* Investors */}
-      <section className="border-t border-line bg-surface-alt">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Backed by</span>
+      <Section border="top" tone="muted" padding="none">
+        <Container className="py-12">
+          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            Backed by
+          </span>
           <div className="mt-6 flex flex-wrap gap-4">
             {investors.map((inv) => (
-              <div key={inv.name} className="sharp-card bg-surface px-5 py-3 flex items-center gap-3">
+              <Card key={inv.name} padding="sm" className="flex items-center gap-3">
                 <span className="text-sm font-medium text-ink">{inv.name}</span>
                 <span className="font-mono text-[10px] text-ink-quaternary">{inv.stage}</span>
-              </div>
+              </Card>
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
       <MidCTA
         heading="Want to work with us?"

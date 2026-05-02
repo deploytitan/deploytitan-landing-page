@@ -3,6 +3,16 @@ import { useMemo } from 'react'
 import { nodeMeta, extraLinks, GROUP_COLORS } from '../../data/siteGraph.meta'
 import { useTheme } from '../../hooks/useTheme'
 
+// Lazily merge in auto-generated links (Vite plugin output)
+let _generatedLinks: { source: string; target: string; kind: string }[] = []
+try {
+  // @ts-ignore — generated at build time
+  const gen = await import('../../data/siteGraph.generated')
+  _generatedLinks = gen.generatedLinks ?? []
+} catch {
+  // Plugin hasn't run yet or file doesn't exist — use only extraLinks
+}
+
 interface RelatedNode {
   id: string
   label: string
@@ -21,27 +31,33 @@ export function LocalGraph() {
     const seen = new Set<string>()
     const nodes: RelatedNode[] = []
 
-    for (const link of extraLinks) {
-      if (link.source === currentId && !seen.has(link.target)) {
-        seen.add(link.target)
-        const m = metaMap.get(link.target)
+    // Combine curated extra links with auto-generated nav/link/href links
+    const allLinks = [...extraLinks, ..._generatedLinks]
+
+    for (const link of allLinks) {
+      const src = link.source as string
+      const tgt = link.target as string
+
+      if (src === currentId && !seen.has(tgt)) {
+        seen.add(tgt)
+        const m = metaMap.get(tgt)
         if (m) {
           nodes.push({
-            id: link.target,
-            label: m.label ?? link.target,
+            id: tgt,
+            label: m.label ?? tgt,
             group: m.group,
             color: GROUP_COLORS[m.group]?.[resolved] ?? '#888',
             direction: 'outgoing',
           })
         }
       }
-      if (link.target === currentId && !seen.has(link.source)) {
-        seen.add(link.source)
-        const m = metaMap.get(link.source)
+      if (tgt === currentId && !seen.has(src)) {
+        seen.add(src)
+        const m = metaMap.get(src)
         if (m) {
           nodes.push({
-            id: link.source,
-            label: m.label ?? link.source,
+            id: src,
+            label: m.label ?? src,
             group: m.group,
             color: GROUP_COLORS[m.group]?.[resolved] ?? '#888',
             direction: 'incoming',
@@ -49,7 +65,15 @@ export function LocalGraph() {
         }
       }
     }
-    return nodes.slice(0, 8)
+
+    // Sort: curated (extraLinks covered first) then generated; dedup already handled by `seen`
+    // Show backlinks first (incoming), then outgoing
+    return nodes
+      .sort((a, b) => {
+        if (a.direction !== b.direction) return a.direction === 'incoming' ? -1 : 1
+        return 0
+      })
+      .slice(0, 8)
   }, [currentId, resolved])
 
   if (related.length === 0) return null

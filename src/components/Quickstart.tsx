@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react'
 import { InstallTabs } from './shared/InstallTabs'
 import { CodeBlock } from './shared/CodeBlock'
 import { useScrollReveal } from '../utils'
+import { Container } from './shared/Container'
+import { Card } from './shared/Card'
 
 const DEPLOY_SNIPPET = `# 1. Authenticate
 dt login
@@ -80,15 +82,23 @@ export function Quickstart() {
 
   return (
     <section className="py-24 border-t border-line">
-      <div className="max-w-6xl mx-auto px-6">
+      <Container width="6xl" padding="default">
         {/* Heading */}
         <div className="mb-14 max-w-xl" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">Get started</p>
+          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            Get started
+          </p>
           <h2 className="text-3xl lg:text-4xl font-semibold text-ink leading-tight mb-4">
-            Deploy in minutes,<br />not days.
+            Deploy in minutes,
+            <br />
+            not days.
           </h2>
           <p className="text-ink-secondary text-base leading-relaxed">
-            Install the <code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1.5 py-0.5 rounded">dt</code> CLI, authenticate, and ship your first canary deployment before lunch.
+            Install the{' '}
+            <code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1.5 py-0.5 rounded">
+              dt
+            </code>{' '}
+            CLI, authenticate, and ship your first canary deployment before lunch.
           </p>
         </div>
 
@@ -96,27 +106,33 @@ export function Quickstart() {
           {/* Left — install tabs */}
           <div className="flex flex-col gap-6">
             <div>
-              <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">Step 1 — Install</p>
+              <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">
+                Step 1 — Install
+              </p>
               <InstallTabs />
             </div>
             <div>
-              <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">Step 2–4 — Deploy</p>
+              <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">
+                Step 2–4 — Deploy
+              </p>
               <CodeBlock code={DEPLOY_SNIPPET} lang="bash" filename="terminal" />
             </div>
           </div>
 
           {/* Right — animated terminal */}
-          <div className="sharp-card bg-[#0d1117] border border-line p-6 overflow-hidden">
+          <Card tone="muted" className="bg-[#0d1117] border border-line overflow-hidden">
             <div className="flex items-center gap-2 mb-5 border-b border-white/[0.06] pb-3">
               <span className="w-3 h-3 rounded-full bg-red-500/60" />
               <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
               <span className="w-3 h-3 rounded-full bg-green-500/60" />
-              <span className="ml-2 font-mono text-[11px] text-white/30">deploytitan — dt deploy</span>
+              <span className="ml-2 font-mono text-[11px] text-white/30">
+                deploytitan — dt deploy
+              </span>
             </div>
             <TerminalOutput />
-          </div>
+          </Card>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

@@ -10,6 +10,33 @@ const APP_URL = (import.meta.env.VITE_APP_URL as string) || 'https://app.deployt
 
 type DropdownKey = 'products' | 'solutions' | null
 
+/** Keeps a dropdown mounted for `exitMs` after it logically closes so CSS exit
+ *  animations can complete, then fully unmounts. */
+function useAnimatedDropdown(key: DropdownKey, activeDropdown: DropdownKey, exitMs = 180) {
+  const isOpen = activeDropdown === key
+  const [mounted, setMounted] = useState(isOpen)
+  const [visible, setVisible] = useState(isOpen)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      if (timerRef.current) clearTimeout(timerRef.current)
+      setMounted(true)
+      // Small rAF tick so the browser paints the initial hidden state first,
+      // giving the CSS transition something to transition FROM.
+      requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)))
+    } else {
+      setVisible(false)
+      timerRef.current = setTimeout(() => setMounted(false), exitMs)
+    }
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [isOpen, exitMs])
+
+  return { mounted, visible }
+}
+
 export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   const [scrolled, setScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<DropdownKey>(null)
@@ -17,6 +44,9 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   const navRef = useRef<HTMLElement>(null)
   const location = useLocation()
   const { resolved } = useTheme()
+
+  const products = useAnimatedDropdown('products', activeDropdown)
+  const solutions = useAnimatedDropdown('solutions', activeDropdown)
 
   // Close everything on route change
   useEffect(() => {
@@ -124,7 +154,21 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </button>
-              {activeDropdown === 'products' && <ProductsDropdown onClose={closeDropdown} />}
+              {products.mounted && (
+                <div
+                  className="transition-[opacity,transform] duration-[180ms] ease-out"
+                  style={{
+                    opacity: products.visible ? 1 : 0,
+                    transform: products.visible
+                      ? 'translateY(0) scale(1)'
+                      : 'translateY(-6px) scale(0.98)',
+                    pointerEvents: products.visible ? 'auto' : 'none',
+                    transformOrigin: 'top center',
+                  }}
+                >
+                  <ProductsDropdown onClose={closeDropdown} />
+                </div>
+              )}
             </div>
 
             {/* Solutions dropdown */}
@@ -151,7 +195,21 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </button>
-              {activeDropdown === 'solutions' && <SolutionsDropdown onClose={closeDropdown} />}
+              {solutions.mounted && (
+                <div
+                  className="transition-[opacity,transform] duration-[180ms] ease-out"
+                  style={{
+                    opacity: solutions.visible ? 1 : 0,
+                    transform: solutions.visible
+                      ? 'translateY(0) scale(1)'
+                      : 'translateY(-6px) scale(0.98)',
+                    pointerEvents: solutions.visible ? 'auto' : 'none',
+                    transformOrigin: 'top center',
+                  }}
+                >
+                  <SolutionsDropdown onClose={closeDropdown} />
+                </div>
+              )}
             </div>
 
             <Link
