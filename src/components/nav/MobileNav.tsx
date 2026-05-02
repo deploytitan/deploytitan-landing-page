@@ -2,13 +2,30 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ThemeToggle } from '../shared/ThemeToggle'
 
-const APP_URL = import.meta.env.VITE_APP_URL as string || 'https://app.deploytitan.com'
+const APP_URL = (import.meta.env.VITE_APP_URL as string) || 'https://app.deploytitan.com'
 
 const productLinks = [
-  { label: 'Titan Rollout', sub: 'Progressive deployments & rollback', route: '/products/titan-rollout' },
-  { label: 'Titan Shield', sub: 'Multi-cloud failover & resilience', route: '/products/titan-shield' },
-  { label: 'Titan Sentinel', sub: 'Risk scoring & observability', route: '/products/titan-sentinel' },
-  { label: 'Titan Pulse', sub: 'Deploy telemetry & DORA metrics', route: '/products/titan-pulse', preview: true },
+  {
+    label: 'Titan Rollout',
+    sub: 'Progressive deployments & rollback',
+    route: '/products/titan-rollout',
+  },
+  {
+    label: 'Titan Shield',
+    sub: 'Multi-cloud failover & resilience',
+    route: '/products/titan-shield',
+  },
+  {
+    label: 'Titan Sentinel',
+    sub: 'Risk scoring & observability',
+    route: '/products/titan-sentinel',
+  },
+  {
+    label: 'Titan Pulse',
+    sub: 'Deploy telemetry & DORA metrics',
+    route: '/products/titan-pulse',
+    preview: true,
+  },
 ]
 
 const solutionLinks = [
@@ -26,6 +43,7 @@ const forLinks = [
 
 interface Props {
   onClose: () => void
+  barHeight?: number
 }
 
 function AccordionGroup({ label, children }: { label: string; children: React.ReactNode }) {
@@ -38,8 +56,14 @@ function AccordionGroup({ label, children }: { label: string; children: React.Re
       >
         {label}
         <svg
-          width="16" height="16" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="text-ink-tertiary transition-transform duration-300"
           style={{ transform: open ? 'rotate(180deg)' : 'none' }}
         >
@@ -51,9 +75,14 @@ function AccordionGroup({ label, children }: { label: string; children: React.Re
   )
 }
 
-export function MobileNav({ onClose }: Props) {
+export function MobileNav({ onClose, barHeight = 0 }: Props) {
+  // Nav height is h-20 (80px). Offset overlay so it starts below nav + announcement bar.
+  const topOffset = barHeight + 80
   return (
-    <div className="fixed inset-0 bg-surface z-40 flex flex-col overflow-y-auto" style={{ paddingTop: '80px' }}>
+    <div
+      className="fixed left-0 right-0 bottom-0 bg-surface z-40 flex flex-col overflow-y-auto"
+      style={{ top: topOffset }}
+    >
       {/* Products group */}
       <AccordionGroup label="Products">
         {productLinks.map((l) => (
@@ -68,7 +97,10 @@ export function MobileNav({ onClose }: Props) {
               <span className="text-xs text-ink-tertiary">{l.sub}</span>
             </div>
             {l.preview && (
-              <span className="font-mono text-[9px] border border-primary/40 text-primary px-1.5 py-0.5 shrink-0" style={{ borderRadius: '2px' }}>
+              <span
+                className="font-mono text-[9px] border border-primary/40 text-primary px-1.5 py-0.5 shrink-0"
+                style={{ borderRadius: '2px' }}
+              >
                 Preview
               </span>
             )}
@@ -131,7 +163,9 @@ export function MobileNav({ onClose }: Props) {
       {/* Auth buttons */}
       <div className="mt-auto px-6 py-8 flex flex-col gap-3 border-t border-line">
         <div className="flex items-center justify-between mb-1">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Appearance</span>
+          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            Appearance
+          </span>
           <ThemeToggle />
         </div>
         <a

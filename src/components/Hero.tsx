@@ -277,7 +277,7 @@ export function Hero() {
   const ref = useScrollReveal()
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden" ref={ref}>
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden max-w-page mx-auto" ref={ref}>
       {/* Grid bg */}
       <div className="absolute inset-0 hero-grid opacity-50 pointer-events-none" aria-hidden="true" />
 

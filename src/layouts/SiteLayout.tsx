@@ -1,18 +1,22 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Nav } from '../components/nav/Nav'
 import { Footer } from '../components/Footer'
-import { AnnouncementBar, ANNOUNCEMENT_BAR_HEIGHT } from '../components/AnnouncementBar'
+import { AnnouncementBar } from '../components/AnnouncementBar'
 import { ScrollToTop } from '../components/ScrollToTop'
 
 export function SiteLayout() {
   const [barDismissed, setBarDismissed] = useState(false)
-  const barHeight = barDismissed ? 0 : ANNOUNCEMENT_BAR_HEIGHT
+  const announcementRef = useRef(null)
+  const [barHeight, setBarHeight] = useState(0)
+  useEffect(() => {
+    setBarHeight(announcementRef.current?.offsetHeight || 0)
+  }, [announcementRef, barDismissed])
 
   return (
     <div className="overflow-x-hidden">
       <ScrollToTop />
-      <AnnouncementBar onDismiss={() => setBarDismissed(true)} />
+      <AnnouncementBar announcementRef={announcementRef} onDismiss={() => setBarDismissed(true)} />
       <Nav barHeight={barHeight} />
       {/* Push page content below the fixed nav (bar + nav ~56px) */}
       <main style={{ paddingTop: barHeight + 56 }}>

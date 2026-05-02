@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 const products = [
   {
@@ -58,7 +58,7 @@ interface Props {
 export function ProductsDropdown({ onClose }: Props) {
   return (
     <div
-      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-surface border border-line shadow-[0_8px_32px_rgba(8,5,3,0.08)] z-50"
+      className="absolute top-full mt-2 bg-surface border border-line shadow-[0_8px_32px_rgba(8,5,3,0.08)] z-50"
       style={{ borderRadius: '2px', minWidth: '780px' }}
     >
       {/* Top bar */}

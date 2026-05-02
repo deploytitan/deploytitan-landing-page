@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ProductsDropdown } from './ProductsDropdown'
 import { SolutionsDropdown } from './SolutionsDropdown'
@@ -6,7 +6,7 @@ import { MobileNav } from './MobileNav'
 import { ThemeToggle } from '../shared/ThemeToggle'
 import { useTheme } from '../../hooks/useTheme'
 
-const APP_URL = import.meta.env.VITE_APP_URL as string || 'https://app.deploytitan.com'
+const APP_URL = (import.meta.env.VITE_APP_URL as string) || 'https://app.deploytitan.com'
 
 type DropdownKey = 'products' | 'solutions' | null
 
@@ -56,7 +56,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   }, [])
 
   const toggleDropdown = useCallback((key: DropdownKey) => {
-    setActiveDropdown(prev => (prev === key ? null : key))
+    setActiveDropdown((prev) => (prev === key ? null : key))
   }, [])
 
   const closeDropdown = useCallback(() => setActiveDropdown(null), [])
@@ -89,11 +89,13 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
           borderBottom: scrolled ? '1px solid var(--color-line)' : '1px solid transparent',
         }}
       >
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between h-20">
+        <div className="max-w-page justify-between md:justify-normal mx-auto px-6 lg:px-12 flex items-center h-20 gap-8">
           {/* Logo */}
           <Link to="/" className="flex items-center shrink-0 group">
             <span className="font-display text-2xl font-medium tracking-[-0.02em]">Deploy</span>
-            <span className="font-display text-2xl font-medium tracking-[-0.02em] text-primary-dark">Titan</span>
+            <span className="font-display text-2xl font-medium tracking-[-0.02em] text-primary-dark">
+              Titan
+            </span>
           </Link>
 
           {/* Desktop centre nav */}
@@ -108,8 +110,14 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
               >
                 Products
                 <svg
-                  width="12" height="12" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mt-px transition-transform duration-200"
                   style={{ transform: activeDropdown === 'products' ? 'rotate(180deg)' : 'none' }}
                 >
@@ -129,8 +137,14 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
               >
                 Solutions
                 <svg
-                  width="12" height="12" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mt-px transition-transform duration-200"
                   style={{ transform: activeDropdown === 'solutions' ? 'rotate(180deg)' : 'none' }}
                 >
@@ -140,17 +154,23 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
               {activeDropdown === 'solutions' && <SolutionsDropdown onClose={closeDropdown} />}
             </div>
 
-            <Link to="/pricing" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">
+            <Link
+              to="/pricing"
+              className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline"
+            >
               Pricing
             </Link>
 
-            <Link to="/customers" className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline">
+            <Link
+              to="/customers"
+              className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline"
+            >
               Customers
             </Link>
           </div>
 
           {/* Desktop auth */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2 ml-auto">
             <ThemeToggle className="mr-1" />
             <a
               href={`${APP_URL}/signin`}
@@ -164,8 +184,19 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
               style={{ borderRadius: '2px' }}
             >
               Get started
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-70">
-                <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="opacity-70"
+              >
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
               </svg>
             </a>
           </div>
@@ -177,9 +208,18 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
             aria-label="Toggle menu"
             aria-expanded={mobileOpen}
           >
-            <span className="block w-5 h-[1.5px] bg-ink transition-all origin-center" style={{ transform: mobileOpen ? 'rotate(45deg) translate(4.5px, 4.5px)' : 'none' }} />
-            <span className="block w-5 h-[1.5px] bg-ink transition-all" style={{ opacity: mobileOpen ? 0 : 1 }} />
-            <span className="block w-5 h-[1.5px] bg-ink transition-all origin-center" style={{ transform: mobileOpen ? 'rotate(-45deg) translate(4.5px, -4.5px)' : 'none' }} />
+            <span
+              className="block w-5 h-[1.5px] bg-ink transition-all origin-center"
+              style={{ transform: mobileOpen ? 'rotate(45deg) translate(4.5px, 4.5px)' : 'none' }}
+            />
+            <span
+              className="block w-5 h-[1.5px] bg-ink transition-all"
+              style={{ opacity: mobileOpen ? 0 : 1 }}
+            />
+            <span
+              className="block w-5 h-[1.5px] bg-ink transition-all origin-center"
+              style={{ transform: mobileOpen ? 'rotate(-45deg) translate(4.5px, -4.5px)' : 'none' }}
+            />
           </button>
         </div>
 
@@ -190,7 +230,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
       </nav>
 
       {/* Mobile overlay */}
-      {mobileOpen && <MobileNav onClose={closeMobile} />}
+      {mobileOpen && <MobileNav onClose={closeMobile} barHeight={barHeight} />}
     </>
   )
 }
