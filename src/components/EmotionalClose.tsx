@@ -1,5 +1,4 @@
 import { useScrollReveal } from '../utils'
-import { Section } from './shared/Section'
 import { Container } from './shared/Container'
 
 const PRIMARY = 'var(--color-primary)'
