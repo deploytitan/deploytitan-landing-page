@@ -1,13 +1,19 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ThemeToggle } from '../shared/ThemeToggle'
+'use client'
 
-const APP_URL = (import.meta.env.VITE_APP_URL as string) || 'https://app.deploytitan.com'
+import { useState } from 'react'
+import Link from 'next/link'
+import { ThemeToggle } from '../shared/ThemeToggle'
+import { APP_URL } from '@/lib/env'
 
 const productLinks = [
   {
+    label: 'Titan Foresight',
+    sub: 'Pre-merge risk scoring',
+    route: '/products/titan-foresight',
+  },
+  {
     label: 'Titan Rollout',
-    sub: 'Progressive deployments & rollback',
+    sub: 'Progressive deployments & SLO gating',
     route: '/products/titan-rollout',
   },
   {
@@ -16,14 +22,25 @@ const productLinks = [
     route: '/products/titan-shield',
   },
   {
-    label: 'Titan Sentinel',
-    sub: 'Risk scoring & observability',
-    route: '/products/titan-sentinel',
+    label: 'Titan Phoenix',
+    sub: 'SLO-triggered scoped rollback',
+    route: '/products/titan-phoenix',
   },
   {
-    label: 'Titan Pulse',
-    sub: 'Deploy telemetry & DORA metrics',
-    route: '/products/titan-pulse',
+    label: 'Titan Ledger',
+    sub: 'DORA metrics — no agents',
+    route: '/products/titan-ledger',
+  },
+  {
+    label: 'Titan Insight',
+    sub: 'Outcome intelligence (coming soon)',
+    route: '/products/titan-insight',
+    preview: true,
+  },
+  {
+    label: 'Titan Sandbox',
+    sub: 'Branch environments (coming soon)',
+    route: '/products/titan-sandbox',
     preview: true,
   },
 ]
@@ -88,7 +105,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
         {productLinks.map((l) => (
           <Link
             key={l.route}
-            to={l.route}
+            href={l.route}
             onClick={onClose}
             className="flex items-center gap-2 px-8 py-3 hover:bg-surface-alt transition-colors"
           >
@@ -113,7 +130,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
         {solutionLinks.map((l) => (
           <Link
             key={l.route}
-            to={l.route}
+            href={l.route}
             onClick={onClose}
             className="block px-8 py-3 text-sm text-ink-secondary hover:text-ink hover:bg-surface-alt transition-colors"
           >
@@ -121,7 +138,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
           </Link>
         ))}
         <Link
-          to="/solutions"
+          href="/solutions"
           onClick={onClose}
           className="block px-8 py-3 text-sm text-primary font-medium hover:bg-surface-alt transition-colors"
         >
@@ -134,7 +151,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
         {forLinks.map((l) => (
           <Link
             key={l.route}
-            to={l.route}
+            href={l.route}
             onClick={onClose}
             className="block px-8 py-3 text-sm text-ink-secondary hover:text-ink hover:bg-surface-alt transition-colors"
           >
@@ -152,7 +169,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
       ].map((l) => (
         <Link
           key={l.route}
-          to={l.route}
+          href={l.route}
           onClick={onClose}
           className="block px-6 py-4 text-base font-medium text-ink border-b border-line hover:bg-surface-alt transition-colors"
         >
@@ -177,7 +194,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
           Sign in
         </a>
         <Link
-          to="/early-access"
+          href="/early-access"
           onClick={onClose}
           className="w-full inline-flex items-center justify-center px-6 py-3 bg-ink text-surface text-sm font-medium hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] transition-all active:scale-[0.97]"
           style={{ borderRadius: '2px' }}

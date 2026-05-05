@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef } from 'react'
 import { InstallTabs } from './shared/InstallTabs'
 import { CodeBlock } from './shared/CodeBlock'
@@ -120,7 +122,7 @@ export function Quickstart() {
           </div>
 
           {/* Right — animated terminal */}
-          <Card tone="muted" className="bg-[#0d1117] border border-line overflow-hidden">
+          <Card tone="muted" className="border border-line overflow-hidden" style={{ backgroundColor: '#0d1117' }}>
             <div className="flex items-center gap-2 mb-5 border-b border-white/[0.06] pb-3">
               <span className="w-3 h-3 rounded-full bg-red-500/60" />
               <span className="w-3 h-3 rounded-full bg-yellow-500/60" />

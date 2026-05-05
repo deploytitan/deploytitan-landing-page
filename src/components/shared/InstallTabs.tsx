@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { CodeBlock } from './CodeBlock'
 import { cn } from '../../utils'

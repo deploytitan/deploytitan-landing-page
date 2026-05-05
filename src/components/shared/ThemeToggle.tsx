@@ -1,3 +1,5 @@
+'use client'
+
 import { useTheme, type ThemeMode } from '../../hooks/useTheme'
 import { cn } from '../../utils'
 

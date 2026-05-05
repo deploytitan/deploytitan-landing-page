@@ -1,10 +1,11 @@
+'use client'
+
 import { useState, type FormEvent } from 'react'
 import { useScrollReveal } from '../utils'
 import { Container } from './shared/Container'
+import { DEMO_URL, FORM_ENDPOINT } from '@/lib/env'
 
 const PRIMARY = 'var(--color-primary)'
-const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT as string | undefined
-const DEMO_URL = (import.meta.env.VITE_DEMO_URL as string) || 'https://demo.deploytitan.com'
 
 const trustSignals = [
   { label: 'Works with your existing stack', detail: 'No rewrites required' },

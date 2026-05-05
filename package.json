@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "next dev --turbopack",
+    "prebuild": "tsx scripts/build-link-graph.ts",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
@@ -18,28 +19,27 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "animejs": "^4.3.6",
     "d3-force": "^3.0.0",
+    "next": "^15.3.2",
     "prettier": "^3.8.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-force-graph-2d": "^1.29.1",
-    "react-router-dom": "^7.14.2",
     "shiki": "^4.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
-    "@tailwindcss/vite": "^4.2.2",
+    "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^24.12.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9.39.4",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
-    "glob": "^13.0.6",
+    "eslint-config-next": "^15.3.2",
     "globals": "^17.4.0",
+    "postcss": "^8.5.3",
     "tailwindcss": "^4.2.2",
-    "typescript": "~6.0.2",
-    "typescript-eslint": "^8.58.0",
-    "vite": "^8.0.4"
+    "tsx": "^4.19.4",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.58.0"
   }
 }

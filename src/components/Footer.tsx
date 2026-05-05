@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
 import { Section } from './shared/Section'
 import { Container } from './shared/Container'
 
@@ -12,7 +14,7 @@ export function Footer() {
       <Container className="py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
         {/* Brand */}
         <div className="col-span-2 md:col-span-1 flex flex-col gap-4">
-          <Link to="/" className="flex items-center">
+          <Link href="/" className="flex items-center">
             <span className="font-display text-lg font-medium tracking-[-0.02em]">Deploy</span>
             <span className="font-display text-lg font-medium tracking-[-0.02em] text-primary-dark">
               Titan
@@ -76,7 +78,7 @@ export function Footer() {
             ].map((l) => (
               <li key={l.label}>
                 <Link
-                  to={l.to}
+                  href={l.to}
                   className="text-sm text-ink-secondary hover:text-ink transition-colors"
                 >
                   {l.label}
@@ -106,7 +108,7 @@ export function Footer() {
             ].map((l) => (
               <li key={l.label}>
                 <Link
-                  to={l.to}
+                  href={l.to}
                   className="text-sm text-ink-secondary hover:text-ink transition-colors"
                 >
                   {l.label}
@@ -133,7 +135,7 @@ export function Footer() {
             ].map((l) => (
               <li key={l.label}>
                 <Link
-                  to={l.to}
+                  href={l.to}
                   className="text-sm text-ink-secondary hover:text-ink transition-colors"
                 >
                   {l.label}
@@ -152,25 +154,25 @@ export function Footer() {
           </span>
           <div className="flex items-center gap-6">
             <Link
-              to="/terms"
+              href="/terms"
               className="text-xs text-ink-quaternary hover:text-ink-secondary transition-colors"
             >
               Terms
             </Link>
             <Link
-              to="/privacy"
+              href="/privacy"
               className="text-xs text-ink-quaternary hover:text-ink-secondary transition-colors"
             >
               Privacy
             </Link>
             <Link
-              to="/security"
+              href="/security"
               className="text-xs text-ink-quaternary hover:text-ink-secondary transition-colors"
             >
               Security
             </Link>
             <Link
-              to="/sitemap"
+              href="/sitemap"
               className="text-xs text-ink-quaternary hover:text-ink-secondary transition-colors"
             >
               Site Map

@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 
 export type ThemeMode = 'light' | 'dark' | 'system'
@@ -14,7 +16,6 @@ const ThemeContext = createContext<ThemeContextValue | null>(null)
 const STORAGE_KEY = 'dt-theme'
 
 function getSystemTheme(): ResolvedTheme {
-  if (typeof window === 'undefined') return 'light'
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
@@ -33,23 +34,33 @@ function applyTheme(resolved: ResolvedTheme) {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [mode, setModeState] = useState<ThemeMode>(() => {
+  // Always start with 'light' so server HTML and first client render agree.
+  // The real stored/system preference is applied after mount in the effect below.
+  const [mode, setModeState] = useState<ThemeMode>('light')
+  const [mounted, setMounted] = useState(false)
+
+  // After mount: read the real preference and sync the DOM once.
+  useEffect(() => {
+    let stored: ThemeMode | null = null
     try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored === 'light' || stored === 'dark' || stored === 'system') return stored
+      const raw = localStorage.getItem(STORAGE_KEY)
+      if (raw === 'light' || raw === 'dark' || raw === 'system') stored = raw
     } catch {
       // ignore
     }
-    return 'system'
-  })
+    const real: ThemeMode = stored ?? 'system'
+    setModeState(real)
+    applyTheme(resolveTheme(real))
+    setMounted(true)
+  }, [])
 
-  const resolved = resolveTheme(mode)
-
+  // Keep the DOM in sync whenever mode changes after mount.
   useEffect(() => {
-    applyTheme(resolved)
-  }, [resolved])
+    if (!mounted) return
+    applyTheme(resolveTheme(mode))
+  }, [mode, mounted])
 
-  // Listen for system preference changes when mode is 'system'
+  // Listen for OS preference changes when mode is 'system'.
   useEffect(() => {
     if (mode !== 'system') return
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
@@ -67,6 +78,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
     applyTheme(resolveTheme(next))
   }
+
+  // Expose 'light' until mounted so all children render identically to SSR.
+  const resolved: ResolvedTheme = mounted ? resolveTheme(mode) : 'light'
 
   return (
     <ThemeContext.Provider value={{ mode, resolved, setMode }}>

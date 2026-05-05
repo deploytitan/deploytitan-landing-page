@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import { cn } from '../../utils'
 import { useTheme } from '../../hooks/useTheme'
@@ -36,13 +38,18 @@ interface CodeBlockProps {
 
 export function CodeBlock({ code, lang = 'bash', filename, copy = true, className }: CodeBlockProps) {
   const { resolved } = useTheme()
-  const shikiTheme = resolved === 'dark' ? 'github-dark' : 'github-light'
-  const bgColor = resolved === 'dark' ? '#0d1117' : '#f6f8fa'
-  const textMuted = resolved === 'dark' ? 'text-white/40' : 'text-black/40'
-  const textAction = resolved === 'dark'
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+
+  // Use a stable server-safe default until mounted to match SSR output exactly.
+  const theme = mounted ? resolved : 'light'
+  const shikiTheme = theme === 'dark' ? 'github-dark' : 'github-light'
+  const bgColor = theme === 'dark' ? '#0d1117' : '#f6f8fa'
+  const textMuted = theme === 'dark' ? 'text-white/40' : 'text-black/40'
+  const textAction = theme === 'dark'
     ? 'text-white/30 hover:text-white/60'
     : 'text-black/30 hover:text-black/60'
-  const headerBg = resolved === 'dark' ? 'border-white/[0.06] bg-white/[0.02]' : 'border-black/[0.06] bg-black/[0.02]'
+  const headerBg = theme === 'dark' ? 'border-white/[0.06] bg-white/[0.02]' : 'border-black/[0.06] bg-black/[0.02]'
 
   const [html, setHtml] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
@@ -61,7 +68,6 @@ export function CodeBlock({ code, lang = 'bash', filename, copy = true, classNam
     })
     return () => { cancelled = true }
   }, [trimmed, lang, shikiTheme])
-
   const handleCopy = async () => {
     await navigator.clipboard.writeText(trimmed)
     setCopied(true)
@@ -113,7 +119,7 @@ export function CodeBlock({ code, lang = 'bash', filename, copy = true, classNam
           <div dangerouslySetInnerHTML={{ __html: html }} />
         ) : (
           // Plain-text fallback while shiki loads
-          <pre className={cn('font-mono text-[13px] leading-[1.7] whitespace-pre', resolved === 'dark' ? 'text-white/70' : 'text-black/70')}>{trimmed}</pre>
+          <pre className={cn('font-mono text-[13px] leading-[1.7] whitespace-pre', theme === 'dark' ? 'text-white/70' : 'text-black/70')}>{trimmed}</pre>
         )}
       </div>
     </div>

@@ -6,7 +6,10 @@
  *
  * /solutions/progressive-delivery → Home / Solutions / Progressive Delivery
  */
-import { Link, useLocation } from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { nodeMeta, GROUP_LABELS, type NodeGroup } from '../../data/siteGraph.meta'
 
 // Build a quick lookup: route id → label
@@ -43,8 +46,8 @@ interface BreadcrumbsProps {
 }
 
 export function Breadcrumbs({ className = '' }: BreadcrumbsProps) {
-  const location = useLocation()
-  const parts = location.pathname.split('/').filter(Boolean)
+  const pathname = usePathname() ?? '/'
+  const parts = pathname.split('/').filter(Boolean)
 
   // Build trail: [{label, path}]
   const trail: { label: string; path: string }[] = [{ label: 'Home', path: '/' }]
@@ -69,7 +72,7 @@ export function Breadcrumbs({ className = '' }: BreadcrumbsProps) {
               <span className="text-xs text-primary font-mono">{crumb.label}</span>
             ) : (
               <Link
-                to={crumb.path}
+                href={crumb.path}
                 className="text-xs text-ink-secondary hover:text-ink transition-colors"
               >
                 {crumb.label}

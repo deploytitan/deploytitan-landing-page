@@ -1,3 +1,5 @@
+'use client'
+
 import { useScrollReveal } from '../utils'
 import { Container } from './shared/Container'
 

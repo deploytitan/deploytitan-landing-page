@@ -42,10 +42,13 @@ export const nodeMeta: NodeMeta[] = [
   { id: '/', group: 'home', weight: 5, label: 'Home', description: 'DeployTitan landing page', emoji: '🏠' },
 
   // Products
-  { id: '/products/titan-rollout',  group: 'product', weight: 4, label: 'Titan Rollout',   description: 'Progressive deployments & auto-rollback' },
-  { id: '/products/titan-shield',   group: 'product', weight: 4, label: 'Titan Shield',    description: 'Multi-cloud failover & resilience' },
-  { id: '/products/titan-sentinel', group: 'product', weight: 4, label: 'Titan Sentinel',  description: 'Risk scoring & blast-radius analysis' },
-  { id: '/products/titan-pulse',    group: 'product', weight: 3, label: 'Titan Pulse',     description: 'Deploy telemetry & DORA metrics (preview)' },
+  { id: '/products/titan-rollout',   group: 'product', weight: 4, label: 'Titan Rollout',   description: 'Progressive deployments & SLO-gated cohort rollouts' },
+  { id: '/products/titan-shield',    group: 'product', weight: 4, label: 'Titan Shield',    description: 'Multi-cloud failover & infrastructure resilience' },
+  { id: '/products/titan-foresight', group: 'product', weight: 4, label: 'Titan Foresight', description: 'Pre-merge risk scoring & dependency analysis' },
+  { id: '/products/titan-ledger',    group: 'product', weight: 4, label: 'Titan Ledger',    description: 'DORA metrics & deploy telemetry — no agents' },
+  { id: '/products/titan-phoenix',   group: 'product', weight: 4, label: 'Titan Phoenix',   description: 'SLO-triggered scoped rollback' },
+  { id: '/products/titan-insight',   group: 'product', weight: 3, label: 'Titan Insight',   description: 'Deploy-to-metric correlation & outcome intelligence (coming soon)' },
+  { id: '/products/titan-sandbox',   group: 'product', weight: 3, label: 'Titan Sandbox',   description: 'Production-shaped environments per branch (coming soon)' },
 
   // Solutions
   { id: '/solutions',                          group: 'solution', weight: 3, label: 'Solutions Overview' },
@@ -127,23 +130,24 @@ export const GROUP_COLORS: Record<NodeGroup, { light: string; dark: string }> = 
 
 export const extraLinks: ExtraLink[] = [
   // Product ↔ Solution cross-links
-  { source: '/products/titan-rollout',  target: '/solutions/progressive-delivery',   kind: 'cross-sell' },
-  { source: '/products/titan-shield',   target: '/solutions/multi-cloud-resilience', kind: 'cross-sell' },
-  { source: '/products/titan-sentinel', target: '/solutions/risk-intelligence',      kind: 'cross-sell' },
-  { source: '/solutions/platform-engineering', target: '/products/titan-rollout',    kind: 'related' },
+  { source: '/products/titan-rollout',   target: '/solutions/progressive-delivery',   kind: 'cross-sell' },
+  { source: '/products/titan-shield',    target: '/solutions/multi-cloud-resilience', kind: 'cross-sell' },
+  { source: '/products/titan-foresight', target: '/solutions/risk-intelligence',      kind: 'cross-sell' },
+  { source: '/solutions/platform-engineering', target: '/products/titan-rollout',     kind: 'related' },
 
   // Persona ↔ Product
-  { source: '/for/sre',    target: '/products/titan-sentinel', kind: 'related' },
-  { source: '/for/devops', target: '/products/titan-rollout',  kind: 'related' },
-  { source: '/for/cto',    target: '/pricing',                 kind: 'related' },
-  { source: '/for/cto',    target: '/security',                kind: 'related' },
+  { source: '/for/sre',    target: '/products/titan-phoenix',   kind: 'related' },
+  { source: '/for/devops', target: '/products/titan-rollout',   kind: 'related' },
+  { source: '/for/cto',    target: '/pricing',                  kind: 'related' },
+  { source: '/for/cto',    target: '/security',                 kind: 'related' },
 
   // Developer ↔ Product
   { source: '/integrations', target: '/products/titan-rollout',  kind: 'related' },
   { source: '/integrations', target: '/products/titan-shield',   kind: 'related' },
   { source: '/cli',          target: '/docs',                    kind: 'related' },
-  { source: '/api',          target: '/docs',                    kind: 'related' },
-  { source: '/roadmap',      target: '/products/titan-pulse',    kind: 'related' },
+  { source: '/api-reference', target: '/docs',                   kind: 'related' },
+  { source: '/roadmap',      target: '/products/titan-insight',  kind: 'related' },
+  { source: '/roadmap',      target: '/products/titan-sandbox',  kind: 'related' },
   { source: '/changelog',    target: '/blog',                    kind: 'related' },
 
   // Company

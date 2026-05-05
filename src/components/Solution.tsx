@@ -1,3 +1,5 @@
+'use client'
+
 import { useScrollReveal, useSpotlight } from '../utils'
 import { Container } from './shared/Container'
 import { Card } from './shared/Card'

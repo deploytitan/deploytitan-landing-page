@@ -1,12 +1,14 @@
+'use client'
+
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { ProductsDropdown } from './ProductsDropdown'
 import { SolutionsDropdown } from './SolutionsDropdown'
 import { MobileNav } from './MobileNav'
 import { ThemeToggle } from '../shared/ThemeToggle'
 import { useTheme } from '../../hooks/useTheme'
-
-const APP_URL = (import.meta.env.VITE_APP_URL as string) || 'https://app.deploytitan.com'
+import { APP_URL } from '@/lib/env'
 
 type DropdownKey = 'products' | 'solutions' | null
 
@@ -42,7 +44,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   const [activeDropdown, setActiveDropdown] = useState<DropdownKey>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const navRef = useRef<HTMLElement>(null)
-  const location = useLocation()
+  const pathname = usePathname()
   const { resolved } = useTheme()
 
   const products = useAnimatedDropdown('products', activeDropdown)
@@ -53,7 +55,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
     setActiveDropdown(null)
     setMobileOpen(false)
     document.body.style.overflow = ''
-  }, [location])
+  }, [pathname])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -121,7 +123,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
       >
         <div className="max-w-page justify-between md:justify-normal mx-auto px-6 lg:px-12 flex items-center h-20 gap-8">
           {/* Logo */}
-          <Link to="/" className="flex items-center shrink-0 group">
+          <Link href="/" className="flex items-center shrink-0 group">
             <span className="font-display text-2xl font-medium tracking-[-0.02em]">Deploy</span>
             <span className="font-display text-2xl font-medium tracking-[-0.02em] text-primary-dark">
               Titan
@@ -213,14 +215,14 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
             </div>
 
             <Link
-              to="/pricing"
+              href="/pricing"
               className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline"
             >
               Pricing
             </Link>
 
             <Link
-              to="/customers"
+              href="/customers"
               className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline"
             >
               Customers
@@ -238,8 +240,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
             </a>
             <a
               href="/early-access"
-              className="inline-flex items-center gap-2 bg-ink text-surface px-5 py-2.5 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
-              style={{ borderRadius: '2px' }}
+              className="inline-flex items-center gap-2 bg-ink text-surface px-5 py-2.5 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"              style={{ borderRadius: '2px' }}
             >
               Get started
               <svg

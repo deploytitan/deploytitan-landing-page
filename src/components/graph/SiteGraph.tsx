@@ -1,6 +1,8 @@
+'use client'
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ForceGraph2D from 'react-force-graph-2d'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useRouter, usePathname } from 'next/navigation'
 import { useTheme } from '../../hooks/useTheme'
 import {
   nodeMeta,
@@ -14,7 +16,6 @@ import {
 let _generatedNodes: { id: string; label: string; file: string }[] = []
 let _generatedLinks: { source: string; target: string; kind: string }[] = []
 try {
-  // @ts-ignore — generated at build time
   const gen = await import('../../data/siteGraph.generated')
   _generatedNodes = gen.generatedNodes ?? []
   _generatedLinks = gen.generatedLinks ?? []
@@ -122,8 +123,8 @@ interface Props {
 
 export function SiteGraph({ height = 600, mini = false, focusId }: Props) {
   const { resolved } = useTheme()
-  const navigate = useNavigate()
-  const location = useLocation()
+  const router = useRouter()
+  const pathname = usePathname()
 
   // Hover is a ref — never triggers re-render / graphData rebuild
   const hoveredIdRef = useRef<string | null>(focusId ?? null)
@@ -188,8 +189,8 @@ export function SiteGraph({ height = 600, mini = false, focusId }: Props) {
   const bgRgba = resolved === 'dark' ? 'rgba(13,12,10,0.82)' : 'rgba(250,250,249,0.82)'
 
   const handleNodeClick = useCallback((node: any) => {
-    if (node.id && node.id.startsWith('/')) navigate(node.id)
-  }, [navigate])
+    if (node.id && node.id.startsWith('/')) router.push(node.id)
+  }, [router])
 
   const handleNodeHover = useCallback((node: any) => {
     hoveredIdRef.current = node ? node.id : null
@@ -208,7 +209,7 @@ export function SiteGraph({ height = 600, mini = false, focusId }: Props) {
     const isDimmed = hovered !== null && hovered !== node.id && !(nodeNeighbours?.has(node.id))
 
     const radius = Math.max(3, (node.weight ?? 2) * 3.5)
-    const isActive = location.pathname === node.id
+    const isActive = pathname === node.id
 
     ctx.globalAlpha = isDimmed ? 0.2 : 1
 
@@ -264,7 +265,7 @@ export function SiteGraph({ height = 600, mini = false, focusId }: Props) {
     }
 
     ctx.globalAlpha = 1
-  }, [location.pathname, textColor, bgRgba, mini, neighbours])
+  }, [pathname, textColor, bgRgba, mini, neighbours])
 
   const toggleGroup = (g: NodeGroup) => {
     setActiveGroups((prev) => {

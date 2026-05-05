@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
 import { Section } from './shared/Section'
 import { Container } from './shared/Container'
-
-const APP_URL = (import.meta.env.VITE_APP_URL as string) || 'https://app.deploytitan.com'
-const DEMO_URL = (import.meta.env.VITE_DEMO_URL as string) || 'https://demo.deploytitan.com'
+import { APP_URL, DEMO_URL } from '@/lib/env'
 
 interface MidCTAProps {
   heading?: string
@@ -72,7 +72,7 @@ export function MidCTA({
               </a>
             ) : (
               <Link
-                to={secondaryHref!}
+                href={secondaryHref!}
                 className="inline-flex items-center gap-2 px-5 py-3 border border-line text-ink-secondary text-sm font-medium hover:border-primary/30 hover:text-ink transition-colors"
                 style={{ borderRadius: '2px' }}
               >

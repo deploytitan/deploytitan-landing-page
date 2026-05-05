@@ -1,3 +1,5 @@
+'use client'
+
 import type { ReactNode } from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { useScrollReveal } from '../utils'
@@ -342,7 +344,7 @@ export function Outcomes() {
               </span>
             </div>
             <a
-              href={import.meta.env.VITE_DEMO_URL || 'https://demo.deploytitan.com'}
+              href={process.env.NEXT_PUBLIC_DEMO_URL || 'https://demo.deploytitan.com'}
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium flex items-center gap-2 hover:text-primary transition-colors"

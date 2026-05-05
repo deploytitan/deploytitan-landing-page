@@ -1,4 +1,6 @@
-import {Link} from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
 
 const solutions = [
   {
@@ -72,7 +74,7 @@ export function SolutionsDropdown({ onClose }: Props) {
         {solutions.map((s) => (
           <Link
             key={s.route}
-            to={s.route}
+            href={s.route}
             onClick={onClose}
             className="group flex flex-col gap-2 px-5 py-4 hover:bg-surface-alt transition-colors"
           >
@@ -93,14 +95,14 @@ export function SolutionsDropdown({ onClose }: Props) {
       {/* Footer row */}
       <div className="px-6 py-3 border-t border-line-subtle flex items-center justify-between bg-surface-alt/50">
         <Link
-          to="/solutions"
+          href="/solutions"
           onClick={onClose}
           className="text-xs text-ink-secondary hover:text-ink transition-colors"
         >
           View all solutions →
         </Link>
         <Link
-          to="/how-it-works"
+          href="/how-it-works"
           onClick={onClose}
           className="text-xs text-primary hover:text-primary-dark font-medium transition-colors"
         >

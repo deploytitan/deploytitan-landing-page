@@ -1,11 +1,11 @@
+'use client'
+
 import {useCallback, useEffect, useRef, useState} from 'react'
 import {sleep, useScrollReveal} from '../utils'
+import { APP_URL, DEMO_URL } from '@/lib/env'
 
 const PRIMARY = 'var(--color-primary)'
 const PRIMARY_RGBA = 'rgba(201,168,76'
-
-const DEMO_URL = import.meta.env.VITE_DEMO_URL as string || 'https://demo.deploytitan.com'
-const APP_URL = import.meta.env.VITE_APP_URL as string || 'https://app.deploytitan.com'
 
 /* ========== Traffic Split Visual ========== */
 
@@ -308,21 +308,21 @@ export function Hero() {
 
           {/* Heading */}
           <h1 data-reveal data-reveal-delay="1" className="font-display font-medium text-[clamp(2rem,3.8vw,4rem)] leading-[1.08] tracking-[-0.022em] mb-6">
-            Ship faster.<br />Fix issues instantly.<br />
+            Ship the version.<br />Hold the line.<br />
             <span className="relative inline-block">
-              <span className="relative z-10">Stay in control.</span>
+              <span className="relative z-10">Undo the bad ones.</span>
               <span className="absolute bottom-1 left-0 right-0 h-3 -z-0" style={{ background: `${PRIMARY_RGBA},0.12)` }} />
             </span>
           </h1>
 
           {/* Subtitle */}
           <p data-reveal data-reveal-delay="2" className="text-lg text-ink-secondary max-w-md mb-4 leading-relaxed">
-            Control what happens after deployment. Detect issues, roll back automatically, and keep your system running—without redeploying.
+            Five products. One release lifecycle. From pre-merge risk scoring to post-release outcome measurement — every step of the way from code to production.
           </p>
 
           {/* Supporting line */}
           <p data-reveal data-reveal-delay="2" className="text-sm max-w-md mb-8 leading-relaxed font-medium" style={{ color: PRIMARY }}>
-            Most teams slow down because they're afraid of breaking production. You don't have to.
+            Learn from every release.
           </p>
 
           {/* CTAs */}

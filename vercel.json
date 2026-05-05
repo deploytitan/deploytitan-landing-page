@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/products/titan-sentinel", "destination": "/products/titan-foresight", "permanent": true },
+    { "source": "/products/titan-pulse",    "destination": "/products/titan-ledger",    "permanent": true }
+  ]
+}

@@ -1,3 +1,5 @@
+'use client'
+
 import { useScrollReveal } from '../utils'
 import { Section } from './shared/Section'
 import { Container } from './shared/Container'

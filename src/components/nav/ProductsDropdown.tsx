@@ -1,11 +1,25 @@
-import {Link} from 'react-router-dom'
+'use client'
 
-const products = [
+import Link from 'next/link'
+
+const LIVE_PRODUCTS = [
+  {
+    route: '/products/titan-foresight',
+    eyebrow: 'Titan Foresight',
+    tagline: 'One explained risk score per PR — before traffic shifts.',
+    bullets: ['Dependency graph analysis', 'Change velocity signals', 'Safe / review / hold score'],
+    badge: null,
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    ),
+  },
   {
     route: '/products/titan-rollout',
     eyebrow: 'Titan Rollout',
-    tagline: 'Progressive deployments with automatic rollback.',
-    bullets: ['Cohort & canary rollouts', 'Versioned releases', 'Automatic regression rollback'],
+    tagline: 'Cohort rollouts gated on real SLO signals.',
+    bullets: ['Canary & cohort rollouts', 'Versioned releases', 'Auto-pause on threshold breach'],
     badge: null,
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -16,8 +30,8 @@ const products = [
   {
     route: '/products/titan-shield',
     eyebrow: 'Titan Shield',
-    tagline: 'Multi-cloud failover and disaster recovery.',
-    bullets: ['AWS / GCP / Azure failover', 'Zero-latency in-memory routing', 'Disaster recovery built-in'],
+    tagline: 'Multi-cloud failover before your users notice.',
+    bullets: ['AWS / GCP / Azure failover', 'Zero-latency in-memory routing', 'Geo-aware failover policies'],
     badge: null,
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -26,28 +40,41 @@ const products = [
     ),
   },
   {
-    route: '/products/titan-sentinel',
-    eyebrow: 'Titan Sentinel',
-    tagline: 'Risk scoring and observability before and during deploys.',
-    bullets: ['Shift-left PR risk scoring', 'Blast-radius analysis', 'SLO-bound guardrails'],
+    route: '/products/titan-phoenix',
+    eyebrow: 'Titan Phoenix',
+    tagline: 'Undo a bad release in seconds — only where it broke.',
+    bullets: ['SLO-triggered rollback', 'Scoped to affected cohort', 'Policy-as-code'],
     badge: null,
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
       </svg>
     ),
   },
   {
-    route: '/products/titan-pulse',
-    eyebrow: 'Titan Pulse',
-    tagline: 'Deploy telemetry, DORA metrics, and unified dashboards.',
+    route: '/products/titan-ledger',
+    eyebrow: 'Titan Ledger',
+    tagline: 'DORA metrics measured automatically from your CI/CD.',
     bullets: ['Zero-instrumentation events', 'DORA metrics out of the box', 'Team-level scorecards'],
-    badge: 'Preview',
+    badge: null,
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
       </svg>
     ),
+  },
+]
+
+const COMING_SOON = [
+  {
+    route: '/products/titan-insight',
+    eyebrow: 'Titan Insight',
+    tagline: 'Deploy-to-metric correlation & outcome intelligence.',
+  },
+  {
+    route: '/products/titan-sandbox',
+    eyebrow: 'Titan Sandbox',
+    tagline: 'Production-shaped environments per branch.',
   },
 ]
 
@@ -59,24 +86,23 @@ export function ProductsDropdown({ onClose }: Props) {
   return (
     <div
       className="absolute top-full mt-2 bg-surface border border-line shadow-[0_8px_32px_rgba(8,5,3,0.08)] z-50"
-      style={{ borderRadius: '2px', minWidth: '780px' }}
+      style={{ borderRadius: '2px', minWidth: '900px' }}
     >
       {/* Top bar */}
       <div className="px-6 pt-5 pb-3 border-b border-line-subtle flex items-center justify-between">
         <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Products</span>
-        <span className="text-xs text-ink-quaternary">The DeployTitan platform</span>
+        <span className="text-xs text-ink-quaternary">Detect · Deliver · Defend · Recover · Measure</span>
       </div>
 
-      {/* Four pillars */}
-      <div className="grid grid-cols-4 divide-x divide-line">
-        {products.map((p) => (
+      {/* Five live products */}
+      <div className="grid grid-cols-5 divide-x divide-line">
+        {LIVE_PRODUCTS.map((p) => (
           <Link
             key={p.route}
-            to={p.route}
+            href={p.route}
             onClick={onClose}
-            className="group flex flex-col gap-3 px-5 py-5 hover:bg-surface-alt transition-colors"
+            className="group flex flex-col gap-3 px-4 py-5 hover:bg-surface-alt transition-colors"
           >
-            {/* Icon + name row */}
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
                 <span className="text-primary/70 group-hover:text-primary transition-colors">{p.icon}</span>
@@ -84,11 +110,6 @@ export function ProductsDropdown({ onClose }: Props) {
                   {p.eyebrow}
                 </span>
               </div>
-              {p.badge && (
-                <span className="font-mono text-[9px] border border-primary/40 text-primary px-1.5 py-0.5 shrink-0" style={{ borderRadius: '2px' }}>
-                  {p.badge}
-                </span>
-              )}
             </div>
             <span className="text-xs text-ink-tertiary leading-relaxed">{p.tagline}</span>
             <ul className="flex flex-col gap-1.5 mt-auto pt-2 border-t border-line-subtle">
@@ -103,17 +124,36 @@ export function ProductsDropdown({ onClose }: Props) {
         ))}
       </div>
 
+      {/* Coming soon strip */}
+      <div className="px-6 py-3 border-t border-line-subtle bg-surface-alt/30 flex items-center gap-6">
+        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest shrink-0">Coming soon</span>
+        {COMING_SOON.map((p) => (
+          <Link
+            key={p.route}
+            href={p.route}
+            onClick={onClose}
+            className="flex items-center gap-2 group"
+          >
+            <span className="font-mono text-[9px] border border-primary/30 text-primary/70 px-1.5 py-0.5 shrink-0" style={{ borderRadius: '2px' }}>
+              Roadmap
+            </span>
+            <span className="text-xs font-semibold text-ink-secondary group-hover:text-ink transition-colors">{p.eyebrow}</span>
+            <span className="text-xs text-ink-quaternary hidden md:inline">— {p.tagline}</span>
+          </Link>
+        ))}
+      </div>
+
       {/* Footer row */}
       <div className="px-6 py-3 border-t border-line-subtle flex items-center justify-between bg-surface-alt/50">
         <Link
-          to="/solutions"
+          href="/solutions"
           onClick={onClose}
           className="text-xs text-ink-secondary hover:text-ink transition-colors"
         >
           Browse by use case →
         </Link>
         <Link
-          to="/pricing"
+          href="/pricing"
           onClick={onClose}
           className="text-xs text-primary hover:text-primary-dark font-medium transition-colors"
         >

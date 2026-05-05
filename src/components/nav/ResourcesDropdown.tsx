@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom'
+'use client'
 
-const DEMO_URL = import.meta.env.VITE_DEMO_URL as string || 'https://demo.deploytitan.com'
+import { DEMO_URL } from '@/lib/env'
+import Link from 'next/link'
+
 
 const resources = [
   { label: 'Documentation', description: 'Guides, API reference, and quickstarts', route: '/docs', external: false },
@@ -52,7 +54,7 @@ export function ResourcesDropdown({ onClose }: Props) {
               </a>
             ) : (
               <Link
-                to={r.route}
+                href={r.route}
                 onClick={onClose}
                 className="group flex items-start gap-3 px-5 py-3 hover:bg-surface-alt transition-colors"
               >

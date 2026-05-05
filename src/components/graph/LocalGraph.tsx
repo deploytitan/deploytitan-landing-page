@@ -1,4 +1,7 @@
-import { useLocation, Link } from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useMemo } from 'react'
 import { nodeMeta, extraLinks, GROUP_COLORS } from '../../data/siteGraph.meta'
 import { useTheme } from '../../hooks/useTheme'
@@ -6,7 +9,6 @@ import { useTheme } from '../../hooks/useTheme'
 // Lazily merge in auto-generated links (Vite plugin output)
 let _generatedLinks: { source: string; target: string; kind: string }[] = []
 try {
-  // @ts-ignore — generated at build time
   const gen = await import('../../data/siteGraph.generated')
   _generatedLinks = gen.generatedLinks ?? []
 } catch {
@@ -22,9 +24,9 @@ interface RelatedNode {
 }
 
 export function LocalGraph() {
-  const location = useLocation()
+  const pathname = usePathname()
   const { resolved } = useTheme()
-  const currentId = location.pathname
+  const currentId = pathname
 
   const related = useMemo((): RelatedNode[] => {
     const metaMap = new Map(nodeMeta.map((n) => [n.id, n]))
@@ -92,7 +94,7 @@ export function LocalGraph() {
         {related.map((n) => (
           <Link
             key={n.id}
-            to={n.id}
+            href={n.id}
             className="flex items-center gap-2 px-2 py-1.5 hover:bg-surface transition-colors group"
             style={{ borderRadius: '2px' }}
           >
@@ -106,7 +108,7 @@ export function LocalGraph() {
       </div>
 
       <Link
-        to="/sitemap"
+        href="/sitemap-page"
         className="mt-3 flex items-center gap-1 text-[10px] font-mono text-primary hover:text-primary-dark transition-colors"
       >
         View full site graph →

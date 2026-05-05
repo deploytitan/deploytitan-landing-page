@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { type ReactNode } from 'react'
 
 interface ProductTeaserProps {
@@ -36,7 +36,7 @@ export function ProductTeaser({ eyebrow, name, tagline, description, bullets, ro
 
         <div className="flex items-center gap-4 pt-2">
           <Link
-            to={route}
+            href={route}
             className="inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-primary-dark transition-colors group"
           >
             See details
@@ -45,7 +45,7 @@ export function ProductTeaser({ eyebrow, name, tagline, description, bullets, ro
             </svg>
           </Link>
           <Link
-            to="/docs"
+            href="/docs"
             className="inline-flex items-center gap-1.5 text-sm text-ink-tertiary hover:text-ink-secondary transition-colors"
           >
             Read the docs
