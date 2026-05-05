@@ -7,15 +7,36 @@ import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
 
 const CROSS_LINKS = [
-  { label: 'Titan Rollout', desc: 'Move traffic to a new version, safely', href: '/products/titan-rollout' },
-  { label: 'Titan Phoenix', desc: 'Undo a bad release in seconds', href: '/products/titan-phoenix' },
-  { label: 'Titan Foresight', desc: 'Score every change before it ships', href: '/products/titan-foresight' },
+  {
+    label: 'Titan Rollout',
+    desc: 'Move traffic to a new version, safely',
+    href: '/products/titan-rollout',
+  },
+  {
+    label: 'Titan Phoenix',
+    desc: 'Undo a bad release in seconds',
+    href: '/products/titan-phoenix',
+  },
+  {
+    label: 'Titan Foresight',
+    desc: 'Score every change before it ships',
+    href: '/products/titan-foresight',
+  },
 ]
 
 const CAPABILITIES = [
   {
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
       </svg>
     ),
@@ -25,7 +46,16 @@ const CAPABILITIES = [
   },
   {
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <path d="M18 20V10M12 20V4M6 20v-6" />
       </svg>
     ),
@@ -35,8 +65,18 @@ const CAPABILITIES = [
   },
   {
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" /><path d="M12 8v4l3 3" />
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 8v4l3 3" />
       </svg>
     ),
     title: 'Historical trend analysis',
@@ -45,8 +85,19 @@ const CAPABILITIES = [
   },
   {
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
     ),
     title: 'Team & service scorecards',
@@ -55,8 +106,18 @@ const CAPABILITIES = [
   },
   {
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18M9 21V9" />
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M3 9h18M9 21V9" />
       </svg>
     ),
     title: 'Native exporters',
@@ -65,7 +126,16 @@ const CAPABILITIES = [
   },
   {
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 1 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 1 1-6 0v-1m6 0H9" />
       </svg>
     ),
@@ -121,13 +191,13 @@ export default function TitanLedger() {
             <br className="hidden md:block" /> measured automatically.
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
-            Ledger turns the events your deploys already produce into history you can act on.
-            DORA, trends, and team scorecards — no agents, no tagging.
+            Ledger turns the events your deploys already produce into history you can act on. DORA,
+            trends, and team scorecards — no agents, no tagging.
           </p>
           <div className="flex flex-wrap gap-4">
             <a
               href="/early-access"
-              className="inline-flex items-center gap-2 bg-primary text-ink text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
+              className="inline-flex items-center gap-2 bg-primary text-ink dark:text-surface text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
               style={{ borderRadius: '2px' }}
             >
               Join early access
@@ -232,16 +302,28 @@ export default function TitanLedger() {
                 ))}
               </ul>
             </div>
-            <div className="sharp-card border border-line p-6 bg-ink" data-reveal>
+            <div className="sharp-card border border-line p-6 bg-ink dark:bg-surface" data-reveal>
               <p className="text-xs font-mono text-surface/40 uppercase tracking-widest mb-5">
                 Event flow
               </p>
               <div className="flex flex-col gap-3">
                 {[
                   { label: 'dt deploy', sub: 'CLI / CI trigger', color: 'text-primary' },
-                  { label: 'DeployTitan Controller', sub: 'Orchestration + health gates', color: 'text-surface/80' },
-                  { label: 'Ledger Event Bus', sub: 'Structured deploy events', color: 'text-primary' },
-                  { label: 'DORA · Trends · Exporters', sub: 'Your analytics stack', color: 'text-surface/80' },
+                  {
+                    label: 'DeployTitan Controller',
+                    sub: 'Orchestration + health gates',
+                    color: 'text-surface/80',
+                  },
+                  {
+                    label: 'Ledger Event Bus',
+                    sub: 'Structured deploy events',
+                    color: 'text-primary',
+                  },
+                  {
+                    label: 'DORA · Trends · Exporters',
+                    sub: 'Your analytics stack',
+                    color: 'text-surface/80',
+                  },
                 ].map((row, i) => (
                   <div key={row.label}>
                     <div className="sharp-card border border-line/30 bg-surface-alt/10 px-4 py-3">
@@ -250,7 +332,15 @@ export default function TitanLedger() {
                     </div>
                     {i < 3 && (
                       <div className="flex justify-center py-1">
-                        <svg width="12" height="16" viewBox="0 0 12 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-primary/40">
+                        <svg
+                          width="12"
+                          height="16"
+                          viewBox="0 0 12 16"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          className="text-primary/40"
+                        >
                           <line x1="6" y1="0" x2="6" y2="12" />
                           <polyline points="3 9 6 12 9 9" />
                         </svg>
@@ -297,7 +387,10 @@ export default function TitanLedger() {
       {/* Cross-links */}
       <section className="py-16 border-b border-line">
         <Container width="6xl" padding="default">
-          <p className="text-xs font-mono tracking-widest uppercase text-ink-tertiary mb-6" data-reveal>
+          <p
+            className="text-xs font-mono tracking-widest uppercase text-ink-tertiary mb-6"
+            data-reveal
+          >
             Also in DeployTitan
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

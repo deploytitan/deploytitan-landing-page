@@ -8,7 +8,6 @@ import { InstallTabs } from '../../components/shared/InstallTabs'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 
-
 const POLICY_CODE = `# titan-shield.hcl
 failover "global-api" {
   primary   = "aws-us-east-1"
@@ -36,12 +35,25 @@ dt shield failover \\
 dt shield failback --service global-api --auto`
 
 const CROSS_LINKS = [
-  { label: 'Titan Rollout', desc: 'Progressive deployments, SLO-gated', href: '/products/titan-rollout' },
-  { label: 'Titan Phoenix', desc: 'Undo a bad release in seconds', href: '/products/titan-phoenix' },
-  { label: 'Titan Foresight', desc: 'Score every change before it ships', href: '/products/titan-foresight' },
+  {
+    label: 'Titan Rollout',
+    desc: 'Progressive deployments, SLO-gated',
+    href: '/products/titan-rollout',
+  },
+  {
+    label: 'Titan Phoenix',
+    desc: 'Undo a bad release in seconds',
+    href: '/products/titan-phoenix',
+  },
+  {
+    label: 'Titan Foresight',
+    desc: 'Score every change before it ships',
+    href: '/products/titan-foresight',
+  },
 ]
 
-export default function TitanShield() {  useScrollReveal()
+export default function TitanShield() {
+  useScrollReveal()
 
   return (
     <>
@@ -62,7 +74,7 @@ export default function TitanShield() {  useScrollReveal()
           <div className="flex flex-wrap gap-4">
             <a
               href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-primary  text-ink text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
+              className="inline-flex items-center gap-2 bg-primary  text-ink text-sm font-semibold dark:text-surface px-5 py-2.5 hover:bg-primary-light transition-colors"
               style={{ borderRadius: '2px' }}
             >
               Start free trial

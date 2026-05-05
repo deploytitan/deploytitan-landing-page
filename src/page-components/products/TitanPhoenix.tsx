@@ -27,7 +27,7 @@ const CAPABILITIES = [
   },
   {
     title: 'Scoped rollback — cohort, region, or flag',
-    desc: 'Phoenix doesn\'t roll back the whole service. It identifies the exact slice that\'s failing — a specific user cohort, a single region, or a feature flag state — and reverts only that.',
+    desc: "Phoenix doesn't roll back the whole service. It identifies the exact slice that's failing — a specific user cohort, a single region, or a feature flag state — and reverts only that.",
   },
   {
     title: 'Feature-flag-aware rollback',
@@ -55,9 +55,21 @@ const METRICS = [
 ]
 
 const CROSS_LINKS = [
-  { label: 'Titan Rollout', desc: 'Move traffic to a new version, safely', href: '/products/titan-rollout' },
-  { label: 'Titan Foresight', desc: 'Score every change before it ships', href: '/products/titan-foresight' },
-  { label: 'Titan Ledger', desc: 'Every deploy, measured automatically', href: '/products/titan-ledger' },
+  {
+    label: 'Titan Rollout',
+    desc: 'Move traffic to a new version, safely',
+    href: '/products/titan-rollout',
+  },
+  {
+    label: 'Titan Foresight',
+    desc: 'Score every change before it ships',
+    href: '/products/titan-foresight',
+  },
+  {
+    label: 'Titan Ledger',
+    desc: 'Every deploy, measured automatically',
+    href: '/products/titan-ledger',
+  },
 ]
 
 export default function TitanPhoenix() {
@@ -76,14 +88,14 @@ export default function TitanPhoenix() {
             <br className="hidden md:block" /> in seconds — only where it broke.
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
-            When a release breaks, Phoenix doesn't roll back the whole service. It reverts the
-            exact slice that's failing — bad cohort, bad region, bad flag — triggered by your
-            SLOs in seconds.
+            When a release breaks, Phoenix doesn't roll back the whole service. It reverts the exact
+            slice that's failing — bad cohort, bad region, bad flag — triggered by your SLOs in
+            seconds.
           </p>
           <div className="flex flex-wrap gap-4">
             <a
               href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-primary text-ink text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
+              className="inline-flex items-center gap-2 bg-primary text-ink text-sm font-semibold px-5 py-2.5 hover:bg-primary-light dark:text-surface transition-colors"
               style={{ borderRadius: '2px' }}
             >
               Start free trial
@@ -106,12 +118,14 @@ export default function TitanPhoenix() {
             How Phoenix is different
           </p>
           <blockquote className="text-xl font-semibold text-ink leading-snug mb-4 border-l-2 border-primary pl-5">
-            "Argo rolls back the deployment.<br />Phoenix rolls back the failure."
+            "Argo rolls back the deployment.
+            <br />
+            Phoenix rolls back the failure."
           </blockquote>
           <p className="text-ink-secondary leading-relaxed max-w-2xl">
             Deployment-level rollback tools revert the whole service. Phoenix identifies the scope
-            of the failure first — then acts only on that scope. The rest of your users keep
-            running the new version.
+            of the failure first — then acts only on that scope. The rest of your users keep running
+            the new version.
           </p>
         </Container>
       </section>
@@ -198,7 +212,10 @@ export default function TitanPhoenix() {
       {/* Cross-links */}
       <section className="py-16 border-t border-line">
         <Container width="6xl" padding="default">
-          <p className="text-xs font-mono tracking-widest uppercase text-ink-tertiary mb-6" data-reveal>
+          <p
+            className="text-xs font-mono tracking-widest uppercase text-ink-tertiary mb-6"
+            data-reveal
+          >
             Also in DeployTitan
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

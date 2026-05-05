@@ -7,7 +7,6 @@ import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
 
-
 const WINS = [
   {
     title: 'Policy-as-code for every team',
@@ -132,7 +131,8 @@ const WINS = [
   },
 ]
 
-export default function SolutionPlatformEngineering() {  useScrollReveal()
+export default function SolutionPlatformEngineering() {
+  useScrollReveal()
 
   return (
     <>
@@ -159,7 +159,7 @@ export default function SolutionPlatformEngineering() {  useScrollReveal()
           <div className="flex flex-wrap items-center gap-4">
             <a
               href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
+              className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium dark:text-surface transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
               style={{ borderRadius: '2px' }}
             >
               Start free trial

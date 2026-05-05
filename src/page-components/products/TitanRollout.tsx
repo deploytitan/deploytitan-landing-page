@@ -9,7 +9,6 @@ import { InstallTabs } from '../../components/shared/InstallTabs'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 
-
 const DEPLOY_CODE = `# Deploy with a canary strategy
 dt deploy \\
   --service my-api \\
@@ -35,12 +34,25 @@ rollout "my-api" {
 }`
 
 const CROSS_LINKS = [
-  { label: 'Titan Shield', desc: 'Your users stay up when a region doesn\'t', href: '/products/titan-shield' },
-  { label: 'Titan Foresight', desc: 'Score every change before it ships', href: '/products/titan-foresight' },
-  { label: 'Titan Phoenix', desc: 'Undo a bad release in seconds', href: '/products/titan-phoenix' },
+  {
+    label: 'Titan Shield',
+    desc: "Your users stay up when a region doesn't",
+    href: '/products/titan-shield',
+  },
+  {
+    label: 'Titan Foresight',
+    desc: 'Score every change before it ships',
+    href: '/products/titan-foresight',
+  },
+  {
+    label: 'Titan Phoenix',
+    desc: 'Undo a bad release in seconds',
+    href: '/products/titan-phoenix',
+  },
 ]
 
-export default function TitanRollout() {  useScrollReveal()
+export default function TitanRollout() {
+  useScrollReveal()
 
   return (
     <>
@@ -65,7 +77,7 @@ export default function TitanRollout() {  useScrollReveal()
           <div className="flex flex-wrap gap-4">
             <a
               href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-primary text-ink text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
+              className="inline-flex items-center gap-2 bg-primary text-ink dark:text-surface text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
               style={{ borderRadius: '2px' }}
             >
               Start free trial

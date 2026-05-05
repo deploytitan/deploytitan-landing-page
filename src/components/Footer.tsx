@@ -104,7 +104,6 @@ export function Footer() {
               { label: 'How it works', to: '/how-it-works' },
               { label: 'Security', to: '/security' },
               { label: 'System status', to: '/status' },
-              { label: 'Site Map', to: '/sitemap' },
             ].map((l) => (
               <li key={l.label}>
                 <Link

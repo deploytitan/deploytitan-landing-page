@@ -8,7 +8,6 @@ import { Card } from '../../components/shared/Card'
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
 import Link from 'next/link'
 
-
 const RISK_FACTORS = [
   {
     label: 'Dependency blast radius',
@@ -69,7 +68,8 @@ const GUARDRAILS = [
   },
 ]
 
-export default function SolutionRiskIntelligence() {  useScrollReveal()
+export default function SolutionRiskIntelligence() {
+  useScrollReveal()
 
   return (
     <>
@@ -96,7 +96,7 @@ export default function SolutionRiskIntelligence() {  useScrollReveal()
           <div className="flex flex-wrap items-center gap-4">
             <a
               href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
+              className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium dark:text-surface transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
               style={{ borderRadius: '2px' }}
             >
               Start free trial

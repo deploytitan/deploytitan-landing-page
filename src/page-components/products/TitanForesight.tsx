@@ -54,8 +54,16 @@ const CAPABILITIES = [
 ]
 
 const CROSS_LINKS = [
-  { label: 'Titan Rollout', desc: 'Move traffic to a new version, safely', href: '/products/titan-rollout' },
-  { label: 'Titan Phoenix', desc: 'Undo a bad release in seconds', href: '/products/titan-phoenix' },
+  {
+    label: 'Titan Rollout',
+    desc: 'Move traffic to a new version, safely',
+    href: '/products/titan-rollout',
+  },
+  {
+    label: 'Titan Phoenix',
+    desc: 'Undo a bad release in seconds',
+    href: '/products/titan-phoenix',
+  },
   { label: 'Solutions', desc: 'See all use cases', href: '/solutions' },
 ]
 
@@ -81,7 +89,7 @@ export default function TitanForesight() {
           <div className="flex flex-wrap gap-4">
             <a
               href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-primary text-ink text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
+              className="inline-flex items-center gap-2 bg-primary text-ink dark:text-surface text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
               style={{ borderRadius: '2px' }}
             >
               Start free trial
