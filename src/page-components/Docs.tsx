@@ -5,7 +5,6 @@ import { CodeBlock } from '../components/shared/CodeBlock'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 
-
 const quickLinks = [
   {
     title: 'Quickstart',
@@ -67,7 +66,7 @@ const quickLinks = [
         <path d="M6 20v-6" />
       </svg>
     ),
-    href: '/api',
+    href: '/api-reference',
     external: false,
   },
   {

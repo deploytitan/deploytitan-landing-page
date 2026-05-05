@@ -108,7 +108,7 @@ export function LocalGraph() {
       </div>
 
       <Link
-        href="/sitemap-page"
+        href="/sitemap"
         className="mt-3 flex items-center gap-1 text-[10px] font-mono text-primary hover:text-primary-dark transition-colors"
       >
         View full site graph →

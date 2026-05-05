@@ -66,7 +66,7 @@ export const nodeMeta: NodeMeta[] = [
   { id: '/docs',         group: 'developer', weight: 4, label: 'Documentation',    description: 'Quickstart, guides & API reference' },
   { id: '/integrations', group: 'developer', weight: 3, label: 'Integrations',     description: 'Kubernetes, GitHub Actions, Datadog & more' },
   { id: '/cli',          group: 'developer', weight: 3, label: 'CLI Reference',    description: 'The `dt` command-line tool' },
-  { id: '/api',          group: 'developer', weight: 3, label: 'API Reference',    description: 'REST API & webhooks' },
+  { id: '/api-reference', group: 'developer', weight: 3, label: 'API Reference',    description: 'REST API & webhooks' },
   { id: '/roadmap',      group: 'developer', weight: 3, label: 'Roadmap',          description: 'Now / Next / Later — public roadmap' },
   { id: '/changelog',    group: 'developer', weight: 2, label: 'Changelog',        description: "What's new in each release" },
   { id: '/how-it-works', group: 'developer', weight: 2, label: 'How It Works' },

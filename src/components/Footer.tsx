@@ -97,7 +97,7 @@ export function Footer() {
             {[
               { label: 'Documentation', to: '/docs' },
               { label: 'CLI Reference', to: '/cli' },
-              { label: 'API Reference', to: '/api' },
+              { label: 'API Reference', to: '/api-reference' },
               { label: 'Integrations', to: '/integrations' },
               { label: 'Roadmap', to: '/roadmap' },
               { label: 'Blog', to: '/blog' },
