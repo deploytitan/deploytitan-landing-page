@@ -1,15 +1,11 @@
 import type { MetadataRoute } from 'next'
+import { client } from '@/sanity/lib/client'
+import { postSlugsQuery } from '@/sanity/lib/queries'
 
 const BASE_URL = 'https://deploytitan.com'
 
-/**
- * Static pages with their change frequency and priority.
- * Dynamic routes (e.g. /integrations/[slug]) would need to be
- * expanded here once slug data is available.
- */
 const staticRoutes: Array<{
   url: string
-  lastModified?: Date
   changeFrequency?: MetadataRoute.Sitemap[number]['changeFrequency']
   priority?: number
 }> = [
@@ -31,6 +27,7 @@ const staticRoutes: Array<{
   { url: '/solutions/multi-cloud-resilience', changeFrequency: 'monthly', priority: 0.8 },
   { url: '/solutions/risk-intelligence',      changeFrequency: 'monthly', priority: 0.8 },
   { url: '/solutions/platform-engineering',   changeFrequency: 'monthly', priority: 0.8 },
+  { url: '/solutions/instant-rollback',       changeFrequency: 'monthly', priority: 0.8 },
 
   // Personas
   { url: '/for/sre',    changeFrequency: 'monthly', priority: 0.7 },
@@ -47,7 +44,7 @@ const staticRoutes: Array<{
   { url: '/how-it-works',  changeFrequency: 'monthly', priority: 0.6 },
 
   // Resources
-  { url: '/blog',          changeFrequency: 'weekly',  priority: 0.7 },
+  { url: '/blog',          changeFrequency: 'weekly',  priority: 0.8 },
   { url: '/customers',     changeFrequency: 'monthly', priority: 0.7 },
   { url: '/pricing',       changeFrequency: 'monthly', priority: 0.8 },
   { url: '/early-access',  changeFrequency: 'monthly', priority: 0.8 },
@@ -71,10 +68,29 @@ const staticRoutes: Array<{
   { url: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
 ]
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return staticRoutes.map(({ url, ...rest }) => ({
-    url: `${BASE_URL}${url}`,
-    lastModified: new Date(),
-    ...rest,
-  }))
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const now = new Date()
+
+  // Fetch published blog post slugs from Sanity
+  let blogRoutes: MetadataRoute.Sitemap = []
+  try {
+    const slugs = await client.fetch<{ slug: string }[]>(postSlugsQuery)
+    blogRoutes = (slugs ?? []).map(({ slug }) => ({
+      url: `${BASE_URL}/blog/${slug}`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    }))
+  } catch {
+    // Sanity unreachable at build time — skip blog post URLs gracefully
+  }
+
+  return [
+    ...staticRoutes.map(({ url, ...rest }) => ({
+      url: `${BASE_URL}${url}`,
+      lastModified: now,
+      ...rest,
+    })),
+    ...blogRoutes,
+  ]
 }

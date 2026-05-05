@@ -360,12 +360,12 @@ export function Hero() {
             data-reveal-delay="1"
             className="font-display font-medium text-[clamp(2rem,3.8vw,4rem)] leading-[1.08] tracking-[-0.022em] mb-6"
           >
-            Ship the version.
+            Ship more.
             <br />
-            Hold the line.
+            Break less.
             <br />
             <span className="relative inline-block">
-              <span className="relative z-10">Undo the bad ones.</span>
+              <span className="relative z-10">Know why.</span>
               <span
                 className="absolute bottom-1 left-0 right-0 h-3 -z-0"
                 style={{ background: `${PRIMARY_RGBA},0.12)` }}
@@ -379,8 +379,7 @@ export function Hero() {
             data-reveal-delay="2"
             className="text-lg text-ink-secondary max-w-md mb-4 leading-relaxed"
           >
-            Five products. One release lifecycle. From pre-merge risk scoring to post-release
-            outcome measurement — every step of the way from code to production.
+            Releases shouldn't be the scariest part of your week. Stop guessing which release broke production.
           </p>
 
           {/* Supporting line */}
@@ -390,7 +389,7 @@ export function Hero() {
             className="text-sm max-w-md mb-8 leading-relaxed font-medium"
             style={{ color: PRIMARY }}
           >
-            Learn from every release.
+            Catch risk early. Ship without fear. Learn from every release.
           </p>
 
           {/* CTAs */}

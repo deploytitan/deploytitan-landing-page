@@ -21,7 +21,7 @@ const testimonials = [
   },
   {
     quote:
-      "Titan Sentinel commenting blast-radius analysis on PRs changed how our team thinks about risk. It's shifted the conversation left in a real way.",
+      "Titan Foresight commenting blast-radius analysis on PRs changed how our team thinks about risk. It's shifted the conversation left in a real way.",
     author: 'Platform Eng Lead',
     company: 'Infrastructure consultancy',
     handle: '@plateng',

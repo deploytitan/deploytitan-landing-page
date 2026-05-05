@@ -20,7 +20,7 @@ const PAIN_POINTS = [
   },
   {
     pain: 'Post-mortems point to "surprise" blast radius',
-    solution: 'Titan Sentinel maps blast radius before every deploy. No surprises.',
+    solution: 'Titan Foresight maps blast radius before every deploy. No surprises.',
   },
   {
     pain: 'Manual failover runbooks',
@@ -131,7 +131,7 @@ export default function ForSRE() {
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               Products for SREs
             </p>
-            <h2 className="text-2xl font-semibold text-ink">Titan Shield + Titan Sentinel.</h2>
+            <h2 className="text-2xl font-semibold text-ink">Titan Shield + Titan Foresight.</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5" data-reveal>
             {[
@@ -141,8 +141,8 @@ export default function ForSRE() {
                 desc: 'Multi-cloud failover. Declarative policy. Sub-30s RTO for 99.9% of incidents.',
               },
               {
-                to: '/products/titan-sentinel',
-                name: 'Titan Sentinel',
+                to: '/products/titan-foresight',
+                name: 'Titan Foresight',
                 desc: 'Pre-deploy risk scoring. Blast-radius analysis. SLO guardrails that actually block bad deploys.',
               },
             ].map((p) => (

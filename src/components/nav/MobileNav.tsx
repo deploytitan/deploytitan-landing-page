@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '../shared/ThemeToggle'
 import { APP_URL } from '@/lib/env'
+import { RoadmapBadge } from '../shared/RoadmapBadge'
 
 const productLinks = [
   {
@@ -113,14 +114,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
               <span className="text-sm font-medium text-ink">{l.label}</span>
               <span className="text-xs text-ink-tertiary">{l.sub}</span>
             </div>
-            {l.preview && (
-              <span
-                className="font-mono text-[9px] border border-primary/40 text-primary px-1.5 py-0.5 shrink-0"
-                style={{ borderRadius: '2px' }}
-              >
-                Preview
-              </span>
-            )}
+            {l.preview && <RoadmapBadge variant="roadmap" />}
           </Link>
         ))}
       </AccordionGroup>

@@ -11,9 +11,9 @@ interface AnnouncementBarProps {
 }
 
 export function AnnouncementBar({
-  message = 'Titan Sentinel is now in public beta — shift-left risk scoring for every PR.',
+  message = 'Titan Foresight is now in public beta — shift-left risk scoring for every PR.',
   linkLabel = 'Learn more →',
-  linkTo = '/products/titan-sentinel',
+  linkTo = '/products/titan-foresight',
   onDismiss,
   announcementRef,
 }: AnnouncementBarProps) {

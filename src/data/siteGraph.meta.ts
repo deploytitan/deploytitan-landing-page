@@ -56,6 +56,7 @@ export const nodeMeta: NodeMeta[] = [
   { id: '/solutions/multi-cloud-resilience',   group: 'solution', weight: 3, label: 'Multi-Cloud Resilience' },
   { id: '/solutions/risk-intelligence',        group: 'solution', weight: 3, label: 'Risk Intelligence' },
   { id: '/solutions/platform-engineering',     group: 'solution', weight: 3, label: 'Platform Engineering' },
+  { id: '/solutions/instant-rollback',         group: 'solution', weight: 3, label: 'Instant Rollback',      description: 'SLO-triggered scoped rollback before users notice' },
 
   // Personas
   { id: '/for/sre',    group: 'persona', weight: 2, label: 'For SREs' },

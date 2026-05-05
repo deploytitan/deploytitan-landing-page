@@ -98,17 +98,17 @@ const PAIN_POINTS = [
       ],
     },
     after: {
-      label: 'With Titan Sentinel',
+      label: 'With Titan Foresight',
       heading: 'Risk scoring before the first byte shifts.',
-      body: 'Titan Sentinel analyses every PR against your live dependency graph, calculates blast radius, and scores risk 0–100 before you ship — so you decide, not your pager.',
+      body: 'Titan Foresight analyses every PR against your live dependency graph, calculates blast radius, and scores risk 0–100 before you ship — so you decide, not your pager.',
       bullets: [
         'Risk score on every PR, not just post-deploy',
         'Blast-radius map across all dependencies',
         'SLO guardrails block high-risk deploys automatically',
       ],
     },
-    link: '/products/titan-sentinel',
-    linkLabel: 'Explore Titan Sentinel →',
+    link: '/products/titan-foresight',
+    linkLabel: 'Explore Titan Foresight →',
   },
 ]
 

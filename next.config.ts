@@ -1,14 +1,15 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  output: 'export',
   trailingSlash: true,
   images: {
-    // Required for static export — no runtime image optimization
-    unoptimized: true,
+    // Allow Sanity CDN images and our own domain
+    remotePatterns: [
+      { protocol: 'https', hostname: 'cdn.sanity.io' },
+      { protocol: 'https', hostname: 'deploytitan.com' },
+    ],
   },
-  // Note: `redirects` does not run with `output: 'export'`.
-  // All redirects are handled in vercel.json at the edge.
+  // Redirects are still handled in vercel.json at the edge for instant propagation.
 }
 
 export default nextConfig

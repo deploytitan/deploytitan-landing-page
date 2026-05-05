@@ -45,7 +45,7 @@ const items: RoadmapItem[] = [
     description: 'Route Datadog alerts and PagerDuty incidents directly into SLO guardrails.',
     status: 'shipped',
     quarter: 'Q4 2025',
-    tags: ['Integrations', 'Titan Sentinel'],
+    tags: ['Integrations', 'Titan Foresight'],
   },
   // In progress
   {
@@ -61,7 +61,7 @@ const items: RoadmapItem[] = [
     description: 'Per-deployment cloud cost tracking linked to your AWS / GCP billing accounts.',
     status: 'in-progress',
     quarter: 'Q2 2026',
-    tags: ['Observability', 'Titan Pulse'],
+    tags: ['Observability', 'Titan Ledger'],
   },
   {
     title: 'RBAC and audit log',

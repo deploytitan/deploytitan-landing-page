@@ -67,21 +67,29 @@ export function Footer() {
             Product
           </h4>
           <ul className="flex flex-col gap-3">
-            {[
-              { label: 'Titan Rollout', to: '/products/titan-rollout' },
-              { label: 'Titan Shield', to: '/products/titan-shield' },
-              { label: 'Titan Sentinel', to: '/products/titan-sentinel' },
-              { label: 'Titan Pulse', to: '/products/titan-pulse' },
-              { label: 'Pricing', to: '/pricing' },
-              { label: 'Customers', to: '/customers' },
-              { label: 'Changelog', to: '/changelog' },
-            ].map((l) => (
+            {(
+              [
+                { label: 'Titan Foresight', to: '/products/titan-foresight' },
+                { label: 'Titan Rollout',   to: '/products/titan-rollout' },
+                { label: 'Titan Shield',    to: '/products/titan-shield' },
+                { label: 'Titan Phoenix',   to: '/products/titan-phoenix' },
+                { label: 'Titan Ledger',    to: '/products/titan-ledger' },
+                { label: 'Titan Insight',   to: '/products/titan-insight',  status: 'roadmap' as const },
+                { label: 'Titan Sandbox',   to: '/products/titan-sandbox',  status: 'roadmap' as const },
+                { label: 'Pricing',         to: '/pricing' },
+                { label: 'Customers',       to: '/customers' },
+                { label: 'Changelog',       to: '/changelog' },
+              ] as { label: string; to: string; status?: 'roadmap' }[]
+            ).map((l) => (
               <li key={l.label}>
                 <Link
                   href={l.to}
-                  className="text-sm text-ink-secondary hover:text-ink transition-colors"
+                  className="text-sm text-ink-secondary hover:text-ink transition-colors inline-flex items-center gap-1.5"
                 >
                   {l.label}
+                  {l.status === 'roadmap' && (
+                    <span className="text-xs text-ink-quaternary font-mono">· Soon</span>
+                  )}
                 </Link>
               </li>
             ))}

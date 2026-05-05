@@ -32,7 +32,7 @@ const WINS = [
   },
   {
     title: 'Self-service deploys with guardrails',
-    body: 'Product teams deploy without opening a ticket. Titan Sentinel enforces your risk thresholds automatically — no platform team in the loop for every release.',
+    body: 'Product teams deploy without opening a ticket. Titan Foresight enforces your risk thresholds automatically — no platform team in the loop for every release.',
     icon: (
       <svg
         width="20"

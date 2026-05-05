@@ -31,7 +31,7 @@ const PLANS = [
     ],
     missing: [
       'Titan Shield (multi-cloud failover)',
-      'Titan Sentinel risk scoring',
+      'Titan Foresight risk scoring',
       'Policy-as-code (HCL)',
       'SSO / SAML',
     ],
@@ -51,7 +51,7 @@ const PLANS = [
       'All rollout strategies incl. cohort',
       'Auto-rollback on SLO breach',
       'Titan Shield — up to 3 clouds',
-      'Titan Sentinel risk scoring',
+      'Titan Foresight risk scoring',
       '90-day deploy history',
       'Policy-as-code (HCL / YAML)',
       'Datadog, Prometheus, PagerDuty',
@@ -118,7 +118,7 @@ const MATRIX = [
     ],
   },
   {
-    category: 'Titan Sentinel',
+    category: 'Titan Foresight',
     rows: [
       { feature: 'Pre-deploy risk scoring', starter: false, team: true, enterprise: true },
       { feature: 'Blast-radius analysis', starter: false, team: true, enterprise: true },

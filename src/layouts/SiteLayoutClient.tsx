@@ -21,6 +21,11 @@ export function SiteLayoutClient({ children }: { children: React.ReactNode }) {
     window.scrollTo(0, 0)
   }, [pathname])
 
+  // The /studio route has its own layout — render children bare
+  if (pathname.startsWith('/studio')) {
+    return <>{children}</>
+  }
+
   return (
     <div className="overflow-x-hidden">
       <AnnouncementBar announcementRef={announcementRef} onDismiss={() => setBarDismissed(true)} />

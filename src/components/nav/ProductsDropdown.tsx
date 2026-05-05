@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { RoadmapBadge } from '../shared/RoadmapBadge'
 
 const LIVE_PRODUCTS = [
   {
@@ -134,9 +135,7 @@ export function ProductsDropdown({ onClose }: Props) {
             onClick={onClose}
             className="flex items-center gap-2 group"
           >
-            <span className="font-mono text-[9px] border border-primary/30 text-primary/70 px-1.5 py-0.5 shrink-0" style={{ borderRadius: '2px' }}>
-              Roadmap
-            </span>
+            <RoadmapBadge variant="roadmap" />
             <span className="text-xs font-semibold text-ink-secondary group-hover:text-ink transition-colors">{p.eyebrow}</span>
             <span className="text-xs text-ink-quaternary hidden md:inline">— {p.tagline}</span>
           </Link>

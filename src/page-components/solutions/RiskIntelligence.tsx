@@ -82,14 +82,14 @@ export default function SolutionRiskIntelligence() {
             style={{ borderRadius: '2px' }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-signal-success" />
-            Powered by Titan Sentinel
+            Powered by Titan Foresight
           </div>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
             Know your risk score
             <br className="hidden md:block" /> before you ship.
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
-            Most teams find out about deploy risk in the post-mortem. Titan Sentinel analyses every
+            Most teams find out about deploy risk in the post-mortem. Titan Foresight analyses every
             PR against your live dependency graph, calculates blast radius, checks error budget, and
             surfaces a 0–100 risk score — before you merge.
           </p>
@@ -113,10 +113,10 @@ export default function SolutionRiskIntelligence() {
               </svg>
             </a>
             <Link
-              href="/products/titan-sentinel"
+              href="/products/titan-foresight"
               className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
             >
-              Explore Titan Sentinel →
+              Explore Titan Foresight →
             </Link>
           </div>
         </Container>
@@ -234,7 +234,7 @@ export default function SolutionRiskIntelligence() {
                 />
               </svg>
               <span className="font-mono text-[10px] text-ink-quaternary">
-                titan-sentinel · PR #847 comment
+                titan-foresight · PR #847 comment
               </span>
             </div>
             <div className="p-5">
@@ -242,7 +242,7 @@ export default function SolutionRiskIntelligence() {
                 <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-[9px] font-bold text-primary">
                   DT
                 </div>
-                <span className="text-xs font-semibold text-ink">Titan Sentinel</span>
+                <span className="text-xs font-semibold text-ink">Titan Foresight</span>
                 <span className="text-xs text-ink-quaternary font-mono">just now</span>
               </div>
               <div className="border border-line rounded-sm p-4 text-xs font-mono">
@@ -281,11 +281,11 @@ export default function SolutionRiskIntelligence() {
 
       <MidCTA
         heading="Stop finding out about risk in the post-mortem."
-        subheading="Add Titan Sentinel to your PRs today — zero workflow change required."
+        subheading="Add Titan Foresight to your PRs today — zero workflow change required."
         primaryLabel="Start free trial"
         primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Explore Titan Sentinel"
-        secondaryHref="/products/titan-sentinel"
+        secondaryLabel="Explore Titan Foresight"
+        secondaryHref="/products/titan-foresight"
         secondaryExternal={false}
       />
     </>

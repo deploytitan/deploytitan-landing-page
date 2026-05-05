@@ -175,9 +175,14 @@ export const generatedNodes: GraphNode[] = [
     "file": "src/app/security/page.tsx"
   },
   {
-    "id": "/sitemap-page",
-    "label": "Sitemap Page",
-    "file": "src/app/sitemap-page/page.tsx"
+    "id": "/sitemap",
+    "label": "Sitemap",
+    "file": "src/app/sitemap/page.tsx"
+  },
+  {
+    "id": "/solutions/instant-rollback",
+    "label": "Instant Rollback",
+    "file": "src/app/solutions/instant-rollback/page.tsx"
   },
   {
     "id": "/solutions/multi-cloud-resilience",
@@ -463,6 +468,11 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
+    "source": "/solutions/-instant-rollback",
+    "target": "/products/titan-phoenix",
+    "kind": "link"
+  },
+  {
     "source": "/solutions/-multi-cloud-resilience",
     "target": "/products/titan-shield",
     "kind": "link"
@@ -470,6 +480,11 @@ export const generatedLinks: GraphLink[] = [
   {
     "source": "/solutions/-progressive-delivery",
     "target": "/products/titan-rollout",
+    "kind": "link"
+  },
+  {
+    "source": "/solutions/-risk-intelligence",
+    "target": "/products/titan-foresight",
     "kind": "link"
   },
   {

@@ -12,7 +12,7 @@ const PHASES = [
   {
     number: '01',
     title: 'Risk score before the first byte ships',
-    body: 'Titan Sentinel analyses every PR against your live dependency graph. You see a 0–100 risk score, blast-radius map, and SLO impact estimate — all before you merge.',
+    body: 'Titan Foresight analyses every PR against your live dependency graph. You see a 0–100 risk score, blast-radius map, and SLO impact estimate — all before you merge.',
     metric: { value: '< 2s', label: 'analysis time per PR' },
   },
   {
@@ -63,7 +63,7 @@ export default function SolutionProgressiveDelivery() {
             style={{ borderRadius: '2px' }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-signal-success" />
-            Powered by Titan Rollout + Titan Sentinel
+            Powered by Titan Rollout + Titan Foresight
           </div>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
             Ship confidently,

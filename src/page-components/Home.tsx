@@ -12,7 +12,7 @@ export default function Home() {
       {/* 1. Hero — shortened, new CTAs */}
       <Hero />
 
-      {/* 2. Platform overview — 3 product teasers (Titan Rollout / Shield / Sentinel) */}
+      {/* 2. Platform overview — 7 products (Foresight / Rollout / Shield / Phoenix / Ledger / Insight / Sandbox) */}
       <PlatformOverview />
 
       {/* 4. Outcome stats */}

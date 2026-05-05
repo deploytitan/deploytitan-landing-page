@@ -99,7 +99,7 @@ rollout:
     logoText: 'GHA',
     logoColor: '#2088FF',
     status: 'ga',
-    products: ['Titan Rollout', 'Titan Sentinel'],
+    products: ['Titan Rollout', 'Titan Foresight'],
     setupSnippet: `- name: Risk score PR
   uses: deploytitan/risk-score@v1
   with:
@@ -123,7 +123,7 @@ rollout:
     logoText: 'GL',
     logoColor: '#FC6D26',
     status: 'ga',
-    products: ['Titan Rollout', 'Titan Sentinel'],
+    products: ['Titan Rollout', 'Titan Foresight'],
     setupSnippet: `include:
   - project: deploytitan/ci-templates
     ref: v2
@@ -156,7 +156,7 @@ deploy-canary:
     logoText: 'Circle',
     logoColor: '#343434',
     status: 'beta',
-    products: ['Titan Rollout', 'Titan Sentinel'],
+    products: ['Titan Rollout', 'Titan Foresight'],
   },
   // Observability
   {
@@ -168,7 +168,7 @@ deploy-canary:
     logoText: 'DD',
     logoColor: '#774AA4',
     status: 'ga',
-    products: ['Titan Rollout', 'Titan Sentinel'],
+    products: ['Titan Rollout', 'Titan Foresight'],
     setupSnippet: `# dt.yaml
 metrics:
   provider: datadog
@@ -189,7 +189,7 @@ metrics:
     logoText: 'Prom',
     logoColor: '#E6522C',
     status: 'ga',
-    products: ['Titan Rollout', 'Titan Pulse'],
+    products: ['Titan Rollout', 'Titan Ledger'],
     setupSnippet: `metrics:
   provider: prometheus
   address: https://prometheus.internal
@@ -209,7 +209,7 @@ metrics:
     logoText: 'GF',
     logoColor: '#F46800',
     status: 'beta',
-    products: ['Titan Rollout', 'Titan Pulse'],
+    products: ['Titan Rollout', 'Titan Ledger'],
   },
   {
     slug: 'new-relic',
@@ -283,7 +283,7 @@ metrics:
     logoText: 'PD',
     logoColor: '#25C151',
     status: 'ga',
-    products: ['Titan Rollout', 'Titan Sentinel'],
+    products: ['Titan Rollout', 'Titan Foresight'],
   },
   {
     slug: 'opsgenie',
@@ -306,7 +306,7 @@ metrics:
     logoText: 'TF',
     logoColor: '#7B42BC',
     status: 'ga',
-    products: ['Titan Rollout', 'Titan Shield', 'Titan Sentinel'],
+    products: ['Titan Rollout', 'Titan Shield', 'Titan Foresight'],
     setupSnippet: `terraform {
   required_providers {
     deploytitan = {
@@ -335,7 +335,7 @@ resource "dt_rollout_policy" "payment" {
     logoText: 'Pulumi',
     logoColor: '#8A3391',
     status: 'beta',
-    products: ['Titan Rollout', 'Titan Sentinel'],
+    products: ['Titan Rollout', 'Titan Foresight'],
   },
   // Security
   {
@@ -353,11 +353,11 @@ resource "dt_rollout_policy" "payment" {
     slug: 'snyk',
     name: 'Snyk',
     category: 'security',
-    description: 'Block deploys with critical CVEs — Titan Sentinel reads Snyk scan results as a gate.',
-    longDescription: 'Connect Snyk to Titan Sentinel. If the container image being deployed has unresolved critical or high CVEs, the rollout is held pending engineer approval.',
+    description: 'Block deploys with critical CVEs — Titan Foresight reads Snyk scan results as a gate.',
+    longDescription: 'Connect Snyk to Titan Foresight. If the container image being deployed has unresolved critical or high CVEs, the rollout is held pending engineer approval.',
     logoText: 'Snyk',
     logoColor: '#4C4A73',
     status: 'coming-soon',
-    products: ['Titan Sentinel'],
+    products: ['Titan Foresight'],
   },
 ]

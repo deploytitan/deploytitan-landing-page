@@ -21,7 +21,7 @@ dt deploy \\
   --increment 10 \\
   --interval 2m
 
-# Titan Sentinel runs risk analysis before traffic shifts.
+# Titan Foresight runs risk analysis before traffic shifts.
 # Titan Shield monitors cross-region health throughout.
 # dt auto-rolls back if error rate > threshold.`
 

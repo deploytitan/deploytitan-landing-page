@@ -1,8 +1,10 @@
 'use client'
 
+import React from 'react'
 import { APP_URL } from '@/lib/env'
 import Link from 'next/link'
 import { useScrollReveal } from '../../utils'
+import { RoadmapBadge } from '../shared/RoadmapBadge'
 
 /* ── Mini visual: Titan Foresight ── */
 function ForesightVisual() {
@@ -157,8 +159,109 @@ function LedgerVisual() {
   )
 }
 
+/* ── Mini visual: Titan Phoenix ── */
+function PhoenixVisual() {
+  const steps = [
+    { label: 'Incident detected',       time: '14:03:01', done: true },
+    { label: 'Blast radius scoped',     time: '14:03:04', done: true },
+    { label: 'Rollback targeted',       time: '14:03:07', done: true },
+    { label: 'Traffic restored',        time: '14:03:09', done: true },
+  ]
+  return (
+    <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
+      <div className="flex items-center gap-2 text-ink-quaternary mb-1">
+        <span className="w-2 h-2 rounded-full bg-signal-danger animate-[pulse-anim_1s_ease-in-out_infinite]" />
+        <span>titan-phoenix · recovery in progress</span>
+      </div>
+      {steps.map((s) => (
+        <div key={s.label} className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className={`w-1.5 h-1.5 rounded-full ${s.done ? 'bg-signal-success' : 'bg-line'}`} />
+            <span className={s.done ? 'text-ink-secondary' : 'text-ink-quaternary'}>{s.label}</span>
+          </div>
+          <span className="text-ink-tertiary">{s.time}</span>
+        </div>
+      ))}
+      <div className="mt-auto border-t border-line pt-3 flex items-center justify-between">
+        <span className="text-ink-tertiary">Total recovery time</span>
+        <span className="text-signal-success font-semibold">8 seconds</span>
+      </div>
+    </div>
+  )
+}
+
+/* ── Mini visual: Titan Insight ── */
+function InsightVisual() {
+  const correlations = [
+    { release: 'v2.4.1', metric: 'Checkout conversion', delta: '+2.3%', signal: 'pos' },
+    { release: 'v2.4.1', metric: 'API error rate',      delta: '-0.4%', signal: 'pos' },
+    { release: 'v2.3.9', metric: 'Session duration',    delta: '-1.1%', signal: 'neg' },
+  ]
+  return (
+    <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
+      <div className="flex items-center gap-2 text-ink-quaternary mb-1">
+        <span className="w-2 h-2 rounded-full bg-primary/60 animate-[pulse-anim_3s_ease-in-out_infinite]" />
+        <span>titan-insight · deploy → outcome</span>
+      </div>
+      {correlations.map((c) => (
+        <div key={`${c.release}-${c.metric}`} className="flex items-center justify-between gap-2">
+          <span className="text-ink-tertiary shrink-0">{c.release}</span>
+          <span className="text-ink-secondary truncate flex-1 px-2">{c.metric}</span>
+          <span className={`font-semibold ${c.signal === 'pos' ? 'text-signal-success' : 'text-signal-danger'}`}>
+            {c.delta}
+          </span>
+        </div>
+      ))}
+      <div className="mt-auto border-t border-line pt-3 text-ink-tertiary text-[10px]">
+        Correlates deploys with product metrics · no manual tagging
+      </div>
+    </div>
+  )
+}
+
+/* ── Mini visual: Titan Sandbox ── */
+function SandboxVisual() {
+  const envs = [
+    { branch: 'feature/auth-v2',    status: 'ready',    age: '2m' },
+    { branch: 'fix/checkout-flash', status: 'ready',    age: '8m' },
+    { branch: 'chore/deps-bump',    status: 'building', age: '1m' },
+  ]
+  return (
+    <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
+      <div className="flex items-center gap-2 text-ink-quaternary mb-1">
+        <span className="w-2 h-2 rounded-full bg-signal-deploy/70 animate-[pulse-anim_2.5s_ease-in-out_infinite]" />
+        <span>titan-sandbox · branch environments</span>
+      </div>
+      {envs.map((e) => (
+        <div key={e.branch} className="flex items-center justify-between gap-3 border border-line rounded-sm px-3 py-2">
+          <span className="text-ink-secondary truncate">{e.branch}</span>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="text-ink-tertiary">{e.age}</span>
+            <span className={`text-[10px] uppercase tracking-wide ${e.status === 'ready' ? 'text-signal-success' : 'text-primary/70'}`}>
+              {e.status}
+            </span>
+          </div>
+        </div>
+      ))}
+      <div className="mt-auto border-t border-line pt-3 text-ink-tertiary text-[10px]">
+        Full production topology per branch · spun up on PR open
+      </div>
+    </div>
+  )
+}
+
 /* ── Platform Overview section ── */
-const products = [
+const products: {
+  route: string
+  eyebrow: string
+  name: string
+  tagline: string
+  description: string
+  bullets: string[]
+  visual: React.ReactNode
+  flip: boolean
+  badge?: 'available' | 'preview' | 'roadmap'
+}[] = [
   {
     route: '/products/titan-foresight',
     eyebrow: 'Detect · Titan Foresight',
@@ -205,6 +308,21 @@ const products = [
     flip: false,
   },
   {
+    route: '/products/titan-phoenix',
+    eyebrow: 'Recover · Titan Phoenix',
+    name: 'Undo a bad release in seconds.',
+    tagline: 'Surgical rollback scoped to exactly where the release broke — nothing else.',
+    description:
+      'When a release causes an incident, Phoenix scopes the blast radius, targets only the affected cohort, and restores traffic in under 10 seconds. No full redeploy. No manual steps.',
+    bullets: [
+      'Blast-radius scoping — rolls back only the affected slice of traffic',
+      'Sub-10 second recovery — automated, not scripted',
+      'Paired with Rollout — promotes carefully, recovers instantly',
+    ],
+    visual: <PhoenixVisual />,
+    flip: true,
+  },
+  {
     route: '/products/titan-ledger',
     eyebrow: 'Measure · Titan Ledger',
     name: 'DORA metrics. No agents. No tagging.',
@@ -218,7 +336,39 @@ const products = [
       'Trend lines — see whether delivery is improving quarter over quarter',
     ],
     visual: <LedgerVisual />,
+    flip: false,
+  },
+  {
+    route: '/products/titan-insight',
+    eyebrow: 'Understand · Titan Insight',
+    name: 'Did this release actually improve anything?',
+    tagline: 'Deploy-to-metric correlation — know the outcome of every release, not just the act.',
+    description:
+      'Insight correlates every deploy with the product and business metrics that followed. See which releases drove improvements and which quietly degraded the experience.',
+    bullets: [
+      'Automatic deploy-to-outcome correlation — no manual tagging',
+      'Business metric integration — revenue, conversion, engagement',
+      'Release retrospectives — before and after, per deploy',
+    ],
+    visual: <InsightVisual />,
     flip: true,
+    badge: 'roadmap',
+  },
+  {
+    route: '/products/titan-sandbox',
+    eyebrow: 'Preview · Titan Sandbox',
+    name: 'A production-shaped environment for every branch.',
+    tagline: 'Spin up a full-fidelity environment per PR — no shared staging, no queue.',
+    description:
+      'Every branch gets its own isolated environment that mirrors production topology. Test with real service dependencies, real data shapes, and real traffic patterns — before any user sees it.',
+    bullets: [
+      'Per-branch environments — spun up on PR open, torn down on merge',
+      'Production topology mirror — no mocked services',
+      'Zero queue — every engineer gets an environment, immediately',
+    ],
+    visual: <SandboxVisual />,
+    flip: false,
+    badge: 'roadmap',
   },
 ]
 
@@ -234,11 +384,11 @@ export function PlatformOverview() {
             The platform
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-medium tracking-[-0.02em] text-ink leading-tight">
-            Detect. Deliver. Defend. Recover. Measure.
+            Seven products. One release lifecycle.
           </h2>
           <p className="text-base text-ink-secondary leading-relaxed max-w-lg">
-            Five products that cover every stage of the release lifecycle — use one or the full
-            platform.
+            Seven products that cover every stage — from pre-merge risk to post-release outcome.
+            Use one or the full platform.
           </p>
         </div>
 
@@ -253,9 +403,12 @@ export function PlatformOverview() {
               {/* Copy */}
               <div className={`flex flex-col gap-6 ${p.flip ? 'lg:order-2' : 'lg:order-1'}`}>
                 <div className="flex flex-col gap-2">
-                  <span className="font-mono text-xs text-primary uppercase tracking-widest">
-                    {p.eyebrow}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-xs text-primary uppercase tracking-widest">
+                      {p.eyebrow}
+                    </span>
+                    {p.badge && <RoadmapBadge variant={p.badge} />}
+                  </div>
                   <h3 className="font-display text-2xl md:text-3xl font-semibold tracking-[-0.02em] text-ink leading-tight">
                     {p.name}
                   </h3>

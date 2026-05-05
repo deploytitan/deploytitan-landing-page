@@ -32,7 +32,7 @@ const solutions = [
     eyebrow: 'Deploy Risk Intelligence',
     tagline: 'Know your blast radius before you ship.',
     description: 'PR risk scoring, dependency graph analysis, and SLO guardrails.',
-    product: 'Titan Sentinel',
+    product: 'Titan Foresight',
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -48,6 +48,18 @@ const solutions = [
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+      </svg>
+    ),
+  },
+  {
+    route: '/solutions/instant-rollback',
+    eyebrow: 'Instant Rollback',
+    tagline: 'Undo a bad release before your users notice.',
+    description: 'Scoped automatic rollback triggered by SLO breaches — no human required.',
+    product: 'Titan Phoenix',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
       </svg>
     ),
   },
