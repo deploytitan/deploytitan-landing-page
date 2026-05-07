@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import { RoadmapBadge } from '../shared/RoadmapBadge'
+import { STEALTH_PRODUCTS } from '@/lib/env'
 
-const LIVE_PRODUCTS = [
+const ALL_LIVE_PRODUCTS = [
   {
     route: '/products/titan-foresight',
     eyebrow: 'Titan Foresight',
@@ -34,6 +35,7 @@ const LIVE_PRODUCTS = [
     tagline: 'Multi-cloud failover before your users notice.',
     bullets: ['AWS / GCP / Azure failover', 'Zero-latency in-memory routing', 'Geo-aware failover policies'],
     badge: null,
+    stealth: true,
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -58,6 +60,7 @@ const LIVE_PRODUCTS = [
     tagline: 'DORA metrics measured automatically from your CI/CD.',
     bullets: ['Zero-instrumentation events', 'DORA metrics out of the box', 'Team-level scorecards'],
     badge: null,
+    stealth: true,
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
@@ -66,18 +69,28 @@ const LIVE_PRODUCTS = [
   },
 ]
 
-const COMING_SOON = [
+const LIVE_PRODUCTS = STEALTH_PRODUCTS
+  ? ALL_LIVE_PRODUCTS.filter((p) => !p.stealth)
+  : ALL_LIVE_PRODUCTS
+
+const ALL_COMING_SOON = [
   {
     route: '/products/titan-insight',
     eyebrow: 'Titan Insight',
     tagline: 'Deploy-to-metric correlation & outcome intelligence.',
+    stealth: true,
   },
   {
     route: '/products/titan-sandbox',
     eyebrow: 'Titan Sandbox',
     tagline: 'Production-shaped environments per branch.',
+    stealth: true,
   },
 ]
+
+const COMING_SOON = STEALTH_PRODUCTS
+  ? ALL_COMING_SOON.filter((p) => !p.stealth)
+  : ALL_COMING_SOON
 
 interface Props {
   onClose: () => void
@@ -95,8 +108,8 @@ export function ProductsDropdown({ onClose }: Props) {
         <span className="text-xs text-ink-quaternary">Detect · Deliver · Defend · Recover · Measure</span>
       </div>
 
-      {/* Five live products */}
-      <div className="grid grid-cols-5 divide-x divide-line">
+      {/* Live products */}
+      <div className={`grid divide-x divide-line`} style={{ gridTemplateColumns: `repeat(${LIVE_PRODUCTS.length}, minmax(0, 1fr))` }}>
         {LIVE_PRODUCTS.map((p) => (
           <Link
             key={p.route}

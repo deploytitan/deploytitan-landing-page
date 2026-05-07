@@ -1,6 +1,6 @@
 'use client'
 
-import { APP_URL } from '@/lib/env'
+import { APP_URL, STEALTH_PRODUCTS } from '@/lib/env'
 import React, { useState } from 'react'
 import { useScrollReveal } from '../utils'
 import { MidCTA } from '../components/MidCTA'
@@ -30,7 +30,7 @@ const PLANS = [
       'GitHub Actions integration',
     ],
     missing: [
-      'Titan Shield (multi-cloud failover)',
+      ...( STEALTH_PRODUCTS ? [] : ['Titan Shield (multi-cloud failover)']),
       'Titan Foresight risk scoring',
       'Policy-as-code (HCL)',
       'SSO / SAML',
@@ -50,7 +50,7 @@ const PLANS = [
       'Up to 25 team members',
       'All rollout strategies incl. cohort',
       'Auto-rollback on SLO breach',
-      'Titan Shield — up to 3 clouds',
+      ...( !STEALTH_PRODUCTS ? ['Titan Shield — up to 3 clouds'] : []),
       'Titan Foresight risk scoring',
       '90-day deploy history',
       'Policy-as-code (HCL / YAML)',
@@ -104,7 +104,7 @@ const MATRIX = [
       { feature: 'Deploy history', starter: '7 days', team: '90 days', enterprise: 'Custom' },
     ],
   },
-  {
+  ...( !STEALTH_PRODUCTS ? [{
     category: 'Titan Shield',
     rows: [
       {
@@ -116,7 +116,7 @@ const MATRIX = [
       { feature: 'Geo-aware routing', starter: false, team: true, enterprise: true },
       { feature: 'DR drill mode', starter: false, team: true, enterprise: true },
     ],
-  },
+  }] : []),
   {
     category: 'Titan Foresight',
     rows: [

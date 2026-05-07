@@ -3,10 +3,10 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '../shared/ThemeToggle'
-import { APP_URL } from '@/lib/env'
+import { APP_URL, STEALTH_PRODUCTS } from '@/lib/env'
 import { RoadmapBadge } from '../shared/RoadmapBadge'
 
-const productLinks = [
+const ALL_PRODUCT_LINKS = [
   {
     label: 'Titan Foresight',
     sub: 'Pre-merge risk scoring',
@@ -21,6 +21,7 @@ const productLinks = [
     label: 'Titan Shield',
     sub: 'Multi-cloud failover & resilience',
     route: '/products/titan-shield',
+    stealth: true,
   },
   {
     label: 'Titan Phoenix',
@@ -31,20 +32,27 @@ const productLinks = [
     label: 'Titan Ledger',
     sub: 'DORA metrics — no agents',
     route: '/products/titan-ledger',
+    stealth: true,
   },
   {
     label: 'Titan Insight',
     sub: 'Outcome intelligence (coming soon)',
     route: '/products/titan-insight',
     preview: true,
+    stealth: true,
   },
   {
     label: 'Titan Sandbox',
     sub: 'Branch environments (coming soon)',
     route: '/products/titan-sandbox',
     preview: true,
+    stealth: true,
   },
 ]
+
+const productLinks = STEALTH_PRODUCTS
+  ? ALL_PRODUCT_LINKS.filter((l) => !l.stealth)
+  : ALL_PRODUCT_LINKS
 
 const solutionLinks = [
   { label: 'Progressive Delivery', route: '/solutions/progressive-delivery' },

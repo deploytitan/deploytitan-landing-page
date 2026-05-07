@@ -1,9 +1,6 @@
 import { Hero } from '../components/Hero'
 import { PlatformOverview } from '../components/platform/PlatformOverview'
-import { Outcomes } from '../components/Outcomes'
-import { Integrations } from '../components/Integrations'
 import { Quickstart } from '../components/Quickstart'
-import { Testimonials } from '../components/Testimonials'
 import { CTA } from '../components/CTA'
 
 export default function Home() {
@@ -16,16 +13,16 @@ export default function Home() {
       <PlatformOverview />
 
       {/* 4. Outcome stats */}
-      <Outcomes />
+      {/*<Outcomes />*/}
 
       {/* 5. Integrations strip */}
-      <Integrations />
+      {/*<Integrations />*/}
 
       {/* 6. Quickstart + install tabs */}
       <Quickstart />
 
       {/* 7. Testimonials wall */}
-      <Testimonials />
+      {/*<Testimonials />*/}
 
       {/* 7. Final CTA */}
       <CTA />

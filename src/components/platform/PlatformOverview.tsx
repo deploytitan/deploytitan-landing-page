@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { APP_URL } from '@/lib/env'
+import { APP_URL, STEALTH_PRODUCTS } from '@/lib/env'
 import Link from 'next/link'
 import { useScrollReveal } from '../../utils'
 import { RoadmapBadge } from '../shared/RoadmapBadge'
@@ -162,10 +162,10 @@ function LedgerVisual() {
 /* ── Mini visual: Titan Phoenix ── */
 function PhoenixVisual() {
   const steps = [
-    { label: 'Incident detected',       time: '14:03:01', done: true },
-    { label: 'Blast radius scoped',     time: '14:03:04', done: true },
-    { label: 'Rollback targeted',       time: '14:03:07', done: true },
-    { label: 'Traffic restored',        time: '14:03:09', done: true },
+    { label: 'Incident detected', time: '14:03:01', done: true },
+    { label: 'Blast radius scoped', time: '14:03:04', done: true },
+    { label: 'Rollback targeted', time: '14:03:07', done: true },
+    { label: 'Traffic restored', time: '14:03:09', done: true },
   ]
   return (
     <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
@@ -176,7 +176,9 @@ function PhoenixVisual() {
       {steps.map((s) => (
         <div key={s.label} className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className={`w-1.5 h-1.5 rounded-full ${s.done ? 'bg-signal-success' : 'bg-line'}`} />
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${s.done ? 'bg-signal-success' : 'bg-line'}`}
+            />
             <span className={s.done ? 'text-ink-secondary' : 'text-ink-quaternary'}>{s.label}</span>
           </div>
           <span className="text-ink-tertiary">{s.time}</span>
@@ -194,8 +196,8 @@ function PhoenixVisual() {
 function InsightVisual() {
   const correlations = [
     { release: 'v2.4.1', metric: 'Checkout conversion', delta: '+2.3%', signal: 'pos' },
-    { release: 'v2.4.1', metric: 'API error rate',      delta: '-0.4%', signal: 'pos' },
-    { release: 'v2.3.9', metric: 'Session duration',    delta: '-1.1%', signal: 'neg' },
+    { release: 'v2.4.1', metric: 'API error rate', delta: '-0.4%', signal: 'pos' },
+    { release: 'v2.3.9', metric: 'Session duration', delta: '-1.1%', signal: 'neg' },
   ]
   return (
     <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
@@ -207,7 +209,9 @@ function InsightVisual() {
         <div key={`${c.release}-${c.metric}`} className="flex items-center justify-between gap-2">
           <span className="text-ink-tertiary shrink-0">{c.release}</span>
           <span className="text-ink-secondary truncate flex-1 px-2">{c.metric}</span>
-          <span className={`font-semibold ${c.signal === 'pos' ? 'text-signal-success' : 'text-signal-danger'}`}>
+          <span
+            className={`font-semibold ${c.signal === 'pos' ? 'text-signal-success' : 'text-signal-danger'}`}
+          >
             {c.delta}
           </span>
         </div>
@@ -222,9 +226,9 @@ function InsightVisual() {
 /* ── Mini visual: Titan Sandbox ── */
 function SandboxVisual() {
   const envs = [
-    { branch: 'feature/auth-v2',    status: 'ready',    age: '2m' },
-    { branch: 'fix/checkout-flash', status: 'ready',    age: '8m' },
-    { branch: 'chore/deps-bump',    status: 'building', age: '1m' },
+    { branch: 'feature/auth-v2', status: 'ready', age: '2m' },
+    { branch: 'fix/checkout-flash', status: 'ready', age: '8m' },
+    { branch: 'chore/deps-bump', status: 'building', age: '1m' },
   ]
   return (
     <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
@@ -233,11 +237,16 @@ function SandboxVisual() {
         <span>titan-sandbox · branch environments</span>
       </div>
       {envs.map((e) => (
-        <div key={e.branch} className="flex items-center justify-between gap-3 border border-line rounded-sm px-3 py-2">
+        <div
+          key={e.branch}
+          className="flex items-center justify-between gap-3 border border-line rounded-sm px-3 py-2"
+        >
           <span className="text-ink-secondary truncate">{e.branch}</span>
           <div className="flex items-center gap-2 shrink-0">
             <span className="text-ink-tertiary">{e.age}</span>
-            <span className={`text-[10px] uppercase tracking-wide ${e.status === 'ready' ? 'text-signal-success' : 'text-primary/70'}`}>
+            <span
+              className={`text-[10px] uppercase tracking-wide ${e.status === 'ready' ? 'text-signal-success' : 'text-primary/70'}`}
+            >
               {e.status}
             </span>
           </div>
@@ -259,8 +268,8 @@ const products: {
   description: string
   bullets: string[]
   visual: React.ReactNode
-  flip: boolean
   badge?: 'available' | 'preview' | 'roadmap'
+  stealth?: boolean
 }[] = [
   {
     route: '/products/titan-foresight',
@@ -275,7 +284,6 @@ const products: {
       'One score, fully explained — no dashboards to interpret',
     ],
     visual: <ForesightVisual />,
-    flip: false,
   },
   {
     route: '/products/titan-rollout',
@@ -290,22 +298,6 @@ const products: {
       'Auto-pause on threshold breach — no 3am runbook',
     ],
     visual: <RolloutVisual />,
-    flip: true,
-  },
-  {
-    route: '/products/titan-shield',
-    eyebrow: 'Defend · Titan Shield',
-    name: 'Stay up across every cloud.',
-    tagline: 'Multi-cloud failover that happens automatically — before your users notice.',
-    description:
-      'Route traffic intelligently across AWS, GCP, and Azure. When a region degrades, Shield shifts traffic in real time — zero manual intervention. This is infrastructure resilience, not release recovery.',
-    bullets: [
-      'Automatic failover across AWS, GCP, and Azure',
-      'Zero-latency in-memory routing — no proxy overhead',
-      'Built-in geo-aware failover policies',
-    ],
-    visual: <ShieldVisual />,
-    flip: false,
   },
   {
     route: '/products/titan-phoenix',
@@ -320,60 +312,91 @@ const products: {
       'Paired with Rollout — promotes carefully, recovers instantly',
     ],
     visual: <PhoenixVisual />,
-    flip: true,
+    stealth: false,
   },
-  {
-    route: '/products/titan-ledger',
-    eyebrow: 'Measure · Titan Ledger',
-    name: 'DORA metrics. No agents. No tagging.',
-    tagline:
-      'Automatic deploy telemetry — every release measured from your existing CI/CD signals.',
-    description:
-      'Ledger reads your CI/CD events and produces DORA metrics, team scorecards, and trend charts — no instrumentation, no agents, no manual tagging. It records what happened. Insight explains what it meant.',
-    bullets: [
-      'Four DORA metrics computed automatically from existing events',
-      'Team and service scorecards — per-team breakdown out of the box',
-      'Trend lines — see whether delivery is improving quarter over quarter',
-    ],
-    visual: <LedgerVisual />,
-    flip: false,
-  },
-  {
-    route: '/products/titan-insight',
-    eyebrow: 'Understand · Titan Insight',
-    name: 'Did this release actually improve anything?',
-    tagline: 'Deploy-to-metric correlation — know the outcome of every release, not just the act.',
-    description:
-      'Insight correlates every deploy with the product and business metrics that followed. See which releases drove improvements and which quietly degraded the experience.',
-    bullets: [
-      'Automatic deploy-to-outcome correlation — no manual tagging',
-      'Business metric integration — revenue, conversion, engagement',
-      'Release retrospectives — before and after, per deploy',
-    ],
-    visual: <InsightVisual />,
-    flip: true,
-    badge: 'roadmap',
-  },
-  {
-    route: '/products/titan-sandbox',
-    eyebrow: 'Preview · Titan Sandbox',
-    name: 'A production-shaped environment for every branch.',
-    tagline: 'Spin up a full-fidelity environment per PR — no shared staging, no queue.',
-    description:
-      'Every branch gets its own isolated environment that mirrors production topology. Test with real service dependencies, real data shapes, and real traffic patterns — before any user sees it.',
-    bullets: [
-      'Per-branch environments — spun up on PR open, torn down on merge',
-      'Production topology mirror — no mocked services',
-      'Zero queue — every engineer gets an environment, immediately',
-    ],
-    visual: <SandboxVisual />,
-    flip: false,
-    badge: 'roadmap',
-  },
+  ...(!STEALTH_PRODUCTS ? [
+    {
+      route: '/products/titan-ledger',
+      eyebrow: 'Measure · Titan Ledger',
+      name: 'DORA metrics. No agents. No tagging.',
+      tagline:
+        'Automatic deploy telemetry — every release measured from your existing CI/CD signals.',
+      description:
+        'Ledger reads your CI/CD events and produces DORA metrics, team scorecards, and trend charts — no instrumentation, no agents, no manual tagging. It records what happened. Insight explains what it meant.',
+      bullets: [
+        'Four DORA metrics computed automatically from existing events',
+        'Team and service scorecards — per-team breakdown out of the box',
+        'Trend lines — see whether delivery is improving quarter over quarter',
+      ],
+      visual: <LedgerVisual />,
+      stealth: true,
+    },
+    {
+      route: '/products/titan-insight',
+      eyebrow: 'Understand · Titan Insight',
+      name: 'Did this release actually improve anything?',
+      tagline: 'Deploy-to-metric correlation — know the outcome of every release, not just the act.',
+      description:
+        'Insight correlates every deploy with the product and business metrics that followed. See which releases drove improvements and which quietly degraded the experience.',
+      bullets: [
+        'Automatic deploy-to-outcome correlation — no manual tagging',
+        'Business metric integration — revenue, conversion, engagement',
+        'Release retrospectives — before and after, per deploy',
+      ],
+      visual: <InsightVisual />,
+      badge: 'roadmap' as const,
+      stealth: true,
+    },
+    {
+      route: '/products/titan-sandbox',
+      eyebrow: 'Preview · Titan Sandbox',
+      name: 'A production-shaped environment for every branch.',
+      tagline: 'Spin up a full-fidelity environment per PR — no shared staging, no queue.',
+      description:
+        'Every branch gets its own isolated environment that mirrors production topology. Test with real service dependencies, real data shapes, and real traffic patterns — before any user sees it.',
+      bullets: [
+        'Per-branch environments — spun up on PR open, torn down on merge',
+        'Production topology mirror — no mocked services',
+        'Zero queue — every engineer gets an environment, immediately',
+      ],
+      visual: <SandboxVisual />,
+      badge: 'roadmap' as const,
+      stealth: true,
+    },
+    {
+      route: '/products/titan-shield',
+      eyebrow: 'Defend · Titan Shield',
+      name: 'Stay up across every cloud.',
+      tagline: 'Multi-cloud failover that happens automatically — before your users notice.',
+      description:
+        'Route traffic intelligently across AWS, GCP, and Azure. When a region degrades, Shield shifts traffic in real time — zero manual intervention. This is infrastructure resilience, not release recovery.',
+      bullets: [
+        'Automatic failover across AWS, GCP, and Azure',
+        'Zero-latency in-memory routing — no proxy overhead',
+        'Built-in geo-aware failover policies',
+      ],
+      visual: <ShieldVisual />,
+      stealth: true,
+    },
+  ] as typeof products : []),
 ]
 
 export function PlatformOverview() {
   const ref = useScrollReveal()
+
+  const numberInTextObj: Record<number, string> = {
+    1: 'One',
+    2: 'Two',
+    3: 'Three',
+    4: 'Four',
+    5: 'Five',
+    6: 'Six',
+    7: 'Seven',
+    8: 'Eight',
+    9: 'Nine',
+    10: 'Ten',
+  }
+  const numberInText = numberInTextObj[products.length]
 
   return (
     <section className="py-20 lg:py-28 border-t border-line relative" ref={ref}>
@@ -384,24 +407,26 @@ export function PlatformOverview() {
             The platform
           </span>
           <h2 className="font-display text-3xl md:text-4xl font-medium tracking-[-0.02em] text-ink leading-tight">
-            Seven products. One release lifecycle.
+            {numberInText} products. One release lifecycle.
           </h2>
           <p className="text-base text-ink-secondary leading-relaxed max-w-lg">
-            Seven products that cover every stage — from pre-merge risk to post-release outcome.
-            Use one or the full platform.
+            {numberInText} products that cover every stage — from pre-merge risk to post-release
+            outcome. Use one or the full platform.
           </p>
         </div>
 
         {/* Product teasers */}
         <div className="flex flex-col divide-y divide-line">
-          {products.map((p) => (
+          {products.map((p, index) => (
             <div
               key={p.route}
               data-reveal
               className="py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
             >
               {/* Copy */}
-              <div className={`flex flex-col gap-6 ${p.flip ? 'lg:order-2' : 'lg:order-1'}`}>
+              <div
+                className={`flex flex-col gap-6 ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}
+              >
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-3">
                     <span className="font-mono text-xs text-primary uppercase tracking-widest">
@@ -454,7 +479,7 @@ export function PlatformOverview() {
               </div>
 
               {/* Visual */}
-              <div className={`relative ${p.flip ? 'lg:order-1' : 'lg:order-2'}`}>
+              <div className={`relative ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
                 <div
                   className="border border-line bg-surface-alt/60 overflow-hidden"
                   style={{ borderRadius: '2px', minHeight: '280px' }}

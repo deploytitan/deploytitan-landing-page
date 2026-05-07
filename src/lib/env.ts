@@ -13,3 +13,9 @@ export const DOCS_URL =
 
 export const FORM_ENDPOINT =
   process.env.NEXT_PUBLIC_FORM_ENDPOINT as string | undefined
+
+// Stealth mode: hide products that are not yet validated for PMF.
+// Set NEXT_PUBLIC_STEALTH_PRODUCTS=false in .env (or Vercel env vars) to reveal them.
+// Defaults to true (hidden) so no accidental exposure on new deploys.
+export const STEALTH_PRODUCTS =
+  process.env.NEXT_PUBLIC_STEALTH_PRODUCTS !== 'false'

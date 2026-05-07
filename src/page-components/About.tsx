@@ -1,8 +1,7 @@
-import Link from 'next/link'
-import { MidCTA } from '../components/MidCTA'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
+import { MidCTA } from '@/components/MidCTA'
 
 const values = [
   {
@@ -29,24 +28,9 @@ const values = [
 
 const team = [
   {
-    name: 'Justine Kizhak',
-    role: 'Founder & CEO',
-    bio: 'Previously led platform engineering at a Series C fintech. Spent years thinking about why deployments are still scary.',
-  },
-  {
-    name: 'Aria Chen',
-    role: 'Co-founder & CTO',
-    bio: 'Distributed systems engineer. Built the Kubernetes autoscaling layer at two high-growth companies before this.',
-  },
-  {
-    name: 'Marco Reyes',
-    role: 'Head of Product',
-    bio: 'Former SRE at a leading observability company. Knows exactly what keeps on-call engineers awake at 3am.',
-  },
-  {
-    name: 'Priya Sharma',
-    role: 'Head of Engineering',
-    bio: 'Previously a staff engineer at a Fortune 100 cloud provider. Obsessed with reliability at scale.',
+    name: 'Justine Kizhakkinedath',
+    role: 'Founder',
+    bio: 'Spent years thinking about why deployments are still scary.',
   },
 ]
 
@@ -102,10 +86,8 @@ export default function About() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[
-              { value: '2024', label: 'Founded' },
-              { value: 'SF + remote', label: 'Where we work' },
-              { value: 'Seed', label: 'Stage' },
-              { value: '100% open core', label: 'Philosophy' },
+              { value: '2026', label: 'Founded' },
+              { value: 'Pune + Remote', label: 'Where we work' },
             ].map((stat) => (
               <Card key={stat.label} tone="muted">
                 <p className="font-display text-2xl font-medium text-ink">{stat.value}</p>
@@ -163,43 +145,10 @@ export default function About() {
               </Card>
             ))}
           </div>
-          <div className="mt-8">
-            <Link
-              href="/careers"
-              className="text-sm text-primary font-medium hover:text-primary-dark transition-colors"
-            >
-              We're hiring — view open roles →
-            </Link>
-          </div>
         </Container>
       </Section>
 
-      {/* Investors */}
-      <Section border="top" tone="muted" padding="none">
-        <Container className="py-12">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
-            Backed by
-          </span>
-          <div className="mt-6 flex flex-wrap gap-4">
-            {investors.map((inv) => (
-              <Card key={inv.name} padding="sm" className="flex items-center gap-3">
-                <span className="text-sm font-medium text-ink">{inv.name}</span>
-                <span className="font-mono text-[10px] text-ink-quaternary">{inv.stage}</span>
-              </Card>
-            ))}
-          </div>
-        </Container>
-      </Section>
-
-      <MidCTA
-        heading="Want to work with us?"
-        subheading="We're a small team building something hard. If that sounds like your thing, let's talk."
-        primaryLabel="View open roles"
-        primaryHref="/careers"
-        secondaryLabel="Get in touch"
-        secondaryHref="/contact"
-        secondaryExternal={false}
-      />
+      <MidCTA />
     </div>
   )
 }

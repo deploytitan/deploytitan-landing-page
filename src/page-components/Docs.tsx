@@ -1,4 +1,3 @@
-import { DOCS_URL } from '@/lib/env'
 import Link from 'next/link'
 import { MidCTA } from '../components/MidCTA'
 import { CodeBlock } from '../components/shared/CodeBlock'
@@ -6,26 +5,26 @@ import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 
 const quickLinks = [
-  {
-    title: 'Quickstart',
-    description: 'Deploy your first service in under 5 minutes',
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <polygon points="5 3 19 12 5 21 5 3" />
-      </svg>
-    ),
-    href: '/cli',
-    external: false,
-  },
+  // {
+  //   title: 'Quickstart',
+  //   description: 'Deploy your first service in under 5 minutes',
+  //   icon: (
+  //     <svg
+  //       width="18"
+  //       height="18"
+  //       viewBox="0 0 24 24"
+  //       fill="none"
+  //       stroke="currentColor"
+  //       strokeWidth="2"
+  //       strokeLinecap="round"
+  //       strokeLinejoin="round"
+  //     >
+  //       <polygon points="5 3 19 12 5 21 5 3" />
+  //     </svg>
+  //   ),
+  //   href: '/cli',
+  //   external: false,
+  // },
   {
     title: 'CLI Reference',
     description: 'Full reference for the `dt` command-line tool',
@@ -69,77 +68,75 @@ const quickLinks = [
     href: '/api-reference',
     external: false,
   },
-  {
-    title: 'Concepts',
-    description: 'Progressive delivery, rollbacks, SLO guardrails',
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <line x1="12" y1="8" x2="12" y2="12" />
-        <line x1="12" y1="16" x2="12.01" y2="16" />
-      </svg>
-    ),
-    href: DOCS_URL,
-    external: true,
-  },
-  {
-    title: 'Guides',
-    description: 'Canary on EKS, GitHub Actions, Datadog alerts',
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-      </svg>
-    ),
-    href: DOCS_URL,
-    external: true,
-  },
-  {
-    title: 'Integrations',
-    description: 'Kubernetes, ArgoCD, GitHub Actions, Datadog…',
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="2" y="7" width="20" height="14" rx="2" />
-        <path d="M16 3l-4 4-4-4" />
-      </svg>
-    ),
-    href: '/integrations',
-    external: false,
-  },
+  // {
+  //   title: 'Concepts',
+  //   description: 'Progressive delivery, rollbacks, SLO guardrails',
+  //   icon: (
+  //     <svg
+  //       width="18"
+  //       height="18"
+  //       viewBox="0 0 24 24"
+  //       fill="none"
+  //       stroke="currentColor"
+  //       strokeWidth="2"
+  //       strokeLinecap="round"
+  //       strokeLinejoin="round"
+  //     >
+  //       <circle cx="12" cy="12" r="10" />
+  //       <line x1="12" y1="8" x2="12" y2="12" />
+  //       <line x1="12" y1="16" x2="12.01" y2="16" />
+  //     </svg>
+  //   ),
+  //   href: DOCS_URL,
+  //   external: true,
+  // },
+  // {
+  //   title: 'Guides',
+  //   description: 'Canary on EKS, GitHub Actions, Datadog alerts',
+  //   icon: (
+  //     <svg
+  //       width="18"
+  //       height="18"
+  //       viewBox="0 0 24 24"
+  //       fill="none"
+  //       stroke="currentColor"
+  //       strokeWidth="2"
+  //       strokeLinecap="round"
+  //       strokeLinejoin="round"
+  //     >
+  //       <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+  //       <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+  //     </svg>
+  //   ),
+  //   href: DOCS_URL,
+  //   external: true,
+  // },
+  // {
+  //   title: 'Integrations',
+  //   description: 'Kubernetes, ArgoCD, GitHub Actions, Datadog…',
+  //   icon: (
+  //     <svg
+  //       width="18"
+  //       height="18"
+  //       viewBox="0 0 24 24"
+  //       fill="none"
+  //       stroke="currentColor"
+  //       strokeWidth="2"
+  //       strokeLinecap="round"
+  //       strokeLinejoin="round"
+  //     >
+  //       <rect x="2" y="7" width="20" height="14" rx="2" />
+  //       <path d="M16 3l-4 4-4-4" />
+  //     </svg>
+  //   ),
+  //   href: '/integrations',
+  //   external: false,
+  // },
 ]
 
-const installCode = `# macOS / Linux — one-liner install
-curl -fsSL https://get.deploytitan.com | sh
-
-# Verify
-dt version`
+const installCode = `
+npm install @deploytitan/cli
+dt --version`
 
 export default function Docs() {
   return (
@@ -182,25 +179,13 @@ export default function Docs() {
                 </svg>
               </Link>
               <a
-                href={DOCS_URL}
+                href="/api-reference"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 border border-line text-ink-secondary hover:text-ink hover:border-primary/30 px-5 py-3 text-sm font-medium transition-all"
                 style={{ borderRadius: '2px' }}
               >
-                Open full docs
-                <svg
-                  width="11"
-                  height="11"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                  <polyline points="15 3 21 3 21 9" />
-                  <line x1="10" y1="14" x2="21" y2="3" />
-                </svg>
+                Get started with API
               </a>
             </div>
           </div>

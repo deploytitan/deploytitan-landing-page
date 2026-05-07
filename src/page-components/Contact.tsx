@@ -147,15 +147,13 @@ export default function Contact() {
               <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
                 Headquarters
               </p>
-              <p className="mt-2 text-sm text-ink">San Francisco, CA</p>
-              <p className="text-sm text-ink-secondary">South of Market (SoMa)</p>
+              <p className="mt-2 text-sm text-ink">Pune, India</p>
             </div>
             <div>
               <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
                 Response time
               </p>
               <p className="mt-2 text-sm text-ink">Within 24 hours</p>
-              <p className="text-sm text-ink-secondary">Monday – Friday (Pacific)</p>
             </div>
             <div>
               <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
@@ -178,11 +176,6 @@ export default function Contact() {
       <MidCTA
         heading="Ready to start deploying smarter?"
         subheading="Get early access and we'll onboard you personally."
-        primaryLabel="Request early access"
-        primaryHref="/early-access"
-        secondaryLabel="Read the docs"
-        secondaryHref="/docs"
-        secondaryExternal={false}
       />
     </div>
   )

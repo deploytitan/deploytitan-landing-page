@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { type FormEvent, useState } from 'react'
 import { useScrollReveal } from '../utils'
 import { Container } from './shared/Container'
 import { DEMO_URL, FORM_ENDPOINT } from '@/lib/env'
@@ -9,7 +9,6 @@ const PRIMARY = 'var(--color-primary)'
 
 const trustSignals = [
   { label: 'Works with your existing stack', detail: 'No rewrites required' },
-  { label: 'Self-hosted secrets', detail: 'Your keys never leave your infra' },
   { label: 'No vendor lock-in', detail: 'Works with any CI/CD' },
 ]
 

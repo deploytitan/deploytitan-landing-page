@@ -7,61 +7,27 @@ import { Card } from '../components/shared/Card'
 
 const PRIMARY = 'var(--color-primary)'
 
-// ── Timeline milestones ────────────────────────────────────────────────────────
-const TIMELINE = [
-  {
-    year: '2019',
-    label: 'The incident',
-    summary:
-      'A routine deploy at 11 PM ate 30% of production traffic. The rollback script failed. We manually rerouted for 47 minutes while our monitoring dashboard showed green.',
-  },
-  {
-    year: '2020',
-    label: 'The workarounds',
-    summary:
-      'We built internal tooling — Bash scripts, Slack bots, a shared runbook Google Doc. It worked, until the person who wrote it left. Then we were back to hoping.',
-  },
-  {
-    year: '2021',
-    label: 'The search',
-    summary:
-      'We evaluated every tool on the market. Some were too narrowly scoped. Some required re-platforming our entire stack. None felt like they understood the actual problem.',
-  },
-  {
-    year: '2022',
-    label: 'The decision',
-    summary:
-      'We stopped looking and started building. Not a wrapper around Kubernetes. A deployment control plane — opinionated, composable, and built for real engineering teams.',
-  },
-  {
-    year: '2024',
-    label: 'DeployTitan ships',
-    summary:
-      'First design partners onboarded. 14 integrations live. Progressive rollouts, multi-cloud failover, and risk scoring — all from a single dt deploy command.',
-  },
-]
-
-// ── Principles ────────────────────────────────────────────────────────────────
-const PRINCIPLES = [
+// ── What we're building toward ────────────────────────────────────────────────
+const OUTCOMES = [
   {
     number: '01',
-    title: 'Deployments should be boring',
-    body: 'The best deploy is the one nobody notices. We measure success by how few Slack messages a release generates — not how many dashboards it touches.',
+    title: 'Reduce deployment risk',
+    body: 'Progressive rollouts, automated risk scoring, and real-time traffic control — so you catch problems before they reach all your users.',
   },
   {
     number: '02',
-    title: 'Risk should be visible before traffic shifts',
-    body: "Every release carries information about its own risk. Dependency changes, service blast radius, SLO proximity — it's all knowable at PR time. We surface it.",
+    title: 'Recover from failures faster',
+    body: 'Instant rollback in seconds, not minutes. When something goes wrong, the people who built the feature can fix it without coordinating a team.',
   },
   {
     number: '03',
-    title: 'Rollback is not failure — slowness is',
-    body: 'A rollback in 8 seconds is a feature, not a failure mode. What kills teams is rollbacks that take 12 minutes and require three engineers to coordinate.',
+    title: 'Protect SLOs and SLAs',
+    body: 'Deploy with full visibility into blast radius and SLO proximity. Stop discovering compliance breaches in a post-incident review.',
   },
   {
     number: '04',
-    title: 'Platform teams should set policies, not bottlenecks',
-    body: 'Product engineers should deploy independently within guardrails. Platform engineers should write policy-as-code, not become the approval step for every release.',
+    title: 'Eliminate deployment anxiety',
+    body: 'Deploy on Fridays. Deploy multiple times a day. Deploy at night if you want — but because you chose to, not because you had to.',
   },
 ]
 
@@ -81,18 +47,17 @@ export default function Journey() {
             <br className="hidden md:block" /> because we lived the problem.
           </h1>
           <p className="text-xl text-ink-secondary leading-relaxed mb-5">
-            Not as a thought experiment. Not from a whiteboard session about developer experience.
-            We were the engineers getting paged at 3 AM, watching a deploy silently eat production
-            while every monitor showed green.
+            Not as a thought experiment. Not from a whiteboard session. For 7 years, across
+            multiple engineering organizations, I watched the same fear play out in different
+            forms. The tools changed. The fear didn't.
           </p>
           <p className="text-lg text-ink-secondary leading-relaxed">
-            This is the honest story of that night — and why it took us three more years to stop
-            complaining and start building.
+            This is the honest story of why that matters — and what we decided to do about it.
           </p>
         </Container>
       </section>
 
-      {/* ── The Incident ──────────────────────────────────────────────────────── */}
+      {/* ── The Pattern ───────────────────────────────────────────────────────── */}
       <section className="py-24 border-b border-line">
         <Container width="3xl" padding="default">
           <span
@@ -100,48 +65,36 @@ export default function Journey() {
             className="inline-flex items-center gap-3 text-xs font-mono text-ink-tertiary uppercase tracking-widest mb-8"
           >
             <span className="w-6 h-px bg-primary/40" />
-            The night it broke
+            Seven years of the same problem
           </span>
 
           <div className="space-y-6">
             <p data-reveal className="text-lg text-ink leading-relaxed">
-              November 2019. We pushed a routine API change — a config tweak, nothing that touched
-              the critical path. CI passed. Staging looked fine. We deployed at 11 PM to avoid peak
-              traffic.
+              For the last 7 years, I worked across multiple engineering organizations — and every
+              company handled deployments differently.
             </p>
             <p data-reveal className="text-lg text-ink leading-relaxed">
-              At 11:23 PM, customer support started getting tickets. Payment confirmations weren't
-              sending. Our monitoring dashboard showed{' '}
-              <span className="font-medium text-ink">
-                100% uptime, p99 latency nominal, error rate 0.02%
-              </span>
-              . Nothing looked wrong.
+              Some teams only deployed late at night during narrow maintenance windows because
+              production changes during the day were considered too risky. Other teams allowed
+              deployments during working hours, usually between 10am and 5pm, but even then Fridays
+              were avoided because nobody wanted to spend the weekend firefighting.
             </p>
             <p data-reveal className="text-lg text-ink leading-relaxed">
-              The config change had silently misconfigured our email service's retry queue. Requests
-              were succeeding — they just weren't doing anything. By the time we traced it, 30% of
-              that night's transactions had incomplete confirmation emails. We had no automated
-              rollback. The runbook was outdated. We spent 47 minutes manually rerouting traffic and
-              another two hours writing apology emails to customers.
+              The deployment process changed from company to company. But the fear around
+              deployments was always the same.
             </p>
 
             {/* Pull quote */}
             <div data-reveal className="my-10 border-l-2 pl-6" style={{ borderColor: PRIMARY }}>
               <p className="text-xl font-medium text-ink leading-relaxed">
-                "The worst part wasn't the incident. It was realising we had no way to prevent the
-                next one — or catch it faster when it happened."
+                "And honestly, I hated it."
               </p>
             </div>
-
-            <p data-reveal className="text-lg text-ink leading-relaxed">
-              We wrote a postmortem. We added more monitoring. We updated the runbook. Three months
-              later, a different engineer made a different change, and we had a very similar night.
-            </p>
           </div>
         </Container>
       </section>
 
-      {/* ── The Pattern ───────────────────────────────────────────────────────── */}
+      {/* ── Night deployments ─────────────────────────────────────────────────── */}
       <section className="py-24 border-b border-line bg-surface-alt/30">
         <Container width="3xl" padding="default">
           <span
@@ -149,27 +102,31 @@ export default function Journey() {
             className="inline-flex items-center gap-3 text-xs font-mono text-ink-tertiary uppercase tracking-widest mb-8"
           >
             <span className="w-6 h-px bg-primary/40" />
-            What we kept seeing
+            The night deployment trap
           </span>
 
           <h2 data-reveal className="text-3xl font-semibold text-ink mb-8 leading-snug">
-            It wasn't bad luck.
+            Safe in theory.
             <br />
-            It was a structural problem.
+            Dangerous in practice.
           </h2>
 
           <div className="space-y-6 mb-12">
             <p data-reveal className="text-lg text-ink leading-relaxed">
-              After that incident, we started paying attention differently. We talked to teams at
-              other companies — startups, scale-ups, large orgs. The stories were almost identical:
-              a deploy that looked fine but wasn't, a rollback that took too long, monitoring that
-              told you everything except the thing that mattered.
+              Night deployments sound safe in theory, but they create a different problem entirely.
+              We would deploy, run a quick sanity check, and assume things were fine — only for
+              real production traffic to hit later and expose issues that never appeared during
+              testing.
             </p>
             <p data-reveal className="text-lg text-ink leading-relaxed">
-              The tools hadn't kept pace with how teams actually ship. CI/CD pipelines got faster
-              and faster — but nobody added intelligence to what happened <em>during</em> a deploy.
-              Traffic shifted in one big step. Rollbacks were manual. Risk was invisible until it
-              was a customer complaint.
+              By then, the engineering team might already be offline, asleep, or unavailable.
+            </p>
+            <p data-reveal className="text-lg text-ink leading-relaxed">
+              To solve that, some organizations tried building permanent 24x7 on-call rotations.
+              But that created another challenge: the on-call engineer often didn't fully understand
+              the newly released feature, the rollout context, or the edge cases behind the change.
+              When incidents happened, response time slowed down because the people handling the
+              issue weren't always the people who built it.
             </p>
           </div>
 
@@ -177,23 +134,23 @@ export default function Journey() {
           <div data-reveal className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               {
-                stat: '47 min',
-                desc: 'Average time to detect a silent regression',
-                context: 'when monitoring shows green',
+                stat: 'Night windows',
+                desc: 'Deployments pushed to off-hours to reduce perceived risk',
+                context: 'but real traffic hits after the team goes offline',
               },
               {
-                stat: '3 engineers',
-                desc: 'Typically needed to coordinate a manual rollback',
-                context: 'at 2 AM',
+                stat: '24x7 on-call',
+                desc: 'Rotations staffed by engineers who didn\'t build the feature',
+                context: 'slower response when it matters most',
               },
               {
-                stat: '400 lines',
-                desc: 'Average rollback script length',
-                context: 'untested until the moment you need it',
+                stat: 'No Fridays',
+                desc: 'Entire deployment windows blocked to avoid weekend incidents',
+                context: 'velocity sacrificed for fear management',
               },
             ].map((item) => (
               <Card key={item.stat} padding="sm">
-                <p className="text-2xl font-semibold text-ink mb-1">{item.stat}</p>
+                <p className="text-base font-semibold text-ink mb-1">{item.stat}</p>
                 <p className="text-xs text-ink-secondary leading-relaxed mb-2">{item.desc}</p>
                 <p className="text-xs font-mono text-ink-tertiary">{item.context}</p>
               </Card>
@@ -202,7 +159,7 @@ export default function Journey() {
         </Container>
       </section>
 
-      {/* ── Timeline ─────────────────────────────────────────────────────────── */}
+      {/* ── Rollback problem ──────────────────────────────────────────────────── */}
       <section className="py-24 border-b border-line">
         <Container width="3xl" padding="default">
           <span
@@ -210,37 +167,34 @@ export default function Journey() {
             className="inline-flex items-center gap-3 text-xs font-mono text-ink-tertiary uppercase tracking-widest mb-8"
           >
             <span className="w-6 h-px bg-primary/40" />
-            How we got here
+            When rollback fails you
           </span>
 
-          <h2 data-reveal className="text-3xl font-semibold text-ink mb-12 leading-snug">
-            Five years of trying to solve this the right way.
-          </h2>
+          <div className="space-y-6">
+            <p data-reveal className="text-lg text-ink leading-relaxed">
+              Rollback processes weren't much better either.
+            </p>
+            <p data-reveal className="text-lg text-ink leading-relaxed">
+              Even in mature systems, rolling back production changes could take precious minutes.
+              Those minutes directly affected uptime, customer trust, SLOs, and SLA commitments.
+              The larger the system became, the harder and riskier deployments felt.
+            </p>
 
-          <div className="relative">
-            {/* Vertical line */}
-            <div
-              className="absolute left-[3.25rem] top-0 bottom-0 w-px bg-line"
-              aria-hidden="true"
-            />
-
-            <div className="space-y-0">
-              {TIMELINE.map((item, i) => (
-                <div key={item.year} className="flex gap-8 group" data-reveal>
-                  {/* Year + dot */}
-                  <div className="flex flex-col items-center shrink-0 w-16 pt-1">
-                    <p className="text-xs font-mono text-primary mb-2">{item.year}</p>
-                    <div className="w-2 h-2 rounded-full bg-primary/40 group-hover:bg-primary transition-colors duration-300 relative z-10" />
-                  </div>
-
-                  {/* Content */}
-                  <div className={`pb-10 ${i === TIMELINE.length - 1 ? 'pb-0' : ''}`}>
-                    <p className="text-sm font-semibold text-ink mb-1.5">{item.label}</p>
-                    <p className="text-sm text-ink-secondary leading-relaxed">{item.summary}</p>
-                  </div>
-                </div>
-              ))}
+            {/* Pull quote */}
+            <div data-reveal className="my-10 border-l-2 pl-6" style={{ borderColor: PRIMARY }}>
+              <p className="text-xl font-medium text-ink leading-relaxed">
+                "Over time, one thing became very clear: the problem wasn't just deployment
+                tooling. The real problem was confidence."
+              </p>
             </div>
+
+            <p data-reveal className="text-lg text-ink leading-relaxed">
+              Engineering teams needed a safer way to release continuously — without relying on
+              fear, rigid deployment windows, or manual operational coordination.
+            </p>
+            <p data-reveal className="text-lg text-ink leading-relaxed">
+              That idea eventually became DeployTitan.
+            </p>
           </div>
         </Container>
       </section>
@@ -253,19 +207,20 @@ export default function Journey() {
             className="inline-flex items-center gap-3 text-xs font-mono text-ink-tertiary uppercase tracking-widest mb-8"
           >
             <span className="w-6 h-px bg-primary/40" />
-            Our convictions
+            What we're building
           </span>
 
           <h2 data-reveal className="text-3xl font-semibold text-ink mb-4 leading-snug">
-            The principles we built DeployTitan on.
+            Deployments should not feel dangerous.
           </h2>
           <p data-reveal className="text-lg text-ink-secondary leading-relaxed mb-12">
-            These aren't marketing copy. They're the decisions we find ourselves making over and
-            over when we're in disagreement about a feature.
+            Teams should be able to release during the day, at night, on Fridays, or multiple
+            times an hour — while still maintaining high reliability and strong operational
+            control.
           </p>
 
           <div className="space-y-px border border-line">
-            {PRINCIPLES.map((p) => (
+            {OUTCOMES.map((p) => (
               <Card
                 key={p.number}
                 padding="none"
@@ -302,24 +257,27 @@ export default function Journey() {
             />
 
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-6">
-              A note from the team
+              A note from the founder
             </p>
             <div className="space-y-5 text-base text-ink leading-relaxed mb-8">
               <p>
-                We are not a big company with a large sales org telling you that enterprise
-                deployment orchestration is the future. We're a small team that got tired of losing
-                sleep over deploys — and decided to do something about it.
+                Modern engineering teams shouldn't have to choose between speed and stability.
               </p>
               <p>
-                DeployTitan is opinionated. We've made bets about how deployment control should
-                work, and not every bet will be right. But we'd rather ship something with a clear
-                point of view than a configuration surface that can theoretically do anything and
-                actually helps no one.
+                I've spent 7 years watching smart, capable teams slow themselves down — not
+                because they lacked discipline, but because their deployment tooling forced them
+                to treat every release as a high-risk event. That's not an engineering problem.
+                That's a tooling problem.
               </p>
               <p>
-                If you're evaluating us, we'd love to talk to you directly — not to sell you, but
-                because every conversation with an engineering team teaches us something we couldn't
-                have figured out by ourselves.
+                DeployTitan is built around a simple belief: if you give teams the right
+                controls, visibility, and recovery mechanisms, deployment anxiety disappears on
+                its own. You don't need rigid deployment windows. You need confidence.
+              </p>
+              <p>
+                If you're evaluating us, we'd love to talk — not to sell you, but because every
+                conversation with an engineering team teaches us something we couldn't have
+                figured out on our own.
               </p>
             </div>
 
@@ -339,14 +297,7 @@ export default function Journey() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────────────────────────── */}
-      <MidCTA
-        heading="Build with a team that's been in your shoes."
-        subheading="We're onboarding design partners now. No sales pitch — just a conversation about your deploys."
-        primaryLabel="Apply for early access"
-        primaryHref="/early-access"
-        secondaryLabel="Read the docs"
-        secondaryHref="/docs"
-      />
+      <MidCTA />
     </>
   )
 }

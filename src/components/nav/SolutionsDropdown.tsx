@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
+import { STEALTH_PRODUCTS } from '@/lib/env'
 
-const solutions = [
+const ALL_SOLUTIONS = [
   {
     route: '/solutions/progressive-delivery',
     eyebrow: 'Progressive Delivery',
@@ -21,6 +22,7 @@ const solutions = [
     tagline: 'Automated failover with sub-30s RTO.',
     description: 'Declarative cross-cloud routing and DR drill mode built-in.',
     product: 'Titan Shield',
+    stealth: true,
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -64,6 +66,10 @@ const solutions = [
     ),
   },
 ]
+
+const solutions = STEALTH_PRODUCTS
+  ? ALL_SOLUTIONS.filter((s) => !s.stealth)
+  : ALL_SOLUTIONS
 
 interface Props {
   onClose: () => void

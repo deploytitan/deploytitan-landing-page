@@ -32,18 +32,18 @@ A comprehensive reference for building the DeployTitan frontend application. Ext
 
 ## Tech Stack
 
-| Layer            | Technology                  |
-| ---------------- | --------------------------- |
-| Framework        | React 19                    |
-| Build Tool       | Vite 8                      |
-| Language         | TypeScript                  |
-| Routing          | React Router v6             |
-| CSS Framework    | Tailwind CSS v4 (CSS-first) |
-| Animation        | Anime.js 4                  |
-| Code highlighter | Shiki (lazy-loaded)         |
-| Fonts            | Google Fonts (CDN)          |
+| Layer            | Technology                               |
+| ---------------- | ---------------------------------------- |
+| Framework        | React 19                                 |
+| Meta-framework   | Next.js 16 (App Router, Turbopack dev)   |
+| Language         | TypeScript                               |
+| Routing          | Next.js App Router (file-system routes)  |
+| CSS Framework    | Tailwind CSS v4 (CSS-first)              |
+| Animation        | Anime.js 4                               |
+| Code highlighter | Shiki (lazy-loaded)                      |
+| Fonts            | Google Fonts (CDN)                       |
 
-Tailwind v4 uses the `@theme` directive inside CSS instead of `tailwind.config.js`. The entire theme is defined in a single `index.css` file.
+Tailwind v4 uses the `@theme` directive inside CSS instead of `tailwind.config.js`. The entire theme is defined in `src/app/globals.css`.
 
 Dark mode is enabled via Tailwind v4's `@custom-variant`:
 
@@ -81,7 +81,7 @@ Dark mode is a first-class part of the design system. The same component code re
    ```css
    @custom-variant dark (&:where(.dark, .dark *));
    ```
-2. **The `.dark` selector** in `index.css` overrides every theme custom property (surface, ink, line, signal, gold/primary).
+2. **The `.dark` selector** in `src/app/globals.css` overrides every theme custom property (surface, ink, line, signal, gold/primary).
 3. **A React `ThemeProvider`** (`src/contexts/ThemeContext.tsx`) reads `localStorage` (`dt-theme` key), resolves `light | dark | system`, watches `prefers-color-scheme`, and toggles the class on `document.documentElement`.
 4. **A three-way `<ThemeToggle />`** segmented control (Light / System / Dark) lives in the desktop nav and mobile menu.
 
@@ -145,6 +145,8 @@ A few effects need explicit dark variants because they hardcode RGBA values rath
 | Modal panel bg            | `--color-surface`                  | `--color-surface-alt`                 |
 | Nav scrolled bg           | `rgba(250,250,249,0.92)`           | `rgba(13,12,10,0.92)`                 |
 
+> **Implementation note:** The nav scrolled background is applied via **inline style in `Nav.tsx`** based on `useTheme().resolved` — not via a CSS class. A legacy `[data-nav-scrolled='true']` CSS rule exists in `globals.css` but is dead code; `Nav.tsx` never sets that attribute.
+
 ### Dark-Mode Authoring Rules
 
 These rules let almost every component "just work" in both palettes:
@@ -177,14 +179,21 @@ const { mode, resolved, setMode } = useTheme()
 // setMode:  persists to localStorage and applies immediately
 ```
 
-The provider is mounted once at the app root:
+The provider is mounted once at the app root (`src/app/layout.tsx`):
 
 ```tsx
-<ThemeProvider>
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-</ThemeProvider>
+// src/app/layout.tsx
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <ThemeProvider>
+          <SiteLayoutClient>{children}</SiteLayoutClient>
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}
 ```
 
 ---
@@ -389,9 +398,9 @@ grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line/60 border border-l
 
 ## Border Radius
 
-The design system uses a deliberately sharp aesthetic. **Never use Tailwind's `rounded-*` classes.**
+The design system uses a deliberately sharp aesthetic. **Prefer inline `style={{ borderRadius: '...' }}` for sharp interactive surfaces** (cards, buttons, modals, inputs). `rounded-full` is allowed for status dots and avatars. `rounded-sm` is acceptable when paired with an inline override (e.g. `<Button>` uses both). Avoid arbitrary Tailwind `rounded-*` classes for other surfaces.
 
-All border-radius is applied via inline styles:
+All border-radius values:
 
 | Value   | Usage                                             |
 | ------- | ------------------------------------------------- |
@@ -677,14 +686,12 @@ import { Button } from '@/components/shared/Button'
 | `primary` | `bg-ink text-surface` + gold-ring hover shadow + `active:scale-[0.97]` |
 | `ghost`   | `border border-line` → `border-primary/30` on hover                    |
 | `link`    | Underline-on-hover text link                                           |
-
-| Size | Padding / Text        |
 | ---- | --------------------- |
 | `sm` | `px-4 py-2 text-xs`   |
 | `md` | `px-6 py-2.5 text-sm` |
 | `lg` | `px-8 py-3.5 text-sm` |
 
-Polymorphic via `as="a"` for anchors. All buttons get `borderRadius: '2px'` inline.
+Polymorphic via `as="a"` for anchors. The `<button>` branch applies `borderRadius: '2px'` inline; the `<a>` branch relies on `rounded-sm` from Tailwind.
 
 ### `<SectionHeader>` — Eyebrow + heading + subhead
 
@@ -768,15 +775,15 @@ A dismissible bar pinned to the top of the viewport (`fixed top-0 z-[60]`). Back
 - Center cluster: `Products ▾`, `Solutions ▾`, `Pricing`, `Customers`. Dropdown carets rotate `180deg` when open.
 - Right cluster: `<ThemeToggle>`, `Sign in` link, primary "Get started" CTA.
 - Mobile: hamburger that morphs into an "X" via two rotated bars.
-- A 32px gold gradient accent (`via-primary/20`) appears centered under the nav border once scrolled.
+- A 128px (`w-32`) gold gradient accent (`via-primary/20`) appears centered under the nav border once scrolled.
 
-### Dropdown panels (`<ProductsDropdown>`, `<SolutionsDropdown>`, `<ResourcesDropdown>`)
+### Dropdown panels (`<ProductsDropdown>`, `<SolutionsDropdown>`)
 
 ```tsx
 <div
   className="absolute top-full mt-2 bg-surface border border-line
              shadow-[0_8px_32px_rgba(8,5,3,0.08)] z-50"
-  style={{ borderRadius: '2px', minWidth: '780px' }}
+  style={{ borderRadius: '2px', minWidth: '900px' }}
 >
   {/* Top eyebrow row */}
   <div className="px-6 pt-5 pb-3 border-b border-line-subtle flex items-center justify-between">
@@ -786,8 +793,8 @@ A dismissible bar pinned to the top of the viewport (`fixed top-0 z-[60]`). Back
     <span className="text-xs text-ink-quaternary">The DeployTitan platform</span>
   </div>
 
-  {/* N-column grid divided by lines */}
-  <div className="grid grid-cols-4 divide-x divide-line">
+  {/* Dynamic N-column grid — columns = number of live products */}
+  <div style={{ display: 'grid', gridTemplateColumns: `repeat(N, 1fr)` }}>
     {/* Each cell: icon + name + tagline + bullet list */}
   </div>
 
@@ -814,7 +821,7 @@ Uses `border-t border-line bg-surface-alt/50`. Mono `text-[10px] uppercase track
 | Element                | Pattern                                                                         |
 | ---------------------- | ------------------------------------------------------------------------------- |
 | **Card**               | `hover:border-gold/30` + gold shadow ring + corner accents reveal               |
-| **Button (primary)**   | `hover:bg-ink/85` + `active:scale-[0.97]`                                       |
+| **Button (primary)**   | Gold-ring hover shadow + `active:scale-[0.97]`                                  |
 | **Button (secondary)** | `hover:border-gold/40 hover:bg-gold-muted`                                      |
 | **Nav link**           | `hover:text-ink` + gold underline via `.nav-link-underline`                     |
 | **Text link**          | `hover:text-gold transition-colors`                                             |
@@ -901,7 +908,7 @@ disabled:opacity-50            /* Disabled inputs */
 
 ### 1. Scroll Reveal (Primary entrance animation)
 
-Uses `anime.js` + `IntersectionObserver`. Add `data-reveal` to any element:
+Uses `anime.js` + `IntersectionObserver`. Hooks live in `src/hooks/animations.ts` (re-exported via `src/utils.ts`). Add `data-reveal` to any element:
 
 ```tsx
 // Hook
@@ -1375,15 +1382,15 @@ useEffect(() => {
 | Breakpoint | Usage                                        |
 | ---------- | -------------------------------------------- |
 | `sm:`      | CTA row direction, card grid columns         |
-| `md:`      | Nav desktop/mobile toggle, grid cols         |
-| `lg:`      | Major layout shifts (side-by-side → stacked) |
+| `md:`      | Grid cols, minor layout shifts               |
+| `lg:`      | Nav desktop/mobile toggle, major layout shifts (side-by-side → stacked) |
 
 ### Key Responsive Patterns
 
 ```
 /* Nav */
-hidden md:flex          /* Desktop nav links */
-md:hidden               /* Mobile hamburger */
+hidden lg:flex          /* Desktop nav links */
+lg:hidden               /* Mobile hamburger */
 
 /* Hero */
 w-full lg:w-[50%]       /* Left copy column */
@@ -1423,19 +1430,25 @@ hidden sm:inline         /* Secondary details */
 
 ```
 src/
-  index.css                     -- Theme tokens (light + dark), keyframes, utility classes, component styles
-  utils.ts                      -- Animation hooks (useScrollReveal, useStaggerReveal, useSpotlight)
-  contexts/ThemeContext.tsx     -- ThemeProvider, useTheme hook (light/dark/system)
-  hooks/useTheme.ts             -- Re-export
-  layouts/SiteLayout.tsx        -- AnnouncementBar + Nav + <Outlet/> + Footer shell
+  app/
+    globals.css               -- Theme tokens (light + dark), keyframes, utility classes, component styles
+    layout.tsx                -- Root layout: <html> → ThemeProvider → SiteLayoutClient → {children}
+  lib/utils.ts                -- Pure helpers: cn(), sleep()
+  hooks/
+    animations.ts             -- Animation hooks: useScrollReveal, useStaggerReveal, useSpotlight
+    useTheme.ts               -- Re-export of ThemeContext hook
+  contexts/ThemeContext.tsx   -- ThemeProvider, useTheme hook (light/dark/system)
+  utils.ts                    -- Re-export shim (proxies lib/utils and hooks/animations)
+  layouts/SiteLayoutClient.tsx -- AnnouncementBar + Nav + {children} + Footer shell
   components/
-    nav/                        -- Nav shell + dropdowns + MobileNav
-    shared/                     -- Button, CodeBlock, InstallTabs, LogoCloud,
-                                   RoadmapBadge, SectionHeader, ThemeToggle
-    platform/                   -- PlatformOverview, ProductTeaser
-    graph/                      -- LocalGraph, SiteGraph
-    *.tsx                       -- Page-section components
-  pages/                        -- Route components (Home, Pricing, products/*, solutions/*, ...)
+    nav/                      -- Nav shell + dropdowns (ProductsDropdown, SolutionsDropdown) + MobileNav
+    shared/                   -- Button, CodeBlock, InstallTabs, LogoCloud,
+                                 RoadmapBadge, SectionHeader, ThemeToggle
+    platform/                 -- PlatformOverview, ProductTeaser
+    graph/                    -- LocalGraph, SiteGraph
+    *.tsx                     -- Page-section components
+  app/                        -- File-system routes (Next.js App Router)
+  page-components/            -- Route page bodies (Home, Pricing, products/*, solutions/*, ...)
 ```
 
 ### Tailwind v4 Configuration
@@ -1489,6 +1502,7 @@ body { ... }
 ### Utility Functions
 
 ```tsx
+// src/lib/utils.ts
 // Simple className joiner (no clsx dependency)
 export function cn(...classes: (string | false | null | undefined)[]) {
   return classes.filter(Boolean).join(' ')
@@ -1502,7 +1516,7 @@ export function sleep(ms: number) {
 
 ### Key Conventions
 
-1. **Inline `borderRadius` everywhere** — never use Tailwind `rounded-*` classes (the only exception is `<Button>`, which sets it inline already).
+1. **Prefer inline `borderRadius` for sharp surfaces** — use `style={{ borderRadius: '2px' }}` for cards, modals, inputs. `rounded-full` is allowed for status dots/avatars; `rounded-sm` is acceptable alongside an inline override. See [Border Radius](#border-radius).
 2. **Inline `style` for dynamic values** — colors, backgrounds, transforms driven by state.
 3. **Tailwind classes for static layout** — spacing, typography, flex/grid, responsive.
 4. **CSS classes for reusable interactive patterns** — `.sharp-card`, `.spotlight-card`, `.cap-modal-*`.

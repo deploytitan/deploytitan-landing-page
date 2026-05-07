@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { Section } from './shared/Section'
 import { Container } from './shared/Container'
+import { STEALTH_PRODUCTS } from '@/lib/env'
 
 export function Footer() {
   return (
@@ -70,15 +71,27 @@ export function Footer() {
             {(
               [
                 { label: 'Titan Foresight', to: '/products/titan-foresight' },
-                { label: 'Titan Rollout',   to: '/products/titan-rollout' },
-                { label: 'Titan Shield',    to: '/products/titan-shield' },
-                { label: 'Titan Phoenix',   to: '/products/titan-phoenix' },
-                { label: 'Titan Ledger',    to: '/products/titan-ledger' },
-                { label: 'Titan Insight',   to: '/products/titan-insight',  status: 'roadmap' as const },
-                { label: 'Titan Sandbox',   to: '/products/titan-sandbox',  status: 'roadmap' as const },
-                { label: 'Pricing',         to: '/pricing' },
-                { label: 'Customers',       to: '/customers' },
-                { label: 'Changelog',       to: '/changelog' },
+                { label: 'Titan Rollout', to: '/products/titan-rollout' },
+                { label: 'Titan Phoenix', to: '/products/titan-phoenix' },
+                ...(!STEALTH_PRODUCTS
+                  ? [
+                      { label: 'Titan Ledger', to: '/products/titan-ledger' },
+                      { label: 'Titan Shield', to: '/products/titan-shield' },
+                      {
+                        label: 'Titan Insight',
+                        to: '/products/titan-insight',
+                        status: 'roadmap' as const,
+                      },
+                      {
+                        label: 'Titan Sandbox',
+                        to: '/products/titan-sandbox',
+                        status: 'roadmap' as const,
+                      },
+                    ]
+                  : []),
+                { label: 'Pricing', to: '/pricing' },
+                // { label: 'Customers', to: '/customers' },
+                // { label: 'Changelog', to: '/changelog' },
               ] as { label: string; to: string; status?: 'roadmap' }[]
             ).map((l) => (
               <li key={l.label}>
@@ -106,12 +119,12 @@ export function Footer() {
               { label: 'Documentation', to: '/docs' },
               { label: 'CLI Reference', to: '/cli' },
               { label: 'API Reference', to: '/api-reference' },
-              { label: 'Integrations', to: '/integrations' },
-              { label: 'Roadmap', to: '/roadmap' },
+              // { label: 'Integrations', to: '/integrations' },
+              // { label: 'Roadmap', to: '/roadmap' },
               { label: 'Blog', to: '/blog' },
               { label: 'How it works', to: '/how-it-works' },
-              { label: 'Security', to: '/security' },
-              { label: 'System status', to: '/status' },
+              // { label: 'Security', to: '/security' },
+              // { label: 'System status', to: '/status' },
             ].map((l) => (
               <li key={l.label}>
                 <Link
@@ -134,11 +147,11 @@ export function Footer() {
             {[
               { label: 'About', to: '/about' },
               { label: 'Our journey', to: '/journey' },
-              { label: 'Careers', to: '/careers' },
+              // { label: 'Careers', to: '/careers' },
               { label: 'Contact', to: '/contact' },
-              { label: 'Press', to: '/press' },
-              { label: 'Brand', to: '/brand' },
-              { label: 'Partners', to: '/partners' },
+              // { label: 'Press', to: '/press' },
+              // { label: 'Brand', to: '/brand' },
+              // { label: 'Partners', to: '/partners' },
             ].map((l) => (
               <li key={l.label}>
                 <Link
@@ -157,7 +170,7 @@ export function Footer() {
       <div className="border-t border-line">
         <Container className="py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <span className="text-xs font-mono text-ink-quaternary">
-            &copy; 2026 Kizhak Inc. All rights reserved.
+            &copy; 2026 DeployTitan Inc. All rights reserved.
           </span>
           <div className="flex items-center gap-6">
             <Link

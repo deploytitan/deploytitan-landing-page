@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { cn } from '../../utils'
 import { useTheme } from '../../hooks/useTheme'
 
@@ -13,7 +13,7 @@ async function getHighlighter() {
       createHighlighter({
         themes: ['github-dark', 'github-light'],
         langs: ['bash', 'yaml', 'powershell', 'dockerfile', 'tsx', 'hcl', 'diff', 'json'],
-      })
+      }),
     )
   }
   return highlighterPromise
@@ -36,20 +36,28 @@ interface CodeBlockProps {
   className?: string
 }
 
-export function CodeBlock({ code, lang = 'bash', filename, copy = true, className }: CodeBlockProps) {
+export function CodeBlock({
+  code,
+  lang = 'bash',
+  filename = 'terminal',
+  copy = true,
+  className,
+}: CodeBlockProps) {
   const { resolved } = useTheme()
   const [mounted, setMounted] = useState(false)
-  useEffect(() => { setMounted(true) }, [])
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Use a stable server-safe default until mounted to match SSR output exactly.
   const theme = mounted ? resolved : 'light'
   const shikiTheme = theme === 'dark' ? 'github-dark' : 'github-light'
   const bgColor = theme === 'dark' ? '#0d1117' : '#f6f8fa'
   const textMuted = theme === 'dark' ? 'text-white/40' : 'text-black/40'
-  const textAction = theme === 'dark'
-    ? 'text-white/30 hover:text-white/60'
-    : 'text-black/30 hover:text-black/60'
-  const headerBg = theme === 'dark' ? 'border-white/[0.06] bg-white/[0.02]' : 'border-black/[0.06] bg-black/[0.02]'
+  const textAction =
+    theme === 'dark' ? 'text-white/30 hover:text-white/60' : 'text-black/30 hover:text-black/60'
+  const headerBg =
+    theme === 'dark' ? 'border-white/[0.06] bg-white/[0.02]' : 'border-black/[0.06] bg-black/[0.02]'
 
   const [html, setHtml] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
@@ -66,7 +74,9 @@ export function CodeBlock({ code, lang = 'bash', filename, copy = true, classNam
       })
       setHtml(rendered)
     })
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+    }
   }, [trimmed, lang, shikiTheme])
   const handleCopy = async () => {
     await navigator.clipboard.writeText(trimmed)
@@ -76,10 +86,7 @@ export function CodeBlock({ code, lang = 'bash', filename, copy = true, classNam
 
   return (
     <div
-      className={cn(
-        'border border-line overflow-hidden',
-        className,
-      )}
+      className={cn('border border-line overflow-hidden', className)}
       style={{ borderRadius: '2px', backgroundColor: bgColor }}
     >
       {/* Header bar */}
@@ -93,17 +100,39 @@ export function CodeBlock({ code, lang = 'bash', filename, copy = true, classNam
           {copy && (
             <button
               onClick={handleCopy}
-              className={cn('flex items-center gap-1.5 text-[11px] font-mono transition-colors', textAction)}
+              className={cn(
+                'flex items-center gap-1.5 text-[11px] font-mono transition-colors',
+                textAction,
+              )}
               aria-label="Copy code"
             >
               {copied ? (
                 <>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
                   Copied
                 </>
               ) : (
                 <>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                  </svg>
                   Copy
                 </>
               )}
@@ -119,7 +148,14 @@ export function CodeBlock({ code, lang = 'bash', filename, copy = true, classNam
           <div dangerouslySetInnerHTML={{ __html: html }} />
         ) : (
           // Plain-text fallback while shiki loads
-          <pre className={cn('font-mono text-[13px] leading-[1.7] whitespace-pre', theme === 'dark' ? 'text-white/70' : 'text-black/70')}>{trimmed}</pre>
+          <pre
+            className={cn(
+              'font-mono text-[13px] leading-[1.7] whitespace-pre',
+              theme === 'dark' ? 'text-white/70' : 'text-black/70',
+            )}
+          >
+            {trimmed}
+          </pre>
         )}
       </div>
     </div>

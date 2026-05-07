@@ -379,7 +379,8 @@ export function Hero() {
             data-reveal-delay="2"
             className="text-lg text-ink-secondary max-w-md mb-4 leading-relaxed"
           >
-            Releases shouldn't be the scariest part of your week. Stop guessing which release broke production.
+            Releases shouldn't be the scariest part of your week. Stop guessing which release broke
+            production.
           </p>
 
           {/* Supporting line */}
@@ -452,20 +453,18 @@ export function Hero() {
               Works with your existing stack
             </p>
             <div className="flex flex-wrap items-center gap-4 text-sm text-ink-secondary">
-              {['Kubernetes', 'GCP Cloud Run', 'AWS Lambda', 'Azure AKS', 'Docker Swarm'].map(
-                (p) => (
+              {['Kubernetes', 'GCP Cloud Run', 'AWS Lambda'].map((p) => (
+                <div
+                  key={p}
+                  className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity"
+                >
                   <div
-                    key={p}
-                    className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity"
-                  >
-                    <div
-                      className="w-1 h-1"
-                      style={{ backgroundColor: `${PRIMARY_RGBA},0.3)`, borderRadius: '0.5px' }}
-                    />
-                    <span className="font-mono text-xs">{p}</span>
-                  </div>
-                ),
-              )}
+                    className="w-1 h-1"
+                    style={{ backgroundColor: `${PRIMARY_RGBA},0.3)`, borderRadius: '0.5px' }}
+                  />
+                  <span className="font-mono text-xs">{p}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
