@@ -5,6 +5,7 @@ import { CONSOLE_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
 import { InstallTabs } from '../components/shared/InstallTabs'
 import { Container } from '../components/shared/Container'
+import { Button } from '../components/shared/Button'
 import type { PolarProduct } from '../lib/polar'
 
 // ── Feature credit matrix ─────────────────────────────────────────────────────
@@ -307,13 +308,15 @@ function PlanCard({
 
       {/* Price */}
       <div className="mb-1">
-        {isFree || monthlyAmount == null ? (
+        {isFree ? (
           <p className="text-ink text-3xl font-bold">Free</p>
-        ) : (
+        ) : monthlyAmount != null ? (
           <div className="flex items-baseline gap-1">
             <span className="text-ink text-3xl font-bold">{formatCents(monthlyAmount)}</span>
             <span className="text-ink-secondary text-sm">/ mo</span>
           </div>
+        ) : (
+          <p className="text-ink text-3xl font-bold">—</p>
         )}
       </div>
 
@@ -337,20 +340,19 @@ function PlanCard({
       {overageCentsPerCredit == null && credits == null && <div className="mb-6" />}
       {overageCentsPerCredit == null && credits != null && <div className="mb-6" />}
 
-      <a
+      <Button
+        as="a"
         href={checkoutUrl}
         target={isMail ? '_self' : '_blank'}
         rel={isMail ? undefined : 'noopener noreferrer'}
         aria-label={`${cta} — ${name} plan`}
-        className={`mt-auto px-4 py-2.5 text-center text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
-          isHighlighted
-            ? 'bg-primary text-ink hover:bg-primary-light'
-            : 'border-line text-ink/80 hover:border-primary/30 hover:text-ink border'
-        }`}
-        style={{ borderRadius: '2px' }}
+        variant={isHighlighted ? 'primary' : 'outline'}
+        size="sm"
+        block
+        className="mt-auto"
       >
         {cta}
-      </a>
+      </Button>
     </div>
   )
 }

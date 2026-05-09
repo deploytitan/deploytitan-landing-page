@@ -108,7 +108,18 @@ function mapProduct(raw: RawProduct, orgSlug: string): PolarProduct {
 
   const isFree = raw.prices.every((p) => p.amount_type === 'free') || raw.prices.length === 0
   const isCustom = raw.prices.some((p) => p.amount_type === 'custom')
-  const isHighlighted = raw.metadata?.highlighted === true || raw.metadata?.highlighted === 'true'
+  const isHighlighted =
+    raw.metadata?.highlighted === true ||
+    raw.metadata?.highlighted === 'true' ||
+    raw.metadata?.is_highlighted === true ||
+    raw.metadata?.is_highlighted === 'true'
+
+  if (!isFree && !isCustom && monthlyPrice === null) {
+    console.warn(
+      `[polar] Product "${raw.name}" (${raw.id}) has no monthly fixed price. Raw prices:`,
+      JSON.stringify(raw.prices),
+    )
+  }
 
   return {
     id: raw.id,
