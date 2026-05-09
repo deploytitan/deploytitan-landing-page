@@ -98,7 +98,7 @@ export function LocalGraph() {
             className="flex items-center gap-2 px-2 py-1.5 hover:bg-surface transition-colors group"
             style={{ borderRadius: '2px' }}
           >
-            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: n.color }} />
+            <span className="w-1.5 h-1.5 shrink-0" style={{ backgroundColor: n.color, borderRadius: '1px' }} />
             <span className="text-xs text-ink-secondary group-hover:text-ink transition-colors font-mono">{n.label}</span>
             {n.direction === 'incoming' && (
               <span className="ml-auto font-mono text-[9px] text-ink-quaternary">← backlink</span>

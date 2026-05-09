@@ -28,7 +28,7 @@ dt foresight score --service my-api --ref HEAD
 const CAPABILITIES = [
   {
     title: 'PR risk score',
-    desc: 'Every pull request gets a single, explained score — computed from your live dependency graph, change size, and historical failure patterns for this service.',
+    desc: 'Every pull request gets a single, explained score, computed from your live dependency graph, change size, and historical failure patterns for this service.',
   },
   {
     title: 'Blast-radius graph',
@@ -36,7 +36,7 @@ const CAPABILITIES = [
   },
   {
     title: 'Ownership-aware attribution',
-    desc: 'Risk is broken down by the teams who own the affected services — so the right people are looped in before a risky change ships, not after.',
+    desc: 'Risk is broken down by the teams who own the affected services, so the right people are looped in before a risky change ships, not after.',
   },
   {
     title: 'Risk-based rollout policy',
@@ -44,7 +44,7 @@ const CAPABILITIES = [
   },
   {
     title: 'Inline PR surface',
-    desc: 'Risk score, blast-radius summary, and recommended rollout policy posted as a PR check — no dashboard to open, no tool-switching required.',
+    desc: 'Risk score, blast-radius summary, and recommended rollout policy posted as a PR check: no dashboard to open, no tool-switching required.',
   },
   {
     title: 'Slack & webhook delivery',
@@ -114,7 +114,7 @@ export default function TitanForesight() {
             Foresight owns what we know before we ship.
           </h2>
           <p className="text-ink-secondary leading-relaxed max-w-2xl">
-            Pre-merge. Pre-deploy. Before any traffic moves. Foresight is the judgment layer —
+            Pre-merge. Pre-deploy. Before any traffic moves. Foresight is the judgment layer,
             turning a code change into a risk assessment that shapes how the version ships.
           </p>
         </Container>
@@ -131,7 +131,7 @@ export default function TitanForesight() {
               From change to verdict in seconds.
             </h2>
             <p className="text-ink-secondary max-w-xl">
-              No manual risk reviews. No tribal knowledge. One score, explained — for every change.
+              No manual risk reviews. No tribal knowledge. One score, explained, for every change.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -157,7 +157,7 @@ export default function TitanForesight() {
             </h2>
             <p className="text-ink-secondary max-w-xl">
               Add one GitHub Actions step. Get risk scores, blast-radius maps, and ownership
-              attribution on every PR — automatically.
+              attribution on every PR, automatically.
             </p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8" data-reveal>
@@ -214,7 +214,7 @@ export default function TitanForesight() {
                 <ul className="flex flex-col gap-2">
                   {group.tools.map((t) => (
                     <li key={t} className="text-xs text-ink-secondary flex items-center gap-2">
-                      <span className="w-1 h-1 rounded-full bg-primary/50 shrink-0" />
+                      <span className="w-1 h-1 bg-primary/50 shrink-0" style={{ borderRadius: '1px' }} />
                       {t}
                     </li>
                   ))}

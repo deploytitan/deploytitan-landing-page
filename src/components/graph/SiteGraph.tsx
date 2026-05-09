@@ -333,7 +333,7 @@ export function SiteGraph({ height = 600, mini = false, focusId }: Props) {
               className="flex items-center gap-2 px-2 py-1.5 text-xs text-left transition-colors hover:bg-surface"
               style={{ borderRadius: '2px', opacity: active ? 1 : 0.4 }}
             >
-              <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
+              <span className="w-2.5 h-2.5 shrink-0" style={{ backgroundColor: color, borderRadius: '1px' }} />
               <span className="text-ink-secondary font-mono">{label}</span>
             </button>
           )

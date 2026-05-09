@@ -79,7 +79,7 @@ function GroupCard({ group, nodes, query, inboundCount, outboundCount }: GroupCa
         className="w-full flex items-center gap-3 px-4 py-3 hover:bg-surface-alt transition-colors text-left"
         aria-expanded={open}
       >
-        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
+        <span className="w-2.5 h-2.5 shrink-0" style={{ backgroundColor: color, borderRadius: '1px' }} />
         <span className="font-mono text-[11px] uppercase tracking-widest text-ink-quaternary flex-1">
           {GROUP_LABELS[group]}
         </span>
@@ -121,8 +121,8 @@ function GroupCard({ group, nodes, query, inboundCount, outboundCount }: GroupCa
                   >
                     {/* Color dot */}
                     <span
-                      className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 opacity-60 group-hover:opacity-100 transition-opacity"
-                      style={{ backgroundColor: color }}
+                      className="w-1.5 h-1.5 mt-1.5 shrink-0 opacity-60 group-hover:opacity-100 transition-opacity"
+                      style={{ backgroundColor: color, borderRadius: '1px' }}
                     />
 
                     {/* Label + path + desc */}
@@ -318,8 +318,8 @@ function TreeNodeRow({
 
         {/* Color dot */}
         <span
-          className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"
-          style={{ backgroundColor: color }}
+          className="w-1.5 h-1.5 mt-1.5 shrink-0"
+          style={{ backgroundColor: color, borderRadius: '1px' }}
         />
 
         {/* Content */}
@@ -638,7 +638,7 @@ export default function Sitemap() {
                 ([group, colors]) => (
                   <div key={group} className="flex items-center gap-2">
                     <span
-                      className="w-3 h-3 rounded-full"
+                      className="w-3 h-3 rounded-[2px]"
                       style={{ backgroundColor: colors.light }}
                     />
                     <span className="text-xs font-mono text-ink-secondary capitalize">

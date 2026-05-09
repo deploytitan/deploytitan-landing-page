@@ -186,7 +186,7 @@ export default function Roadmap() {
             const cfg = statusConfig[s]
             return (
               <div key={s} className="flex items-center gap-2">
-                <span className={`w-2 h-2 rounded-full ${cfg.dot}`} />
+                <span className={`w-2 h-2 rounded-[2px] ${cfg.dot}`} />
                 <span className="text-xs text-ink-secondary">{cfg.label}</span>
               </div>
             )
@@ -202,7 +202,7 @@ export default function Roadmap() {
           return (
             <div key={status}>
               <div className="flex items-center gap-3 mb-6">
-                <span className={`w-2.5 h-2.5 rounded-full ${cfg.dot}`} />
+                <span className={`w-2.5 h-2.5 rounded-[2px] ${cfg.dot}`} />
                 <h2 className="font-display text-xl font-medium text-ink tracking-tight">
                   {cfg.label}
                 </h2>

@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useScrollReveal } from '../utils'
 import { Section } from './shared/Section'
 import { Container } from './shared/Container'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const PRIMARY = 'var(--color-primary)'
 
@@ -19,11 +20,13 @@ function AnimatedStat({
   suffix: string
   duration?: number
 }) {
-  const [display, setDisplay] = useState(0)
+  const [display, setDisplay] = useState(value)
   const ref = useRef<HTMLSpanElement>(null)
   const hasAnimated = useRef(false)
+  const reducedMotion = useReducedMotion()
 
   useEffect(() => {
+    if (reducedMotion) return
     const el = ref.current
     if (!el) return
 
@@ -33,6 +36,7 @@ function AnimatedStat({
         hasAnimated.current = true
         observer.disconnect()
 
+        setDisplay(0)
         const startTime = performance.now()
         const tick = (now: number) => {
           const elapsed = now - startTime
@@ -48,7 +52,7 @@ function AnimatedStat({
 
     observer.observe(el)
     return () => observer.disconnect()
-  }, [value, duration])
+  }, [value, duration, reducedMotion])
 
   return (
     <span ref={ref}>
@@ -111,7 +115,7 @@ const outcomes: Outcome[] = [
     stat: '30s',
     numericValue: 30,
     suffix: 's',
-    label: 'From hours to seconds — average traffic recovery',
+    label: 'From hours to seconds: average traffic recovery',
     description:
       'When something breaks, policy-based rollbacks reroute traffic to a known-good version immediately. No manual hotfix needed.',
     beforeLabel: 'Manual process',
@@ -228,9 +232,9 @@ export function Outcomes() {
             <h2
               data-reveal
               data-reveal-delay="1"
-              className="font-display font-medium text-4xl lg:text-6xl tracking-[-0.022em] leading-[1.08] mb-5"
+              className="font-display font-medium text-[clamp(1.5rem,2.5vw,2.5rem)] tracking-[-0.018em] leading-[1.15] mb-5"
             >
-              Move faster—<span className="text-ink-secondary">with less risk.</span>
+              Move faster<span className="text-ink-secondary">, with less risk.</span>
             </h2>
             <p
               data-reveal

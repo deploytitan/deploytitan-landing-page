@@ -2,12 +2,11 @@
 
 import { useScrollReveal } from '../utils'
 import { Container } from './shared/Container'
-
-const PRIMARY = 'var(--color-primary)'
-const PRIMARY_RGBA = 'rgba(201,168,76'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 export function EmotionalClose() {
   const ref = useScrollReveal()
+  const reducedMotion = useReducedMotion()
 
   return (
     <section className="py-16 lg:py-20 border-t border-line relative overflow-hidden" ref={ref}>
@@ -22,7 +21,7 @@ export function EmotionalClose() {
         className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
         style={{
-          background: `radial-gradient(ellipse 60% 40% at 50% 50%, ${PRIMARY_RGBA},0.04) 0%, transparent 70%)`,
+          background: `radial-gradient(ellipse 60% 40% at 50% 50%, rgba(201,168,76,0.04) 0%, transparent 70%)`,
         }}
       />
 
@@ -46,7 +45,7 @@ export function EmotionalClose() {
                 style={{
                   borderRadius: '2px',
                   border: '1px solid rgba(34,197,94,0.12)',
-                  animation: 'pulse-anim 3s ease-in-out infinite',
+                  animation: reducedMotion ? 'none' : 'pulse-anim 3s ease-in-out infinite',
                 }}
               />
               {/* Middle ring */}
@@ -55,7 +54,7 @@ export function EmotionalClose() {
                 style={{
                   borderRadius: '2px',
                   border: '1px solid rgba(34,197,94,0.2)',
-                  animation: 'pulse-anim 3s ease-in-out 0.5s infinite',
+                  animation: reducedMotion ? 'none' : 'pulse-anim 3s ease-in-out 0.5s infinite',
                 }}
               />
               {/* Inner square */}
@@ -83,11 +82,11 @@ export function EmotionalClose() {
           <h2
             data-reveal
             data-reveal-delay="2"
-            className="font-display font-medium text-4xl lg:text-6xl tracking-[-0.022em] leading-[1.08] mb-6"
+            className="font-display font-medium text-[clamp(1.5rem,2.5vw,2.5rem)] tracking-[-0.018em] leading-[1.15] mb-6"
           >
             Make deployments
             <br />
-            <span style={{ color: PRIMARY }}>boring</span>
+            <span className="font-semibold"> boring</span>
             <span className="text-ink-secondary"> again.</span>
           </h2>
 
@@ -99,7 +98,7 @@ export function EmotionalClose() {
             <p>No late-night monitoring.</p>
             <p>No panic rollbacks.</p>
             <p>No hesitation before shipping.</p>
-            <p className="font-medium text-ink">Just smooth, controlled releases—every time.</p>
+            <p className="font-medium text-ink">Just smooth, controlled releases. Every time.</p>
           </div>
 
           {/* Quiet metrics */}
@@ -118,7 +117,7 @@ export function EmotionalClose() {
                 className="text-center p-3 border border-line/60"
                 style={{ borderRadius: '2px', backgroundColor: 'rgba(34,197,94,0.02)' }}
               >
-                <div className="font-mono font-medium text-lg mb-0.5" style={{ color: PRIMARY }}>
+                <div className="font-mono font-medium text-lg mb-0.5 text-signal-success">
                   {m.value}
                 </div>
                 <div className="text-[10px] font-mono text-ink-tertiary uppercase tracking-wider">

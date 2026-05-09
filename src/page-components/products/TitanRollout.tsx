@@ -66,7 +66,7 @@ export default function TitanRollout() {
             <br className="hidden md:block" /> Zero-drama releases.
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
-            Shift traffic gradually, gate on real signals, and roll back in seconds — all from a
+            Shift traffic gradually, gate on real signals, and roll back in seconds, all from a
             single{' '}
             <code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1.5 py-0.5">
               dt deploy
@@ -149,7 +149,7 @@ export default function TitanRollout() {
               Works with your existing stack.
             </h2>
             <p className="text-ink-secondary text-sm max-w-lg">
-              Titan Rollout plugs into the tools your team already runs — no forklift migration.
+              Titan Rollout plugs into the tools your team already runs: no forklift migration.
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-reveal>
@@ -166,7 +166,7 @@ export default function TitanRollout() {
                 <ul className="flex flex-col gap-2">
                   {group.tools.map((t) => (
                     <li key={t} className="text-xs text-ink-secondary flex items-center gap-2">
-                      <span className="w-1 h-1 rounded-full bg-primary/50 shrink-0" />
+                      <span className="w-1 h-1 bg-primary/50 shrink-0" style={{ borderRadius: '1px' }} />
                       {t}
                     </li>
                   ))}

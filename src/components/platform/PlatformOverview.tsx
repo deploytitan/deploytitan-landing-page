@@ -12,13 +12,13 @@ function ForesightVisual() {
   const checks = [
     { label: 'Dependency graph', value: '4 services affected', level: 'warn' },
     { label: 'Change velocity', value: '+3 PRs this hour', level: 'warn' },
-    { label: 'Auth service', value: 'unrelated — safe', level: 'ok' },
+    { label: 'Auth service', value: 'unrelated, safe', level: 'ok' },
     { label: 'Payment gateway', value: 'dependency flagged', level: 'err' },
   ]
   return (
     <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
       <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-primary/60 h-2 w-2 animate-[pulse-anim_2s_ease-in-out_infinite] rounded-full" />
+        <span className="bg-primary/30 h-2 w-2 animate-[pulse-anim_2s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
         <span>titan-foresight · PR #2847 analysis</span>
       </div>
       {checks.map((c) => (
@@ -34,8 +34,8 @@ function ForesightVisual() {
       <div className="border-line mt-auto flex items-center justify-between border-t pt-3">
         <span className="text-ink-tertiary">Risk score</span>
         <div className="flex items-center gap-2">
-          <div className="bg-line h-1.5 w-24 overflow-hidden rounded-full">
-            <div className="bg-signal-warning h-full w-3/5 rounded-full" />
+          <div className="bg-line h-1.5 w-24 overflow-hidden rounded-none">
+            <div className="bg-signal-warning h-full w-3/5 rounded-none" />
           </div>
           <span className="text-signal-warning font-semibold">Medium</span>
         </div>
@@ -49,7 +49,7 @@ function RolloutVisual() {
   return (
     <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
       <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-signal-success h-2 w-2 animate-[pulse-anim_2s_ease-in-out_infinite] rounded-full" />
+        <span className="bg-signal-success h-2 w-2 animate-[pulse-anim_2s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
         <span>titan-rollout · canary deploy active</span>
       </div>
       {[
@@ -61,16 +61,16 @@ function RolloutVisual() {
             <span className="text-ink-secondary">{v.label}</span>
             <span className="text-ink font-semibold">{v.pct}%</span>
           </div>
-          <div className="bg-line h-2 overflow-hidden rounded-full">
+          <div className="bg-line h-2 overflow-hidden rounded-none">
             <div
-              className={`h-full ${v.color} rounded-full transition-all duration-1000`}
+              className={`h-full ${v.color} rounded-none transition-all duration-1000`}
               style={{ width: `${v.pct}%` }}
             />
           </div>
         </div>
       ))}
       <div className="border-signal-success/20 bg-signal-success/5 mt-2 flex flex-col gap-1 rounded-sm border p-3">
-        <span className="text-signal-success">✓ SLOs holding — error rate 0.02%</span>
+        <span className="text-signal-success">✓ SLOs holding: error rate 0.02%</span>
         <span className="text-ink-tertiary">p95 latency: 118ms · threshold: 250ms</span>
         <span className="text-primary/80 mt-1">→ Promoting to 50% in 4 min…</span>
       </div>
@@ -87,12 +87,12 @@ function ShieldVisual() {
   const regions = [
     { label: 'AWS us-east-1', status: 'healthy', latency: '12ms' },
     { label: 'GCP us-central1', status: 'healthy', latency: '18ms' },
-    { label: 'Azure eastus', status: 'failover', latency: '—' },
+    { label: 'Azure eastus', status: 'failover', latency: 'n/a' },
   ]
   return (
     <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
       <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-signal-warning h-2 w-2 animate-[pulse-anim_1.5s_ease-in-out_infinite] rounded-full" />
+        <span className="bg-signal-warning h-2 w-2 animate-[pulse-anim_1.5s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
         <span>titan-shield · failover in progress</span>
       </div>
       {regions.map((r) => (
@@ -102,7 +102,7 @@ function ShieldVisual() {
         >
           <div className="flex items-center gap-2">
             <span
-              className={`h-1.5 w-1.5 rounded-full ${r.status === 'healthy' ? 'bg-signal-success' : 'bg-signal-warning animate-[pulse-anim_1s_ease-in-out_infinite]'}`}
+              className={`h-1.5 w-1.5 ${r.status === 'healthy' ? 'bg-signal-success' : 'bg-signal-warning animate-[pulse-anim_1s_ease-in-out_infinite]'}`} style={{ borderRadius: '1px' }}
             />
             <span className="text-ink-secondary">{r.label}</span>
           </div>
@@ -137,7 +137,7 @@ function LedgerVisual() {
   return (
     <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
       <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-primary/60 h-2 w-2 animate-[pulse-anim_3s_ease-in-out_infinite] rounded-full" />
+        <span className="bg-primary/30 h-2 w-2 animate-[pulse-anim_3s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
         <span>titan-ledger · DORA · last 30 days</span>
       </div>
       {metrics.map((m) => (
@@ -171,14 +171,14 @@ function PhoenixVisual() {
   return (
     <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
       <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-signal-danger h-2 w-2 animate-[pulse-anim_1s_ease-in-out_infinite] rounded-full" />
+        <span className="bg-signal-danger h-2 w-2 animate-[pulse-anim_1s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
         <span>titan-phoenix · recovery in progress</span>
       </div>
       {steps.map((s) => (
         <div key={s.label} className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span
-              className={`h-1.5 w-1.5 rounded-full ${s.done ? 'bg-signal-success' : 'bg-line'}`}
+              className={`h-1.5 w-1.5 ${s.done ? 'bg-signal-success' : 'bg-line'}`} style={{ borderRadius: '1px' }}
             />
             <span className={s.done ? 'text-ink-secondary' : 'text-ink-quaternary'}>{s.label}</span>
           </div>
@@ -203,7 +203,7 @@ function InsightVisual() {
   return (
     <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
       <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-primary/60 h-2 w-2 animate-[pulse-anim_3s_ease-in-out_infinite] rounded-full" />
+        <span className="bg-primary/30 h-2 w-2 animate-[pulse-anim_3s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
         <span>titan-insight · deploy → outcome</span>
       </div>
       {correlations.map((c) => (
@@ -234,7 +234,7 @@ function SandboxVisual() {
   return (
     <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
       <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-signal-deploy/70 h-2 w-2 animate-[pulse-anim_2.5s_ease-in-out_infinite] rounded-full" />
+        <span className="bg-signal-deploy/70 h-2 w-2 animate-[pulse-anim_2.5s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
         <span>titan-sandbox · branch environments</span>
       </div>
       {envs.map((e) => (
@@ -276,13 +276,13 @@ const products: {
     route: '/products/titan-foresight',
     eyebrow: 'Detect · Titan Foresight',
     name: 'See risk before it ships.',
-    tagline: 'One explained risk score per PR — before a single byte of traffic changes.',
+    tagline: 'One explained risk score per PR, before a single byte of traffic changes.',
     description:
       'Foresight reads each pull request against your live dependency graph and produces one score: safe, review, or hold. Every flag is explained. No runbook required.',
     bullets: [
-      'Dependency graph analysis — maps which services a change can reach',
-      'Change velocity signals — flags bursts of concurrent changes',
-      'One score, fully explained — no dashboards to interpret',
+      'Dependency graph analysis: maps which services a change can reach',
+      'Change velocity signals: flags bursts of concurrent changes',
+      'One score, fully explained: no dashboards to interpret',
     ],
     visual: <ForesightVisual />,
   },
@@ -290,13 +290,13 @@ const products: {
     route: '/products/titan-rollout',
     eyebrow: 'Deliver · Titan Rollout',
     name: 'Ship progressively. Pause on signal.',
-    tagline: 'Cohort rollouts gated on real SLO signals — promote when healthy, pause when not.',
+    tagline: 'Cohort rollouts gated on real SLO signals: promote when healthy, pause when not.',
     description:
-      'Define rollout cohorts, set SLO thresholds, and let Rollout promote or pause automatically. Every release is a named, addressable version. Rollout moves traffic — Phoenix handles recovery.',
+      'Define rollout cohorts, set SLO thresholds, and let Rollout promote or pause automatically. Every release is a named, addressable version. Rollout moves traffic; Phoenix handles recovery.',
     bullets: [
-      'Canary and cohort rollouts — promote by error rate, latency, or custom signals',
-      'Versioned releases — every deploy is a named, addressable version',
-      'Auto-pause on threshold breach — no 3am runbook',
+      'Canary and cohort rollouts: promote by error rate, latency, or custom signals',
+      'Versioned releases: every deploy is a named, addressable version',
+      'Auto-pause on threshold breach: no 3am runbook',
     ],
     visual: <RolloutVisual />,
   },
@@ -304,13 +304,13 @@ const products: {
     route: '/products/titan-phoenix',
     eyebrow: 'Recover · Titan Phoenix',
     name: 'Undo a bad release in seconds.',
-    tagline: 'Surgical rollback scoped to exactly where the release broke — nothing else.',
+    tagline: 'Surgical rollback scoped to exactly where the release broke, nothing else.',
     description:
       'When a release causes an incident, Phoenix scopes the blast radius, targets only the affected cohort, and restores traffic in under 10 seconds. No full redeploy. No manual steps.',
     bullets: [
-      'Blast-radius scoping — rolls back only the affected slice of traffic',
-      'Sub-10 second recovery — automated, not scripted',
-      'Paired with Rollout — promotes carefully, recovers instantly',
+      'Blast-radius scoping: rolls back only the affected slice of traffic',
+      'Sub-10 second recovery: automated, not scripted',
+      'Paired with Rollout: promotes carefully, recovers instantly',
     ],
     visual: <PhoenixVisual />,
     stealth: false,
@@ -322,13 +322,13 @@ const products: {
           eyebrow: 'Measure · Titan Ledger',
           name: 'DORA metrics. No agents. No tagging.',
           tagline:
-            'Automatic deploy telemetry — every release measured from your existing CI/CD signals.',
+            'Automatic deploy telemetry: every release measured from your existing CI/CD signals.',
           description:
-            'Ledger reads your CI/CD events and produces DORA metrics, team scorecards, and trend charts — no instrumentation, no agents, no manual tagging. It records what happened. Insight explains what it meant.',
+            'Ledger reads your CI/CD events and produces DORA metrics, team scorecards, and trend charts: no instrumentation, no agents, no manual tagging. It records what happened. Insight explains what it meant.',
           bullets: [
             'Four DORA metrics computed automatically from existing events',
-            'Team and service scorecards — per-team breakdown out of the box',
-            'Trend lines — see whether delivery is improving quarter over quarter',
+            'Team and service scorecards: per-team breakdown out of the box',
+            'Trend lines: see whether delivery is improving quarter over quarter',
           ],
           visual: <LedgerVisual />,
           stealth: true,
@@ -338,13 +338,13 @@ const products: {
           eyebrow: 'Understand · Titan Insight',
           name: 'Did this release actually improve anything?',
           tagline:
-            'Deploy-to-metric correlation — know the outcome of every release, not just the act.',
+            'Deploy-to-metric correlation: know the outcome of every release, not just the act.',
           description:
             'Insight correlates every deploy with the product and business metrics that followed. See which releases drove improvements and which quietly degraded the experience.',
           bullets: [
-            'Automatic deploy-to-outcome correlation — no manual tagging',
-            'Business metric integration — revenue, conversion, engagement',
-            'Release retrospectives — before and after, per deploy',
+            'Automatic deploy-to-outcome correlation: no manual tagging',
+            'Business metric integration: revenue, conversion, engagement',
+            'Release retrospectives: before and after, per deploy',
           ],
           visual: <InsightVisual />,
           badge: 'roadmap' as const,
@@ -354,13 +354,13 @@ const products: {
           route: '/products/titan-sandbox',
           eyebrow: 'Preview · Titan Sandbox',
           name: 'A production-shaped environment for every branch.',
-          tagline: 'Spin up a full-fidelity environment per PR — no shared staging, no queue.',
+          tagline: 'Spin up a full-fidelity environment per PR: no shared staging, no queue.',
           description:
-            'Every branch gets its own isolated environment that mirrors production topology. Test with real service dependencies, real data shapes, and real traffic patterns — before any user sees it.',
+            'Every branch gets its own isolated environment that mirrors production topology. Test with real service dependencies, real data shapes, and real traffic patterns, before any user sees it.',
           bullets: [
-            'Per-branch environments — spun up on PR open, torn down on merge',
-            'Production topology mirror — no mocked services',
-            'Zero queue — every engineer gets an environment, immediately',
+            'Per-branch environments: spun up on PR open, torn down on merge',
+            'Production topology mirror: no mocked services',
+            'Zero queue: every engineer gets an environment, immediately',
           ],
           visual: <SandboxVisual />,
           badge: 'roadmap' as const,
@@ -370,12 +370,12 @@ const products: {
           route: '/products/titan-shield',
           eyebrow: 'Defend · Titan Shield',
           name: 'Stay up across every cloud.',
-          tagline: 'Multi-cloud failover that happens automatically — before your users notice.',
+          tagline: 'Multi-cloud failover that happens automatically, before your users notice.',
           description:
-            'Route traffic intelligently across AWS, GCP, and Azure. When a region degrades, Shield shifts traffic in real time — zero manual intervention. This is infrastructure resilience, not release recovery.',
+            'Route traffic intelligently across AWS, GCP, and Azure. When a region degrades, Shield shifts traffic in real time with zero manual intervention. This is infrastructure resilience, not release recovery.',
           bullets: [
             'Automatic failover across AWS, GCP, and Azure',
-            'Zero-latency in-memory routing — no proxy overhead',
+            'Zero-latency in-memory routing: no proxy overhead',
             'Built-in geo-aware failover policies',
           ],
           visual: <ShieldVisual />,
@@ -414,7 +414,7 @@ export function PlatformOverview() {
             {numberInText} products. One release lifecycle.
           </h2>
           <p className="text-ink-secondary max-w-lg text-base leading-relaxed">
-            {numberInText} products that cover every stage — from pre-merge risk to post-release
+            {numberInText} products that cover every stage, from pre-merge risk to post-release
             outcome. Use one or the full platform.
           </p>
         </div>
@@ -447,7 +447,7 @@ export function PlatformOverview() {
                 <ul className="flex flex-col gap-2.5">
                   {p.bullets.map((b) => (
                     <li key={b} className="text-ink-secondary flex items-start gap-3 text-sm">
-                      <span className="bg-primary/60 mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" />
+                      <span className="bg-primary/40 mt-1.5 h-1.5 w-1.5 shrink-0" style={{ borderRadius: '1px' }} />
                       {b}
                     </li>
                   ))}
@@ -500,7 +500,7 @@ export function PlatformOverview() {
         {/* Platform CTA strip */}
         <div className="border-line mt-12 flex flex-col items-center justify-between gap-6 border-t pt-10 sm:flex-row">
           <p className="text-ink-secondary text-sm">
-            Use one product or the full platform — pricing scales with usage.
+            Use one product or the full platform: pricing scales with usage.
           </p>
           <div className="flex items-center gap-4">
             <Link

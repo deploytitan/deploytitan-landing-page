@@ -102,119 +102,26 @@ const FEATURE_MATRIX = [
 
 const VALUE_PROPS = [
   {
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-        <circle cx="9" cy="7" r="4" />
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-      </svg>
-    ),
     heading: 'Unlimited orgs, projects, and users.',
-    body: 'Every seat, every org, every project is included — no caps, no per-user charges, no add-on tiers. Onboard your whole company. Credits are pooled into a single billing account that multiple members across multiple orgs and projects can draw from.',
+    body: 'Every seat, every org, every project is included: no caps, no per-user charges, no add-on tiers. Onboard your whole company. Credits are pooled into a single billing account that multiple members across multiple orgs and projects can draw from.',
   },
   {
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="2" y="7" width="20" height="14" rx="2" />
-        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
-        <line x1="12" y1="12" x2="12" y2="16" />
-        <line x1="10" y1="14" x2="14" y2="14" />
-      </svg>
-    ),
     heading: 'One billing account. Shared across everything.',
     body: 'Your billing account is not tied to a single org or project. Multiple members can manage it, and usage from every org, every project, and every team draws from the same credit pool. One invoice. Full visibility.',
   },
   {
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-      </svg>
-    ),
     heading: 'One credit = one deployable unit.',
-    body: 'Credits are counted per instance — a container, a Lambda function, a monolith. Deploy 5 separate services and that is 5 credits. Roll back 2 microservices and that is 2 credits. But deploy a single Docker container that serves 50 routes, or a monolith Lambda — that is 1 credit. We count what actually gets deployed, not how many endpoints or paths it serves.',
+    body: 'Credits are counted per instance: a container, a Lambda function, a monolith. Deploy 5 separate services and that is 5 credits. Roll back 2 microservices and that is 2 credits. But deploy a single Docker container that serves 50 routes, or a monolith Lambda, that is 1 credit. We count what actually gets deployed, not how many endpoints or paths it serves.',
   },
   {
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
     heading: 'Credits out? Your services keep running.',
-    body: 'Exhausted your monthly credits? Everything already deployed stays live — we never touch your running services or block traffic. Only new deployments from the platform pause until your next billing cycle or a top-up. No hostage-taking, ever.',
+    body: 'Exhausted your monthly credits? Everything already deployed stays live: we never touch your running services or block traffic. Only new deployments from the platform pause until your next billing cycle or a top-up. No hostage-taking, ever.',
   },
   {
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-      </svg>
-    ),
     heading: 'Prepaid. No surprise invoices.',
-    body: "You subscribe monthly and your credit allowance is granted upfront each cycle. Unused credits expire at month end — they do not roll over. If you need more mid-cycle, additional credits are available at your plan's overage rate. No hidden charges.",
+    body: "You subscribe monthly and your credit allowance is granted upfront each cycle. Unused credits expire at month end; they do not roll over. If you need more mid-cycle, additional credits are available at your plan's overage rate. No hidden charges.",
   },
   {
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <polyline points="17 1 21 5 17 9" />
-        <path d="M3 11V9a4 4 0 0 1 4-4h14" />
-        <polyline points="7 23 3 19 7 15" />
-        <path d="M21 13v2a4 4 0 0 1-4 4H3" />
-      </svg>
-    ),
     heading: 'Billing accounts are transferable.',
     body: 'We do not issue refunds, but billing accounts can be transferred to another owner or organisation at any time. If your team structure changes, your credits go with you.',
   },
@@ -225,7 +132,7 @@ const VALUE_PROPS = [
 const FAQS: { q: string; a: React.ReactNode }[] = [
   {
     q: 'How do credits work?',
-    a: 'Every plan includes a monthly credit allowance granted at the start of each billing cycle. Each platform action — a deployment, a risk scan, a rollback, a webhook dispatch — consumes exactly 1 credit, regardless of which org, project, or user triggered it. Credits that are not used by month end expire; they do not roll over.',
+    a: 'Every plan includes a monthly credit allowance granted at the start of each billing cycle. Each platform action (a deployment, a risk scan, a rollback, a webhook dispatch) consumes exactly 1 credit, regardless of which org, project, or user triggered it. Credits that are not used by month end expire; they do not roll over.',
   },
   {
     q: 'Are there really no limits on users, orgs, or projects?',
@@ -233,7 +140,7 @@ const FAQS: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: 'How does the billing account work across multiple orgs?',
-    a: 'A billing account is a single entity that can be managed by multiple members. All orgs and projects linked to that billing account share its credit balance. You can see a unified usage breakdown — by org, by project, by action type — in the billing dashboard.',
+    a: 'A billing account is a single entity that can be managed by multiple members. All orgs and projects linked to that billing account share its credit balance. You can see a unified usage breakdown (by org, by project, by action type) in the billing dashboard.',
   },
   {
     q: 'What happens when I run out of credits mid-month?',
@@ -241,11 +148,11 @@ const FAQS: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: 'Do unused credits roll over?',
-    a: 'No. Unused credits expire at the end of each monthly billing cycle. An active subscription must be maintained to receive your credit grant each month. If you consistently have leftover credits, a smaller plan may be a better fit — the dashboard will surface this.',
+    a: 'No. Unused credits expire at the end of each monthly billing cycle. An active subscription must be maintained to receive your credit grant each month. If you consistently have leftover credits, a smaller plan may be a better fit; the dashboard will surface this.',
   },
   {
     q: 'Do you offer refunds?',
-    a: 'We do not issue refunds for unused credits. However, billing accounts are fully transferable — if your team structure changes or you want to hand the account to another owner or organisation, you can do that and the remaining credit balance transfers with it.',
+    a: 'We do not issue refunds for unused credits. However, billing accounts are fully transferable: if your team structure changes or you want to hand the account to another owner or organisation, you can do that and the remaining credit balance transfers with it.',
   },
   {
     q: 'Why not per-seat pricing?',
@@ -253,7 +160,7 @@ const FAQS: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: 'Can I switch plans later?',
-    a: 'Yes — upgrade or downgrade at any time. Your credit balance adjusts immediately on upgrade. There are no lock-in periods on monthly plans.',
+    a: 'Yes: upgrade or downgrade at any time. Your credit balance adjusts immediately on upgrade. There are no lock-in periods on monthly plans.',
   },
   {
     q: 'Do you offer discounts for startups or open source projects?',
@@ -320,7 +227,8 @@ function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
     <div className="border-line border-b last:border-b-0">
       <button
         onClick={() => setOpen(!open)}
-        className="text-ink hover:text-primary flex w-full items-center justify-between py-5 text-left text-sm font-medium transition-colors"
+        aria-expanded={open}
+        className="text-ink hover:text-primary flex w-full items-center justify-between py-5 text-left text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
       >
         {q}
         <svg
@@ -398,17 +306,20 @@ function PlanCard({
 
       {/* Credits badge */}
       {credits != null && (
-        <p className="text-primary mb-2 font-mono text-xs">
+        <p className="text-primary mb-1 font-mono text-xs">
           {formatCredits(credits)} credits / month included
         </p>
       )}
 
       {/* Overage rate */}
       {overageCentsPerCredit != null && (
-        <p className="text-ink-tertiary mb-6 font-mono text-xs">
-          then ${(overageCentsPerCredit / 100).toFixed(3).replace(/0+$/, '').replace(/\.$/, '')} /
-          additional credit
-        </p>
+        <div className="border-line mb-6 mt-3 border-t pt-4">
+          <p className="text-ink-secondary mb-0.5 font-mono text-xs">Additional credits</p>
+          <p className="text-ink font-mono text-sm font-semibold">
+            ${(overageCentsPerCredit / 100).toFixed(3).replace(/0+$/, '').replace(/\.$/, '')}{' '}
+            <span className="text-ink-secondary font-normal">/ credit</span>
+          </p>
+        </div>
       )}
       {overageCentsPerCredit == null && credits == null && <div className="mb-6" />}
       {overageCentsPerCredit == null && credits != null && <div className="mb-6" />}
@@ -417,7 +328,7 @@ function PlanCard({
         href={checkoutUrl}
         target={isMail ? '_self' : '_blank'}
         rel={isMail ? undefined : 'noopener noreferrer'}
-        className={`px-4 py-2.5 text-center text-sm font-semibold transition-colors ${
+        className={`mt-auto px-4 py-2.5 text-center text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
           isHighlighted
             ? 'bg-primary text-ink hover:bg-primary-light'
             : 'border-line text-ink/80 hover:border-primary/30 hover:text-ink border'
@@ -480,7 +391,7 @@ export default function Pricing({ polarProducts }: Props) {
           </h1>
           <p className="text-ink-secondary mx-auto max-w-xl text-lg">
             Credits-based billing. Prepaid. No per-seat charges. No surprise invoices. Unlimited
-            users, orgs, and projects on every plan. Every platform action costs exactly 1 credit —
+            users, orgs, and projects on every plan. Every platform action costs exactly 1 credit:
             deployments, rollbacks, risk scans, all of it.
           </p>
         </Container>
@@ -493,7 +404,7 @@ export default function Pricing({ polarProducts }: Props) {
             <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">Plans</p>
             <h2 className="text-ink text-2xl font-semibold">Simple, predictable plans</h2>
             <p className="text-ink-secondary mt-2 text-sm">
-              Credits are shared across your whole team — no seat counting required.
+              Credits are shared across your whole team: no seat counting required.
             </p>
           </div>
 
@@ -547,21 +458,33 @@ export default function Pricing({ polarProducts }: Props) {
       </section>
 
       {/* ── Value props ── */}
-      <section className="border-line border-b py-16">
-        <Container width="6xl" padding="default">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-            {VALUE_PROPS.map((vp) => (
-              <div key={vp.heading} className="flex gap-4" data-reveal>
-                <div className="border-line text-primary flex h-9 w-9 shrink-0 items-center justify-center border">
-                  {vp.icon}
-                </div>
-                <div>
-                  <p className="text-ink mb-1 text-sm font-semibold">{vp.heading}</p>
-                  <p className="text-ink-secondary text-sm leading-relaxed">{vp.body}</p>
-                </div>
+      <section className="border-line border-b py-20">
+        <Container width="5xl" padding="default">
+          <div className="mb-12" data-reveal>
+            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+              How billing works
+            </p>
+            <p className="text-ink max-w-2xl text-2xl font-semibold leading-snug">
+              Credits are the only unit of measure. Everything else, users, orgs, projects, seats,
+              is unlimited and free.
+            </p>
+          </div>
+
+          <dl className="border-line divide-line divide-y border-t" data-reveal>
+            {VALUE_PROPS.map((vp, i) => (
+              <div
+                key={vp.heading}
+                className="grid grid-cols-1 gap-2 py-6 md:grid-cols-[2fr_3fr] md:gap-12"
+              >
+                <dt
+                  className={`text-ink text-sm leading-snug ${i % 2 === 0 ? 'font-semibold' : 'font-medium'}`}
+                >
+                  {vp.heading}
+                </dt>
+                <dd className="text-ink-secondary text-sm leading-relaxed">{vp.body}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         </Container>
       </section>
 
@@ -577,7 +500,7 @@ export default function Pricing({ polarProducts }: Props) {
             </h2>
             <p className="text-ink-secondary max-w-xl text-sm">
               We sized the Starter plan so that the vast majority of teams will never need to
-              upgrade. Here is a realistic month for a small engineering team — 5 services, deployed
+              upgrade. Here is a realistic month for a small engineering team: 5 services, deployed
               once every working day, with a risk scan on every push.
             </p>
           </div>
@@ -592,7 +515,7 @@ export default function Pricing({ polarProducts }: Props) {
             <div className="border-line flex items-center gap-2 border-b px-6 py-4">
               <span className="bg-primary h-2 w-2" style={{ borderRadius: '1px' }} />
               <p className="text-ink-secondary font-mono text-xs">
-                Scenario — 5 services, 1 deploy / day, every working day
+                Scenario: 5 services, 1 deploy / day, every working day
               </p>
             </div>
 
@@ -606,26 +529,26 @@ export default function Pricing({ polarProducts }: Props) {
                 },
                 {
                   action: 'Pre-deploy risk scans',
-                  calc: '1 scan per deployment — 5 services × 1× / day × 22 days',
+                  calc: '1 scan per deployment: 5 services × 1× / day × 22 days',
                   credits: 110,
                 },
                 {
-                  action: 'Rollbacks — week 1',
+                  action: 'Rollbacks, week 1',
                   calc: '2 services rolled back after a bad release',
                   credits: 2,
                 },
                 {
-                  action: 'Rollbacks — week 2',
+                  action: 'Rollbacks, week 2',
                   calc: '1 service rolled back mid-deploy',
                   credits: 1,
                 },
                 {
-                  action: 'Rollbacks — week 3',
+                  action: 'Rollbacks, week 3',
                   calc: '3 services rolled back after a config change went wrong',
                   credits: 3,
                 },
                 {
-                  action: 'Rollbacks — week 4',
+                  action: 'Rollbacks, week 4',
                   calc: '2 services rolled back during hotfix gone sideways',
                   credits: 2,
                 },
@@ -651,12 +574,12 @@ export default function Pricing({ polarProducts }: Props) {
               <div className="text-right">
                 <p className="text-ink font-mono text-2xl font-bold">228</p>
                 <p className="text-primary mt-0.5 font-mono text-xs">22 credits remaining</p>
-              </div>{' '}
+              </div>
             </div>
           </div>
 
           <p className="text-ink-quaternary mt-5 text-center font-mono text-xs" data-reveal>
-            Each deployable unit (container, Lambda, monolith) counts as 1 credit per action —
+            Each deployable unit (container, Lambda, monolith) counts as 1 credit per action:
             regardless of how many routes, endpoints, or paths it serves. Browsing dashboards,
             viewing history, and reading reports is always free.
           </p>
@@ -672,7 +595,7 @@ export default function Pricing({ polarProducts }: Props) {
             </p>
             <h2 className="text-ink mb-2 text-2xl font-semibold">Every action. One credit.</h2>
             <p className="text-ink-secondary max-w-xl text-sm">
-              Credits are counted per deployable unit — each container, Lambda function, or
+              Credits are counted per deployable unit: each container, Lambda function, or
               standalone instance is one credit. A single monolith or single-container service is
               always 1 credit regardless of how many routes or endpoints it serves. No environment
               surcharges, no region premiums.

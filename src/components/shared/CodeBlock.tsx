@@ -52,7 +52,7 @@ export function CodeBlock({
   // Use a stable server-safe default until mounted to match SSR output exactly.
   const theme = mounted ? resolved : 'light'
   const shikiTheme = theme === 'dark' ? 'github-dark' : 'github-light'
-  const bgColor = theme === 'dark' ? '#0d1117' : '#f6f8fa'
+  const bgColor = theme === 'dark' ? 'var(--color-dark-surface, #0d0c0a)' : 'var(--color-surface-alt, #f5f4f1)'
   const textMuted = theme === 'dark' ? 'text-white/40' : 'text-black/40'
   const textAction =
     theme === 'dark' ? 'text-white/30 hover:text-white/60' : 'text-black/30 hover:text-black/60'

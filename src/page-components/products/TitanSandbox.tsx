@@ -8,7 +8,7 @@ import { Card } from '../../components/shared/Card'
 const SIGNALS = [
   {
     title: 'Production-shaped environments per branch',
-    desc: 'Each branch or PR gets an isolated environment wired to real data shapes — not mocks, not stubs. What you test is what will ship.',
+    desc: 'Each branch or PR gets an isolated environment wired to real data shapes, not mocks, not stubs. What you test is what will ship.',
   },
   {
     title: 'Automatic teardown',
@@ -16,7 +16,7 @@ const SIGNALS = [
   },
   {
     title: 'Real data shapes, not fixtures',
-    desc: 'Sandbox clones the schema and traffic shapes of production — anonymised where required. Your service sees load that looks like production, not test data.',
+    desc: 'Sandbox clones the schema and traffic shapes of production, anonymised where required. Your service sees load that looks like production, not test data.',
   },
   {
     title: 'Wired to Rollout on merge',
@@ -43,7 +43,7 @@ export default function TitanSandbox() {
             <br className="hidden md:block" /> for every branch.
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
-            Sandbox spins up an isolated, prod-shaped environment per branch or PR — wired to real
+            Sandbox spins up an isolated, prod-shaped environment per branch or PR, wired to real
             data shapes, torn down when you're done.
           </p>
           <a
@@ -67,7 +67,7 @@ export default function TitanSandbox() {
           </h2>
           <p className="text-ink-secondary leading-relaxed max-w-2xl">
             Rollout uses environments that exist. Sandbox creates them. It's the earliest point in
-            the lifecycle — where code becomes something testable before it ever touches production
+            the lifecycle, where code becomes something testable before it ever touches production
             traffic.
           </p>
         </Container>
@@ -81,7 +81,7 @@ export default function TitanSandbox() {
               What's coming
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
-              Test against production — before you ship to it.
+              Test against production, before you ship to it.
             </h2>
             <p className="text-ink-secondary max-w-xl">
               We're designing Sandbox with early partners now. Join the waitlist to shape

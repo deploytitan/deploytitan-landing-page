@@ -9,7 +9,7 @@ export default function Status() {
         </p>
         <h1 className="text-3xl font-semibold text-ink mb-6">System Status</h1>
         <div className="flex items-center gap-2.5 mb-6">
-          <span className="w-2.5 h-2.5 rounded-full bg-green-500 shrink-0" />
+          <span className="w-2.5 h-2.5 bg-green-500 shrink-0" style={{ borderRadius: '1px' }} />
           <span className="text-sm font-medium text-ink">All systems operational</span>
         </div>
         <p className="text-ink-secondary leading-relaxed">

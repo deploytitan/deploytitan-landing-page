@@ -96,7 +96,7 @@ const SCENARIOS = [
     title: 'DR drill (compliance requirement)',
     before: 'Quarterly DR drills take two days to orchestrate and always surface surprises.',
     after:
-      'Run DR drill mode in Shield — simulate failover without real traffic impact. Document results automatically.',
+      'Run DR drill mode in Shield: simulate failover without real traffic impact. Document results automatically.',
     icon: (
       <svg
         width="18"
@@ -127,7 +127,7 @@ export default function SolutionMultiCloudResilience() {
             className="inline-flex items-center gap-2 font-mono text-[10px] text-primary border border-primary/30 px-2 py-1 mb-6"
             style={{ borderRadius: '2px' }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-signal-success" />
+            <span className="w-1.5 h-1.5 bg-signal-success" style={{ borderRadius: '1px' }} />
             Powered by Titan Shield
           </div>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
@@ -193,8 +193,8 @@ export default function SolutionMultiCloudResilience() {
               One control plane. Every cloud.
             </h2>
             <p className="text-ink-secondary text-sm max-w-lg">
-              The Titan Shield controller runs in your infrastructure and speaks native L7 protocols
-              — no proxy layer, no vendor lock-in.
+              The Titan Shield controller runs in your infrastructure and speaks native L7 protocols,
+              with no proxy layer, no vendor lock-in.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" data-reveal>
@@ -208,7 +208,7 @@ export default function SolutionMultiCloudResilience() {
                 <ul className="flex flex-col gap-2">
                   {cloud.adapters.map((a) => (
                     <li key={a} className="flex items-center gap-2 text-xs text-ink-secondary">
-                      <span className="w-1 h-1 rounded-full bg-primary/50 shrink-0" />
+                      <span className="w-1 h-1 bg-primary/50 shrink-0" style={{ borderRadius: '1px' }} />
                       {a}
                     </li>
                   ))}
@@ -314,11 +314,11 @@ export default function SolutionMultiCloudResilience() {
               The status quo
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
-              How teams handle multi-cloud resilience today — and what breaks.
+              How teams handle multi-cloud resilience today, and what breaks.
             </h2>
             <p className="text-ink-secondary text-sm max-w-xl">
               Multi-cloud resilience is a spreadsheet problem dressed up as an architecture problem.
-              Teams have the infrastructure — they lack the control plane.
+              Teams have the infrastructure; they lack the control plane.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -336,7 +336,7 @@ export default function SolutionMultiCloudResilience() {
               {
                 tool: 'Cloud-native health checks',
                 workaround: 'Use AWS Route 53 health checks or GCP Traffic Director to detect unhealthy endpoints and reroute.',
-                failure: 'Each cloud has different detection latency and routing semantics. No cross-cloud view. No policy as code — config drift is constant.',
+                failure: 'Each cloud has different detection latency and routing semantics. No cross-cloud view. No policy as code; config drift is constant.',
               },
             ].map((item, i) => (
               <Card
@@ -417,11 +417,11 @@ export default function SolutionMultiCloudResilience() {
         <Container width="4xl" padding="default">
           <div className="text-center" data-reveal>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-4">
-              Simulate a regional failover in your environment — live.
+              Simulate a regional failover in your environment, live.
             </h2>
             <p className="text-ink-secondary text-sm mb-8 max-w-lg mx-auto">
-              We'll walk through a DR drill in Titan Shield against your actual cloud topology — no
-              real traffic impacted — and show you the RTO you'd get in a real incident.
+              We'll walk through a DR drill in Titan Shield against your actual cloud topology, with no
+              real traffic impacted, and show you the RTO you'd get in a real incident.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <a

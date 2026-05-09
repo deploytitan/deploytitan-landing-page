@@ -120,7 +120,7 @@ export default function About() {
           {/* Mission statement — large, accented */}
           <div className="mt-6 flex items-start gap-5">
             <div
-              className="mt-1.5 w-0.5 shrink-0 self-stretch rounded-full"
+              className="mt-1.5 w-0.5 shrink-0 self-stretch rounded-[2px]"
               style={{ background: PRIMARY, opacity: 0.5 }}
             />
             <h2 className="font-display text-ink text-3xl leading-[1.1] font-medium tracking-tight sm:text-4xl">

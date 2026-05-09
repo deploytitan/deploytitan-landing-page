@@ -28,7 +28,7 @@ export function ProductTeaser({ eyebrow, name, tagline, description, bullets, ro
         <ul className="flex flex-col gap-2.5">
           {bullets.map((b) => (
             <li key={b} className="flex items-start gap-3 text-sm text-ink-secondary">
-              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0" />
+              <span className="mt-1.5 w-1.5 h-1.5 bg-primary/60 shrink-0" style={{ borderRadius: '1px' }} />
               {b}
             </li>
           ))}

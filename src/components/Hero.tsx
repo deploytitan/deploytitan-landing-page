@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { sleep, useScrollReveal } from '../utils'
 import { APP_URL } from '@/lib/env'
 import { Button } from './shared/Button'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const PRIMARY = 'var(--color-primary)'
 const PRIMARY_RGBA = 'rgba(201,168,76'
@@ -21,12 +22,12 @@ interface Version {
 }
 
 const phaseLabels: Record<TrafficPhase, { text: string; color: string }> = {
-  stable: { text: 'All traffic on v1.4.2 — stable', color: '#22c55e' },
+  stable: { text: 'All traffic on v1.4.2: stable', color: '#22c55e' },
   deploying: { text: 'Deploying v1.4.3 at 0% traffic...', color: '#3b82f6' },
   splitting: { text: 'Cohort: beta-testers → v1.4.3', color: PRIMARY },
   shifting: { text: 'Expanding rollout: 5% → 25%...', color: '#3b82f6' },
-  rollback: { text: 'Error spike detected — rolling back', color: '#ef4444' },
-  recovered: { text: 'Recovered — v1.4.2 at 100%', color: '#22c55e' },
+  rollback: { text: 'Error spike detected, rolling back', color: '#ef4444' },
+  recovered: { text: 'Recovered: v1.4.2 at 100%', color: '#22c55e' },
 }
 
 function TrafficSplitVisual() {
@@ -38,6 +39,7 @@ function TrafficSplitVisual() {
   const [cohortPinned, setCohortPinned] = useState(false)
   const [logLines, setLogLines] = useState<{ text: string; color: string }[]>([])
   const runningRef = useRef(true)
+  const reducedMotion = useReducedMotion()
 
   const addLog = useCallback((text: string, color: string) => {
     setLogLines((prev) => [...prev.slice(-4), { text, color }])
@@ -89,7 +91,7 @@ function TrafficSplitVisual() {
 
       // Phase 5: Error spike → rollback
       setPhase('rollback')
-      addLog('⚠ Error rate spike — rolling back', '#ef4444')
+      addLog('⚠ Error rate spike, rolling back', '#ef4444')
       setVersions([
         { id: 'v142', label: 'v1.4.2', traffic: 100, status: 'stable', color: '#22c55e' },
         { id: 'v143', label: 'v1.4.3', traffic: 0, status: 'rolling-back', color: '#ef4444' },
@@ -112,19 +114,33 @@ function TrafficSplitVisual() {
         { id: 'v142', label: 'v1.4.2', traffic: 100, status: 'healthy', color: '#22c55e' },
         { id: 'v143', label: 'v1.4.3', traffic: 0, status: 'canary', color: '#3b82f6' },
       ])
-      addLog('v1.4.2 at 100% — stable', '#22c55e')
+      addLog('v1.4.2 at 100%: stable', '#22c55e')
       await sleep(2800)
       if (!runningRef.current) return
     }
   }, [addLog])
 
   useEffect(() => {
+    if (reducedMotion) {
+      // Show a static mid-rollout snapshot instead of animating
+      setPhase('shifting')
+      setVersions([
+        { id: 'v142', label: 'v1.4.2', traffic: 75, status: 'stable', color: '#22c55e' },
+        { id: 'v143', label: 'v1.4.3', traffic: 25, status: 'active', color: '#3b82f6' },
+      ])
+      setCohortPinned(true)
+      setLogLines([
+        { text: 'beta-testers cohort pinned → v1.4.3', color: PRIMARY },
+        { text: 'Traffic: 25% on v1.4.3', color: '#3b82f6' },
+      ])
+      return
+    }
     runningRef.current = true
     runLoop()
     return () => {
       runningRef.current = false
     }
-  }, [runLoop])
+  }, [runLoop, reducedMotion])
 
   const info = phaseLabels[phase]
 
@@ -153,7 +169,7 @@ function TrafficSplitVisual() {
             </svg>
           </div>
           <span className="text-ink-tertiary font-mono text-[10px] tracking-wider uppercase">
-            DeployTitan — Traffic Control
+            DeployTitan: Traffic Control
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -286,16 +302,18 @@ function TrafficSplitVisual() {
         </div>
       </div>
 
-      {/* Subtle gold scan line overlay */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div
-          className="absolute top-0 bottom-0 w-20 opacity-[0.015]"
-          style={{
-            background: `linear-gradient(90deg, transparent, ${PRIMARY}, transparent)`,
-            animation: 'scan-line 10s linear infinite',
-          }}
-        />
-      </div>
+      {/* Subtle gold scan line overlay — hidden when reduced motion */}
+      {!reducedMotion && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+          <div
+            className="absolute top-0 bottom-0 w-20 opacity-[0.015]"
+            style={{
+              background: `linear-gradient(90deg, transparent, ${PRIMARY}, transparent)`,
+              animation: 'scan-line 10s linear infinite',
+            }}
+          />
+        </div>
+      )}
     </div>
   )
 }
@@ -304,6 +322,7 @@ function TrafficSplitVisual() {
 
 export function Hero() {
   const ref = useScrollReveal()
+  const reducedMotion = useReducedMotion()
 
   return (
     <section
@@ -340,7 +359,7 @@ export function Hero() {
                 <span
                   className="bg-signal-success absolute inline-flex h-full w-full opacity-75"
                   style={{
-                    animation: 'ping-anim 1.5s cubic-bezier(0,0,0.2,1) infinite',
+                    animation: reducedMotion ? 'none' : 'ping-anim 1.5s cubic-bezier(0,0,0.2,1) infinite',
                     borderRadius: '1px',
                   }}
                 />
@@ -388,8 +407,7 @@ export function Hero() {
           <p
             data-reveal
             data-reveal-delay="2"
-            className="mb-8 max-w-md text-sm leading-relaxed font-medium"
-            style={{ color: PRIMARY }}
+            className="text-ink-secondary mb-8 max-w-md text-sm leading-relaxed font-medium"
           >
             Catch risk early. Ship without fear. Learn from every release.
           </p>
@@ -400,8 +418,8 @@ export function Hero() {
             data-reveal-delay="3"
             className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-start"
           >
-            <Button as="a" href={`${APP_URL}/login`} variant="primary" size="lg" className="group">
-              Start free trial
+            <Button as="a" href="/cli" variant="primary" size="lg" className="group">
+              Install the CLI
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -418,8 +436,8 @@ export function Hero() {
                 <path d="m12 5 7 7-7 7" />
               </svg>
             </Button>
-            <Button as="a" href="mailto:sales@deploytitan.com" variant="outline" size="lg">
-              Talk to an engineer
+            <Button as="a" href={`${APP_URL}/login`} variant="outline" size="lg">
+              Start free trial
             </Button>
           </div>
 
@@ -429,7 +447,7 @@ export function Hero() {
             data-reveal-delay="3"
             className="text-ink-quaternary mt-3 font-mono text-xs"
           >
-            No credit card required · 14-day free trial ·{' '}
+            <code className="text-ink-tertiary">dt login</code> creates your account from the CLI ·{' '}
             <a href="/journey" className="text-primary/70 hover:text-primary transition-colors">
               Why we built this →
             </a>

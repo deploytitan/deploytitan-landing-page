@@ -28,7 +28,7 @@ export function RoadmapBadge({ variant, className = '' }: RoadmapBadgeProps) {
       className={`inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest uppercase border px-2 py-1 ${c.classes} ${className}`}
       style={{ borderRadius: '2px' }}
     >
-      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${c.dot}`} />
+      <span className={`w-1.5 h-1.5 shrink-0 ${c.dot}`} style={{ borderRadius: '1px' }} />
       {c.label}
     </span>
   )

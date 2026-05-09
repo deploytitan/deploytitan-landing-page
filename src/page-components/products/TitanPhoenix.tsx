@@ -22,15 +22,15 @@ rollback:
 const CAPABILITIES = [
   {
     title: 'SLO-triggered automatic rollback',
-    desc: 'Define an SLO threshold and a measurement window. Phoenix watches continuously and acts the moment the window closes over the limit — no alert fatigue, no human required.',
+    desc: 'Define an SLO threshold and a measurement window. Phoenix watches continuously and acts the moment the window closes over the limit: no alert fatigue, no human required.',
   },
   {
-    title: 'Scoped rollback — cohort, region, or flag',
-    desc: "Phoenix doesn't roll back the whole service. It identifies the exact slice that's failing — a specific user cohort, a single region, or a feature flag state — and reverts only that.",
+    title: 'Scoped rollback: cohort, region, or flag',
+    desc: "Phoenix doesn't roll back the whole service. It identifies the exact slice that's failing (a specific user cohort, a single region, or a feature flag state) and reverts only that.",
   },
   {
     title: 'Feature-flag-aware rollback',
-    desc: 'When a flag is the blast surface, Phoenix flips it — not the binary. Your users on unaffected variants keep running the new version without interruption.',
+    desc: 'When a flag is the blast surface, Phoenix flips it, not the binary. Your users on unaffected variants keep running the new version without interruption.',
   },
   {
     title: 'Rollback simulation / dry-run',
@@ -42,7 +42,7 @@ const CAPABILITIES = [
   },
   {
     title: 'Audit trail',
-    desc: 'Every rollback — automatic or manual — is recorded with the triggering SLO breach, the scope of the action, the actor (Phoenix or human), and the resolution time.',
+    desc: 'Every rollback (automatic or manual) is recorded with the triggering SLO breach, the scope of the action, the actor (Phoenix or human), and the resolution time.',
   },
 ]
 
@@ -84,11 +84,11 @@ export default function TitanPhoenix() {
           </p>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6">
             Undo a bad release
-            <br className="hidden md:block" /> in seconds — only where it broke.
+            <br className="hidden md:block" /> in seconds, only where it broke.
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
             When a release breaks, Phoenix doesn't roll back the whole service. It reverts the exact
-            slice that's failing — bad cohort, bad region, bad flag — triggered by your SLOs in
+            slice that's failing (bad cohort, bad region, bad flag) triggered by your SLOs in
             seconds.
           </p>
           <div className="flex flex-wrap gap-4">
@@ -123,7 +123,7 @@ export default function TitanPhoenix() {
           </blockquote>
           <p className="text-ink-secondary leading-relaxed max-w-2xl">
             Deployment-level rollback tools revert the whole service. Phoenix identifies the scope
-            of the failure first — then acts only on that scope. The rest of your users keep running
+            of the failure first, then acts only on that scope. The rest of your users keep running
             the new version.
           </p>
         </Container>
@@ -154,7 +154,7 @@ export default function TitanPhoenix() {
               The only product in the suite that undoes a release.
             </h2>
             <p className="text-ink-secondary max-w-xl">
-              Scoped, SLO-triggered, and audited — every time.
+              Scoped, SLO-triggered, and audited, every time.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -181,7 +181,7 @@ export default function TitanPhoenix() {
               </h2>
               <p className="text-ink-secondary leading-relaxed mb-6">
                 Phoenix rollback policy lives in your repo alongside your deploy config. Every SLO
-                threshold, every scope constraint, every notification — version-controlled and
+                threshold, every scope constraint, every notification: version-controlled and
                 reviewable.
               </p>
               <ul className="flex flex-col gap-3">
@@ -192,7 +192,7 @@ export default function TitanPhoenix() {
                   'Post-rollback packet generation for incident review',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-ink-secondary">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0 mt-1.5" />
+                    <span className="w-1.5 h-1.5 bg-primary/60 shrink-0 mt-1.5" style={{ borderRadius: '1px' }} />
                     {item}
                   </li>
                 ))}
@@ -219,7 +219,7 @@ export default function TitanPhoenix() {
               Works with your existing stack.
             </h2>
             <p className="text-ink-secondary text-sm max-w-lg">
-              Phoenix watches the SLO metrics you already collect — no new instrumentation required.
+              Phoenix watches the SLO metrics you already collect: no new instrumentation required.
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-reveal>
@@ -236,7 +236,7 @@ export default function TitanPhoenix() {
                 <ul className="flex flex-col gap-2">
                   {group.tools.map((t) => (
                     <li key={t} className="text-xs text-ink-secondary flex items-center gap-2">
-                      <span className="w-1 h-1 rounded-full bg-primary/50 shrink-0" />
+                      <span className="w-1 h-1 bg-primary/50 shrink-0" style={{ borderRadius: '1px' }} />
                       {t}
                     </li>
                   ))}

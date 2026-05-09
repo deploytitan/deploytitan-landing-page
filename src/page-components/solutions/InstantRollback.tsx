@@ -9,20 +9,20 @@ import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
 const PHASES = [
   {
     number: '01',
-    title: 'SLO breach detected — automatically',
-    body: 'Phoenix continuously watches the SLO metrics you define. The moment a measurement window closes over your threshold, Phoenix triggers — no alert, no Slack message, no human in the loop.',
+    title: 'SLO breach detected, automatically',
+    body: 'Phoenix continuously watches the SLO metrics you define. The moment a measurement window closes over your threshold, Phoenix triggers: no alert, no Slack message, no human in the loop.',
     metric: { value: '< 30s', label: 'median time to rollback decision' },
   },
   {
     number: '02',
     title: 'Blast radius scoped to the failing slice',
-    body: "Phoenix doesn't roll back your whole service. It identifies exactly which cohort, region, or feature-flag state is failing — and reverts only that. Every other user keeps running the new version.",
+    body: "Phoenix doesn't roll back your whole service. It identifies exactly which cohort, region, or feature-flag state is failing, and reverts only that. Every other user keeps running the new version.",
     metric: { value: 'Scoped', label: 'only the failing slice reverted' },
   },
   {
     number: '03',
     title: 'Traffic restored in under 10 seconds',
-    body: 'Once the scope is determined, Phoenix reverses the traffic shift. No redeploy, no pipeline run, no manual approval. The release is preserved — only its routing is changed.',
+    body: 'Once the scope is determined, Phoenix reverses the traffic shift. No redeploy, no pipeline run, no manual approval. The release is preserved: only its routing is changed.',
     metric: { value: '< 10s', label: 'median traffic restoration time' },
   },
   {
@@ -35,14 +35,14 @@ const PHASES = [
 
 const BEFORE = [
   'On-call woken up to decide whether to roll back',
-  'Full service rollback — even unaffected users impacted',
+  'Full service rollback: even unaffected users impacted',
   'Rollback = redeploy last tag and watch dashboards for 20 minutes',
   'Incident timeline reconstructed manually from logs',
 ]
 
 const AFTER = [
   'Phoenix detects and responds before on-call even wakes up',
-  'Scoped rollback — only the failing cohort reverted',
+  'Scoped rollback: only the failing cohort reverted',
   'Traffic restored in under 10 seconds, no redeploy needed',
   'Structured incident packet generated automatically on every action',
 ]
@@ -73,7 +73,7 @@ export default function SolutionInstantRollback() {
             className="inline-flex items-center gap-2 font-mono text-[10px] text-primary border border-primary/30 px-2 py-1 mb-6"
             style={{ borderRadius: '2px' }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-signal-success" />
+            <span className="w-1.5 h-1.5 bg-signal-success" style={{ borderRadius: '1px' }} />
             Powered by Titan Phoenix
           </div>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
@@ -131,7 +131,7 @@ export default function SolutionInstantRollback() {
               </blockquote>
               <p className="text-ink-secondary leading-relaxed">
                 By the time they've identified the bad deploy, found the right command, executed it,
-                and confirmed recovery — 22 minutes have passed. Error rates were elevated for every
+                and confirmed recovery, 22 minutes have passed. Error rates were elevated for every
                 one of those minutes. Every user who hit checkout during that window got an error.
                 The post-mortem will call this a "fast response." It wasn't fast enough.
               </p>
@@ -145,13 +145,13 @@ export default function SolutionInstantRollback() {
               <p className="text-ink leading-relaxed text-base">
                 The rollback tools already exist. <code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1 py-0.5">kubectl rollout undo</code> works.
                 The problem is the pipeline from "error rate spikes" to "rollback complete" runs
-                entirely through a human being — who has to be awake, alert, and in front of a
+                entirely through a human being, who has to be awake, alert, and in front of a
                 laptop to execute it. That pipeline has a minimum latency of 10–15 minutes on a
                 good night. On a bad night, it's 45.
               </p>
               <p className="text-ink-secondary leading-relaxed text-base mt-4">
                 There's a second, quieter problem: most rollbacks are too broad. Rolling back the
-                entire service when only 3% of users — in one region, on one feature flag — are
+                entire service when only 3% of users (in one region, on one feature flag) are
                 affected is a blunt instrument. You're degrading the 97% to protect the 3%. And
                 you still have to redeploy when you're ready to try again.
               </p>
@@ -196,8 +196,8 @@ export default function SolutionInstantRollback() {
               </p>
               <p className="text-ink-secondary leading-relaxed">
                 The rollback decision needs to happen before the human wakes up. That means a
-                system continuously watching your SLO metrics — not alerts, which are already late
-                — and triggering a scoped reversion the moment a measurement window closes over
+                system continuously watching your SLO metrics (not alerts, which are already late)
+                and triggering a scoped reversion the moment a measurement window closes over
                 your threshold. No runbook. No approval. No redeploy. Just traffic back where it
                 was, in under 10 seconds, with an automatic incident packet generated for the
                 post-mortem.
@@ -314,9 +314,9 @@ export default function SolutionInstantRollback() {
           </div>
           <Card padding="none" className="overflow-hidden" data-reveal>
             <div className="flex items-center gap-2 px-4 py-3 border-b border-line bg-surface-alt/60">
-              <span className="w-2.5 h-2.5 rounded-full bg-signal-danger/40" />
-              <span className="w-2.5 h-2.5 rounded-full bg-signal-warning/40" />
-              <span className="w-2.5 h-2.5 rounded-full bg-signal-success/40" />
+              <span className="w-2.5 h-2.5 bg-signal-danger/40" style={{ borderRadius: '1px' }} />
+              <span className="w-2.5 h-2.5 bg-signal-warning/40" style={{ borderRadius: '1px' }} />
+              <span className="w-2.5 h-2.5 bg-signal-success/40" style={{ borderRadius: '1px' }} />
               <span className="font-mono text-[10px] text-ink-quaternary ml-2">titan.yaml</span>
             </div>
             <pre className="p-5 font-mono text-xs text-ink-secondary leading-relaxed overflow-x-auto">
@@ -334,7 +334,7 @@ export default function SolutionInstantRollback() {
               The status quo
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
-              How teams handle rollbacks today — and the cost.
+              How teams handle rollbacks today, and the cost.
             </h2>
             <p className="text-ink-secondary text-sm max-w-xl">
               The manual rollback playbook has three failure modes: too slow, too broad, and too
@@ -441,7 +441,7 @@ export default function SolutionInstantRollback() {
             </h2>
             <p className="text-ink-secondary text-sm mb-8 max-w-lg mx-auto">
               We'll trigger a real SLO breach in a sandbox environment and show you exactly what
-              Phoenix does — automatically, before you'd even finish reading the alert.
+              Phoenix does, automatically, before you'd even finish reading the alert.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <a

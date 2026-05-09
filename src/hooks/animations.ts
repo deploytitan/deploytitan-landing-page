@@ -5,52 +5,64 @@ import { animate, stagger } from 'animejs'
 
 /**
  * Anime.js-powered scroll reveal hook.
+ * Respects prefers-reduced-motion: skips animation and reveals elements instantly.
  */
 export function useScrollReveal() {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // useEffect(() => {
-  //   const container = containerRef.current
-  //   if (!container) return
-  //
-  //   const elements = container.querySelectorAll<HTMLElement>('[data-reveal]')
-  //   if (elements.length === 0) return
-  //
-  //   elements.forEach((el) => {
-  //     el.style.opacity = '0'
-  //     el.style.transform = 'translateY(20px)'
-  //   })
-  //
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       entries.forEach((entry) => {
-  //         if (!entry.isIntersecting) return
-  //
-  //         const el = entry.target as HTMLElement
-  //         observer.unobserve(el)
-  //
-  //         const delayIndex = parseInt(el.dataset.revealDelay || '0', 10)
-  //         const delay = delayIndex * 80
-  //
-  //         animate(el, {
-  //           opacity: [0, 1],
-  //           translateY: [20, 0],
-  //           duration: 800,
-  //           delay,
-  //           ease: 'outExpo',
-  //           onComplete: () => {
-  //             el.style.opacity = ''
-  //             el.style.transform = ''
-  //           },
-  //         })
-  //       })
-  //     },
-  //     { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
-  //   )
-  //
-  //   elements.forEach((el) => observer.observe(el))
-  //   return () => observer.disconnect()
-  // }, [])
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const elements = container.querySelectorAll<HTMLElement>('[data-reveal]')
+    if (elements.length === 0) return
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (reducedMotion) {
+      // Just ensure elements are visible — no animation
+      elements.forEach((el) => {
+        el.style.opacity = ''
+        el.style.transform = ''
+      })
+      return
+    }
+
+    elements.forEach((el) => {
+      el.style.opacity = '0'
+      el.style.transform = 'translateY(20px)'
+    })
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+
+          const el = entry.target as HTMLElement
+          observer.unobserve(el)
+
+          const delayIndex = parseInt(el.dataset.revealDelay || '0', 10)
+          const delay = delayIndex * 80
+
+          animate(el, {
+            opacity: [0, 1],
+            translateY: [20, 0],
+            duration: 800,
+            delay,
+            ease: 'outExpo',
+            onComplete: () => {
+              el.style.opacity = ''
+              el.style.transform = ''
+            },
+          })
+        })
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' },
+    )
+
+    elements.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
 
   return containerRef
 }

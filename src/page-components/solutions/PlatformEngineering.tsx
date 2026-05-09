@@ -9,7 +9,7 @@ import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
 const WINS = [
   {
     title: 'Policy-as-code for every team',
-    body: 'One HCL file defines which deployment strategies are allowed per service tier. Platform teams write the policy once — product teams self-serve safely.',
+    body: 'One HCL file defines which deployment strategies are allowed per service tier. Platform teams write the policy once; product teams self-serve safely.',
     icon: (
       <svg
         width="20"
@@ -31,7 +31,7 @@ const WINS = [
   },
   {
     title: 'Self-service deploys with guardrails',
-    body: 'Product teams deploy without opening a ticket. Titan Foresight enforces your risk thresholds automatically — no platform team in the loop for every release.',
+    body: 'Product teams deploy without opening a ticket. Titan Foresight enforces your risk thresholds automatically, with no platform team in the loop for every release.',
     icon: (
       <svg
         width="20"
@@ -50,7 +50,7 @@ const WINS = [
   },
   {
     title: 'Unified audit log across all clouds',
-    body: 'Every deployment, every rollback, every policy override — logged with actor, timestamp, and context. One query covers GKE, ECS, Lambda, and Cloud Run.',
+    body: 'Every deployment, every rollback, every policy override: logged with actor, timestamp, and context. One query covers GKE, ECS, Lambda, and Cloud Run.',
     icon: (
       <svg
         width="20"
@@ -143,7 +143,7 @@ export default function SolutionPlatformEngineering() {
             className="inline-flex items-center gap-2 font-mono text-[10px] text-primary border border-primary/30 px-2 py-1 mb-6"
             style={{ borderRadius: '2px' }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-signal-success" />
+            <span className="w-1.5 h-1.5 bg-signal-success" style={{ borderRadius: '1px' }} />
             Full platform
           </div>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
@@ -153,7 +153,7 @@ export default function SolutionPlatformEngineering() {
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
             Platform teams shouldn't be the deployment bottleneck. DeployTitan gives you a single
             control plane to define deployment policies, enforce SLO guardrails, and let product
-            teams self-serve — safely — across every cloud and cluster.
+            teams self-serve safely across every cloud and cluster.
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <a
@@ -271,7 +271,7 @@ export default function SolutionPlatformEngineering() {
               The status quo
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
-              What platform teams are stuck doing — instead of building.
+              What platform teams are stuck doing, instead of building.
             </h2>
             <p className="text-ink-secondary text-sm max-w-xl">
               Platform engineering teams spend most of their time as human circuit breakers instead
@@ -293,7 +293,7 @@ export default function SolutionPlatformEngineering() {
               {
                 tool: 'Slack-based approval flows',
                 workaround: 'Deploys require a #deploy-approvals Slack thread with a thumbs-up from an SRE before proceeding. All manual, all async.',
-                failure: 'SREs spend 2+ hours/day reviewing deploys they don\'t fully understand. No programmatic enforcement — approvals get bypassed under pressure.',
+                failure: 'SREs spend 2+ hours/day reviewing deploys they don\'t fully understand. No programmatic enforcement; approvals get bypassed under pressure.',
               },
             ].map((item, i) => (
               <Card
@@ -378,7 +378,7 @@ export default function SolutionPlatformEngineering() {
             </h2>
             <p className="text-ink-secondary text-sm mb-8 max-w-lg mx-auto">
               We'll walk through policy-as-code setup, show you how product teams self-serve against
-              your guardrails, and connect your existing Terraform — all in 20 minutes.
+              your guardrails, and connect your existing Terraform, all in 20 minutes.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <a

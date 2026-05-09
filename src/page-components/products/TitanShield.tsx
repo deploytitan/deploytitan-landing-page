@@ -68,7 +68,7 @@ export default function TitanShield() {
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
             Titan Shield watches every region continuously and shifts traffic before your on-call
-            wakes up. Declare your failover policy once — never touch it again.
+            wakes up. Declare your failover policy once: never touch it again.
           </p>
           <div className="flex flex-wrap gap-4">
             <a

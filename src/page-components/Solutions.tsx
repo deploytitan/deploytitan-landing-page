@@ -11,7 +11,7 @@ const PAIN_CATEGORIES = [
     id: 'friday-fear',
     emoji: '🫣',
     heading: 'Friday deploy fear.',
-    body: 'Your team has unwritten rules: no deploys Thursday afternoon, never on Friday, not before a holiday. The fear isn\'t irrational — it\'s institutional memory of the last time something broke and nobody could roll back fast enough.',
+    body: 'Your team has unwritten rules: no deploys Thursday afternoon, never on Friday, not before a holiday. The fear isn\'t irrational: it\'s institutional memory of the last time something broke and nobody could roll back fast enough.',
     link: '/solutions/progressive-delivery',
     linkLabel: 'How we fix this →',
   },
@@ -57,11 +57,11 @@ const PERSONAS = [
     id: 'sre',
     role: 'Site Reliability Engineer',
     frustration: '"I get paged for things that should have rolled back automatically."',
-    body: 'You wrote the runbook. You\'ve tested the rollback procedure. And you still got paged at 2am because nothing runs the runbook automatically. DeployTitan closes that gap — SLO breach triggers action, not just an alert.',
+    body: 'You wrote the runbook. You\'ve tested the rollback procedure. And you still got paged at 2am because nothing runs the runbook automatically. DeployTitan closes that gap: SLO breach triggers action, not just an alert.',
     wins: [
-      'SLO-triggered automatic rollback — no alert, no human in the loop',
+      'SLO-triggered automatic rollback: no alert, no human in the loop',
       'Blast-radius analysis before the deploy, not after',
-      'PagerDuty / OpsGenie — DeployTitan acts on alerts, not just sends them',
+      'PagerDuty / OpsGenie: DeployTitan acts on alerts, not just sends them',
     ],
     link: '/solutions/instant-rollback',
     icon: (
@@ -74,7 +74,7 @@ const PERSONAS = [
     id: 'devops',
     role: 'DevOps / Platform Engineer',
     frustration: '"I spend more time on deploy scripts than on actual engineering."',
-    body: 'You\'re the one who gets Slack messages when a deploy breaks. You\'re the one who wrote the rollback runbook that nobody runs correctly. DeployTitan replaces the scaffolding — one CLI, one policy file, every cloud.',
+    body: 'You\'re the one who gets Slack messages when a deploy breaks. You\'re the one who wrote the rollback runbook that nobody runs correctly. DeployTitan replaces the scaffolding: one CLI, one policy file, every cloud.',
     wins: [
       'One `dt deploy` replaces 200+ lines of CI/CD pipeline YAML',
       'Policy-as-code: write the guardrails once, all teams self-serve safely',
@@ -91,10 +91,10 @@ const PERSONAS = [
     id: 'manager',
     role: 'Engineering Manager / CTO',
     frustration: '"I don\'t know the cost of each bad release until after it happens."',
-    body: 'You know deploys are risky. You just can\'t quantify it. Every incident report says "human error" but the real cause is missing automation. DeployTitan makes your deploy pipeline safe by default — and gives you the data to prove it.',
+    body: 'You know deploys are risky. You just can\'t quantify it. Every incident report says "human error" but the real cause is missing automation. DeployTitan makes your deploy pipeline safe by default, and gives you the data to prove it.',
     wins: [
-      'DORA metrics tracked automatically — no manual tagging',
-      'Risk score on every PR — management can see what\'s risky before it ships',
+      'DORA metrics tracked automatically: no manual tagging',
+      'Risk score on every PR: management can see what\'s risky before it ships',
       'Full audit trail: every deploy, every rollback, every policy override',
     ],
     link: '/solutions/progressive-delivery',
@@ -158,11 +158,11 @@ export default function Solutions() {
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-4">
             Most engineering teams have Argo, a feature flag tool, some runbooks, and PagerDuty. What
-            they don't have is a system that connects them — that scores risk before the merge, gates
+            they don't have is a system that connects them: one that scores risk before the merge, gates
             traffic on real signals, and rolls back automatically when something breaks.
           </p>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl">
-            That's what DeployTitan is. Not a replacement for your stack — the connective tissue that
+            That's what DeployTitan is. Not a replacement for your stack, but the connective tissue that
             makes it safe.
           </p>
         </Container>
@@ -180,7 +180,7 @@ export default function Solutions() {
             </h2>
             <p className="text-ink-secondary max-w-xl">
               These aren't edge cases. They're the normal state of deployment for most engineering
-              teams — and every one of them has a specific fix.
+              teams, and every one of them has a specific fix.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -321,7 +321,7 @@ export default function Solutions() {
           </h2>
           <p className="text-ink-secondary max-w-xl mx-auto mb-8">
             We'll ask about your current deploy process, what's broken, and whether DeployTitan is
-            the right fit — no sales pitch, 20 minutes.
+            the right fit: no sales pitch, 20 minutes.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a

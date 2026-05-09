@@ -190,7 +190,7 @@ export function ProductsDropdown({ onClose }: Props) {
             <ul className="border-line-subtle mt-auto flex flex-col gap-1.5 border-t pt-2">
               {p.bullets.map((b) => (
                 <li key={b} className="text-ink-secondary flex items-center gap-2 text-xs">
-                  <span className="bg-primary/50 h-1 w-1 shrink-0 rounded-full" />
+                  <span className="bg-primary/50 h-1 w-1 shrink-0" style={{ borderRadius: '1px' }} />
                   {b}
                 </li>
               ))}

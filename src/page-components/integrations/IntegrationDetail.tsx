@@ -147,7 +147,7 @@ export default function IntegrationDetail() {
               </h3>
               <div className="flex items-center gap-2">
                 <span
-                  className={`w-2 h-2 rounded-full ${
+                  className={`w-2 h-2 rounded-[2px] ${
                     integration.status === 'ga'
                       ? 'bg-signal-success'
                       : integration.status === 'beta'

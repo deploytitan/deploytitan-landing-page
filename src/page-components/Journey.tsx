@@ -10,12 +10,12 @@ const OUTCOMES = [
   {
     number: '01',
     title: 'Reduce deployment risk',
-    body: 'Progressive rollouts, automated risk scoring, and real-time traffic control — catch problems before they reach all your users.',
+    body: 'Progressive rollouts, automated risk scoring, and real-time traffic control, catching problems before they reach all your users.',
   },
   {
     number: '02',
     title: 'Recover in seconds, not minutes',
-    body: `Instant rollback without coordination. The system recovered from a failure without your users being any wiser — now that's confidence.`,
+    body: `Instant rollback without coordination. The system recovered from a failure without your users being any wiser, and that's confidence.`,
   },
   {
     number: '03',
@@ -25,7 +25,25 @@ const OUTCOMES = [
   {
     number: '04',
     title: 'Deploy whenever you want',
-    body: 'Friday afternoons. Multiple times a day. Whatever works for your team — because you have the confidence to back it up.',
+    body: 'Friday afternoons. Multiple times a day. Whatever works for your team, because you have the confidence to back it up.',
+  },
+]
+
+const BAD_PATTERNS = [
+  {
+    label: 'Night windows',
+    desc: 'Pushed to off-hours to reduce perceived risk',
+    consequence: 'Real traffic exposes issues after the team goes dark.',
+  },
+  {
+    label: '24/7 on-call',
+    desc: "Engineers paged for code they didn't write",
+    consequence: 'Slower response when it matters most.',
+  },
+  {
+    label: 'No Fridays',
+    desc: 'Entire deployment windows blocked out of fear',
+    consequence: 'Velocity sacrificed for anxiety management.',
   },
 ]
 
@@ -35,7 +53,7 @@ export default function Journey() {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
-      <section className="blueprint-grid border-line border-b pt-28 pb-24">
+      <section className="blueprint-grid border-line border-b pt-28 pb-20">
         <Container width="3xl" padding="default" data-reveal>
           <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
             My journey
@@ -44,138 +62,155 @@ export default function Journey() {
             I built DeployTitan
             <br className="hidden md:block" /> because I lived the problem.
           </h1>
-          <p className="text-ink-secondary text-xl leading-relaxed">
+          <p className="text-ink-secondary max-w-xl text-xl leading-relaxed">
             Not from a whiteboard. Not from a VC pitch. From 8 years of watching brilliant engineers
-            treat every deployment like defusing a bomb — and deciding I'd had enough.
+            treat every deployment like defusing a bomb, and deciding I&apos;d had enough.
           </p>
         </Container>
       </section>
 
       {/* ── The Pattern ───────────────────────────────────────────────────────── */}
-      <section className="border-line border-b py-24">
+      <section className="border-line border-b py-20">
         <Container width="3xl" padding="default">
           <span
             data-reveal
-            className="text-ink-tertiary mb-8 inline-flex items-center gap-3 font-mono text-xs tracking-widest uppercase"
+            className="text-ink-tertiary mb-6 inline-flex items-center gap-3 font-mono text-xs tracking-widest uppercase"
+            aria-label="Eight years of the same fear"
           >
-            <span className="bg-primary/40 h-px w-6" />
+            <span className="bg-primary/40 h-px w-6" aria-hidden="true" />
             Eight years of the same fear
           </span>
 
-          <div className="space-y-6">
-            <p data-reveal className="text-ink text-lg leading-relaxed">
+          {/* Anchor sentence for scanning leaders */}
+          <p data-reveal className="text-ink mb-8 text-2xl leading-snug font-semibold">
+            Every company I worked at treated deployments as a risk to minimize, not a capability to
+            own.
+          </p>
+
+          <div className="space-y-5">
+            <p data-reveal className="text-ink-secondary text-lg leading-relaxed">
               I worked across multiple engineering organizations. Every company had different tools,
-              different stacks, different processes. But one thing was always the same: deployments
-              were treated as a risk to be minimized, not a capability to be owned.
+              different stacks, different processes. But one thing was always the same: the anxiety
+              was the same everywhere.
             </p>
-            <p data-reveal className="text-ink text-lg leading-relaxed">
-              Night windows. No-deploy Fridays. On-call rotations staffed by engineers who didn't
-              build the thing they were now responsible for keeping alive at 2am.
+            <p data-reveal className="text-ink-secondary text-lg leading-relaxed">
+              Night windows. No-deploy Fridays. On-call rotations staffed by engineers who
+              didn&apos;t build the thing they were now responsible for keeping alive at 2am.
             </p>
 
-            <div data-reveal className="my-10 border-l-2 pl-6" style={{ borderColor: PRIMARY }}>
+            <figure
+              data-reveal
+              className="border-line my-8 border-t border-b py-7"
+              aria-label="Founder reflection"
+            >
+              <span
+                className="mb-3 block font-mono text-[10px] tracking-widest uppercase"
+                style={{ color: PRIMARY }}
+              >
+                &#x201C;
+              </span>
               <p className="text-ink text-xl leading-relaxed font-medium">
-                "I watched smart, capable people slow themselves down — not because they lacked
-                discipline, but because their tooling made every release feel dangerous."
+                I watched smart, capable people slow themselves down, not because they lacked
+                discipline, but because their tooling made every release feel dangerous.
               </p>
-            </div>
+            </figure>
 
-            <p data-reveal className="text-ink text-lg leading-relaxed">
+            <p data-reveal className="text-ink-secondary text-lg leading-relaxed">
               And honestly? I hated it. I hated the anxiety. I hated the 11pm deploys. I hated
-              watching teams hold back features because nobody wanted to be the one who broke prod
-              on a Friday.
+              watching teams hold back features because nobody wanted to be the one who broke prod on
+              a Friday.
             </p>
           </div>
         </Container>
       </section>
 
       {/* ── The real problem ──────────────────────────────────────────────────── */}
-      <section className="border-line bg-surface-alt/30 border-b py-24">
+      <section className="border-line bg-surface-alt/30 border-b pt-16 pb-24">
         <Container width="3xl" padding="default">
           <span
             data-reveal
-            className="text-ink-tertiary mb-8 inline-flex items-center gap-3 font-mono text-xs tracking-widest uppercase"
+            className="text-ink-tertiary mb-6 inline-flex items-center gap-3 font-mono text-xs tracking-widest uppercase"
+            aria-label="The real problem"
           >
-            <span className="bg-primary/40 h-px w-6" />
+            <span className="bg-primary/40 h-px w-6" aria-hidden="true" />
             The real problem
           </span>
 
-          <h2 data-reveal className="text-ink mb-8 text-3xl leading-snug font-semibold">
+          <h2 data-reveal className="text-ink mb-3 text-3xl leading-snug font-semibold">
             It was never a people problem.
             <br />
             It was always a tooling problem.
           </h2>
 
-          <div className="mb-12 space-y-6">
-            <p data-reveal className="text-ink text-lg leading-relaxed">
-              Night deployments feel safer — until real production traffic hits hours later and the
-              team is already offline. Rollbacks that take minutes feel like forever when an SLO is
-              burning. On-call rotations slow incident response because the people paged didn't
-              build the feature that's failing.
-            </p>
-            <p data-reveal className="text-ink text-lg leading-relaxed">
-              These aren't discipline failures. They're the entirely predictable result of tooling
-              that gives teams no confidence, no visibility, and no fast path to recovery.
-            </p>
-          </div>
+          {/* Anchor sentence */}
+          <p data-reveal className="text-ink-secondary mb-10 text-lg leading-relaxed">
+            Tooling that gives teams no confidence, no visibility, and no fast path to recovery
+            produces exactly the behaviors you see: night windows, pager anxiety, no-deploy Fridays.
+            These aren&apos;t discipline failures.
+          </p>
 
-          <div data-reveal className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {[
-              {
-                stat: 'Night windows',
-                desc: 'Pushed to off-hours to reduce perceived risk',
-                context: 'but real traffic exposes issues after the team goes dark',
-              },
-              {
-                stat: '24x7 on-call',
-                desc: "Engineers paged for code they didn't write",
-                context: 'slower response when it matters most',
-              },
-              {
-                stat: 'No Fridays',
-                desc: 'Entire deployment windows blocked out of fear',
-                context: 'velocity sacrificed for anxiety management',
-              },
-            ].map((item) => (
-              <Card key={item.stat} padding="sm">
-                <p className="text-ink mb-1 text-base font-semibold">{item.stat}</p>
-                <p className="text-ink-secondary mb-2 text-xs leading-relaxed">{item.desc}</p>
-                <p className="text-ink-tertiary font-mono text-xs">{item.context}</p>
-              </Card>
+          {/* Pattern list: no cards, structured rows */}
+          <div
+            data-reveal
+            className="border-line divide-line divide-y border"
+            style={{ borderRadius: '2px' }}
+            role="list"
+            aria-label="Common deployment anti-patterns"
+          >
+            {BAD_PATTERNS.map((item, i) => (
+              <div
+                key={item.label}
+                className="grid grid-cols-[2rem_1fr_1fr] items-start gap-6 px-6 py-5 sm:gap-8"
+                role="listitem"
+              >
+                <span
+                  className="text-primary/50 pt-0.5 font-mono text-xs tabular-nums"
+                  aria-hidden="true"
+                >
+                  0{i + 1}
+                </span>
+                <div>
+                  <p className="text-ink mb-1 text-sm font-semibold">{item.label}</p>
+                  <p className="text-ink-secondary text-xs leading-relaxed">{item.desc}</p>
+                </div>
+                <p className="text-ink-tertiary font-mono text-xs leading-relaxed">
+                  {item.consequence}
+                </p>
+              </div>
             ))}
           </div>
         </Container>
       </section>
 
       {/* ── What I'm building ─────────────────────────────────────────────────── */}
-      <section className="border-line bg-surface-alt/20 border-b py-24">
+      <section className="border-line bg-surface-alt/20 border-b py-28">
         <Container width="3xl" padding="default">
           <span
             data-reveal
-            className="text-ink-tertiary mb-8 inline-flex items-center gap-3 font-mono text-xs tracking-widest uppercase"
+            className="text-ink-tertiary mb-6 inline-flex items-center gap-3 font-mono text-xs tracking-widest uppercase"
+            aria-label="What I'm building"
           >
-            <span className="bg-primary/40 h-px w-6" />
-            What I'm building
+            <span className="bg-primary/40 h-px w-6" aria-hidden="true" />
+            What I&apos;m building
           </span>
 
-          <h2 data-reveal className="text-ink mb-4 text-3xl leading-snug font-semibold">
+          <h2 data-reveal className="text-ink mb-3 text-3xl leading-snug font-semibold">
             Deployments should feel boring.
           </h2>
-          <p data-reveal className="text-ink-secondary mb-12 text-lg leading-relaxed">
+          <p data-reveal className="text-ink-secondary mb-14 max-w-lg text-lg leading-relaxed">
             My mission with DeployTitan is simple: give every engineering team the controls,
-            visibility, and recovery speed they need to deploy with confidence — any time they want.
+            visibility, and recovery speed they need to deploy with confidence, any time they want.
           </p>
 
-          <div className="border-line space-y-px border">
+          <div className="border-line space-y-px border" style={{ borderRadius: '2px' }}>
             {OUTCOMES.map((p) => (
-              <Card
+              <div
                 key={p.number}
-                padding="none"
-                className="border-line group hover:bg-surface-alt/40 border-b p-7 transition-colors last:border-b-0"
+                className="group hover:bg-surface-alt/40 border-line border-b p-7 transition-colors last:border-b-0"
                 data-reveal
               >
                 <div className="flex items-start gap-5">
-                  <span className="text-primary/60 shrink-0 pt-0.5 font-mono text-xs">
+                  <span className="text-primary/50 shrink-0 pt-0.5 font-mono text-xs tabular-nums">
                     {p.number}
                   </span>
                   <div>
@@ -183,14 +218,14 @@ export default function Journey() {
                     <p className="text-ink-secondary text-sm leading-relaxed">{p.body}</p>
                   </div>
                 </div>
-              </Card>
+              </div>
             ))}
           </div>
         </Container>
       </section>
 
       {/* ── Founder note ──────────────────────────────────────────────────────── */}
-      <section className="border-line border-b py-24">
+      <section className="border-line border-b pt-16 pb-20">
         <Container width="3xl" padding="default">
           <Card padding="none" className="relative overflow-hidden p-8 lg:p-12" data-reveal>
             <div
@@ -207,26 +242,27 @@ export default function Journey() {
             </p>
             <div className="text-ink mb-8 space-y-5 text-base leading-relaxed">
               <p>
-                If you've ever pushed a deploy at 11pm just to avoid risking a Friday, I built this
-                for you.
+                If you&apos;ve ever pushed a deploy at 11pm just to avoid risking a Friday, I built
+                this for you.
               </p>
               <p>
-                If you've ever been the on-call engineer staring at an alert for a feature you
-                didn't write, trying to decide if you should roll back or wait it out — I built this
-                for you.
+                If you&apos;ve ever been the on-call engineer staring at an alert for a feature you
+                didn&apos;t write, trying to decide if you should roll back or wait it out: I built
+                this for you.
               </p>
               <p>
-                I want to hear about your deployment story. Not to pitch you. Because every
-                conversation I have with an engineer reminds me exactly why this matters.
+                I want to hear your deployment story. Every conversation I have with an engineer
+                reminds me exactly why this matters.
               </p>
             </div>
 
             <div className="border-line flex items-center gap-4 border-t pt-6">
               <div>
-                <p className="text-ink text-sm font-semibold">Justine — Founder, DeployTitan</p>
+                <p className="text-ink text-sm font-semibold">Justine, Founder, DeployTitan</p>
                 <a
                   href="mailto:justine@deploytitan.com"
                   className="text-primary font-mono text-xs hover:underline"
+                  aria-label="Email Justine at justine@deploytitan.com"
                 >
                   justine@deploytitan.com
                 </a>
@@ -237,27 +273,28 @@ export default function Journey() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────────────────────────── */}
-      <section className="py-24">
+      <section className="border-line border-b py-20">
         <Container width="3xl" padding="default">
           <div data-reveal className="space-y-6 text-center">
             <h2 className="text-ink text-3xl leading-snug font-semibold">
               Ready to deploy without the dread?
             </h2>
             <p className="text-ink-secondary mx-auto max-w-xl text-lg leading-relaxed">
-              Join the engineers who are already shipping with confidence. Early access is open —
-              get in before we close the waitlist.
+              Join the engineers who are already shipping with confidence. Early access is open.
             </p>
             <div className="flex flex-col justify-center gap-4 pt-2 sm:flex-row">
               <a
                 href="https://console.deploytitan.com/login"
-                className="bg-ink text-ink dark:text-surface inline-flex items-center justify-center gap-2 px-5.5 py-2.5 text-sm font-medium transition-all"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-surface transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 style={{ background: PRIMARY }}
+                aria-label="Get started with DeployTitan"
               >
-                Get Started
+                Get started
               </a>
               <a
                 href="mailto:justine@deploytitan.com"
-                className="border-line text-ink hover:bg-surface-alt/40 inline-flex items-center justify-center border px-6 py-3 text-sm font-semibold transition-colors"
+                className="border-line text-ink hover:bg-surface-alt/40 inline-flex items-center justify-center border px-6 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                aria-label="Email Justine, founder of DeployTitan"
               >
                 Talk to the founder
               </a>

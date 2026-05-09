@@ -6,6 +6,7 @@ import { CodeBlock } from './shared/CodeBlock'
 import { useScrollReveal } from '../utils'
 import { Container } from './shared/Container'
 import { Card } from './shared/Card'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const DEPLOY_SNIPPET = `# 1. Authenticate
 dt login
@@ -28,6 +29,7 @@ dt deploy \\
 // Simple terminal typing animation
 function TerminalOutput() {
   const ref = useRef<HTMLPreElement>(null)
+  const reducedMotion = useReducedMotion()
 
   useEffect(() => {
     const lines = [
@@ -38,11 +40,17 @@ function TerminalOutput() {
       '  → 10% — p99: 38 ms  errors: 0.00%',
       '  → 25% — p99: 41 ms  errors: 0.01%',
       '  → 50% — p99: 40 ms  errors: 0.00%',
-      '  → 100% — rollout complete in 12m 04s',
+      '  → 100%: rollout complete in 12m 04s',
       '  ✓ Deployment successful',
     ]
     const el = ref.current
     if (!el) return
+
+    if (reducedMotion) {
+      el.textContent = lines.join('\n')
+      return
+    }
+
     el.textContent = ''
 
     let lineIdx = 0
@@ -69,21 +77,22 @@ function TerminalOutput() {
       clearTimeout(delay)
       cancelAnimationFrame(raf)
     }
-  }, [])
+  }, [reducedMotion])
 
   return (
     <pre
       ref={ref}
-      className="font-mono text-[12px] leading-[1.8] text-emerald-400/90 whitespace-pre min-h-[220px]"
+      className="font-mono text-[12px] leading-[1.8] whitespace-pre min-h-[220px]"
+      style={{ color: 'var(--color-signal-success)' }}
     />
   )
 }
 
 export function Quickstart() {
-  useScrollReveal()
+  const ref = useScrollReveal()
 
   return (
-    <section className="py-24 border-t border-line">
+    <section className="py-24 border-t border-line" ref={ref}>
       <Container width="6xl" padding="default">
         {/* Heading */}
         <div className="mb-14 max-w-xl" data-reveal>
@@ -109,13 +118,13 @@ export function Quickstart() {
           <div className="flex flex-col gap-6">
             <div>
               <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">
-                Step 1 — Install
+                Step 1: Install
               </p>
               <InstallTabs />
             </div>
             <div>
               <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">
-                Step 2–4 — Deploy
+                Step 2–4: Deploy
               </p>
               <CodeBlock code={DEPLOY_SNIPPET} lang="bash" filename="terminal" />
             </div>
@@ -125,14 +134,24 @@ export function Quickstart() {
           <Card
             tone="muted"
             className="border border-line overflow-hidden"
-            style={{ backgroundColor: '#0d1117' }}
+            style={{ backgroundColor: 'var(--color-dark-surface, #0d0c0a)' }}
           >
-            <div className="flex items-center gap-2 mb-5 border-b border-white/[0.06] pb-3">
-              <span className="w-3 h-3 rounded-full bg-red-500/60" />
-              <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
-              <span className="w-3 h-3 rounded-full bg-green-500/60" />
-              <span className="ml-2 font-mono text-[11px] text-white/30">
-                deploytitan — dt deploy
+            {/* Instrument panel header bar — matches TrafficSplitVisual pattern */}
+            <div
+              className="flex items-center gap-2 mb-5 border-b pb-3"
+              style={{ borderColor: 'rgba(255,255,255,0.06)' }}
+            >
+              <div
+                className="flex h-4 w-4 items-center justify-center"
+                style={{ backgroundColor: 'rgba(201,168,76,0.15)', borderRadius: '1px', border: '1px solid rgba(201,168,76,0.2)' }}
+              >
+                <svg width="8" height="8" viewBox="0 0 12 12" fill="none">
+                  <path d="M1 3l3 2-3 2" stroke="rgba(201,168,76,0.8)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M7 8h4" stroke="rgba(201,168,76,0.8)" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </div>
+              <span className="font-mono text-[11px]" style={{ color: 'rgba(245,244,241,0.3)' }}>
+                deploytitan: dt deploy
               </span>
             </div>
             <TerminalOutput />

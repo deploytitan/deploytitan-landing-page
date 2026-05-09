@@ -40,7 +40,7 @@ const CAPABILITIES = [
       </svg>
     ),
     title: 'Zero-instrumentation event bus',
-    desc: 'Every deploy emits structured events automatically: stage transitions, health-gate outcomes, and completion status — captured from the controller, not the workload.',
+    desc: 'Every deploy emits structured events automatically: stage transitions, health-gate outcomes, and completion status, captured from the controller, not the workload.',
     badge: 'available' as const,
   },
   {
@@ -59,7 +59,7 @@ const CAPABILITIES = [
       </svg>
     ),
     title: 'DORA metrics out of the box',
-    desc: 'Deployment frequency, lead time, change failure rate, and MTTR — computed automatically from deploy events. No manual tagging, no spreadsheets.',
+    desc: 'Deployment frequency, lead time, change failure rate, and MTTR, computed automatically from deploy events. No manual tagging, no spreadsheets.',
     badge: 'preview' as const,
   },
   {
@@ -100,7 +100,7 @@ const CAPABILITIES = [
       </svg>
     ),
     title: 'Team & service scorecards',
-    desc: 'Benchmark deploy health by team, service, or domain. Identify which squads are shipping fastest and most reliably — and share what works.',
+    desc: 'Benchmark deploy health by team, service, or domain. Identify which squads are shipping fastest and most reliably, and share what works.',
     badge: 'roadmap' as const,
   },
   {
@@ -191,7 +191,7 @@ export default function TitanLedger() {
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
             Ledger turns the events your deploys already produce into history you can act on. DORA,
-            trends, and team scorecards — no agents, no tagging.
+            trends, and team scorecards: no agents, no tagging.
           </p>
           <div className="flex flex-wrap gap-4">
             <a
@@ -222,7 +222,7 @@ export default function TitanLedger() {
             Ledger owns the truth about how you deploy.
           </h2>
           <p className="text-ink-secondary leading-relaxed max-w-2xl">
-            Not predictions, not judgments — facts. Ledger is the historical record of every deploy
+            Not predictions, not judgments, but facts. Ledger is the historical record of every deploy
             event your system produced. Neutral, complete, and queryable.
           </p>
         </Container>
@@ -253,7 +253,7 @@ export default function TitanLedger() {
               The complete record of how your team ships.
             </h2>
             <p className="text-ink-secondary max-w-xl">
-              Built on top of DeployTitan's event bus — no agents, no sidecars, no manual
+              Built on top of DeployTitan's event bus: no agents, no sidecars, no manual
               instrumentation.
             </p>
           </div>
@@ -290,12 +290,12 @@ export default function TitanLedger() {
               <ul className="flex flex-col gap-3">
                 {[
                   'Events emitted by the controller, not the workload',
-                  'Structured JSON — queryable with any BI or log tool',
+                  'Structured JSON: queryable with any BI or log tool',
                   'Native Datadog, Prometheus, Grafana, and OTel exporters',
                   'Retention and routing configurable per team',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-ink-secondary">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0 mt-1.5" />
+                    <span className="w-1.5 h-1.5 bg-primary/60 shrink-0 mt-1.5" style={{ borderRadius: '1px' }} />
                     {item}
                   </li>
                 ))}
@@ -364,7 +364,7 @@ export default function TitanLedger() {
               Automatic engineering health tracking.
             </h2>
             <p className="text-ink-secondary max-w-xl">
-              The four DORA metrics, computed from actual deploy events — no spreadsheets, no
+              The four DORA metrics, computed from actual deploy events: no spreadsheets, no
               retros, no guessing.
             </p>
             <div className="mt-2">

@@ -10,13 +10,13 @@ const PHASES = [
   {
     number: '01',
     title: 'Risk score before the first byte ships',
-    body: 'Titan Foresight analyses every PR against your live dependency graph. You see a 0–100 risk score, blast-radius map, and SLO impact estimate — all before you merge.',
+    body: 'Titan Foresight analyses every PR against your live dependency graph. You see a 0–100 risk score, blast-radius map, and SLO impact estimate, all before you merge.',
     metric: { value: '< 2s', label: 'analysis time per PR' },
   },
   {
     number: '02',
     title: 'Progressive canary with automatic weight stepping',
-    body: 'Deploy to 1% → 10% → 50% → 100% on a schedule you define. Each step is gated by your real SLO metrics — latency, error rate, custom Datadog queries.',
+    body: 'Deploy to 1% → 10% → 50% → 100% on a schedule you define. Each step is gated by your real SLO metrics: latency, error rate, custom Datadog queries.',
     metric: { value: '3×', label: 'deploy frequency increase' },
   },
   {
@@ -42,7 +42,7 @@ const BEFORE = [
 
 const AFTER = [
   'Self-service deploys with SLO guardrails',
-  'Ship Friday with confidence — rollback is automatic',
+  'Ship Friday with confidence; rollback is automatic',
   'Single API call to reverse traffic in 30 seconds',
   'Risk scored before the first byte shifts to production',
 ]
@@ -60,7 +60,7 @@ export default function SolutionProgressiveDelivery() {
             className="inline-flex items-center gap-2 font-mono text-[10px] text-primary border border-primary/30 px-2 py-1 mb-6"
             style={{ borderRadius: '2px' }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-signal-success" />
+            <span className="w-1.5 h-1.5 bg-signal-success" style={{ borderRadius: '1px' }} />
             Powered by Titan Rollout + Titan Foresight
           </div>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
@@ -69,7 +69,7 @@ export default function SolutionProgressiveDelivery() {
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
             Not because they're lazy. Because a bad deploy at 4pm means a ruined weekend for
-            whoever's on call. That fear — the unspoken deploy freeze — is costing you velocity,
+            whoever's on call. That fear (the unspoken deploy freeze) is costing you velocity,
             morale, and competitive ground every single week.
           </p>
           <div className="flex flex-wrap items-center gap-4">
@@ -114,7 +114,7 @@ export default function SolutionProgressiveDelivery() {
               </p>
               <blockquote className="text-xl lg:text-2xl font-semibold text-ink leading-snug border-l-2 border-primary pl-6 mb-6">
                 "It's Thursday. The feature's ready. Someone suggests shipping tomorrow morning
-                instead of today — just to be safe."
+                instead of today, just to be safe."
               </blockquote>
               <p className="text-ink-secondary leading-relaxed">
                 Everyone nods. No one says it out loud, but the real reason is: if something breaks
@@ -134,11 +134,11 @@ export default function SolutionProgressiveDelivery() {
                 safety net. Traffic shifts all-or-nothing. Rollback means re-running CI and watching
                 dashboards for 20 minutes. The blast radius of any given deploy is unknown until
                 it's in production. So the only rational response is to treat every deploy as
-                inherently dangerous — and ship less.
+                inherently dangerous, so they ship less.
               </p>
               <p className="text-ink-secondary leading-relaxed text-base mt-4">
                 This isn't a people problem. It's a tooling gap. You've stitched together Argo
-                Rollouts, Grafana dashboards, and Slack war rooms — and called it a deploy process.
+                Rollouts, Grafana dashboards, and Slack war rooms, and called it a deploy process.
                 But no one wired them together. There's no automatic circuit breaker. The human is
                 still the safety mechanism.
               </p>
@@ -183,7 +183,7 @@ export default function SolutionProgressiveDelivery() {
               </p>
               <p className="text-ink-secondary leading-relaxed">
                 Progressive delivery is the structural answer. Not canary as a manual step you add
-                to your runbook — but as the default deploy mode, with SLO-gated promotion,
+                to your runbook, but as the default deploy mode, with SLO-gated promotion,
                 automatic traffic reversion, and risk scoring wired in before anything ships. When
                 the safety net is automatic, the fear disappears. Deploys become a non-event. Friday
                 becomes like any other day.
@@ -293,15 +293,15 @@ export default function SolutionProgressiveDelivery() {
               Canary to production in a single CLI call.
             </h2>
             <p className="text-sm text-ink-secondary">
-              Everything else — traffic stepping, metric polling, rollback decisions — happens
+              Everything else (traffic stepping, metric polling, rollback decisions) happens
               automatically.
             </p>
           </div>
           <Card padding="none" className="overflow-hidden" data-reveal>
             <div className="flex items-center gap-2 px-4 py-3 border-b border-line bg-surface-alt/60">
-              <span className="w-2.5 h-2.5 rounded-full bg-signal-danger/40" />
-              <span className="w-2.5 h-2.5 rounded-full bg-signal-warning/40" />
-              <span className="w-2.5 h-2.5 rounded-full bg-signal-success/40" />
+              <span className="w-2.5 h-2.5 bg-signal-danger/40" style={{ borderRadius: '1px' }} />
+              <span className="w-2.5 h-2.5 bg-signal-warning/40" style={{ borderRadius: '1px' }} />
+              <span className="w-2.5 h-2.5 bg-signal-success/40" style={{ borderRadius: '1px' }} />
               <span className="font-mono text-[10px] text-ink-quaternary ml-2">terminal</span>
             </div>
             <div className="p-5 font-mono text-sm leading-relaxed">
@@ -313,7 +313,7 @@ export default function SolutionProgressiveDelivery() {
                 5 --auto-rollback
               </p>
               <p className="text-ink-tertiary mt-3">
-                ✓ Risk score: 12/100 (low) — 0 SLO violations in last 7d
+                ✓ Risk score: 12/100 (low): 0 SLO violations in last 7d
               </p>
               <p className="text-ink-tertiary">
                 ✓ Blast radius: 2 downstream services (non-critical)
@@ -323,7 +323,7 @@ export default function SolutionProgressiveDelivery() {
                 ✓ p99 stable at 43ms (+2ms). Stepping to 25%.
               </p>
               <p className="text-signal-success">✓ p99 stable at 44ms. Stepping to 100%.</p>
-              <p className="text-primary mt-1 font-semibold">✓ Deploy complete — 8m 43s total.</p>
+              <p className="text-primary mt-1 font-semibold">✓ Deploy complete. 8m 43s total.</p>
             </div>
           </Card>
         </Container>
@@ -337,7 +337,7 @@ export default function SolutionProgressiveDelivery() {
               The status quo
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
-              What teams are doing today — and why it breaks.
+              What teams are doing today, and why it breaks.
             </h2>
             <p className="text-ink-secondary text-sm max-w-xl">
               Most teams cobble together Argo Rollouts, feature flags, and manual dashboards. It
@@ -354,7 +354,7 @@ export default function SolutionProgressiveDelivery() {
               {
                 tool: 'LaunchDarkly feature flags',
                 workaround: 'Wrap risky code in flags, manually toggle off when things go wrong. Flags accumulate, tech debt grows.',
-                failure: 'No SLO awareness. Flags don\'t know about error rates — a human has to notice and react.',
+                failure: 'No SLO awareness. Flags don\'t know about error rates; a human has to notice and react.',
               },
               {
                 tool: 'Runbooks + Slack war rooms',

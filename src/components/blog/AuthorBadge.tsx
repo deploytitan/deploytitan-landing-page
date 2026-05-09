@@ -24,7 +24,7 @@ export function AuthorBadge({ author, publishedAt, showBio }: AuthorBadgeProps) 
   return (
     <div className="flex items-start gap-3">
       {author.image && (
-        <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0 border border-line">
+        <div className="relative w-10 h-10 rounded-[2px] overflow-hidden shrink-0 border border-line">
           <Image
             src={urlFor(author.image as object).width(80).height(80).url()}
             alt={author.name}

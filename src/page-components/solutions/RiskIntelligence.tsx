@@ -79,7 +79,7 @@ export default function SolutionRiskIntelligence() {
             className="inline-flex items-center gap-2 font-mono text-[10px] text-primary border border-primary/30 px-2 py-1 mb-6"
             style={{ borderRadius: '2px' }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-signal-success" />
+            <span className="w-1.5 h-1.5 bg-signal-success" style={{ borderRadius: '1px' }} />
             Powered by Titan Foresight
           </div>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
@@ -88,7 +88,7 @@ export default function SolutionRiskIntelligence() {
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
             A PR ships. Something breaks. Three services you didn't know depended on this one start
-            erroring. The post-mortem question — "did anyone check the dependency graph?" — has no
+            erroring. The post-mortem question, "did anyone check the dependency graph?", has no
             good answer, because there was no tool that did it automatically before the deploy.
           </p>
           <div className="flex flex-wrap items-center gap-4">
@@ -137,7 +137,7 @@ export default function SolutionRiskIntelligence() {
               </blockquote>
               <p className="text-ink-secondary leading-relaxed">
                 The change was 200 lines. It touched a shared auth utility that eight services
-                called. Nobody knew — not because they were careless, but because that dependency
+                called. Nobody knew, not because they were careless, but because that dependency
                 information lives in a graph that nobody maintains, nobody queries before merging,
                 and nobody thinks about until it's the subject of a post-mortem action item that
                 also doesn't get done.
@@ -158,8 +158,8 @@ export default function SolutionRiskIntelligence() {
                 release process.
               </p>
               <p className="text-ink-secondary leading-relaxed text-base mt-4">
-                And even when teams do check — manually pulling up Datadog before a deploy, eyeing
-                the error budget, pinging the downstream service owners — none of that is
+                And even when teams do check (manually pulling up Datadog before a deploy, eyeing
+                the error budget, pinging the downstream service owners), none of that is
                 connected to a deploy gate. A high-risk PR can still ship on a depleted error
                 budget on a Friday afternoon, because nothing blocks it.
               </p>
@@ -175,7 +175,7 @@ export default function SolutionRiskIntelligence() {
                   {
                     stat: '70%',
                     label: 'of prod incidents',
-                    detail: 'trace back to a deploy. Most were foreseeable — the blast radius was knowable before the change shipped.',
+                    detail: 'trace back to a deploy. Most were foreseeable: the blast radius was knowable before the change shipped.',
                   },
                   {
                     stat: '5–15 min',
@@ -206,7 +206,7 @@ export default function SolutionRiskIntelligence() {
                 Risk intelligence needs to be automatic, pre-merge, and connected to a deploy gate.
                 Not a dashboard someone checks. A system that reads every PR, walks your live
                 dependency graph, checks your error budget balance, and surfaces a single risk score
-                with a recommendation — as a PR comment, before anyone approves. High-risk changes
+                with a recommendation, as a PR comment, before anyone approves. High-risk changes
                 get a soft block or a require-SRE-sign-off. The information that used to live in one
                 senior engineer's head becomes systematic, enforced, and auditable.
               </p>
@@ -271,7 +271,7 @@ export default function SolutionRiskIntelligence() {
             </h2>
             <p className="text-ink-secondary text-sm max-w-lg">
               Configure what happens at each risk threshold. From advisory notifications to hard
-              blocks — you define the policy, Sentinel enforces it.
+              blocks: you define the policy, Sentinel enforces it.
             </p>
           </div>
           <div className="flex flex-col gap-4" data-reveal>
@@ -332,7 +332,7 @@ export default function SolutionRiskIntelligence() {
             </div>
             <div className="p-5">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-[9px] font-bold text-primary">
+                <div className="w-6 h-6 rounded-[2px] bg-primary/20 flex items-center justify-center text-[9px] font-bold text-primary">
                   DT
                 </div>
                 <span className="text-xs font-semibold text-ink">Titan Foresight</span>
@@ -341,7 +341,7 @@ export default function SolutionRiskIntelligence() {
               <div className="border border-line rounded-sm p-4 text-xs font-mono">
                 <p className="font-semibold text-ink mb-2">
                   🛡 Risk Analysis ·{' '}
-                  <span className="text-signal-warning">Score: 62/100 — Advisory</span>
+                  <span className="text-signal-warning">Score: 62/100, Advisory</span>
                 </p>
                 <p className="text-ink-secondary mb-2">
                   Analysed 847 lines changed across 3 files.
@@ -380,7 +380,7 @@ export default function SolutionRiskIntelligence() {
               The status quo
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
-              How teams assess deploy risk today — and why it fails.
+              How teams assess deploy risk today, and why it fails.
             </h2>
             <p className="text-ink-secondary text-sm max-w-xl">
               Most teams have no systematic risk model. They rely on gut feel, reviewer experience,
@@ -487,7 +487,7 @@ export default function SolutionRiskIntelligence() {
             </h2>
             <p className="text-ink-secondary text-sm mb-8 max-w-lg mx-auto">
               Connect your GitHub repo, pick a recent PR, and we'll show you the blast radius map,
-              error budget check, and risk score — live in 20 minutes.
+              error budget check, and risk score, live in 20 minutes.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <a

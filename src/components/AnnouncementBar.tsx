@@ -25,7 +25,7 @@ export function AnnouncementBar({ onDismiss, announcementRef }: AnnouncementBarP
     onDismiss?.()
   }
 
-  if (!message) return <div ref={announcementRef}></div>
+  if (!message) return <div ref={announcementRef} aria-hidden="true" />
 
   return (
     <div

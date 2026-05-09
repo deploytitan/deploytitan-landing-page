@@ -36,7 +36,6 @@ export function CTA() {
     try {
       await fetch(FORM_ENDPOINT, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ name, email, sheet: 'waitlist', source: 'cta' }).toString(),
       })
@@ -72,17 +71,6 @@ export function CTA() {
             style={{ borderColor: 'var(--color-primary)' }}
             aria-hidden="true"
           />
-
-          {/* Scan line animation */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-            <div
-              className="absolute top-0 bottom-0 w-32 opacity-[0.03]"
-              style={{
-                background: `linear-gradient(90deg, transparent, ${PRIMARY}, transparent)`,
-                animation: 'scan-line 8s linear infinite',
-              }}
-            />
-          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Left: live demo CTA */}
@@ -142,10 +130,6 @@ export function CTA() {
                   </svg>
                 </Button>
 
-                {/* Trust line */}
-                <p className="text-xs font-mono text-ink-tertiary text-center">
-                  Works with your existing stack. No rewrites required.
-                </p>
               </div>
 
               {/* Trust signals */}
@@ -172,7 +156,7 @@ export function CTA() {
                     </svg>
                     <span className="text-sm">
                       <span className="font-medium text-ink">{ts.label}</span>
-                      <span className="text-ink-tertiary"> — {ts.detail}</span>
+                      <span className="text-ink-tertiary">: {ts.detail}</span>
                     </span>
                   </div>
                 ))}
@@ -302,7 +286,7 @@ export function CTA() {
                     />
                   </div>
                   <span className="text-xs text-ink-secondary">
-                    Accepting early access partners —{' '}
+                    Accepting early access partners,{' '}
                     <span className="font-medium text-ink">limited availability</span>
                   </span>
                 </div>

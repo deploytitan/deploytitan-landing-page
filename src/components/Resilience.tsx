@@ -9,28 +9,52 @@ const PRIMARY_RGBA = 'rgba(201,168,76'
 
 const capabilities = [
   {
-    icon: '↺',
+    icon: (
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+        <path d="M21 3v5h-5" />
+        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+        <path d="M3 21v-5h5" />
+      </svg>
+    ),
     label: 'Instant rollback to known-good',
     detail:
-      'Shift 100% of traffic back to the last stable version in seconds — no redeploy, no pipeline run.',
+      'Shift 100% of traffic back to the last stable version in seconds, with no redeploy, no pipeline run.',
   },
   {
-    icon: '⚡',
+    icon: (
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+        <path d="m9 12 2 2 4-4" />
+      </svg>
+    ),
     label: 'Policy-triggered, not event-triggered',
     detail:
-      'Actions fire when health thresholds breach — error rate, latency, custom signals — not just on deployment events.',
+      'Actions fire when health thresholds breach: error rate, latency, custom signals, not just on deployment events.',
   },
   {
-    icon: '🌍',
+    icon: (
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M2 12h20" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
+    ),
     label: 'Geo-aware rollouts',
     detail:
-      'Target rollouts per region. Roll to US during US business hours, EU during EU hours — automatically.',
+      'Target rollouts per region. Roll to US during US business hours, EU during EU hours, automatically.',
   },
   {
-    icon: '✓',
+    icon: (
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 20V10" />
+        <path d="M12 20V4" />
+        <path d="M6 20v-6" />
+      </svg>
+    ),
     label: 'Controller must be reachable',
     detail:
-      'DeployTitan controls traffic routing within your deployment versions. It requires its controller to be reachable — it is not a network-level load balancer.',
+      'DeployTitan controls traffic routing within your deployment versions. It requires its controller to be reachable; it is not a network-level load balancer.',
   },
 ]
 
@@ -72,7 +96,7 @@ export function Resilience() {
                 data-reveal-delay="2"
                 className="text-lg text-ink-secondary leading-relaxed mb-8 max-w-lg"
               >
-                DeployTitan is a real-time control plane for your deployment versions — not a load
+                DeployTitan is a real-time control plane for your deployment versions, not a load
                 balancer. When health signals breach your defined thresholds, it shifts traffic back
                 to the last known-good version instantly.
               </p>
@@ -109,8 +133,7 @@ export function Resilience() {
               <p
                 data-reveal
                 data-reveal-delay="7"
-                className="mt-8 text-sm font-medium"
-                style={{ color: PRIMARY }}
+                className="mt-8 text-sm font-medium text-ink-secondary"
               >
                 Policies act. You stay in control.
               </p>

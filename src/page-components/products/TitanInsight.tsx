@@ -8,7 +8,7 @@ import { Card } from '../../components/shared/Card'
 const SIGNALS = [
   {
     title: 'Deploy-to-metric correlation',
-    desc: 'Insight joins every deploy event to the metrics that moved — latency, conversion, error budget, revenue — and surfaces the causal signal, not just correlation.',
+    desc: 'Insight joins every deploy event to the metrics that moved (latency, conversion, error budget, revenue) and surfaces the causal signal, not just correlation.',
   },
   {
     title: 'Release impact scoring',
@@ -16,11 +16,11 @@ const SIGNALS = [
   },
   {
     title: 'Outcome trends over time',
-    desc: 'Track whether your team\'s releases are trending toward better outcomes quarter over quarter — not just faster, but better.',
+    desc: 'Track whether your team\'s releases are trending toward better outcomes quarter over quarter, not just faster, but better.',
   },
   {
     title: 'Feeds from Ledger & Phoenix',
-    desc: 'Insight reads deploy history from Ledger and incident packets from Phoenix. No new instrumentation — outcomes explained from data you already produce.',
+    desc: 'Insight reads deploy history from Ledger and incident packets from Phoenix. No new instrumentation: outcomes explained from data you already produce.',
   },
 ]
 
@@ -43,8 +43,8 @@ export default function TitanInsight() {
             <br className="hidden md:block" /> actually improve anything?
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
-            Insight correlates every deploy to the metrics that matter — latency, conversion,
-            revenue, error budget — and tells you which releases moved the needle and which
+            Insight correlates every deploy to the metrics that matter: latency, conversion,
+            revenue, error budget, and tells you which releases moved the needle and which
             just shipped.
           </p>
           <a
@@ -67,7 +67,7 @@ export default function TitanInsight() {
             Insight owns the answer to "so what?"
           </h2>
           <p className="text-ink-secondary leading-relaxed max-w-2xl">
-            Ledger counts deploys — factual, neutral. Insight judges them — causal, opinionated.
+            Ledger counts deploys: factual, neutral. Insight judges them: causal, opinionated.
             Phoenix acts in seconds. Insight concludes in days. They don't overlap.
           </p>
         </Container>
