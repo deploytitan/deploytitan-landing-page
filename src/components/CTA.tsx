@@ -28,6 +28,7 @@ export function CTA() {
     }
 
     const data = new FormData(e.currentTarget)
+    const name = data.get('name') as string
     const email = data.get('email') as string
 
     setSubmitting(true)
@@ -36,7 +37,7 @@ export function CTA() {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ email, source: 'cta' }).toString(),
+        body: new URLSearchParams({ name, email, sheet: 'waitlist', source: 'cta' }).toString(),
       })
       setSubmitted(true)
     } catch {
@@ -210,9 +211,19 @@ export function CTA() {
                   className="space-y-3 max-w-sm"
                 >
                   <input
+                    type="text"
+                    name="name"
+                    placeholder="Your name"
+                    required
+                    autoComplete="name"
+                    disabled={submitting}
+                    className="w-full px-5 py-4 border border-line text-sm bg-surface-alt text-ink placeholder:text-ink-quaternary focus:outline-none focus:border-primary/40 transition-colors disabled:opacity-50"
+                    style={{ borderRadius: '2px' }}
+                  />
+                  <input
                     type="email"
                     name="email"
-                    placeholder="Enter your work email"
+                    placeholder="Work email"
                     required
                     autoComplete="email"
                     disabled={submitting}

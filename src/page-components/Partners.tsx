@@ -1,4 +1,3 @@
-import { MidCTA } from '../components/MidCTA'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
@@ -118,15 +117,7 @@ export default function Partners() {
         </Container>
       </Section>
 
-      <MidCTA
-        heading="See all integrations"
-        subheading="Browse the full catalogue of supported tools and platforms."
-        primaryLabel="View integrations"
-        primaryHref="/integrations"
-        secondaryLabel="Contact us"
-        secondaryHref="/contact"
-        secondaryExternal={false}
-      />
+      
     </div>
   )
 }

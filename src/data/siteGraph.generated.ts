@@ -228,53 +228,13 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
-    "source": "/a-p-i",
-    "target": "/early-access",
-    "kind": "link"
-  },
-  {
-    "source": "/about",
-    "target": "/careers",
-    "kind": "link"
-  },
-  {
-    "source": "/about",
-    "target": "/contact",
-    "kind": "link"
-  },
-  {
-    "source": "/brand",
-    "target": "/press",
+    "source": "/c-l-i",
+    "target": "/api-reference",
     "kind": "link"
   },
   {
     "source": "/c-l-i",
     "target": "/integrations",
-    "kind": "link"
-  },
-  {
-    "source": "/c-l-i",
-    "target": "/early-access",
-    "kind": "link"
-  },
-  {
-    "source": "/c-l-i",
-    "target": "/docs",
-    "kind": "link"
-  },
-  {
-    "source": "/careers",
-    "target": "/about",
-    "kind": "link"
-  },
-  {
-    "source": "/contact",
-    "target": "/early-access",
-    "kind": "link"
-  },
-  {
-    "source": "/contact",
-    "target": "/docs",
     "kind": "link"
   },
   {
@@ -284,22 +244,7 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "/docs",
-    "target": "/early-access",
-    "kind": "link"
-  },
-  {
-    "source": "/docs",
-    "target": "/contact",
-    "kind": "link"
-  },
-  {
-    "source": "/early-access",
-    "target": "/docs",
-    "kind": "link"
-  },
-  {
-    "source": "/early-access",
-    "target": "/products/titan-rollout",
+    "target": "/api-reference",
     "kind": "link"
   },
   {
@@ -314,22 +259,7 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "/integrations",
-    "target": "/early-access",
-    "kind": "link"
-  },
-  {
-    "source": "/integrations",
-    "target": "/docs",
-    "kind": "link"
-  },
-  {
-    "source": "/journey",
-    "target": "/early-access",
-    "kind": "link"
-  },
-  {
-    "source": "/journey",
-    "target": "/docs",
+    "target": "/api-reference",
     "kind": "link"
   },
   {
@@ -338,28 +268,8 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
-    "source": "/partners",
-    "target": "/integrations",
-    "kind": "link"
-  },
-  {
-    "source": "/partners",
-    "target": "/contact",
-    "kind": "link"
-  },
-  {
-    "source": "/press",
-    "target": "/about",
-    "kind": "link"
-  },
-  {
     "source": "/roadmap",
     "target": "/changelog",
-    "kind": "link"
-  },
-  {
-    "source": "/security",
-    "target": "/how-it-works",
     "kind": "link"
   },
   {
@@ -383,18 +293,8 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
-    "source": "/for/-for-dev-ops",
-    "target": "/early-access",
-    "kind": "link"
-  },
-  {
     "source": "/for/-for-s-r-e",
     "target": "/solutions/multi-cloud-resilience",
-    "kind": "link"
-  },
-  {
-    "source": "/for/-for-s-r-e",
-    "target": "/early-access",
     "kind": "link"
   },
   {
@@ -423,11 +323,6 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
-    "source": "/products/-titan-insight",
-    "target": "/products/titan-rollout",
-    "kind": "link"
-  },
-  {
     "source": "/products/-titan-ledger",
     "target": "/early-access",
     "kind": "link"
@@ -435,11 +330,6 @@ export const generatedLinks: GraphLink[] = [
   {
     "source": "/products/-titan-ledger",
     "target": "/how-it-works",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-ledger",
-    "target": "/products/titan-rollout",
     "kind": "link"
   },
   {
@@ -455,11 +345,6 @@ export const generatedLinks: GraphLink[] = [
   {
     "source": "/products/-titan-sandbox",
     "target": "/early-access",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-sandbox",
-    "target": "/products/titan-rollout",
     "kind": "link"
   },
   {
@@ -494,22 +379,12 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "__nav__",
-    "target": "/early-access",
-    "kind": "nav"
-  },
-  {
-    "source": "__nav__",
     "target": "/pricing",
     "kind": "nav"
   },
   {
     "source": "__nav__",
     "target": "/customers",
-    "kind": "nav"
-  },
-  {
-    "source": "__nav__",
-    "target": "/early-access",
     "kind": "nav"
   },
   {

@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { Nav } from '../components/nav/Nav'
-import { Footer } from '../components/Footer'
-import { AnnouncementBar } from '../components/AnnouncementBar'
+import { Nav } from '@/components/nav/Nav'
+import { Footer } from '@/components/Footer'
+import { AnnouncementBar } from '@/components/AnnouncementBar'
+import { MidCTA } from '@/components/MidCTA'
+import { Analytics } from '@vercel/analytics/next'
 
 export function SiteLayoutClient({ children }: { children: React.ReactNode }) {
   const [barDismissed, setBarDismissed] = useState(false)
@@ -28,12 +30,12 @@ export function SiteLayoutClient({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="overflow-x-hidden">
+      <Analytics />
       <AnnouncementBar announcementRef={announcementRef} onDismiss={() => setBarDismissed(true)} />
       <Nav barHeight={barHeight} />
       {/* Push page content below the fixed nav (bar + nav ~56px) */}
-      <main style={{ paddingTop: barHeight + 56 }}>
-        {children}
-      </main>
+      <main style={{ paddingTop: barHeight + 56 }}>{children}</main>
+      {pathname !== '/' && <MidCTA variant="waitlist" />}
       <Footer />
     </div>
   )

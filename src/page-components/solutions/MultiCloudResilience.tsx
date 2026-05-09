@@ -2,7 +2,6 @@
 
 import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
-import { MidCTA } from '../../components/MidCTA'
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
 import Link from 'next/link'
 import { Container } from '../../components/shared/Container'
@@ -306,15 +305,7 @@ export default function SolutionMultiCloudResilience() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Stop relying on runbooks for resilience."
-        subheading="Define your failover policy once. DeployTitan handles the rest — even at 3 AM."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Explore Titan Shield"
-        secondaryHref="/products/titan-shield"
-        secondaryExternal={false}
-      />
+      
     </>
   )
 }

@@ -1,4 +1,3 @@
-import { MidCTA } from '../components/MidCTA'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
@@ -156,15 +155,7 @@ export default function Brand() {
         </Container>
       </Section>
 
-      <MidCTA
-        heading="Need brand assets?"
-        subheading="Email our team and we'll send over the full press kit."
-        primaryLabel="Contact press team"
-        primaryHref="mailto:press@deploytitan.com"
-        secondaryLabel="View press page"
-        secondaryHref="/press"
-        secondaryExternal={false}
-      />
+      
     </div>
   )
 }

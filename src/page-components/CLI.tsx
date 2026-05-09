@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { MidCTA } from '../components/MidCTA'
 import { CodeBlock } from '../components/shared/CodeBlock'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
@@ -114,7 +113,7 @@ export default function CLI() {
                 </svg>
               </a>
               <Link
-                href="/api"
+                href="/api-reference"
                 className="inline-flex items-center gap-2 border border-line text-ink-secondary hover:text-ink hover:border-primary/30 px-5 py-3 text-sm font-medium transition-all"
                 style={{ borderRadius: '2px' }}
               >
@@ -255,15 +254,7 @@ export default function CLI() {
         </Container>
       </Section>
 
-      <MidCTA
-        heading="Ready to deploy from your terminal?"
-        subheading="Install the CLI and ship your first canary in minutes."
-        primaryLabel="Get started free"
-        primaryHref="/early-access"
-        secondaryLabel="Read the docs"
-        secondaryHref="/docs"
-        secondaryExternal={false}
-      />
+      
     </div>
   )
 }

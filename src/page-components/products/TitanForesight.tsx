@@ -1,7 +1,6 @@
 'use client'
 
 import { APP_URL } from '@/lib/env'
-import { MidCTA } from '../../components/MidCTA'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { InstallTabs } from '../../components/shared/InstallTabs'
 import { useScrollReveal } from '../../utils'
@@ -211,15 +210,7 @@ export default function TitanForesight() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Stop finding out about risk in the post-mortem."
-        subheading="14-day free trial. No credit card. Foresight scores your first change in under 5 minutes."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Talk to an engineer"
-        secondaryHref="https://cal.com/deploytitan/demo"
-        secondaryExternal
-      />
+      
     </>
   )
 }

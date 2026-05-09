@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { MidCTA } from '../components/MidCTA'
 import { integrations, CATEGORY_LABELS, type IntegrationCategory } from '../data/integrations'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
@@ -164,7 +163,7 @@ export default function Integrations() {
               Request integration
             </a>
             <Link
-              href="/api"
+              href="/api-reference"
               className="inline-flex items-center gap-2 bg-ink text-surface px-4 py-2.5 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)]"
               style={{ borderRadius: '2px' }}
             >
@@ -280,7 +279,7 @@ export default function Integrations() {
               Request integration
             </a>
             <Link
-              href="/api"
+              href="/api-reference"
               className="inline-flex items-center gap-2 bg-ink text-surface px-4 py-2.5 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)]"
               style={{ borderRadius: '2px' }}
             >
@@ -290,14 +289,7 @@ export default function Integrations() {
         </div>
       </section>
 
-      <MidCTA
-        heading="Ready to connect your stack?"
-        subheading="Start free — integrations included on every plan."
-        primaryLabel="Start free trial"
-        primaryHref="/early-access"
-        secondaryLabel="View docs"
-        secondaryHref="/docs"
-      />
+      
     </div>
   )
 }

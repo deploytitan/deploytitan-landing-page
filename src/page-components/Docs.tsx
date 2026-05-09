@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { MidCTA } from '../components/MidCTA'
 import { CodeBlock } from '../components/shared/CodeBlock'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
@@ -273,14 +272,7 @@ export default function Docs() {
         </Container>
       </Section>
 
-      <MidCTA
-        heading="Ready to ship safer?"
-        subheading="Start your free trial — no credit card required."
-        primaryLabel="Start free trial"
-        primaryHref="/early-access"
-        secondaryLabel="Talk to an engineer"
-        secondaryHref="/contact"
-      />
+      
     </div>
   )
 }

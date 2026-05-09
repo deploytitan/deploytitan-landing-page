@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { MidCTA } from '../components/MidCTA'
 import { jobs, DEPARTMENT_LABELS, type Department } from '../data/jobs'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
@@ -170,15 +169,7 @@ export default function Careers() {  const [filter, setFilter] = useState<string
         </div>
       </Container>
 
-      <MidCTA
-        heading="Think you'd thrive here?"
-        subheading="We move fast, give feedback directly, and expect everyone to own their work end to end."
-        primaryLabel="See all open roles"
-        primaryHref="#open-roles"
-        secondaryLabel="Learn about DeployTitan"
-        secondaryHref="/about"
-        secondaryExternal={false}
-      />
+      
     </div>
   )
 }

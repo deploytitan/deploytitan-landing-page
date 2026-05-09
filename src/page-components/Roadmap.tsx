@@ -1,4 +1,3 @@
-import { MidCTA } from '../components/MidCTA'
 import Link from 'next/link'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
@@ -239,15 +238,7 @@ export default function Roadmap() {
         })}
       </Container>
 
-      <MidCTA
-        heading="Have a feature request?"
-        subheading="We read every piece of feedback. Email us or join our community Slack."
-        primaryLabel="Submit feedback"
-        primaryHref="mailto:feedback@deploytitan.com"
-        secondaryLabel="View changelog"
-        secondaryHref="/changelog"
-        secondaryExternal={false}
-      />
+      
     </div>
   )
 }

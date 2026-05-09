@@ -2,7 +2,6 @@
 
 import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
-import { MidCTA } from '../components/MidCTA'
 import Link from 'next/link'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
@@ -329,15 +328,7 @@ export default function HowItWorks() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Ready to see it in your stack?"
-        subheading="Install the controller and run your first canary deployment in under 15 minutes."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Read the docs"
-        secondaryHref="/docs"
-        secondaryExternal={false}
-      />
+      
     </>
   )
 }

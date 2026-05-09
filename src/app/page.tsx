@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import Home from '@/page-components/Home'
 
 export const metadata: Metadata = {
-  title: 'DeployTitan — Ship more. Break less. Know why.',
+  title: 'DeployTitan — Ship more. Break less. Sleep better.',
   description: 'Progressive delivery and deployment safety for modern engineering teams.',
 }
 

@@ -2,7 +2,6 @@
 
 import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
-import { MidCTA } from '../../components/MidCTA'
 import Link from 'next/link'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
@@ -239,15 +238,7 @@ export default function SolutionProgressiveDelivery() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Ready to fix your deploy process?"
-        subheading="Start a 14-day free trial — no credit card required. Ship your first canary in under 2 minutes."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Explore Titan Rollout"
-        secondaryHref="/products/titan-rollout"
-        secondaryExternal={false}
-      />
+      
     </>
   )
 }

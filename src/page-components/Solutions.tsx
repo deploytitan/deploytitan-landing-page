@@ -2,7 +2,6 @@
 
 import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
-import { MidCTA } from '../components/MidCTA'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
 
@@ -339,15 +338,7 @@ export default function Solutions() {  useScrollReveal()
       </section>
 
       {/* CTA */}
-      <MidCTA
-        heading="Ready to fix your deploy problem?"
-        subheading="Start a 14-day free trial — no credit card required. Or talk to an engineer about your specific setup."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Talk to an engineer"
-        secondaryHref="https://cal.com/deploytitan/demo"
-        secondaryExternal
-      />
+      
     </>
   )
 }

@@ -9,23 +9,23 @@ export function Footer() {
   return (
     <Section as="footer" border="top" padding="none" className="relative">
       {/* Gold accent line */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+      <div className="via-primary/20 absolute top-0 left-1/2 h-px w-48 -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent" />
 
       {/* Main grid */}
-      <Container className="py-16 grid grid-cols-2 md:grid-cols-4 gap-10">
+      <Container className="grid grid-cols-2 gap-10 py-16 md:grid-cols-4">
         {/* Brand */}
-        <div className="col-span-2 md:col-span-1 flex flex-col gap-4">
+        <div className="col-span-2 flex flex-col gap-4 md:col-span-1">
           <Link href="/" className="flex items-center">
             <span className="font-display text-lg font-medium tracking-[-0.02em]">Deploy</span>
-            <span className="font-display text-lg font-medium tracking-[-0.02em] text-primary-dark">
+            <span className="font-display text-primary-dark text-lg font-medium tracking-[-0.02em]">
               Titan
             </span>
           </Link>
-          <p className="text-xs text-ink-tertiary leading-relaxed max-w-[180px]">
+          <p className="text-ink-tertiary max-w-[180px] text-xs leading-relaxed">
             The deployment control plane for modern engineering teams.
           </p>
           {/* Social icons */}
-          <div className="flex items-center gap-3 mt-1">
+          <div className="mt-1 flex items-center gap-3">
             <a
               href="https://github.com/deploytitan"
               target="_blank"
@@ -64,7 +64,7 @@ export function Footer() {
 
         {/* Product column */}
         <div className="flex flex-col gap-4">
-          <h4 className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <h4 className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
             Product
           </h4>
           <ul className="flex flex-col gap-3">
@@ -97,11 +97,11 @@ export function Footer() {
               <li key={l.label}>
                 <Link
                   href={l.to}
-                  className="text-sm text-ink-secondary hover:text-ink transition-colors inline-flex items-center gap-1.5"
+                  className="text-ink-secondary hover:text-ink inline-flex items-center gap-1.5 text-sm transition-colors"
                 >
                   {l.label}
                   {l.status === 'roadmap' && (
-                    <span className="text-xs text-ink-quaternary font-mono">· Soon</span>
+                    <span className="text-ink-quaternary font-mono text-xs">· Soon</span>
                   )}
                 </Link>
               </li>
@@ -111,7 +111,7 @@ export function Footer() {
 
         {/* Support column */}
         <div className="flex flex-col gap-4">
-          <h4 className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <h4 className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
             Resources
           </h4>
           <ul className="flex flex-col gap-3">
@@ -129,7 +129,7 @@ export function Footer() {
               <li key={l.label}>
                 <Link
                   href={l.to}
-                  className="text-sm text-ink-secondary hover:text-ink transition-colors"
+                  className="text-ink-secondary hover:text-ink text-sm transition-colors"
                 >
                   {l.label}
                 </Link>
@@ -140,7 +140,7 @@ export function Footer() {
 
         {/* Company column */}
         <div className="flex flex-col gap-4">
-          <h4 className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <h4 className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
             Company
           </h4>
           <ul className="flex flex-col gap-3">
@@ -156,7 +156,7 @@ export function Footer() {
               <li key={l.label}>
                 <Link
                   href={l.to}
-                  className="text-sm text-ink-secondary hover:text-ink transition-colors"
+                  className="text-ink-secondary hover:text-ink text-sm transition-colors"
                 >
                   {l.label}
                 </Link>
@@ -167,33 +167,33 @@ export function Footer() {
       </Container>
 
       {/* Bottom bar */}
-      <div className="border-t border-line">
-        <Container className="py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="text-xs font-mono text-ink-quaternary">
+      <div className="border-line border-t">
+        <Container className="flex flex-col items-center justify-between gap-3 py-5 sm:flex-row">
+          <span className="text-ink-quaternary font-mono text-xs">
             &copy; 2026 DeployTitan Inc. All rights reserved.
           </span>
           <div className="flex items-center gap-6">
             <Link
               href="/terms"
-              className="text-xs text-ink-quaternary hover:text-ink-secondary transition-colors"
+              className="text-ink-quaternary hover:text-ink-secondary text-xs transition-colors"
             >
               Terms
             </Link>
             <Link
               href="/privacy"
-              className="text-xs text-ink-quaternary hover:text-ink-secondary transition-colors"
+              className="text-ink-quaternary hover:text-ink-secondary text-xs transition-colors"
             >
               Privacy
             </Link>
-            <Link
-              href="/security"
-              className="text-xs text-ink-quaternary hover:text-ink-secondary transition-colors"
-            >
-              Security
-            </Link>
+            {/*<Link*/}
+            {/*  href="/security"*/}
+            {/*  className="text-xs text-ink-quaternary hover:text-ink-secondary transition-colors"*/}
+            {/*>*/}
+            {/*  Security*/}
+            {/*</Link>*/}
             <Link
               href="/sitemap"
-              className="text-xs text-ink-quaternary hover:text-ink-secondary transition-colors"
+              className="text-ink-quaternary hover:text-ink-secondary text-xs transition-colors"
             >
               Site Map
             </Link>

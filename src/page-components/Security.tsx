@@ -1,7 +1,6 @@
 'use client'
 
 import { useScrollReveal } from '../utils'
-import { MidCTA } from '../components/MidCTA'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
 
@@ -335,15 +334,7 @@ export default function Security() {  useScrollReveal()
         </Container>
       </section>
 
-      <MidCTA
-        heading="Security review questions?"
-        subheading="We're happy to share architecture diagrams, answer infosec questionnaires, and schedule calls with your security team."
-        primaryLabel="Contact security team"
-        primaryHref="mailto:security@deploytitan.com"
-        secondaryLabel="How it works"
-        secondaryHref="/how-it-works"
-        secondaryExternal={false}
-      />
+      
     </>
   )
 }

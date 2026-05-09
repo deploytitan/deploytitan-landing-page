@@ -10,20 +10,21 @@ interface AnnouncementBarProps {
   announcementRef?: React.RefObject<HTMLDivElement | null>
 }
 
-export function AnnouncementBar({
-  message = 'Titan Foresight is now in public beta — shift-left risk scoring for every PR.',
-  linkLabel = 'Learn more →',
-  linkTo = '/products/titan-foresight',
-  onDismiss,
-  announcementRef,
-}: AnnouncementBarProps) {
+export function AnnouncementBar({ onDismiss, announcementRef }: AnnouncementBarProps) {
   const [dismissed, setDismissed] = useState(false)
   if (dismissed) return null
+
+  // const message = 'Titan Foresight is now in public beta — shift-left risk scoring for every PR.'
+  const message = ''
+  const linkLabel = 'Learn more →'
+  const linkTo = '/products/titan-foresight'
 
   const handleDismiss = () => {
     setDismissed(true)
     onDismiss?.()
   }
+
+  if (!message) return <div ref={announcementRef}></div>
 
   return (
     <div

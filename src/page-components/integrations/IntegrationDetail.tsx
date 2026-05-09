@@ -2,7 +2,6 @@
 
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { MidCTA } from '../../components/MidCTA'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { CATEGORY_LABELS, integrations } from '../../data/integrations'
 import { Section } from '../../components/shared/Section'
@@ -214,14 +213,7 @@ export default function IntegrationDetail() {
         </Section>
       )}
 
-      <MidCTA
-        heading={`Start using the ${integration.name} integration`}
-        subheading="Free to connect. No credit card required."
-        primaryLabel="Start free trial"
-        primaryHref="/early-access"
-        secondaryLabel="View all integrations"
-        secondaryHref="/integrations"
-      />
+      
     </div>
   )
 }

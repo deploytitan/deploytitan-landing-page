@@ -1,7 +1,6 @@
 'use client'
 
 import { useScrollReveal } from '../../utils'
-import { MidCTA } from '../../components/MidCTA'
 import Link from 'next/link'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
@@ -190,15 +189,7 @@ export default function ForCTO() {  useScrollReveal()
         </Container>
       </section>
 
-      <MidCTA
-        heading="Ready to discuss your deployment strategy?"
-        subheading="Talk to our team. We'll walk through your current setup, identify the highest-leverage changes, and show you exactly what DeployTitan looks like in your environment."
-        primaryLabel="Request early access"
-        primaryHref="/early-access"
-        secondaryLabel="Schedule a call"
-        secondaryHref="https://cal.com/deploytitan/demo"
-        secondaryExternal
-      />
+      
     </>
   )
 }

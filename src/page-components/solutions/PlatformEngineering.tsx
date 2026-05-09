@@ -2,7 +2,6 @@
 
 import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
-import { MidCTA } from '../../components/MidCTA'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
@@ -264,15 +263,7 @@ export default function SolutionPlatformEngineering() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Stop being the deployment bottleneck."
-        subheading="Give product teams self-serve deploys with policy guardrails. Start your free trial or talk to an engineer."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Talk to an engineer"
-        secondaryHref="https://cal.com/deploytitan/demo"
-        secondaryExternal
-      />
+      
     </>
   )
 }

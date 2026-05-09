@@ -2,7 +2,6 @@
 
 import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
-import { MidCTA } from '../../components/MidCTA'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
@@ -279,15 +278,7 @@ export default function SolutionRiskIntelligence() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Stop finding out about risk in the post-mortem."
-        subheading="Add Titan Foresight to your PRs today — zero workflow change required."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Explore Titan Foresight"
-        secondaryHref="/products/titan-foresight"
-        secondaryExternal={false}
-      />
+      
     </>
   )
 }

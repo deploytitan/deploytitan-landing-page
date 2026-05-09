@@ -1,4 +1,3 @@
-import { MidCTA } from '../components/MidCTA'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
@@ -131,15 +130,7 @@ export default function Press() {
         </Container>
       </Section>
 
-      <MidCTA
-        heading="Press inquiry?"
-        subheading="Email us and we'll respond within one business day."
-        primaryLabel="Contact press team"
-        primaryHref="mailto:press@deploytitan.com"
-        secondaryLabel="About DeployTitan"
-        secondaryHref="/about"
-        secondaryExternal={false}
-      />
+      
     </div>
   )
 }

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { sleep, useScrollReveal } from '../utils'
-import { APP_URL, DEMO_URL } from '@/lib/env'
+import { APP_URL } from '@/lib/env'
 
 const PRIMARY = 'var(--color-primary)'
 const PRIMARY_RGBA = 'rgba(201,168,76'
@@ -129,18 +129,18 @@ function TrafficSplitVisual() {
 
   return (
     <div
-      className="relative w-full h-full border border-line/50 bg-surface overflow-hidden flex flex-col"
+      className="border-line/50 bg-surface relative flex h-full w-full flex-col overflow-hidden border"
       style={{ borderRadius: '2px' }}
     >
       {/* Header bar */}
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-line/50 bg-surface-alt/60 shrink-0">
+      <div className="border-line/50 bg-surface-alt/60 flex shrink-0 items-center justify-between border-b px-4 py-2.5">
         <div className="flex items-center gap-2">
           <div
-            className="w-4 h-4 bg-ink flex items-center justify-center"
+            className="bg-ink flex h-4 w-4 items-center justify-center"
             style={{ borderRadius: '1px' }}
           >
             <svg
-              className="w-2.5 h-2.5 text-surface"
+              className="text-surface h-2.5 w-2.5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -151,13 +151,13 @@ function TrafficSplitVisual() {
               <path d="M2 12l10 5 10-5" />
             </svg>
           </div>
-          <span className="text-[10px] font-mono text-ink-tertiary tracking-wider uppercase">
+          <span className="text-ink-tertiary font-mono text-[10px] tracking-wider uppercase">
             DeployTitan — Traffic Control
           </span>
         </div>
         <div className="flex items-center gap-2">
           <div
-            className="w-1.5 h-1.5 transition-all duration-500"
+            className="h-1.5 w-1.5 transition-all duration-500"
             style={{
               backgroundColor: info.color,
               borderRadius: '1px',
@@ -165,7 +165,7 @@ function TrafficSplitVisual() {
             }}
           />
           <span
-            className="text-[9px] font-mono transition-colors duration-500"
+            className="font-mono text-[9px] transition-colors duration-500"
             style={{ color: info.color }}
           >
             {info.text}
@@ -174,23 +174,23 @@ function TrafficSplitVisual() {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 p-5 flex flex-col gap-4">
+      <div className="flex flex-1 flex-col gap-4 p-5">
         {/* Version traffic bars */}
         <div className="space-y-3">
-          <div className="text-[9px] font-mono text-ink-quaternary uppercase tracking-[0.08em]">
+          <div className="text-ink-quaternary font-mono text-[9px] tracking-[0.08em] uppercase">
             Active versions
           </div>
           {versions.map((v) => (
             <div key={v.id}>
-              <div className="flex items-center justify-between mb-1.5">
+              <div className="mb-1.5 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div
-                    className="w-1.5 h-1.5 transition-colors duration-300"
+                    className="h-1.5 w-1.5 transition-colors duration-300"
                     style={{ backgroundColor: v.color, borderRadius: '0.5px' }}
                   />
-                  <span className="text-[11px] font-mono font-medium text-ink">{v.label}</span>
+                  <span className="text-ink font-mono text-[11px] font-medium">{v.label}</span>
                   <span
-                    className="text-[8px] font-mono uppercase tracking-wider px-1.5 py-0.5 transition-all duration-300"
+                    className="px-1.5 py-0.5 font-mono text-[8px] tracking-wider uppercase transition-all duration-300"
                     style={{
                       color: v.color,
                       backgroundColor: `${v.color}12`,
@@ -202,7 +202,7 @@ function TrafficSplitVisual() {
                   </span>
                   {v.id === 'v143' && cohortPinned && v.status !== 'rolling-back' && (
                     <span
-                      className="text-[8px] font-mono px-1.5 py-0.5"
+                      className="px-1.5 py-0.5 font-mono text-[8px]"
                       style={{
                         color: PRIMARY,
                         backgroundColor: `${PRIMARY_RGBA},0.08)`,
@@ -215,7 +215,7 @@ function TrafficSplitVisual() {
                   )}
                 </div>
                 <span
-                  className="text-[13px] font-mono font-medium tabular-nums transition-colors duration-300"
+                  className="font-mono text-[13px] font-medium tabular-nums transition-colors duration-300"
                   style={{ color: v.traffic > 0 ? v.color : 'rgba(8,5,3,0.2)' }}
                 >
                   {v.traffic}%
@@ -223,7 +223,7 @@ function TrafficSplitVisual() {
               </div>
               {/* Traffic bar */}
               <div
-                className="w-full h-2 bg-surface-alt overflow-hidden"
+                className="bg-surface-alt h-2 w-full overflow-hidden"
                 style={{ borderRadius: '1px', border: '1px solid rgba(8,5,3,0.05)' }}
               >
                 <div
@@ -241,18 +241,18 @@ function TrafficSplitVisual() {
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-line/60" />
+        <div className="bg-line/60 h-px" />
 
         {/* Policy / action row */}
         <div className="flex items-center justify-between">
-          <div className="text-[9px] font-mono text-ink-quaternary uppercase tracking-[0.08em]">
+          <div className="text-ink-quaternary font-mono text-[9px] tracking-[0.08em] uppercase">
             Policy
           </div>
           <div className="flex items-center gap-2">
             {['Auto-rollback', 'Health checks', 'Cohort routing'].map((tag) => (
               <span
                 key={tag}
-                className="text-[8px] font-mono px-1.5 py-0.5"
+                className="px-1.5 py-0.5 font-mono text-[8px]"
                 style={{
                   color: `${PRIMARY_RGBA},0.7)`,
                   backgroundColor: `${PRIMARY_RGBA},0.06)`,
@@ -267,18 +267,18 @@ function TrafficSplitVisual() {
         </div>
 
         {/* Event log */}
-        <div className="flex-1 flex flex-col justify-end">
-          <div className="text-[9px] font-mono text-ink-quaternary uppercase tracking-[0.08em] mb-1.5">
+        <div className="flex flex-1 flex-col justify-end">
+          <div className="text-ink-quaternary mb-1.5 font-mono text-[9px] tracking-[0.08em] uppercase">
             Event log
           </div>
           <div className="space-y-1">
             {logLines.map((line, i) => (
               <div key={i} className="log-entry flex items-center gap-2">
                 <div
-                  className="w-1 h-1 shrink-0"
+                  className="h-1 w-1 shrink-0"
                   style={{ backgroundColor: line.color, borderRadius: '0.5px' }}
                 />
-                <span className="text-[9px] font-mono text-ink-secondary">{line.text}</span>
+                <span className="text-ink-secondary font-mono text-[9px]">{line.text}</span>
               </div>
             ))}
           </div>
@@ -286,7 +286,7 @@ function TrafficSplitVisual() {
       </div>
 
       {/* Subtle gold scan line overlay */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         <div
           className="absolute top-0 bottom-0 w-20 opacity-[0.015]"
           style={{
@@ -306,49 +306,49 @@ export function Hero() {
 
   return (
     <section
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden max-w-page mx-auto"
+      className="max-w-page relative mx-auto flex min-h-screen flex-col justify-center overflow-hidden"
       ref={ref}
     >
       {/* Grid bg */}
       <div
-        className="absolute inset-0 hero-grid opacity-50 pointer-events-none"
+        className="hero-grid pointer-events-none absolute inset-0 opacity-50"
         aria-hidden="true"
       />
 
       {/* Visual — right side, hidden on mobile */}
-      <div className="hidden lg:flex absolute inset-y-0 right-0 w-[52%] items-center pr-12 pl-4">
-        <div className="w-full h-[460px]" data-reveal data-reveal-delay="3">
+      <div className="absolute inset-y-0 right-0 hidden w-[52%] items-center pr-12 pl-4 lg:flex">
+        <div className="h-[460px] w-full" data-reveal data-reveal-delay="3">
           <TrafficSplitVisual />
         </div>
         {/* Gradient fades for blending */}
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-surface to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-surface to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-surface to-transparent pointer-events-none" />
+        <div className="from-surface pointer-events-none absolute inset-y-0 left-0 w-32 bg-linear-to-r to-transparent" />
+        <div className="from-surface pointer-events-none absolute inset-x-0 top-0 h-20 bg-linear-to-b to-transparent" />
+        <div className="from-surface pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t to-transparent" />
       </div>
 
       {/* Left copy */}
-      <div className="relative z-10 flex flex-col justify-center px-6 lg:px-12 py-20 lg:py-0 w-full lg:w-[50%]">
+      <div className="relative z-10 flex w-full flex-col justify-center px-6 py-20 lg:w-[50%] lg:px-12 lg:py-0">
         <div className="max-w-xl">
           {/* Status pill */}
           <div data-reveal className="mb-8">
             <div
-              className="inline-flex items-center gap-2 px-3 py-1.5 border border-line bg-surface"
+              className="border-line bg-surface inline-flex items-center gap-2 border px-3 py-1.5"
               style={{ borderRadius: '2px' }}
             >
               <span className="relative flex h-2 w-2">
                 <span
-                  className="absolute inline-flex h-full w-full bg-signal-success opacity-75"
+                  className="bg-signal-success absolute inline-flex h-full w-full opacity-75"
                   style={{
                     animation: 'ping-anim 1.5s cubic-bezier(0,0,0.2,1) infinite',
                     borderRadius: '1px',
                   }}
                 />
                 <span
-                  className="relative inline-flex h-2 w-2 bg-signal-success"
+                  className="bg-signal-success relative inline-flex h-2 w-2"
                   style={{ borderRadius: '1px' }}
                 />
               </span>
-              <span className="text-xs text-ink-secondary font-mono">
+              <span className="text-ink-secondary font-mono text-xs">
                 Live public demo available
               </span>
             </div>
@@ -358,16 +358,16 @@ export function Hero() {
           <h1
             data-reveal
             data-reveal-delay="1"
-            className="font-display font-medium text-[clamp(2rem,3.8vw,4rem)] leading-[1.08] tracking-[-0.022em] mb-6"
+            className="font-display mb-6 text-[clamp(2rem,3.8vw,4rem)] leading-[1.08] font-medium tracking-[-0.022em]"
           >
             Ship more.
             <br />
             Break less.
             <br />
             <span className="relative inline-block">
-              <span className="relative z-10">Know why.</span>
+              <span className="relative z-10">Sleep better.</span>
               <span
-                className="absolute bottom-1 left-0 right-0 h-3 -z-0"
+                className="absolute right-0 bottom-1 left-0 -z-0 h-3"
                 style={{ background: `${PRIMARY_RGBA},0.12)` }}
               />
             </span>
@@ -377,7 +377,7 @@ export function Hero() {
           <p
             data-reveal
             data-reveal-delay="2"
-            className="text-lg text-ink-secondary max-w-md mb-4 leading-relaxed"
+            className="text-ink-secondary mb-4 max-w-md text-lg leading-relaxed"
           >
             Releases shouldn't be the scariest part of your week. Stop guessing which release broke
             production.
@@ -387,7 +387,7 @@ export function Hero() {
           <p
             data-reveal
             data-reveal-delay="2"
-            className="text-sm max-w-md mb-8 leading-relaxed font-medium"
+            className="mb-8 max-w-md text-sm leading-relaxed font-medium"
             style={{ color: PRIMARY }}
           >
             Catch risk early. Ship without fear. Learn from every release.
@@ -397,11 +397,11 @@ export function Hero() {
           <div
             data-reveal
             data-reveal-delay="3"
-            className="flex flex-col sm:flex-row items-stretch sm:items-start gap-3"
+            className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-start"
           >
             <a
-              href={`${APP_URL}/signup`}
-              className="inline-flex items-center justify-center gap-2.5 bg-ink text-surface dark:text-surface px-8 py-4 text-base font-medium hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] transition-all active:scale-[0.97] group"
+              href={`${APP_URL}/login`}
+              className="bg-ink text-surface dark:text-surface group inline-flex items-center justify-center gap-2.5 px-8 py-4 text-base font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.97]"
               style={{ borderRadius: '2px' }}
             >
               Start free trial
@@ -422,10 +422,8 @@ export function Hero() {
               </svg>
             </a>
             <a
-              href={DEMO_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-medium border border-ink/15 hover:border-primary/40 hover:bg-primary-muted transition-all"
+              href="mailto:sales@deploytitan.com"
+              className="border-ink/15 hover:border-primary/40 hover:bg-primary-muted inline-flex items-center justify-center border px-8 py-4 text-base font-medium transition-all"
               style={{ borderRadius: '2px' }}
             >
               Talk to an engineer
@@ -436,7 +434,7 @@ export function Hero() {
           <p
             data-reveal
             data-reveal-delay="3"
-            className="mt-3 text-xs text-ink-quaternary font-mono"
+            className="text-ink-quaternary mt-3 font-mono text-xs"
           >
             No credit card required · 14-day free trial ·{' '}
             <a href="/journey" className="text-primary/70 hover:text-primary transition-colors">
@@ -445,21 +443,21 @@ export function Hero() {
           </p>
 
           {/* Trust tags */}
-          <div data-reveal data-reveal-delay="4" className="mt-10 pt-10 border-t border-line">
+          <div data-reveal data-reveal-delay="4" className="border-line mt-10 border-t pt-10">
             <p
-              className="text-xs uppercase tracking-widest mb-4 font-mono"
+              className="mb-4 font-mono text-xs tracking-widest uppercase"
               style={{ color: PRIMARY }}
             >
               Works with your existing stack
             </p>
-            <div className="flex flex-wrap items-center gap-4 text-sm text-ink-secondary">
+            <div className="text-ink-secondary flex flex-wrap items-center gap-4 text-sm">
               {['Kubernetes', 'GCP Cloud Run', 'AWS Lambda'].map((p) => (
                 <div
                   key={p}
-                  className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity"
+                  className="flex items-center gap-2 opacity-50 transition-opacity hover:opacity-100"
                 >
                   <div
-                    className="w-1 h-1"
+                    className="h-1 w-1"
                     style={{ backgroundColor: `${PRIMARY_RGBA},0.3)`, borderRadius: '0.5px' }}
                   />
                   <span className="font-mono text-xs">{p}</span>
@@ -471,8 +469,8 @@ export function Hero() {
       </div>
 
       {/* Mobile — compact version with visual */}
-      <div className="lg:hidden px-6 pb-12">
-        <div className="w-full h-[360px]" data-reveal data-reveal-delay="4">
+      <div className="px-6 pb-12 lg:hidden">
+        <div className="h-[360px] w-full" data-reveal data-reveal-delay="4">
           <TrafficSplitVisual />
         </div>
       </div>

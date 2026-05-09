@@ -1,6 +1,5 @@
 'use client'
 
-import { MidCTA } from '../../components/MidCTA'
 import { useScrollReveal } from '../../utils'
 import { RoadmapBadge } from '../../components/shared/RoadmapBadge'
 import { Container } from '../../components/shared/Container'
@@ -409,14 +408,7 @@ export default function TitanLedger() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Be first to see Titan Ledger."
-        subheading="We're onboarding design partners now. Apply to get early access and shape the roadmap."
-        primaryLabel="Apply for early access"
-        primaryHref="/early-access"
-        secondaryLabel="View all products"
-        secondaryHref="/products/titan-rollout"
-      />
+      
     </>
   )
 }

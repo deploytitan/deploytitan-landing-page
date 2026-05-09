@@ -30,14 +30,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
-        {/* Prevent flash of unstyled content — must run before React hydrates */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem('dt-theme');var d=s==='dark'||((!s||s==='system')&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.classList.add('dark');}catch(e){}})();`,
-          }}
-        />
         {/* Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -46,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-Q1CZ6Q7DVD"
@@ -57,9 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Script>
 
         <ThemeProvider>
-          <SiteLayoutClient>
-            {children}
-          </SiteLayoutClient>
+          <SiteLayoutClient>{children}</SiteLayoutClient>
         </ThemeProvider>
       </body>
     </html>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { animate, stagger } from 'animejs'
 
 /**
@@ -9,48 +9,48 @@ import { animate, stagger } from 'animejs'
 export function useScrollReveal() {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
-
-    const elements = container.querySelectorAll<HTMLElement>('[data-reveal]')
-    if (elements.length === 0) return
-
-    elements.forEach((el) => {
-      el.style.opacity = '0'
-      el.style.transform = 'translateY(20px)'
-    })
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return
-
-          const el = entry.target as HTMLElement
-          observer.unobserve(el)
-
-          const delayIndex = parseInt(el.dataset.revealDelay || '0', 10)
-          const delay = delayIndex * 80
-
-          animate(el, {
-            opacity: [0, 1],
-            translateY: [20, 0],
-            duration: 800,
-            delay,
-            ease: 'outExpo',
-            onComplete: () => {
-              el.style.opacity = ''
-              el.style.transform = ''
-            },
-          })
-        })
-      },
-      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
-    )
-
-    elements.forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
+  // useEffect(() => {
+  //   const container = containerRef.current
+  //   if (!container) return
+  //
+  //   const elements = container.querySelectorAll<HTMLElement>('[data-reveal]')
+  //   if (elements.length === 0) return
+  //
+  //   elements.forEach((el) => {
+  //     el.style.opacity = '0'
+  //     el.style.transform = 'translateY(20px)'
+  //   })
+  //
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       entries.forEach((entry) => {
+  //         if (!entry.isIntersecting) return
+  //
+  //         const el = entry.target as HTMLElement
+  //         observer.unobserve(el)
+  //
+  //         const delayIndex = parseInt(el.dataset.revealDelay || '0', 10)
+  //         const delay = delayIndex * 80
+  //
+  //         animate(el, {
+  //           opacity: [0, 1],
+  //           translateY: [20, 0],
+  //           duration: 800,
+  //           delay,
+  //           ease: 'outExpo',
+  //           onComplete: () => {
+  //             el.style.opacity = ''
+  //             el.style.transform = ''
+  //           },
+  //         })
+  //       })
+  //     },
+  //     { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
+  //   )
+  //
+  //   elements.forEach((el) => observer.observe(el))
+  //   return () => observer.disconnect()
+  // }, [])
 
   return containerRef
 }
@@ -92,7 +92,7 @@ export function useStaggerReveal(selector: string, staggerDelay = 100) {
           },
         })
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     )
 
     observer.observe(container)
@@ -109,7 +109,7 @@ export function useSpotlight() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    const card = (e.currentTarget as HTMLElement)
+    const card = e.currentTarget as HTMLElement
     const rect = card.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top

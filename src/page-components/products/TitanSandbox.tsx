@@ -1,6 +1,5 @@
 'use client'
 
-import { MidCTA } from '../../components/MidCTA'
 import { useScrollReveal } from '../../utils'
 import { RoadmapBadge } from '../../components/shared/RoadmapBadge'
 import { Container } from '../../components/shared/Container'
@@ -100,14 +99,7 @@ export default function TitanSandbox() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Ship confident. From the first line of code."
-        subheading="Titan Sandbox is in design. Join the waitlist to be first in and shape the product."
-        primaryLabel="Join the waitlist"
-        primaryHref="/early-access"
-        secondaryLabel="View live products"
-        secondaryHref="/products/titan-rollout"
-      />
+      
     </>
   )
 }

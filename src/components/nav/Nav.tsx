@@ -8,7 +8,7 @@ import { SolutionsDropdown } from './SolutionsDropdown'
 import { MobileNav } from './MobileNav'
 import { ThemeToggle } from '../shared/ThemeToggle'
 import { useTheme } from '../../hooks/useTheme'
-import { APP_URL } from '@/lib/env'
+import { CONSOLE_URL } from '@/lib/env'
 
 type DropdownKey = 'products' | 'solutions' | null
 
@@ -233,14 +233,9 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
           <div className="hidden lg:flex items-center gap-2 ml-auto">
             <ThemeToggle className="mr-1" />
             <a
-              href={`${APP_URL}/signin`}
-              className="text-sm text-ink-secondary hover:text-ink transition-colors px-4 py-2.5"
-            >
-              Sign in
-            </a>
-            <a
-              href="/early-access"
-              className="inline-flex items-center gap-2 bg-ink text-surface px-5 py-2.5 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"              style={{ borderRadius: '2px' }}
+              href={`${CONSOLE_URL}/login`}
+              className="inline-flex items-center gap-2 bg-ink text-surface px-5 py-2.5 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
+              style={{ borderRadius: '2px' }}
             >
               Get started
               <svg

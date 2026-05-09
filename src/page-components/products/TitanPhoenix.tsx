@@ -1,7 +1,6 @@
 'use client'
 
 import { APP_URL } from '@/lib/env'
-import { MidCTA } from '../../components/MidCTA'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
@@ -234,15 +233,7 @@ export default function TitanPhoenix() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Stop treating every rollback like a fire drill."
-        subheading="14-day free trial. No credit card. Phoenix responds to your first SLO breach in under 30 seconds."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Talk to an engineer"
-        secondaryHref="https://cal.com/deploytitan/demo"
-        secondaryExternal
-      />
+      
     </>
   )
 }

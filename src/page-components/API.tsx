@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { MidCTA } from '../components/MidCTA'
 import { CodeBlock } from '../components/shared/CodeBlock'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
@@ -247,15 +246,7 @@ export default function API() {
         </Container>
       </Section>
 
-      <MidCTA
-        heading="Start building on DeployTitan"
-        subheading="Generate an API token and trigger your first deployment in minutes."
-        primaryLabel="Get API access"
-        primaryHref="/early-access"
-        secondaryLabel="CLI Reference"
-        secondaryHref="/cli"
-        secondaryExternal={false}
-      />
+      
     </div>
   )
 }

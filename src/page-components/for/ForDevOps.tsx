@@ -2,7 +2,6 @@
 
 import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
-import { MidCTA } from '../../components/MidCTA'
 import Link from 'next/link'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
@@ -140,15 +139,7 @@ export default function ForDevOps() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Your next Friday deploy can be boring."
-        subheading="14-day free trial, no credit card. Ship your first canary in under 2 minutes."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Request early access"
-        secondaryHref="/early-access"
-        secondaryExternal={false}
-      />
+      
     </>
   )
 }

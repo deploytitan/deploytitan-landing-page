@@ -1,7 +1,6 @@
 'use client'
 
 import { useScrollReveal } from '../utils'
-import { MidCTA } from '../components/MidCTA'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
 
@@ -297,7 +296,7 @@ export default function Journey() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────────────────────────── */}
-      <MidCTA />
+      
     </>
   )
 }

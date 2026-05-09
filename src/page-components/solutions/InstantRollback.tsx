@@ -2,7 +2,6 @@
 
 import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
-import { MidCTA } from '../../components/MidCTA'
 import Link from 'next/link'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
@@ -235,15 +234,7 @@ export default function SolutionInstantRollback() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Stop waking up your on-call for rollbacks."
-        subheading="Start a 14-day free trial — no credit card required. Configure your first Phoenix policy in under 5 minutes."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Explore Titan Phoenix"
-        secondaryHref="/products/titan-phoenix"
-        secondaryExternal={false}
-      />
+      
     </>
   )
 }

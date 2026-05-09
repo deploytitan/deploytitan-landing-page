@@ -2,7 +2,6 @@
 
 import { APP_URL } from '@/lib/env'
 import { Resilience } from '../../components/Resilience'
-import { MidCTA } from '../../components/MidCTA'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { InstallTabs } from '../../components/shared/InstallTabs'
 import { useScrollReveal } from '../../utils'
@@ -158,15 +157,7 @@ export default function TitanShield() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Stop writing DR runbooks. Start running DR policies."
-        subheading="14-day free trial. No credit card. Connect your first cloud region in under 10 minutes."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Talk to an engineer"
-        secondaryHref="https://cal.com/deploytitan/demo"
-        secondaryExternal
-      />
+      
     </>
   )
 }

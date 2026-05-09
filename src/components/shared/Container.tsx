@@ -17,7 +17,7 @@ const widthClasses: Record<ContainerWidth, string> = {
   '4xl': 'max-w-4xl',
   '5xl': 'max-w-5xl',
   '6xl': 'max-w-6xl',
-  page: 'max-w-[var(--max-width-page)]',
+  page: 'max-w-7xl',
 }
 
 const paddingClasses: Record<ContainerPadding, string> = {

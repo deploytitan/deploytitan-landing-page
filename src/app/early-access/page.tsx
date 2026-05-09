@@ -1,11 +1,8 @@
-import { Metadata } from 'next'
-import EarlyAccess from '@/page-components/EarlyAccess'
+import { redirect } from 'next/navigation'
+import { CONSOLE_URL } from '@/lib/env'
 
-export const metadata: Metadata = {
-  title: 'Early Access | DeployTitan',
-  description: 'Join the DeployTitan early access program.',
-}
-
+// /early-access now sends users straight to the console login.
+// Preserving the URL for SEO / inbound links — no 404.
 export default function Page() {
-  return <EarlyAccess />
+  redirect(`${CONSOLE_URL}/login`)
 }

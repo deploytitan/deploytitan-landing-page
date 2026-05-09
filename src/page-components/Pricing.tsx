@@ -1,215 +1,326 @@
 'use client'
 
-import { APP_URL, STEALTH_PRODUCTS } from '@/lib/env'
 import React, { useState } from 'react'
+import { CONSOLE_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
-import { MidCTA } from '../components/MidCTA'
 import { InstallTabs } from '../components/shared/InstallTabs'
 import { Container } from '../components/shared/Container'
+import type { PolarProduct } from '../lib/polar'
 
+// ── Feature credit matrix ─────────────────────────────────────────────────────
 
-// ── Plan data ─────────────────────────────────────────────────────────────────
-
-const PLANS = [
+const FEATURE_MATRIX = [
   {
-    id: 'starter',
-    name: 'Starter',
-    monthlyPrice: 0,
-    annualPrice: 0,
-    description: 'For individual engineers and small teams evaluating progressive delivery.',
-    cta: 'Start for free',
-    ctaHref: `${APP_URL}/signup`,
-    highlight: false,
+    category: 'Deployments',
     features: [
-      'Up to 3 services',
-      '2 team members',
-      'Canary & blue/green strategies',
-      'Basic rollback (manual trigger)',
-      '7-day deploy history',
-      'Community support',
-      'GitHub Actions integration',
-    ],
-    missing: [
-      ...( STEALTH_PRODUCTS ? [] : ['Titan Shield (multi-cloud failover)']),
-      'Titan Foresight risk scoring',
-      'Policy-as-code (HCL)',
-      'SSO / SAML',
+      {
+        name: 'Standard deployment',
+        credits: 1,
+        description: 'Push a new version to any environment',
+      },
+      {
+        name: 'Canary deployment',
+        credits: 1,
+        description: 'Gradual traffic shift with automatic promotion',
+      },
+      {
+        name: 'Blue / green deployment',
+        credits: 1,
+        description: 'Zero-downtime swap with instant rollback',
+      },
+      {
+        name: 'Multi-region deployment',
+        credits: 1,
+        description: 'Fan out to multiple regions in one operation',
+      },
     ],
   },
   {
-    id: 'team',
-    name: 'Team',
-    monthlyPrice: 149,
-    annualPrice: 119,
-    description: 'For growing engineering teams that ship multiple times a day.',
-    cta: 'Start 14-day trial',
-    ctaHref: `${APP_URL}/signup?plan=team`,
-    highlight: true,
+    category: 'Risk & Safety',
     features: [
-      'Unlimited services',
-      'Up to 25 team members',
-      'All rollout strategies incl. cohort',
-      'Auto-rollback on SLO breach',
-      ...( !STEALTH_PRODUCTS ? ['Titan Shield — up to 3 clouds'] : []),
-      'Titan Foresight risk scoring',
-      '90-day deploy history',
-      'Policy-as-code (HCL / YAML)',
-      'Datadog, Prometheus, PagerDuty',
-      'Email + Slack support (next business day)',
-    ],
-    missing: [
-      'Unlimited team members',
-      'SSO / SAML',
-      'Custom SLO policies',
-      'Dedicated SRE onboarding',
+      {
+        name: 'Pre-deploy risk scan',
+        credits: 1,
+        description: 'Automated change-risk analysis before every push',
+      },
+      {
+        name: 'Deployment health check',
+        credits: 1,
+        description: 'Post-deploy signal aggregation and scoring',
+      },
+      {
+        name: 'Automatic rollback trigger',
+        credits: 1,
+        description: 'Detected regression kicks off instant rollback',
+      },
+      {
+        name: 'Manual rollback',
+        credits: 1,
+        description: 'One-click revert to any previous stable version',
+      },
     ],
   },
   {
-    id: 'enterprise',
-    name: 'Enterprise',
-    monthlyPrice: null,
-    annualPrice: null,
-    description: 'For large orgs with custom compliance, security, and scale requirements.',
-    cta: 'Contact sales',
-    ctaHref: 'mailto:sales@deploytitan.com',
-    highlight: false,
+    category: 'Observability',
     features: [
-      'Everything in Team',
-      'Unlimited team members',
-      'Unlimited clouds & regions',
-      'SSO / SAML / SCIM',
-      'Custom SLO policies',
-      'Private cloud / on-prem deployment',
-      'Custom data retention',
-      'Dedicated SRE onboarding',
-      'SLA with uptime guarantee',
-      'Audit log export (S3 / GCS)',
-      'Priority 24/7 support',
+      {
+        name: 'Deployment timeline event',
+        credits: 1,
+        description: 'Every deploy recorded with full audit trail',
+      },
+      {
+        name: 'Diff & change report',
+        credits: 1,
+        description: 'Structured summary of what changed and why',
+      },
+      { name: 'SLO impact report', credits: 1, description: 'Post-deploy SLO drift analysis' },
     ],
-    missing: [],
+  },
+  {
+    category: 'Integrations',
+    features: [
+      {
+        name: 'CI/CD pipeline trigger',
+        credits: 1,
+        description: 'Kick off a pipeline via Titan from any workflow',
+      },
+      {
+        name: 'Slack / PagerDuty alert',
+        credits: 1,
+        description: 'Outbound notification on deploy events',
+      },
+      {
+        name: 'Webhook dispatch',
+        credits: 1,
+        description: 'Custom payload sent to your systems on any event',
+      },
+    ],
   },
 ]
 
-// ── Comparison matrix ─────────────────────────────────────────────────────────
+// ── Value props ───────────────────────────────────────────────────────────────
 
-const MATRIX = [
+const VALUE_PROPS = [
   {
-    category: 'Deployments',
-    rows: [
-      { feature: 'Services', starter: '3', team: 'Unlimited', enterprise: 'Unlimited' },
-      { feature: 'Canary / blue-green', starter: true, team: true, enterprise: true },
-      { feature: 'Cohort targeting', starter: false, team: true, enterprise: true },
-      { feature: 'Auto-rollback on SLO breach', starter: false, team: true, enterprise: true },
-      { feature: 'Policy-as-code (HCL / YAML)', starter: false, team: true, enterprise: true },
-      { feature: 'Deploy history', starter: '7 days', team: '90 days', enterprise: 'Custom' },
-    ],
-  },
-  ...( !STEALTH_PRODUCTS ? [{
-    category: 'Titan Shield',
-    rows: [
-      {
-        feature: 'Multi-cloud failover',
-        starter: false,
-        team: '3 clouds',
-        enterprise: 'Unlimited',
-      },
-      { feature: 'Geo-aware routing', starter: false, team: true, enterprise: true },
-      { feature: 'DR drill mode', starter: false, team: true, enterprise: true },
-    ],
-  }] : []),
-  {
-    category: 'Titan Foresight',
-    rows: [
-      { feature: 'Pre-deploy risk scoring', starter: false, team: true, enterprise: true },
-      { feature: 'Blast-radius analysis', starter: false, team: true, enterprise: true },
-      { feature: 'SLO guardrail blocks', starter: false, team: true, enterprise: true },
-      { feature: 'GitHub PR annotations', starter: false, team: true, enterprise: true },
-    ],
+    icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+    heading: 'Unlimited orgs, projects, and users.',
+    body: 'Every seat, every org, every project is included — no caps, no per-user charges, no add-on tiers. Onboard your whole company. Credits are pooled into a single billing account that multiple members across multiple orgs and projects can draw from.',
   },
   {
-    category: 'Security & compliance',
-    rows: [
-      { feature: 'SSO / SAML', starter: false, team: false, enterprise: true },
-      { feature: 'SCIM provisioning', starter: false, team: false, enterprise: true },
-      { feature: 'Audit log export', starter: false, team: false, enterprise: true },
-      { feature: 'Private cloud / on-prem', starter: false, team: false, enterprise: true },
-    ],
+    icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect x="2" y="7" width="20" height="14" rx="2" />
+        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+        <line x1="12" y1="12" x2="12" y2="16" />
+        <line x1="10" y1="14" x2="14" y2="14" />
+      </svg>
+    ),
+    heading: 'One billing account. Shared across everything.',
+    body: 'Your billing account is not tied to a single org or project. Multiple members can manage it, and usage from every org, every project, and every team draws from the same credit pool. One invoice. Full visibility.',
   },
   {
-    category: 'Support',
-    rows: [
-      { feature: 'Community forums', starter: true, team: true, enterprise: true },
-      { feature: 'Email + Slack (next biz day)', starter: false, team: true, enterprise: true },
-      { feature: 'Priority 24/7', starter: false, team: false, enterprise: true },
-      { feature: 'Dedicated SRE onboarding', starter: false, team: false, enterprise: true },
-    ],
+    icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+      </svg>
+    ),
+    heading: 'One credit = one deployable unit.',
+    body: 'Credits are counted per instance — a container, a Lambda function, a monolith. Deploy 5 separate services and that is 5 credits. Roll back 2 microservices and that is 2 credits. But deploy a single Docker container that serves 50 routes, or a monolith Lambda — that is 1 credit. We count what actually gets deployed, not how many endpoints or paths it serves.',
+  },
+  {
+    icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      </svg>
+    ),
+    heading: 'Credits out? Your services keep running.',
+    body: 'Exhausted your monthly credits? Everything already deployed stays live — we never touch your running services or block traffic. Only new deployments from the platform pause until your next billing cycle or a top-up. No hostage-taking, ever.',
+  },
+  {
+    icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+      </svg>
+    ),
+    heading: 'Prepaid. No surprise invoices.',
+    body: "You subscribe monthly and your credit allowance is granted upfront each cycle. Unused credits expire at month end — they do not roll over. If you need more mid-cycle, additional credits are available at your plan's overage rate. No hidden charges.",
+  },
+  {
+    icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <polyline points="17 1 21 5 17 9" />
+        <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+        <polyline points="7 23 3 19 7 15" />
+        <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+      </svg>
+    ),
+    heading: 'Billing accounts are transferable.',
+    body: 'We do not issue refunds, but billing accounts can be transferred to another owner or organisation at any time. If your team structure changes, your credits go with you.',
   },
 ]
 
 // ── FAQ ───────────────────────────────────────────────────────────────────────
 
-const FAQS = [
+const FAQS: { q: string; a: React.ReactNode }[] = [
+  {
+    q: 'How do credits work?',
+    a: 'Every plan includes a monthly credit allowance granted at the start of each billing cycle. Each platform action — a deployment, a risk scan, a rollback, a webhook dispatch — consumes exactly 1 credit, regardless of which org, project, or user triggered it. Credits that are not used by month end expire; they do not roll over.',
+  },
+  {
+    q: 'Are there really no limits on users, orgs, or projects?',
+    a: 'None. You can create unlimited organisations, unlimited projects, and invite unlimited users. Everyone on your account draws from the same shared credit pool. We do not count seats, we do not charge per org, and we do not gate features behind team size.',
+  },
+  {
+    q: 'How does the billing account work across multiple orgs?',
+    a: 'A billing account is a single entity that can be managed by multiple members. All orgs and projects linked to that billing account share its credit balance. You can see a unified usage breakdown — by org, by project, by action type — in the billing dashboard.',
+  },
+  {
+    q: 'What happens when I run out of credits mid-month?',
+    a: "Your running services are never affected. Everything already deployed keeps receiving traffic normally. Only new deployments initiated from the DeployTitan platform are paused. Credits reset at the start of your next billing cycle, or you can purchase additional credits at your plan's overage rate to resume immediately.",
+  },
+  {
+    q: 'Do unused credits roll over?',
+    a: 'No. Unused credits expire at the end of each monthly billing cycle. An active subscription must be maintained to receive your credit grant each month. If you consistently have leftover credits, a smaller plan may be a better fit — the dashboard will surface this.',
+  },
+  {
+    q: 'Do you offer refunds?',
+    a: 'We do not issue refunds for unused credits. However, billing accounts are fully transferable — if your team structure changes or you want to hand the account to another owner or organisation, you can do that and the remaining credit balance transfers with it.',
+  },
+  {
+    q: 'Why not per-seat pricing?',
+    a: 'Seat-based pricing punishes team growth. A deployment triggered by a senior engineer costs the same infrastructure resources as one triggered by a contractor. We charge for what actually runs on our platform, not for who can log in.',
+  },
   {
     q: 'Can I switch plans later?',
-    a: 'Yes — upgrade or downgrade at any time. Annual plans are pro-rated on upgrade and credited on downgrade.',
-  },
-  {
-    q: 'What counts as a "service"?',
-    a: 'Any independently deployable unit you register with dt init. Microservices, monolith, Lambda function — each dt init counts as one service.',
-  },
-  {
-    q: 'Does the free tier ever expire?',
-    a: 'No. Starter is free forever for up to 3 services and 2 seats. No credit card required to start.',
-  },
-  {
-    q: 'Is there a free trial for Team?',
-    a: "Yes — 14 days, full Team features, no credit card required. After 14 days you're downgraded to Starter unless you add a payment method.",
+    a: 'Yes — upgrade or downgrade at any time. Your credit balance adjusts immediately on upgrade. There are no lock-in periods on monthly plans.',
   },
   {
     q: 'Do you offer discounts for startups or open source projects?',
-    a: "Yes. Email us at startups@deploytitan.com or opensource@deploytitan.com and we'll sort you out.",
+    a: (
+      <>
+        Yes. Email us at{' '}
+        <a href="mailto:support@deploytitan.com" className="text-primary hover:underline">
+          support@deploytitan.com
+        </a>{' '}
+        and we&apos;ll sort you out.
+      </>
+    ),
   },
 ]
 
-// ── Sub-components ────────────────────────────────────────────────────────────
+// ── Static fallback plans (shown when Polar returns no products) ──────────────
 
-function Check({ ok }: { ok: boolean | string }) {
-  if (typeof ok === 'string') return <span className="text-xs text-ink-secondary">{ok}</span>
-  return ok ? (
-    <svg
-      className="text-primary shrink-0"
-      width="15"
-      height="15"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-    >
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  ) : (
-    <svg
-      className="text-ink/20 shrink-0"
-      width="15"
-      height="15"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-  )
+const FALLBACK_PLANS = [
+  {
+    id: 'starter',
+    name: 'Starter',
+    description: 'For individual engineers and small teams getting started with safer deployments.',
+    isHighlighted: false,
+    isFree: false,
+    isCustom: false,
+    credits: 250,
+    monthlyAmount: 1000,
+    overageCentsPerCredit: 4.0,
+    checkoutUrl: `${CONSOLE_URL}/login`,
+    cta: 'Get started',
+  },
+  {
+    id: 'pro',
+    name: 'Pro',
+    description: 'For growing engineering teams shipping multiple times a day.',
+    isHighlighted: true,
+    isFree: false,
+    isCustom: false,
+    credits: 1500,
+    monthlyAmount: 3900,
+    overageCentsPerCredit: 2.6,
+    checkoutUrl: `${CONSOLE_URL}/login`,
+    cta: 'Get started',
+  },
+]
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function formatCents(cents: number): string {
+  return `$${Math.round(cents / 100)}`
 }
 
-function FaqItem({ q, a }: { q: string; a: string }) {
+function formatCredits(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, '')}K`
+  return String(n)
+}
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="border-b border-line last:border-b-0">
+    <div className="border-line border-b last:border-b-0">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-5 text-left text-sm font-medium text-ink hover:text-primary transition-colors"
+        className="text-ink hover:text-primary flex w-full items-center justify-between py-5 text-left text-sm font-medium transition-colors"
       >
         {q}
         <svg
@@ -225,215 +336,407 @@ function FaqItem({ q, a }: { q: string; a: string }) {
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
       </button>
-      {open && <p className="pb-5 text-sm text-ink-secondary leading-relaxed">{a}</p>}
+      {open && <p className="text-ink-secondary pb-5 text-sm leading-relaxed">{a}</p>}
+    </div>
+  )
+}
+
+// ── PlanCard ──────────────────────────────────────────────────────────────────
+
+interface PlanCardProps {
+  name: string
+  description: string
+  isHighlighted: boolean
+  isFree: boolean
+  credits: number | null
+  monthlyAmount: number | null // cents
+  overageCentsPerCredit: number | null
+  checkoutUrl: string
+  cta: string
+}
+
+function PlanCard({
+  name,
+  description,
+  isHighlighted,
+  isFree,
+  credits,
+  monthlyAmount,
+  overageCentsPerCredit,
+  checkoutUrl,
+  cta,
+}: PlanCardProps) {
+  const isMail = checkoutUrl.startsWith('mailto:')
+
+  return (
+    <div
+      className={`sharp-card flex flex-col border p-8 ${
+        isHighlighted ? 'border-primary/40 bg-primary/[0.03]' : 'border-line bg-surface'
+      }`}
+      data-reveal
+    >
+      {isHighlighted && (
+        <p className="text-primary border-primary/30 mb-4 self-start border px-2 py-1 font-mono text-[10px] tracking-widest uppercase">
+          Most popular
+        </p>
+      )}
+
+      <p className="text-ink mb-1 text-sm font-semibold">{name}</p>
+      <p className="text-ink-secondary mb-6 text-xs leading-relaxed">{description}</p>
+
+      {/* Price */}
+      <div className="mb-1">
+        {isFree || monthlyAmount == null ? (
+          <p className="text-ink text-3xl font-bold">Free</p>
+        ) : (
+          <div className="flex items-baseline gap-1">
+            <span className="text-ink text-3xl font-bold">{formatCents(monthlyAmount)}</span>
+            <span className="text-ink-secondary text-sm">/ mo</span>
+          </div>
+        )}
+      </div>
+
+      {/* Credits badge */}
+      {credits != null && (
+        <p className="text-primary mb-2 font-mono text-xs">
+          {formatCredits(credits)} credits / month included
+        </p>
+      )}
+
+      {/* Overage rate */}
+      {overageCentsPerCredit != null && (
+        <p className="text-ink-tertiary mb-6 font-mono text-xs">
+          then ${(overageCentsPerCredit / 100).toFixed(3).replace(/0+$/, '').replace(/\.$/, '')} /
+          additional credit
+        </p>
+      )}
+      {overageCentsPerCredit == null && credits == null && <div className="mb-6" />}
+      {overageCentsPerCredit == null && credits != null && <div className="mb-6" />}
+
+      <a
+        href={checkoutUrl}
+        target={isMail ? '_self' : '_blank'}
+        rel={isMail ? undefined : 'noopener noreferrer'}
+        className={`px-4 py-2.5 text-center text-sm font-semibold transition-colors ${
+          isHighlighted
+            ? 'bg-primary text-ink hover:bg-primary-light'
+            : 'border-line text-ink/80 hover:border-primary/30 hover:text-ink border'
+        }`}
+        style={{ borderRadius: '2px' }}
+      >
+        {cta}
+      </a>
     </div>
   )
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-export default function Pricing() {  useScrollReveal()
-  const [annual, setAnnual] = useState(true)
+interface Props {
+  polarProducts: PolarProduct[]
+}
+
+export default function Pricing({ polarProducts }: Props) {
+  useScrollReveal()
+
+  // Build plan cards from Polar data (excluding Enterprise/custom),
+  // sorted smallest (free/lowest price) to largest, or fall back to static.
+  const plans: PlanCardProps[] = (() => {
+    const source =
+      polarProducts.length > 0
+        ? polarProducts
+            .filter((p) => !p.isCustom)
+            .map((p) => ({
+              id: p.id,
+              name: p.name,
+              description: p.description ?? '',
+              isHighlighted: p.isHighlighted,
+              isFree: p.isFree,
+              credits: p.credits,
+              monthlyAmount: p.monthlyPrice?.amount ?? null,
+              overageCentsPerCredit: p.overageCentsPerCredit ?? null,
+              checkoutUrl: p.checkoutUrl,
+              cta: p.isFree ? 'Get started free' : 'Get started',
+            }))
+        : FALLBACK_PLANS
+
+    // Sort: free first, then ascending monthly price
+    return [...source].sort((a, b) => {
+      if (a.isFree && !b.isFree) return -1
+      if (!a.isFree && b.isFree) return 1
+      return (a.monthlyAmount ?? 0) - (b.monthlyAmount ?? 0)
+    })
+  })()
 
   return (
     <>
-      {/* Hero */}
-      <section className="blueprint-grid pt-28 pb-16 border-b border-line">
+      {/* ── Hero ── */}
+      <section className="blueprint-grid border-line border-b pt-28 pb-16">
         <Container width="3xl" padding="default" className="text-center" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">Pricing</p>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
-            Simple pricing.
-            <br className="hidden md:block" /> No per-seat surprises.
+          <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">Pricing</p>
+          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl">
+            Pay for what you deploy.
+            <br className="hidden md:block" /> Not for who you hire.
           </h1>
-          <p className="text-lg text-ink-secondary mb-8">
-            Start free. Scale to Team. Bring your whole org on Enterprise.
+          <p className="text-ink-secondary mx-auto max-w-xl text-lg">
+            Credits-based billing. Prepaid. No per-seat charges. No surprise invoices. Unlimited
+            users, orgs, and projects on every plan. Every platform action costs exactly 1 credit —
+            deployments, rollbacks, risk scans, all of it.
           </p>
-          {/* Annual / monthly toggle */}
-          <div
-            className="inline-flex items-center gap-3 border border-line p-1"
-            style={{ borderRadius: '2px' }}
-          >
-            <button
-              onClick={() => setAnnual(false)}
-              className={`px-4 py-1.5 text-sm font-medium transition-colors ${!annual ? 'bg-surface-alt text-ink' : 'text-ink-tertiary hover:text-ink/70'}`}
-              style={{ borderRadius: '2px' }}
-            >
-              Monthly
-            </button>
-            <button
-              onClick={() => setAnnual(true)}
-              className={`px-4 py-1.5 text-sm font-medium transition-colors flex items-center gap-2 ${annual ? 'bg-surface-alt text-ink' : 'text-ink-tertiary hover:text-ink/70'}`}
-              style={{ borderRadius: '2px' }}
-            >
-              Annual
-              <span className="text-[10px] font-mono text-primary border border-primary/30 px-1.5 py-0.5">
-                Save 20%
-              </span>
-            </button>
-          </div>
         </Container>
       </section>
 
-      {/* Plan cards */}
-      <section className="py-16 border-b border-line">
-        <Container width="6xl" padding="default">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {PLANS.map((plan) => (
-              <div
-                key={plan.id}
-                className={`sharp-card flex flex-col p-7 border ${plan.highlight ? 'border-primary/40 bg-primary/[0.03]' : 'border-line bg-surface'}`}
-                data-reveal
+      {/* ── Plan cards ── */}
+      <section className="border-line border-b py-16">
+        <Container width="4xl" padding="default">
+          <div className="mb-10 text-center" data-reveal>
+            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">Plans</p>
+            <h2 className="text-ink text-2xl font-semibold">Simple, predictable plans</h2>
+            <p className="text-ink-secondary mt-2 text-sm">
+              Credits are shared across your whole team — no seat counting required.
+            </p>
+          </div>
+
+          <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+            {plans.map((plan) => (
+              <PlanCard key={plan.name} {...plan} />
+            ))}
+          </div>
+
+          {/* Enterprise block */}
+          <div
+            className="border-line bg-surface-alt/60 flex flex-col items-start justify-between gap-6 border p-8 sm:flex-row sm:items-center"
+            style={{ borderRadius: '2px' }}
+            data-reveal
+          >
+            <div>
+              <p className="text-ink mb-1 text-sm font-semibold">Enterprise</p>
+              <p className="text-ink-secondary max-w-md text-xs leading-relaxed">
+                Custom credit volumes, dedicated support SLAs, SSO, audit logs, private cloud
+                deployment, and compliance documentation (SOC 2, ISO 27001). Pricing tailored to
+                your scale.
+              </p>
+            </div>
+            <a
+              href="mailto:sales@deploytitan.com"
+              className="border-line text-ink hover:border-primary/40 hover:text-primary inline-flex shrink-0 items-center gap-2 border px-5 py-3 text-sm font-medium transition-colors"
+              style={{ borderRadius: '2px' }}
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                {plan.highlight && (
-                  <p className="text-[10px] font-mono tracking-widest uppercase text-primary border border-primary/30 px-2 py-1 self-start mb-4">
-                    Most popular
-                  </p>
-                )}
-                <p className="text-sm font-semibold text-ink mb-1">{plan.name}</p>
-                <p className="text-xs text-ink-secondary mb-6 leading-relaxed">
-                  {plan.description}
-                </p>
-                {/* Price */}
-                <div className="mb-6">
-                  {plan.monthlyPrice === null ? (
-                    <p className="text-3xl font-bold text-ink">Custom</p>
-                  ) : plan.monthlyPrice === 0 ? (
-                    <p className="text-3xl font-bold text-ink">Free</p>
-                  ) : (
-                    <div>
-                      <span className="text-3xl font-bold text-ink">
-                        ${annual ? plan.annualPrice : plan.monthlyPrice}
-                      </span>
-                      <span className="text-sm text-ink-secondary ml-1">
-                        / mo{annual ? ', billed annually' : ''}
-                      </span>
-                    </div>
-                  )}
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+              Talk to sales
+            </a>
+          </div>
+
+          <p className="text-ink-quaternary mt-6 text-center font-mono text-xs">
+            Credits shared across unlimited orgs, projects &amp; users · Unused credits expire
+            monthly · Active subscription required
+          </p>
+        </Container>
+      </section>
+
+      {/* ── Value props ── */}
+      <section className="border-line border-b py-16">
+        <Container width="6xl" padding="default">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+            {VALUE_PROPS.map((vp) => (
+              <div key={vp.heading} className="flex gap-4" data-reveal>
+                <div className="border-line text-primary flex h-9 w-9 shrink-0 items-center justify-center border">
+                  {vp.icon}
                 </div>
-                <a
-                  href={plan.ctaHref}
-                  target={plan.ctaHref.startsWith('mailto') ? '_self' : '_self'}
-                  className={`text-sm font-semibold px-4 py-2.5 text-center transition-colors mb-7 ${
-                    plan.highlight
-                      ? 'bg-primary text-ink hover:bg-primary-light'
-                      : 'border border-line text-ink/80 hover:border-primary/30 hover:text-ink'
-                  }`}
-                  style={{ borderRadius: '2px' }}
-                >
-                  {plan.cta}
-                </a>
-                {/* Features */}
-                <ul className="flex flex-col gap-2.5">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5 text-sm text-ink-secondary">
-                      <svg
-                        className="text-primary shrink-0 mt-px"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                      >
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                      {f}
-                    </li>
-                  ))}
-                  {plan.missing.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5 text-sm text-ink/25">
-                      <svg
-                        className="shrink-0 mt-px"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                      </svg>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
+                <div>
+                  <p className="text-ink mb-1 text-sm font-semibold">{vp.heading}</p>
+                  <p className="text-ink-secondary text-sm leading-relaxed">{vp.body}</p>
+                </div>
               </div>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* Comparison matrix */}
-      <section className="py-24 border-b border-line overflow-x-auto">
-        <Container width="6xl" padding="default">
-          <div className="mb-10" data-reveal>
-            <h2 className="text-2xl font-semibold text-ink mb-2">Full feature comparison</h2>
-            <p className="text-ink-secondary text-sm">
-              Everything side-by-side so there are no surprises.
+      {/* ── Credit calculator example ── */}
+      <section className="border-line bg-surface-alt/40 border-b py-20">
+        <Container width="4xl" padding="default">
+          <div className="mb-8" data-reveal>
+            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+              Is Starter enough?
+            </p>
+            <h2 className="text-ink mb-2 text-2xl font-semibold">
+              250 credits goes further than you think.
+            </h2>
+            <p className="text-ink-secondary max-w-xl text-sm">
+              We sized the Starter plan so that the vast majority of teams will never need to
+              upgrade. Here is a realistic month for a small engineering team — 5 services, deployed
+              once every working day, with a risk scan on every push.
             </p>
           </div>
-          <table className="w-full text-sm border-collapse" data-reveal>
-            <thead>
-              <tr className="border-b border-line">
-                <th className="text-left pb-4 text-ink-tertiary font-normal w-1/2">Feature</th>
-                {PLANS.map((p) => (
-                  <th
-                    key={p.id}
-                    className={`pb-4 text-center font-semibold ${p.highlight ? 'text-primary' : 'text-ink'}`}
-                  >
-                    {p.name}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {MATRIX.map((section) => (
-                <React.Fragment key={section.category}>
-                  <tr className="border-t border-line/60">
-                    <td
-                      colSpan={4}
-                      className="pt-5 pb-2 text-[11px] font-mono tracking-widest uppercase text-ink-quaternary"
-                    >
-                      {section.category}
-                    </td>
-                  </tr>
-                  {section.rows.map((row) => (
-                    <tr
-                      key={row.feature}
-                      className="border-b border-line/30 hover:bg-surface-alt/40 transition-colors"
-                    >
-                      <td className="py-3 text-sm text-ink-secondary">{row.feature}</td>
-                      <td className="py-3 text-center">
-                        <div className="flex justify-center">
-                          <Check ok={row.starter} />
-                        </div>
-                      </td>
-                      <td className="py-3 text-center">
-                        <div className="flex justify-center">
-                          <Check ok={row.team} />
-                        </div>
-                      </td>
-                      <td className="py-3 text-center">
-                        <div className="flex justify-center">
-                          <Check ok={row.enterprise} />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </React.Fragment>
+
+          {/* Example scenario */}
+          <div
+            className="border-line bg-surface border"
+            style={{ borderRadius: '2px' }}
+            data-reveal
+          >
+            {/* Header */}
+            <div className="border-line flex items-center gap-2 border-b px-6 py-4">
+              <span className="bg-primary h-2 w-2" style={{ borderRadius: '1px' }} />
+              <p className="text-ink-secondary font-mono text-xs">
+                Scenario — 5 services, 1 deploy / day, every working day
+              </p>
+            </div>
+
+            {/* Line items */}
+            <div className="divide-line divide-y">
+              {[
+                {
+                  action: 'Deployments',
+                  calc: '5 services × 1× / day × 22 working days',
+                  credits: 110,
+                },
+                {
+                  action: 'Pre-deploy risk scans',
+                  calc: '1 scan per deployment — 5 services × 1× / day × 22 days',
+                  credits: 110,
+                },
+                {
+                  action: 'Rollbacks — week 1',
+                  calc: '2 services rolled back after a bad release',
+                  credits: 2,
+                },
+                {
+                  action: 'Rollbacks — week 2',
+                  calc: '1 service rolled back mid-deploy',
+                  credits: 1,
+                },
+                {
+                  action: 'Rollbacks — week 3',
+                  calc: '3 services rolled back after a config change went wrong',
+                  credits: 3,
+                },
+                {
+                  action: 'Rollbacks — week 4',
+                  calc: '2 services rolled back during hotfix gone sideways',
+                  credits: 2,
+                },
+              ].map((row) => (
+                <div key={row.action} className="flex items-center justify-between gap-4 px-6 py-4">
+                  <div>
+                    <p className="text-ink text-sm font-medium">{row.action}</p>
+                    <p className="text-ink-tertiary mt-0.5 text-xs">{row.calc}</p>
+                  </div>
+                  <div className="shrink-0 text-right">
+                    <span className="text-ink font-mono text-sm font-semibold">{row.credits}</span>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+
+            {/* Total */}
+            <div className="border-line bg-surface-alt/60 flex items-center justify-between border-t px-6 py-4">
+              <div>
+                <p className="text-ink text-sm font-semibold">Total credits used</p>
+                <p className="text-ink-tertiary mt-0.5 text-xs">Out of 250 included in Starter</p>
+              </div>
+              <div className="text-right">
+                <p className="text-ink font-mono text-2xl font-bold">228</p>
+                <p className="text-primary mt-0.5 font-mono text-xs">22 credits remaining</p>
+              </div>{' '}
+            </div>
+          </div>
+
+          <p className="text-ink-quaternary mt-5 text-center font-mono text-xs" data-reveal>
+            Each deployable unit (container, Lambda, monolith) counts as 1 credit per action —
+            regardless of how many routes, endpoints, or paths it serves. Browsing dashboards,
+            viewing history, and reading reports is always free.
+          </p>
         </Container>
       </section>
 
-      {/* FAQ */}
-      <section className="py-24 border-b border-line">
+      {/* ── Feature credit matrix ── */}
+      <section className="border-line border-b py-20">
+        <Container width="5xl" padding="default">
+          <div className="mb-10" data-reveal>
+            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+              What costs a credit
+            </p>
+            <h2 className="text-ink mb-2 text-2xl font-semibold">Every action. One credit.</h2>
+            <p className="text-ink-secondary max-w-xl text-sm">
+              Credits are counted per deployable unit — each container, Lambda function, or
+              standalone instance is one credit. A single monolith or single-container service is
+              always 1 credit regardless of how many routes or endpoints it serves. No environment
+              surcharges, no region premiums.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-x-12 gap-y-10 md:grid-cols-2">
+            {FEATURE_MATRIX.map((cat) => (
+              <div key={cat.category} data-reveal>
+                <p className="text-primary border-line mb-4 border-b pb-2 font-mono text-[10px] tracking-widest uppercase">
+                  {cat.category}
+                </p>
+                <ul className="flex flex-col gap-3">
+                  {cat.features.map((f) => (
+                    <li key={f.name} className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-ink text-sm font-medium">{f.name}</p>
+                        <p className="text-ink-tertiary mt-0.5 text-xs">{f.description}</p>
+                      </div>
+                      <span className="text-primary border-primary/30 mt-0.5 shrink-0 border px-2 py-0.5 font-mono text-[10px]">
+                        1 credit
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className="border-line bg-surface-alt/40 mt-10 flex items-start gap-3 border p-5"
+            style={{ borderRadius: '2px' }}
+            data-reveal
+          >
+            <svg
+              className="text-primary mt-0.5 shrink-0"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <p className="text-ink-secondary text-xs leading-relaxed">
+              <span className="text-ink font-medium">Reading data is always free.</span> Browsing
+              the dashboard, viewing deployment history, audit logs, and reports never consumes
+              credits. Credits are only deducted when you initiate an action on the platform.
+            </p>
+          </div>
+        </Container>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="border-line border-b py-24">
         <Container width="3xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">FAQ</p>
-            <h2 className="text-2xl font-semibold text-ink">Common questions</h2>
+            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">FAQ</p>
+            <h2 className="text-ink text-2xl font-semibold">Common questions</h2>
           </div>
           <div data-reveal>
             {FAQS.map((faq) => (
@@ -443,29 +746,20 @@ export default function Pricing() {  useScrollReveal()
         </Container>
       </section>
 
-      {/* Install strip */}
-      <section className="py-16 border-b border-line">
+      {/* ── Install strip ── */}
+      <section className="border-line border-b py-16">
         <Container width="3xl" padding="default" className="text-center">
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4" data-reveal>
+          <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase" data-reveal>
             Get started now
           </p>
-          <p className="text-ink font-semibold mb-8 text-lg" data-reveal>
+          <p className="text-ink mb-8 text-lg font-semibold" data-reveal>
             Install the CLI and try it for free in under 2 minutes.
           </p>
-          <div className="max-w-lg mx-auto" data-reveal>
+          <div className="mx-auto max-w-lg" data-reveal>
             <InstallTabs />
           </div>
         </Container>
       </section>
-
-      <MidCTA
-        heading="Not sure which plan is right for you?"
-        subheading="Talk to an engineer. We'll walk you through the right setup for your stack and team size — no sales pressure."
-        primaryLabel="Contact sales"
-        primaryHref="mailto:sales@deploytitan.com"
-        secondaryLabel="Start free trial"
-        secondaryHref={`${APP_URL}/signup`}
-      />
     </>
   )
 }

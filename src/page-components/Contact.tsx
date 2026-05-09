@@ -1,4 +1,3 @@
-import { MidCTA } from '../components/MidCTA'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
@@ -173,10 +172,7 @@ export default function Contact() {
         </Container>
       </Section>
 
-      <MidCTA
-        heading="Ready to start deploying smarter?"
-        subheading="Get early access and we'll onboard you personally."
-      />
+      
     </div>
   )
 }

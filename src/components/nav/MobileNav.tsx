@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '../shared/ThemeToggle'
-import { APP_URL, STEALTH_PRODUCTS } from '@/lib/env'
+import { CONSOLE_URL, STEALTH_PRODUCTS } from '@/lib/env'
 import { RoadmapBadge } from '../shared/RoadmapBadge'
 
 const ALL_PRODUCT_LINKS = [
@@ -188,21 +188,13 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
           <ThemeToggle />
         </div>
         <a
-          href={`${APP_URL}/signin`}
-          onClick={onClose}
-          className="w-full inline-flex items-center justify-center px-6 py-3 border border-line text-ink-secondary text-sm font-medium hover:border-primary/30 hover:text-ink transition-colors"
-          style={{ borderRadius: '2px' }}
-        >
-          Sign in
-        </a>
-        <Link
-          href="/early-access"
+          href={`${CONSOLE_URL}/login`}
           onClick={onClose}
           className="w-full inline-flex items-center justify-center px-6 py-3 bg-ink text-surface text-sm font-medium hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] transition-all active:scale-[0.97]"
           style={{ borderRadius: '2px' }}
         >
           Get started
-        </Link>
+        </a>
       </div>
     </div>
   )

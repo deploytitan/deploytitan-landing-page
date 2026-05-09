@@ -3,7 +3,6 @@
 import { APP_URL } from '@/lib/env'
 import { Solution } from '../../components/Solution'
 import { BeforeAfter } from '../../components/BeforeAfter'
-import { MidCTA } from '../../components/MidCTA'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { InstallTabs } from '../../components/shared/InstallTabs'
 import { useScrollReveal } from '../../utils'
@@ -167,15 +166,7 @@ export default function TitanRollout() {
         </Container>
       </section>
 
-      <MidCTA
-        heading="Ship your next release with Titan Rollout."
-        subheading="14-day free trial. No credit card. Full progressive rollout on day one."
-        primaryLabel="Start free trial"
-        primaryHref={`${APP_URL}/signup`}
-        secondaryLabel="Talk to an engineer"
-        secondaryHref="https://cal.com/deploytitan/demo"
-        secondaryExternal
-      />
+      
     </>
   )
 }

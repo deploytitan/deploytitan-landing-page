@@ -1,7 +1,6 @@
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
-import { MidCTA } from '@/components/MidCTA'
 
 const values = [
   {
@@ -148,7 +147,7 @@ export default function About() {
         </Container>
       </Section>
 
-      <MidCTA />
+      
     </div>
   )
 }
