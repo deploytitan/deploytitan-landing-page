@@ -3,7 +3,8 @@ import About from '@/page-components/About'
 
 export const metadata: Metadata = {
   title: 'About | DeployTitan',
-  description: 'Learn about DeployTitan, our mission, and our team.',
+  description:
+    'DeployTitan is a deployment control plane for engineering teams. Progressive delivery, automated rollback, and real-time risk intelligence — ship safely, at any scale.',
 }
 
 export default function Page() {
