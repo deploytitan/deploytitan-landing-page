@@ -181,7 +181,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
       ))}
 
       {/* Auth buttons */}
-      <div className="border-line mt-auto mb-4 flex flex-col gap-3 border-t px-6 py-8 md:mb-[unset]">
+      <div className="border-line mt-auto flex flex-col gap-3 border-t px-6 py-8 md:mb-[unset]">
         <div className="mb-1 flex items-center justify-between">
           <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
             Appearance

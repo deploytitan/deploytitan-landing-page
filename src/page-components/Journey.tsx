@@ -15,7 +15,7 @@ const OUTCOMES = [
   {
     number: '02',
     title: 'Recover in seconds, not minutes',
-    body: 'Instant rollback without coordination. The person who built the feature can fix it — right now, without waking anyone up.',
+    body: `Instant rollback without coordination. The system recovered from a failure without your users being any wiser — now that's confidence.`,
   },
   {
     number: '03',
@@ -250,7 +250,7 @@ export default function Journey() {
             <div className="flex flex-col justify-center gap-4 pt-2 sm:flex-row">
               <a
                 href="https://console.deploytitan.com/login"
-                className="bg-ink text-ink dark:text-surface inline-flex items-center gap-2 px-5.5 py-2.5 text-sm font-medium transition-all"
+                className="bg-ink text-ink dark:text-surface inline-flex items-center justify-center gap-2 px-5.5 py-2.5 text-sm font-medium transition-all"
                 style={{ background: PRIMARY }}
               >
                 Get Started
