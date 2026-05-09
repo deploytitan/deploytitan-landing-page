@@ -1,28 +1,43 @@
-'use client'
-
-/**
- * This configuration is used to for the Sanity Studio that’s mounted on the `/app/studio/[[...tool]]/page.tsx` route
- */
-
 import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
-
-// Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
+import { codeInput } from '@sanity/code-input'
+import { presentationTool, defineLocations, type PresentationPluginOptions } from 'sanity/presentation'
 import { apiVersion, dataset, projectId } from './src/sanity/env'
-import { schema } from './src/sanity/schemaTypes'
+import { schemaTypes } from './src/sanity/schemas'
 import { structure } from './src/sanity/structure'
+
+const resolve: PresentationPluginOptions['resolve'] = {
+  locations: {
+    post: defineLocations({
+      select: { title: 'title', slug: 'slug.current' },
+      resolve: (doc) => ({
+        locations: [
+          { title: doc?.title ?? 'Untitled', href: `/blog/${doc?.slug}` },
+          { title: 'All posts', href: '/blog' },
+        ],
+      }),
+    }),
+  },
+}
 
 export default defineConfig({
   basePath: '/studio',
   projectId,
   dataset,
-  // Add and edit the content schema in the './sanity/schemaTypes' folder
-  schema,
+  schema: { types: schemaTypes },
   plugins: [
+    presentationTool({
+      resolve,
+      previewUrl: {
+        origin: 'http://localhost:3000',
+        previewMode: {
+          enable: '/api/draft-mode/enable',
+        },
+      },
+    }),
     structureTool({ structure }),
-    // Vision is for querying with GROQ from inside the Studio
-    // https://www.sanity.io/docs/the-vision-plugin
+    codeInput(),
     visionTool({ defaultApiVersion: apiVersion }),
   ],
 })

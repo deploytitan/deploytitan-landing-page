@@ -273,6 +273,11 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
+    "source": "/solutions",
+    "target": "/products/titan-rollout",
+    "kind": "link"
+  },
+  {
     "source": "/for/-for-c-t-o",
     "target": "/early-access",
     "kind": "link"
@@ -353,28 +358,13 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
-    "source": "/solutions/-instant-rollback",
-    "target": "/products/titan-phoenix",
-    "kind": "link"
-  },
-  {
-    "source": "/solutions/-multi-cloud-resilience",
-    "target": "/products/titan-shield",
-    "kind": "link"
-  },
-  {
-    "source": "/solutions/-progressive-delivery",
-    "target": "/products/titan-rollout",
-    "kind": "link"
-  },
-  {
-    "source": "/solutions/-risk-intelligence",
-    "target": "/products/titan-foresight",
-    "kind": "link"
+    "source": "__nav__",
+    "target": "/solutions",
+    "kind": "nav"
   },
   {
     "source": "__nav__",
-    "target": "/solutions",
+    "target": "/blog",
     "kind": "nav"
   },
   {
@@ -384,7 +374,7 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "__nav__",
-    "target": "/customers",
+    "target": "/journey",
     "kind": "nav"
   },
   {

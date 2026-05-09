@@ -1,13 +1,11 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { draftMode } from 'next/headers'
 import Image from 'next/image'
-import { sanityFetch, SanityLive } from '@/sanity/lib/live'
+import { sanityFetch } from '@/sanity/lib/live'
 import { postBySlugQuery, postSlugsQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import { PortableTextRenderer } from '@/components/blog/PortableTextRenderer'
 import { AuthorBadge } from '@/components/blog/AuthorBadge'
-import { VisualEditing } from '@/components/blog/VisualEditing'
 import { Container } from '@/components/shared/Container'
 import { Breadcrumbs } from '@/components/shared/Breadcrumbs'
 import Link from 'next/link'
@@ -30,27 +28,45 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const { data: slugs } = await sanityFetch<{ slug: string }[]>({ query: postSlugsQuery })
-  return (slugs ?? []).map((s: { slug: string }) => ({ slug: s.slug }))
+  const { data } = await sanityFetch({
+    query: postSlugsQuery,
+    perspective: 'published',
+    stega: false,
+  })
+  return (data as { slug: string }[] ?? []).map((s) => ({ slug: s.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const { data: post } = await sanityFetch<PostData | null>({ query: postBySlugQuery, params: { slug } })
+  const { data: postRaw } = await sanityFetch({
+    query: postBySlugQuery,
+    params: { slug },
+    stega: false,
+  })
+  const post = postRaw as PostData | null
   if (!post) return {}
   return {
     title: post.title,
     description: post.excerpt ?? undefined,
     openGraph: post.coverImage?.asset
-      ? { images: [{ url: urlFor(post.coverImage as object).width(1200).height(630).url() }] }
+      ? {
+          images: [
+            {
+              url: urlFor(post.coverImage as object)
+                .width(1200)
+                .height(630)
+                .url(),
+            },
+          ],
+        }
       : undefined,
   }
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
-  const { data: post } = await sanityFetch<PostData | null>({ query: postBySlugQuery, params: { slug } })
-  const { isEnabled: isDraft } = await draftMode()
+  const { data: postRaw } = await sanityFetch({ query: postBySlugQuery, params: { slug } })
+  const post = postRaw as PostData | null
 
   if (!post) notFound()
 
@@ -64,21 +80,18 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <>
-      <SanityLive />
-      {isDraft && <VisualEditing />}
-
       {/* Hero */}
-      <section className="blueprint-grid pt-28 pb-12 border-b border-line">
+      <section className="blueprint-grid border-line border-b pt-28 pb-12">
         <Container width="3xl" padding="default">
           <Breadcrumbs className="mb-6" />
 
           {/* Categories */}
           {post.categories && post.categories.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="mb-4 flex flex-wrap gap-2">
               {post.categories.map((cat: { title: string; slug: { current: string } }) => (
                 <span
                   key={cat.slug.current}
-                  className="font-mono text-[10px] tracking-widest uppercase text-primary border border-primary/25 px-2 py-0.5"
+                  className="text-primary border-primary/25 border px-2 py-0.5 font-mono text-[10px] tracking-widest uppercase"
                   style={{ borderRadius: '2px' }}
                 >
                   {cat.title}
@@ -87,7 +100,7 @@ export default async function BlogPostPage({ params }: Props) {
             </div>
           )}
 
-          <h1 className="text-3xl lg:text-4xl font-semibold text-ink leading-tight mb-5">
+          <h1 className="text-ink mb-5 text-3xl leading-tight font-semibold lg:text-4xl">
             {post.title}
           </h1>
 
@@ -99,11 +112,14 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Cover image */}
       {post.coverImage?.asset && (
-        <div className="border-b border-line">
+        <div className="border-line border-b">
           <Container width="4xl" padding="default">
-            <div className="relative aspect-[16/9] overflow-hidden sharp-card border border-line -mt-1">
+            <div className="sharp-card border-line relative -mt-1 aspect-[16/9] overflow-hidden border">
               <Image
-                src={urlFor(post.coverImage as object).width(1400).height(788).url()}
+                src={urlFor(post.coverImage as object)
+                  .width(1400)
+                  .height(788)
+                  .url()}
                 alt={post.coverImage.alt ?? post.title}
                 fill
                 priority
@@ -122,7 +138,7 @@ export default async function BlogPostPage({ params }: Props) {
 
           {/* Author bio footer */}
           {post.author && (
-            <div className="mt-16 pt-8 border-t border-line">
+            <div className="border-line mt-16 border-t pt-8">
               <AuthorBadge
                 author={post.author}
                 publishedAt={post.publishedAt ?? undefined}
@@ -134,7 +150,7 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="mt-10">
             <Link
               href="/blog"
-              className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+              className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
             >
               ← Back to blog
             </Link>
