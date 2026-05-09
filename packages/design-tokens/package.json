@@ -1,6 +1,6 @@
 {
   "name": "@deploytitan/design-tokens",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "DeployTitan design system tokens: colors, typography, spacing, and utility classes",
   "license": "UNLICENSED",
   "private": false,
@@ -15,10 +15,11 @@
     "tokens.css",
     "components.css",
     "DESIGN.md",
-    "PRODUCT.md"
+    "PRODUCT.md",
+    "scripts/setup-context.mjs"
   ],
   "scripts": {
-    "sync-context": "cp ../../PRODUCT.md ./PRODUCT.md && cp ../../DESIGN.md ./DESIGN.md && echo 'Context files synced.'",
+    "setup-context": "node scripts/setup-context.mjs",
     "link-local": "pnpm link --global",
     "publish-pkg": "npm publish --access public"
   },

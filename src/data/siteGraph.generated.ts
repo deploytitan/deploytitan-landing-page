@@ -30,44 +30,14 @@ export const generatedNodes: GraphNode[] = [
     "file": "src/app/blog/page.tsx"
   },
   {
-    "id": "/brand",
-    "label": "Brand",
-    "file": "src/app/brand/page.tsx"
-  },
-  {
-    "id": "/careers",
-    "label": "Careers",
-    "file": "src/app/careers/page.tsx"
-  },
-  {
-    "id": "/changelog",
-    "label": "Changelog",
-    "file": "src/app/changelog/page.tsx"
-  },
-  {
     "id": "/cli",
     "label": "Cli",
     "file": "src/app/cli/page.tsx"
   },
   {
-    "id": "/contact",
-    "label": "Contact",
-    "file": "src/app/contact/page.tsx"
-  },
-  {
-    "id": "/customers",
-    "label": "Customers",
-    "file": "src/app/customers/page.tsx"
-  },
-  {
     "id": "/docs",
     "label": "Docs",
     "file": "src/app/docs/page.tsx"
-  },
-  {
-    "id": "/early-access",
-    "label": "Early Access",
-    "file": "src/app/early-access/page.tsx"
   },
   {
     "id": "/for/cto",
@@ -90,34 +60,14 @@ export const generatedNodes: GraphNode[] = [
     "file": "src/app/how-it-works/page.tsx"
   },
   {
-    "id": "/integrations",
-    "label": "Integrations",
-    "file": "src/app/integrations/page.tsx"
-  },
-  {
     "id": "/journey",
     "label": "Journey",
     "file": "src/app/journey/page.tsx"
   },
   {
-    "id": "/not-found",
-    "label": "Not Found",
-    "file": "src/app/not-found/page.tsx"
-  },
-  {
     "id": "/",
     "label": "Home",
     "file": "src/app/page.tsx"
-  },
-  {
-    "id": "/partners",
-    "label": "Partners",
-    "file": "src/app/partners/page.tsx"
-  },
-  {
-    "id": "/press",
-    "label": "Press",
-    "file": "src/app/press/page.tsx"
   },
   {
     "id": "/pricing",
@@ -143,11 +93,6 @@ export const generatedNodes: GraphNode[] = [
     "id": "/products/titan-rollout",
     "label": "Titan Rollout",
     "file": "src/app/products/titan-rollout/page.tsx"
-  },
-  {
-    "id": "/roadmap",
-    "label": "Roadmap",
-    "file": "src/app/roadmap/page.tsx"
   },
   {
     "id": "/security",
@@ -208,11 +153,6 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
-    "source": "/c-l-i",
-    "target": "/integrations",
-    "kind": "link"
-  },
-  {
     "source": "/docs",
     "target": "/cli",
     "kind": "link"
@@ -243,18 +183,8 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
-    "source": "/roadmap",
-    "target": "/changelog",
-    "kind": "link"
-  },
-  {
     "source": "/solutions",
     "target": "/products/titan-rollout",
-    "kind": "link"
-  },
-  {
-    "source": "/for/-for-c-t-o",
-    "target": "/early-access",
     "kind": "link"
   },
   {
@@ -274,32 +204,12 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "/integrations/-integration-detail",
-    "target": "/integrations",
-    "kind": "link"
-  },
-  {
-    "source": "/integrations/-integration-detail",
-    "target": "/early-access",
-    "kind": "link"
-  },
-  {
-    "source": "/integrations/-integration-detail",
     "target": "/docs",
     "kind": "link"
   },
   {
     "source": "/products/-titan-foresight",
     "target": "/solutions",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-insight",
-    "target": "/early-access",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-ledger",
-    "target": "/early-access",
     "kind": "link"
   },
   {
@@ -315,11 +225,6 @@ export const generatedLinks: GraphLink[] = [
   {
     "source": "/products/-titan-rollout",
     "target": "/solutions",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-sandbox",
-    "target": "/early-access",
     "kind": "link"
   },
   {
