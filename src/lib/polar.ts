@@ -103,9 +103,8 @@ function mapProduct(raw: RawProduct, orgSlug: string): PolarProduct {
 
   // metered_unit price carries the per-credit overage rate as a string decimal in cents
   const meteredPrice = raw.prices.find((p) => p.amount_type === 'metered_unit')
-  const overageCentsPerCredit = meteredPrice?.unit_amount != null
-    ? parseFloat(meteredPrice.unit_amount)
-    : null
+  const overageCentsPerCredit =
+    meteredPrice?.unit_amount != null ? parseFloat(meteredPrice.unit_amount) : null
 
   const isFree = raw.prices.every((p) => p.amount_type === 'free') || raw.prices.length === 0
   const isCustom = raw.prices.some((p) => p.amount_type === 'custom')

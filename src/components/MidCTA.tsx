@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Section } from './shared/Section'
 import { Container } from './shared/Container'
+import { Button } from './shared/Button'
 import { APP_URL, DEMO_URL, FORM_ENDPOINT } from '@/lib/env'
 
 // --- Waitlist form (used in variant="waitlist") ---
@@ -57,14 +58,15 @@ function WaitlistForm() {
         className="bg-surface border-line text-ink placeholder:text-ink-quaternary focus:border-primary/40 flex-1 grow-0 border px-3 py-2.5 text-sm transition-colors focus:outline-none md:w-72"
         style={{ borderRadius: '2px' }}
       />
-      <button
+      <Button
         type="submit"
+        variant="primary"
+        size="xs"
         disabled={state === 'loading'}
-        className="bg-ink text-surface shrink-0 px-4 py-2.5 text-xs font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] active:scale-[0.97] disabled:opacity-50"
-        style={{ borderRadius: '2px' }}
+        className="shrink-0 disabled:opacity-50"
       >
         {state === 'loading' ? '…' : 'Join waitlist'}
-      </button>
+      </Button>
       {state === 'error' && (
         <p className="self-center text-xs text-red-400">Something went wrong — try again.</p>
       )}
@@ -118,6 +120,25 @@ export function MidCTA({
     )
   }
 
+  const ExternalIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="opacity-50"
+    >
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  )
+
   return (
     <Section padding="sm" border="both" className="bg-surface-alt/60 relative overflow-hidden">
       <div
@@ -133,48 +154,26 @@ export function MidCTA({
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          <a
-            href={primaryHref}
-            className="bg-ink text-surface inline-flex items-center gap-2 px-5 py-3 text-sm font-medium transition-all duration-200 hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] active:scale-[0.97]"
-            style={{ borderRadius: '2px' }}
-          >
+          <Button as="a" href={primaryHref} variant="primary" size="sm">
             {primaryLabel}
-          </a>
+          </Button>
           {secondaryLabel &&
             (secondaryExternal ? (
-              <a
+              <Button
+                as="a"
                 href={secondaryHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-line text-ink-secondary hover:border-primary/30 hover:text-ink inline-flex items-center gap-2 border px-5 py-3 text-sm font-medium transition-colors"
-                style={{ borderRadius: '2px' }}
+                variant="outline"
+                size="sm"
               >
                 {secondaryLabel}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="opacity-50"
-                >
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                  <polyline points="15 3 21 3 21 9" />
-                  <line x1="10" y1="14" x2="21" y2="3" />
-                </svg>
-              </a>
+                <ExternalIcon />
+              </Button>
             ) : (
-              <Link
-                href={secondaryHref!}
-                className="border-line text-ink-secondary hover:border-primary/30 hover:text-ink inline-flex items-center gap-2 border px-5 py-3 text-sm font-medium transition-colors"
-                style={{ borderRadius: '2px' }}
-              >
+              <Button as="a" href={secondaryHref!} variant="outline" size="sm">
                 {secondaryLabel}
-              </Link>
+              </Button>
             ))}
         </div>
       </Container>

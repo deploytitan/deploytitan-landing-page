@@ -5,6 +5,7 @@ import { APP_URL, STEALTH_PRODUCTS } from '@/lib/env'
 import Link from 'next/link'
 import { useScrollReveal } from '../../utils'
 import { RoadmapBadge } from '../shared/RoadmapBadge'
+import { Button } from '../shared/Button'
 
 /* ── Mini visual: Titan Foresight ── */
 function ForesightVisual() {
@@ -508,13 +509,9 @@ export function PlatformOverview() {
             >
               View pricing →
             </Link>
-            <a
-              href={`${APP_URL}/signup`}
-              className="bg-ink text-surface dark:text-surface inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] active:scale-[0.97]"
-              style={{ borderRadius: '2px' }}
-            >
+            <Button as="a" href={`${APP_URL}/signup`} variant="primary" size="xs">
               Start free trial
-            </a>
+            </Button>
           </div>
         </div>
       </div>

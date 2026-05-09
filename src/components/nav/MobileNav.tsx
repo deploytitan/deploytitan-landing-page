@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '../shared/ThemeToggle'
+import { Button } from '../shared/Button'
 import { CONSOLE_URL, STEALTH_PRODUCTS } from '@/lib/env'
 import { RoadmapBadge } from '../shared/RoadmapBadge'
 
@@ -188,14 +189,9 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
           </span>
           <ThemeToggle />
         </div>
-        <a
-          href={`${CONSOLE_URL}/login`}
-          onClick={onClose}
-          className="bg-ink text-surface inline-flex w-full items-center justify-center px-6 py-3 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] active:scale-[0.97]"
-          style={{ borderRadius: '2px' }}
-        >
+        <Button as="a" href={`${CONSOLE_URL}/login`} variant="primary" size="sm" block onClick={onClose}>
           Get started
-        </a>
+        </Button>
       </div>
     </div>
   )

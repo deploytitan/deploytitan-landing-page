@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { sleep, useScrollReveal } from '../utils'
 import { APP_URL } from '@/lib/env'
+import { Button } from './shared/Button'
 
 const PRIMARY = 'var(--color-primary)'
 const PRIMARY_RGBA = 'rgba(201,168,76'
@@ -399,11 +400,7 @@ export function Hero() {
             data-reveal-delay="3"
             className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-start"
           >
-            <a
-              href={`${APP_URL}/login`}
-              className="bg-ink text-surface dark:text-surface group inline-flex items-center justify-center gap-2.5 px-8 py-4 text-base font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.97]"
-              style={{ borderRadius: '2px' }}
-            >
+            <Button as="a" href={`${APP_URL}/login`} variant="primary" size="lg" className="group">
               Start free trial
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -420,14 +417,10 @@ export function Hero() {
                 <path d="M5 12h14" />
                 <path d="m12 5 7 7-7 7" />
               </svg>
-            </a>
-            <a
-              href="mailto:sales@deploytitan.com"
-              className="border-ink/15 hover:border-primary/40 hover:bg-primary-muted inline-flex items-center justify-center border px-8 py-4 text-base font-medium transition-all"
-              style={{ borderRadius: '2px' }}
-            >
+            </Button>
+            <Button as="a" href="mailto:sales@deploytitan.com" variant="outline" size="lg">
               Talk to an engineer
-            </a>
+            </Button>
           </div>
 
           {/* Sub-text */}

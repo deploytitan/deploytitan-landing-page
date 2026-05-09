@@ -39,6 +39,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
+        <script
+          async
+          defer
+          src="https://www.faurya.com/js/script.js"
+          data-website-id="cmoq4uh7j000kjm04sga2uksk"
+          data-domain="www.deploytitan.com"
+        ></script>
       </head>
       <body suppressHydrationWarning>
         {/* Google Analytics */}

@@ -3,6 +3,7 @@
 import { type FormEvent, useState } from 'react'
 import { useScrollReveal } from '../utils'
 import { Container } from './shared/Container'
+import { Button } from './shared/Button'
 import { DEMO_URL, FORM_ENDPOINT } from '@/lib/env'
 
 const PRIMARY = 'var(--color-primary)'
@@ -113,12 +114,15 @@ export function CTA() {
               </p>
 
               <div data-reveal data-reveal-delay="3" className="flex flex-col gap-3 max-w-sm">
-                <a
+                <Button
+                  as="a"
                   href={DEMO_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 bg-ink text-surface px-7 py-4 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] group"
-                  style={{ borderRadius: '2px' }}
+                  variant="primary"
+                  size="lg"
+                  block
+                  className="group"
                 >
                   See live demo
                   <svg
@@ -136,7 +140,7 @@ export function CTA() {
                     <path d="M5 12h14" />
                     <path d="m12 5 7 7-7 7" />
                   </svg>
-                </a>
+                </Button>
 
                 {/* Trust line */}
                 <p className="text-xs font-mono text-ink-tertiary text-center">
@@ -230,11 +234,13 @@ export function CTA() {
                     className="w-full px-5 py-4 border border-line text-sm bg-surface-alt text-ink placeholder:text-ink-quaternary focus:outline-none focus:border-primary/40 transition-colors disabled:opacity-50"
                     style={{ borderRadius: '2px' }}
                   />
-                  <button
+                  <Button
                     type="submit"
+                    variant="outline"
+                    size="lg"
+                    block
                     disabled={submitting}
-                    className="w-full inline-flex items-center justify-center gap-2 border border-ink/20 text-ink px-7 py-4 text-sm font-medium transition-all active:scale-[0.97] hover:border-primary/40 hover:bg-primary-muted disabled:opacity-60"
-                    style={{ borderRadius: '2px' }}
+                    className="disabled:opacity-60"
                   >
                     {submitting ? (
                       <>
@@ -247,7 +253,7 @@ export function CTA() {
                     ) : (
                       'Keep me updated'
                     )}
-                  </button>
+                  </Button>
                   {error && (
                     <p className="text-xs text-signal-danger font-mono text-center pt-1">{error}</p>
                   )}

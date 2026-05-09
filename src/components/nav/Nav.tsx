@@ -7,6 +7,7 @@ import { ProductsDropdown } from './ProductsDropdown'
 import { SolutionsDropdown } from './SolutionsDropdown'
 import { MobileNav } from './MobileNav'
 import { ThemeToggle } from '../shared/ThemeToggle'
+import { Button } from '../shared/Button'
 import { useTheme } from '../../hooks/useTheme'
 import { CONSOLE_URL } from '@/lib/env'
 
@@ -239,11 +240,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
           {/* Desktop auth */}
           <div className="ml-auto hidden items-center gap-2 lg:flex">
             <ThemeToggle className="mr-1" />
-            <a
-              href={`${CONSOLE_URL}/login`}
-              className="bg-ink text-surface inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.97]"
-              style={{ borderRadius: '2px' }}
-            >
+            <Button as="a" href={`${CONSOLE_URL}/login`} variant="primary" size="xs">
               Get started
               <svg
                 width="12"
@@ -259,7 +256,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
               </svg>
-            </a>
+            </Button>
           </div>
 
           {/* Mobile hamburger */}

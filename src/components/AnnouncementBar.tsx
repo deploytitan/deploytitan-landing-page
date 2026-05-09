@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { Button } from './shared/Button'
 
 interface AnnouncementBarProps {
   message?: string
@@ -35,10 +36,11 @@ export function AnnouncementBar({ onDismiss, announcementRef }: AnnouncementBarP
       <a href={linkTo} className="text-primary hover:text-primary-light transition-colors shrink-0">
         {linkLabel}
       </a>
-      <button
+      <Button
+        variant="dismiss"
         onClick={handleDismiss}
         aria-label="Dismiss announcement"
-        className="absolute right-4 text-surface/50 hover:text-surface/80 transition-colors"
+        className="absolute right-4"
       >
         <svg
           width="14"
@@ -53,7 +55,7 @@ export function AnnouncementBar({ onDismiss, announcementRef }: AnnouncementBarP
           <line x1="18" y1="6" x2="6" y2="18" />
           <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
-      </button>
+      </Button>
     </div>
   )
 }
