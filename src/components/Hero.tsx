@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { sleep, useScrollReveal } from '../utils'
 import { APP_URL } from '@/lib/env'
 import { Button } from './shared/Button'
+import { InlineCode } from './shared/CodeBlock'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const PRIMARY = 'var(--color-primary)'
@@ -182,8 +183,7 @@ function TrafficSplitVisual() {
             }}
           />
           <span
-            className="font-mono text-[9px] transition-colors duration-500"
-            style={{ color: info.color }}
+            className="text-ink-secondary font-mono text-[9px] transition-colors duration-500"
           >
             {info.text}
           </span>
@@ -194,7 +194,7 @@ function TrafficSplitVisual() {
       <div className="flex flex-1 flex-col gap-4 p-5">
         {/* Version traffic bars */}
         <div className="space-y-3">
-          <div className="text-ink-quaternary font-mono text-[9px] tracking-[0.08em] uppercase">
+          <div className="text-ink-tertiary font-mono text-[9px] tracking-[0.08em] uppercase">
             Active versions
           </div>
           {versions.map((v) => (
@@ -207,12 +207,11 @@ function TrafficSplitVisual() {
                   />
                   <span className="text-ink font-mono text-[11px] font-medium">{v.label}</span>
                   <span
-                    className="px-1.5 py-0.5 font-mono text-[8px] tracking-wider uppercase transition-all duration-300"
+                    className="px-1.5 py-0.5 font-mono text-[8px] tracking-wider uppercase transition-all duration-300 text-ink-secondary"
                     style={{
-                      color: v.color,
                       backgroundColor: `${v.color}12`,
                       borderRadius: '1px',
-                      border: `1px solid ${v.color}25`,
+                      border: `1px solid ${v.color}30`,
                     }}
                   >
                     {v.status === 'rolling-back' ? 'rolling back' : v.status}
@@ -231,9 +230,8 @@ function TrafficSplitVisual() {
                     </span>
                   )}
                 </div>
-                <span
-                  className="font-mono text-[13px] font-medium tabular-nums transition-colors duration-300"
-                  style={{ color: v.traffic > 0 ? v.color : 'rgba(8,5,3,0.2)' }}
+                 <span
+                  className="font-mono text-[13px] font-medium tabular-nums transition-colors duration-300 text-ink-secondary"
                 >
                   {v.traffic}%
                 </span>
@@ -262,18 +260,17 @@ function TrafficSplitVisual() {
 
         {/* Policy / action row */}
         <div className="flex items-center justify-between">
-          <div className="text-ink-quaternary font-mono text-[9px] tracking-[0.08em] uppercase">
+          <div className="text-ink-tertiary font-mono text-[9px] tracking-[0.08em] uppercase">
             Policy
           </div>
           <div className="flex items-center gap-2">
             {['Auto-rollback', 'Health checks', 'Cohort routing'].map((tag) => (
               <span
                 key={tag}
-                className="px-1.5 py-0.5 font-mono text-[8px]"
+                className="px-1.5 py-0.5 font-mono text-[8px] text-ink-tertiary"
                 style={{
-                  color: `${PRIMARY_RGBA},0.7)`,
                   backgroundColor: `${PRIMARY_RGBA},0.06)`,
-                  border: `1px solid ${PRIMARY_RGBA},0.12)`,
+                  border: `1px solid ${PRIMARY_RGBA},0.15)`,
                   borderRadius: '1px',
                 }}
               >
@@ -285,7 +282,7 @@ function TrafficSplitVisual() {
 
         {/* Event log */}
         <div className="flex flex-1 flex-col justify-end">
-          <div className="text-ink-quaternary mb-1.5 font-mono text-[9px] tracking-[0.08em] uppercase">
+          <div className="text-ink-tertiary mb-1.5 font-mono text-[9px] tracking-[0.08em] uppercase">
             Event log
           </div>
           <div className="space-y-1">
@@ -335,8 +332,8 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      {/* Visual — right side, hidden on mobile */}
-      <div className="absolute inset-y-0 right-0 hidden w-[52%] items-center pr-12 pl-4 lg:flex">
+      {/* Visual — right side on desktop, below copy on mobile */}
+      <div className="absolute inset-y-0 right-0 hidden w-[52%] items-center pr-12 pl-4 lg:flex" aria-hidden="true">
         <div className="h-[460px] w-full" data-reveal data-reveal-delay="3">
           <TrafficSplitVisual />
         </div>
@@ -397,7 +394,7 @@ export function Hero() {
           <p
             data-reveal
             data-reveal-delay="2"
-            className="text-ink-secondary mb-4 max-w-md text-lg leading-relaxed"
+            className="text-ink-secondary mb-4 max-w-[65ch] text-lg leading-relaxed"
           >
             Releases shouldn't be the scariest part of your week. Stop guessing which release broke
             production.
@@ -407,7 +404,7 @@ export function Hero() {
           <p
             data-reveal
             data-reveal-delay="2"
-            className="text-ink-secondary mb-8 max-w-md text-sm leading-relaxed font-medium"
+            className="text-ink-secondary mb-8 max-w-[65ch] text-sm leading-relaxed font-medium"
           >
             Catch risk early. Ship without fear. Learn from every release.
           </p>
@@ -445,10 +442,10 @@ export function Hero() {
           <p
             data-reveal
             data-reveal-delay="3"
-            className="text-ink-quaternary mt-3 font-mono text-xs"
+            className="text-ink-tertiary mt-3 font-mono text-xs"
           >
-            <code className="text-ink-tertiary">dt login</code> creates your account from the CLI ·{' '}
-            <a href="/journey" className="text-primary/70 hover:text-primary transition-colors">
+            <InlineCode>dt login</InlineCode> creates your account from the CLI ·{' '}
+            <a href="/journey" className="text-ink-secondary underline hover:text-ink transition-colors">
               Why we built this →
             </a>
           </p>
@@ -456,8 +453,7 @@ export function Hero() {
           {/* Trust tags */}
           <div data-reveal data-reveal-delay="4" className="border-line mt-10 border-t pt-10">
             <p
-              className="mb-4 font-mono text-xs tracking-widest uppercase"
-              style={{ color: PRIMARY }}
+              className="mb-4 font-mono text-xs tracking-widest uppercase text-ink-tertiary"
             >
               Works with your existing stack
             </p>
@@ -465,7 +461,7 @@ export function Hero() {
               {['Kubernetes', 'GCP Cloud Run', 'AWS Lambda'].map((p) => (
                 <div
                   key={p}
-                  className="flex items-center gap-2 opacity-50 transition-opacity hover:opacity-100"
+                  className="flex items-center gap-2 transition-opacity hover:opacity-100"
                 >
                   <div
                     className="h-1 w-1"
@@ -479,9 +475,9 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Mobile — compact version with visual */}
-      <div className="px-6 pb-12 lg:hidden">
-        <div className="h-[360px] w-full" data-reveal data-reveal-delay="4">
+      {/* Mobile visual — single instance, not duplicated */}
+      <div className="px-6 pb-12 lg:hidden" data-reveal data-reveal-delay="4">
+        <div className="h-[360px] w-full">
           <TrafficSplitVisual />
         </div>
       </div>

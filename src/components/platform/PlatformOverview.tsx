@@ -69,7 +69,7 @@ function RolloutVisual() {
           </div>
         </div>
       ))}
-      <div className="border-signal-success/20 bg-signal-success/5 mt-2 flex flex-col gap-1 rounded-sm border p-3">
+      <div className="border-signal-success/20 bg-signal-success/5 mt-2 flex flex-col gap-1 rounded-[2px] border p-3">
         <span className="text-signal-success">✓ SLOs holding: error rate 0.02%</span>
         <span className="text-ink-tertiary">p95 latency: 118ms · threshold: 250ms</span>
         <span className="text-primary/80 mt-1">→ Promoting to 50% in 4 min…</span>
@@ -98,7 +98,7 @@ function ShieldVisual() {
       {regions.map((r) => (
         <div
           key={r.label}
-          className={`flex items-center justify-between rounded-sm border px-3 py-2.5 transition-colors ${r.status === 'failover' ? 'border-signal-warning/40 bg-signal-warning/5' : 'border-line'}`}
+          className={`flex items-center justify-between rounded-[2px] border px-3 py-2.5 transition-colors ${r.status === 'failover' ? 'border-signal-warning/40 bg-signal-warning/5' : 'border-line'}`}
         >
           <div className="flex items-center gap-2">
             <span
@@ -118,7 +118,7 @@ function ShieldVisual() {
           </div>
         </div>
       ))}
-      <div className="border-line text-ink-tertiary flex items-center justify-between rounded-sm border px-3 py-2.5">
+      <div className="border-line text-ink-tertiary flex items-center justify-between rounded-[2px] border px-3 py-2.5">
         <span>Traffic rerouted to AWS + GCP</span>
         <span className="text-signal-success">automatic</span>
       </div>
@@ -240,7 +240,7 @@ function SandboxVisual() {
       {envs.map((e) => (
         <div
           key={e.branch}
-          className="border-line flex items-center justify-between gap-3 rounded-sm border px-3 py-2"
+          className="border-line flex items-center justify-between gap-3 rounded-[2px] border px-3 py-2"
         >
           <span className="text-ink-secondary truncate">{e.branch}</span>
           <div className="flex shrink-0 items-center gap-2">

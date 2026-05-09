@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { CodeBlock } from '../components/shared/CodeBlock'
+import { CodeBlock, InlineCode } from '../components/shared/CodeBlock'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
@@ -148,14 +148,12 @@ export default function API() {
         <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
           Authentication
         </span>
-        <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+        <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
           Bearer token auth
         </h2>
         <p className="mt-2 text-sm text-ink-secondary max-w-lg">
           All API requests require an{' '}
-          <code className="font-mono text-xs text-primary bg-primary-muted px-1 py-0.5 rounded-sm">
-            Authorization: Bearer
-          </code>{' '}
+          <InlineCode variant="accent">Authorization: Bearer</InlineCode>{' '}
           header. Generate tokens from your workspace settings. Tokens are scoped — you can restrict
           them to read-only, deploy-only, or admin.
         </p>
@@ -181,7 +179,7 @@ export default function API() {
           <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
             Endpoints
           </span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
             REST endpoints
           </h2>
           <div className="mt-8 flex flex-col divide-y divide-line">
@@ -209,7 +207,7 @@ export default function API() {
           <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
             Webhooks
           </span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
             Real-time events
           </h2>
           <p className="mt-2 text-sm text-ink-secondary max-w-lg">

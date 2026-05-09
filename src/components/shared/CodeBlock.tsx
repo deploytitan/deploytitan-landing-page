@@ -25,22 +25,50 @@ const SHIKI_OVERRIDES = `
   .shiki { background: transparent !important; }
 `
 
-type Lang = 'bash' | 'yaml' | 'powershell' | 'dockerfile' | 'tsx' | 'hcl' | 'diff' | 'json'
+export type Lang = 'bash' | 'yaml' | 'powershell' | 'dockerfile' | 'tsx' | 'hcl' | 'diff' | 'json'
+
+/**
+ * `code`     — standard code block, no header decoration (default)
+ * `terminal` — shows 3 traffic-light indicator dots in the header
+ */
+export type CodeBlockVariant = 'code' | 'terminal'
 
 interface CodeBlockProps {
-  code: string
+  /** The code string to highlight via Shiki. Omit when using `children` for pre-colored JSX. */
+  code?: string
   lang?: Lang
+  /** Label shown in the header bar. Defaults to "terminal" for terminal variant, filename otherwise. */
   filename?: string
-  /** Show copy button */
+  /** @default true */
   copy?: boolean
+  /** "code" (default) | "terminal" — adds traffic-light dots to the header */
+  variant?: CodeBlockVariant
+  /**
+   * When provided, renders `children` directly in the code body instead of Shiki.
+   * Use for hand-colored JSX output panels (terminal logs, etc.). `code` prop is ignored.
+   */
+  children?: React.ReactNode
   className?: string
+}
+
+/** Traffic-light dots for the terminal variant header */
+function TerminalDots() {
+  return (
+    <>
+      <span className="w-2.5 h-2.5 bg-signal-danger/40" style={{ borderRadius: '1px' }} />
+      <span className="w-2.5 h-2.5 bg-signal-warning/40" style={{ borderRadius: '1px' }} />
+      <span className="w-2.5 h-2.5 bg-signal-success/40" style={{ borderRadius: '1px' }} />
+    </>
+  )
 }
 
 export function CodeBlock({
   code,
   lang = 'bash',
-  filename = 'terminal',
+  filename,
   copy = true,
+  variant = 'code',
+  children,
   className,
 }: CodeBlockProps) {
   const { resolved } = useTheme()
@@ -61,9 +89,18 @@ export function CodeBlock({
 
   const [html, setHtml] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
-  const trimmed = code.trim()
+
+  const hasShiki = !children && !!code
+  const trimmed = code?.trim() ?? ''
+
+  // Default filename label
+  const label = filename ?? (variant === 'terminal' ? 'terminal' : undefined)
+
+  // Whether to show the header bar at all
+  const showHeader = variant === 'terminal' || !!label || (copy && hasShiki)
 
   useEffect(() => {
+    if (!hasShiki) return
     let cancelled = false
     setHtml(null)
     getHighlighter().then((hl) => {
@@ -77,7 +114,8 @@ export function CodeBlock({
     return () => {
       cancelled = true
     }
-  }, [trimmed, lang, shikiTheme])
+  }, [trimmed, lang, shikiTheme, hasShiki])
+
   const handleCopy = async () => {
     await navigator.clipboard.writeText(trimmed)
     setCopied(true)
@@ -90,46 +128,40 @@ export function CodeBlock({
       style={{ borderRadius: '2px', backgroundColor: bgColor }}
     >
       {/* Header bar */}
-      {(filename || copy) && (
-        <div className={cn('flex items-center justify-between px-4 py-2.5 border-b', headerBg)}>
-          {filename ? (
-            <span className={cn('font-mono text-[11px]', textMuted)}>{filename}</span>
+      {showHeader && (
+        <div className={cn('flex items-center gap-2 px-4 py-2.5 border-b', headerBg)}>
+          {/* Traffic-light dots for terminal variant */}
+          {variant === 'terminal' && <TerminalDots />}
+
+          {/* Filename / label */}
+          {label ? (
+            <span className={cn('font-mono text-[11px]', textMuted, variant === 'terminal' && 'ml-0.5')}>
+              {label}
+            </span>
           ) : (
-            <span />
+            <span className="flex-1" />
           )}
-          {copy && (
+
+          {/* Copy button — only shown when Shiki mode is active */}
+          {copy && hasShiki && (
             <button
               onClick={handleCopy}
               className={cn(
-                'flex items-center gap-1.5 text-[11px] font-mono transition-colors',
+                'ml-auto flex items-center gap-1.5 text-[11px] font-mono transition-colors',
                 textAction,
               )}
               aria-label="Copy code"
             >
               {copied ? (
                 <>
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                  >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                   Copied
                 </>
               ) : (
                 <>
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                   </svg>
@@ -142,22 +174,64 @@ export function CodeBlock({
       )}
 
       {/* Code body */}
-      <div className="px-4 py-4 overflow-x-auto">
-        <style>{SHIKI_OVERRIDES}</style>
-        {html ? (
-          <div dangerouslySetInnerHTML={{ __html: html }} />
-        ) : (
-          // Plain-text fallback while shiki loads
-          <pre
-            className={cn(
-              'font-mono text-[13px] leading-[1.7] whitespace-pre',
-              theme === 'dark' ? 'text-white/70' : 'text-black/70',
-            )}
-          >
-            {trimmed}
-          </pre>
-        )}
-      </div>
+      {children ? (
+        // Pre-colored JSX children: standard body padding, mono text sizing matches Shiki output
+        <div className="px-5 py-5 font-mono text-[13px] leading-[1.7] overflow-x-auto">
+          {children}
+        </div>
+      ) : (
+        <div className="px-4 py-4 overflow-x-auto">
+          <style>{SHIKI_OVERRIDES}</style>
+          {html ? (
+            <div dangerouslySetInnerHTML={{ __html: html }} />
+          ) : (
+            // Plain-text fallback while shiki loads
+            <pre
+              className={cn(
+                'font-mono text-[13px] leading-[1.7] whitespace-pre',
+                theme === 'dark' ? 'text-white/70' : 'text-black/70',
+              )}
+            >
+              {trimmed}
+            </pre>
+          )}
+        </div>
+      )}
     </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// InlineCode — standardized inline <code> span
+// ---------------------------------------------------------------------------
+
+interface InlineCodeProps {
+  children: React.ReactNode
+  /** "default" uses bg-ink/[0.05] (prose context); "accent" uses bg-primary-muted (callout/CTA context) */
+  variant?: 'default' | 'accent'
+  className?: string
+}
+
+/**
+ * Standardized inline code element. Replaces ad-hoc `<code>` spans across the codebase.
+ *
+ * Usage:
+ *   <InlineCode>dt deploy</InlineCode>
+ *   <InlineCode variant="accent">Authorization: Bearer</InlineCode>
+ */
+export function InlineCode({ children, variant = 'default', className }: InlineCodeProps) {
+  return (
+    <code
+      className={cn(
+        'font-mono text-[0.8125em] leading-none',
+        variant === 'accent'
+          ? 'text-primary bg-primary/[0.08] px-1.5 py-0.5'
+          : 'text-ink/80 bg-ink/[0.05] px-1.5 py-0.5',
+        className,
+      )}
+      style={{ borderRadius: '1px' }}
+    >
+      {children}
+    </code>
   )
 }

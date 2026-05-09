@@ -5,6 +5,8 @@ import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
+import { CodeBlock, InlineCode } from '../../components/shared/CodeBlock'
+import { SolutionNav } from '../../components/shared/SolutionNav'
 
 const PHASES = [
   {
@@ -117,15 +119,15 @@ export default function SolutionInstantRollback() {
       </section>
 
       {/* Narrative */}
-      <section className="py-20 border-b border-line bg-surface-alt/20">
+      <section className="py-16 border-b border-line bg-surface-alt/20">
         <Container width="4xl" padding="default">
-          <div className="flex flex-col gap-10" data-reveal>
+          <div className="flex flex-col gap-10 max-w-prose" data-reveal>
             {/* The scene */}
             <div>
               <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
                 The situation
               </p>
-              <blockquote className="text-xl lg:text-2xl font-semibold text-ink leading-snug border-l-2 border-primary pl-6 mb-6">
+              <blockquote className="text-xl lg:text-2xl font-semibold text-ink/90 italic leading-snug mb-6">
                 "3:14 AM. PagerDuty fires. The senior engineer on call squints at Grafana,
                 confirms it's real, and starts looking for the rollback runbook."
               </blockquote>
@@ -143,7 +145,7 @@ export default function SolutionInstantRollback() {
                 The real problem
               </p>
               <p className="text-ink leading-relaxed text-base">
-                The rollback tools already exist. <code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1 py-0.5">kubectl rollout undo</code> works.
+                The rollback tools already exist. <InlineCode>kubectl rollout undo</InlineCode> works.
                 The problem is the pipeline from "error rate spikes" to "rollback complete" runs
                 entirely through a human being, who has to be awake, alert, and in front of a
                 laptop to execute it. That pipeline has a minimum latency of 10–15 minutes on a
@@ -207,6 +209,28 @@ export default function SolutionInstantRollback() {
         </Container>
       </section>
 
+      {/* Policy config — shown early so engineers can evaluate the mechanism before the walkthrough */}
+      <section className="py-14 border-b border-line bg-surface-alt/30">
+        <Container width="3xl" padding="default">
+          <div className="mb-8" data-reveal>
+            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              Configuration
+            </p>
+            <h2 className="text-2xl font-semibold text-ink leading-snug mb-2">
+              Define your rollback policy once.
+            </h2>
+            <p className="text-sm text-ink-secondary">
+              A single stanza in your{' '}
+              <InlineCode variant="accent">titan.yaml</InlineCode> is all Phoenix
+              needs. No runbooks, no on-call scripts.
+            </p>
+          </div>
+          <div data-reveal>
+          <CodeBlock variant="terminal" filename="titan.yaml" lang="yaml" code={POLICY_SNIPPET} copy={false} />
+          </div>
+        </Container>
+      </section>
+
       {/* Before / After */}
       <section className="py-20 border-b border-line">
         <Container width="6xl" padding="default">
@@ -214,8 +238,8 @@ export default function SolutionInstantRollback() {
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               The transformation
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink">
-              Before and after instant rollback.
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug">
+              Before and after Phoenix rollback.
             </h2>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" data-reveal>
@@ -255,74 +279,52 @@ export default function SolutionInstantRollback() {
         </Container>
       </section>
 
-      {/* How it works */}
+      {/* How it works — vertical urgency timeline */}
       <section className="py-24 border-b border-line">
-        <Container width="6xl" padding="default">
+        <Container width="4xl" padding="default">
           <div className="mb-16" data-reveal>
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               How it works
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug">
               Four steps. Under 10 seconds.
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="relative flex flex-col gap-0" data-reveal>
+            {/* Vertical connector line */}
+            <div
+              className="absolute left-[19px] top-8 bottom-8 w-px bg-line"
+              aria-hidden="true"
+            />
             {PHASES.map((phase, i) => (
-              <Card
-                key={phase.number}
-                padding="none"
-                className="p-8 hover:border-primary/20 transition-all duration-200"
-                data-reveal
-                data-reveal-delay={String(i)}
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <span className="font-mono text-3xl font-bold text-ink/8 leading-none select-none">
+              <div key={phase.number} className="relative flex gap-6 pb-10 last:pb-0">
+                {/* Step dot */}
+                <div className="shrink-0 flex flex-col items-center" style={{ width: '40px' }}>
+                  <div
+                    className="w-10 h-10 flex items-center justify-center bg-surface border border-line font-mono text-[11px] font-semibold text-primary z-10"
+                    style={{ borderRadius: '2px' }}
+                  >
                     {phase.number}
-                  </span>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-primary">{phase.metric.value}</p>
-                    <p className="text-[10px] text-ink-tertiary font-mono uppercase tracking-wider">
-                      {phase.metric.label}
-                    </p>
                   </div>
                 </div>
-                <h3 className="text-base font-semibold text-ink mb-2 leading-snug">
-                  {phase.title}
-                </h3>
-                <p className="text-sm text-ink-secondary leading-relaxed">{phase.body}</p>
-              </Card>
+                {/* Content */}
+                <div className="flex-1 pt-1 pb-2">
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <h3 className="text-base font-semibold text-ink leading-snug">
+                      {phase.title}
+                    </h3>
+                    <div className="shrink-0 text-right">
+                      <p className="text-xl font-bold text-primary leading-none">{phase.metric.value}</p>
+                      <p className="text-[9px] text-ink-tertiary font-mono uppercase tracking-wider mt-0.5">
+                        {phase.metric.label}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-base text-ink-secondary leading-relaxed">{phase.body}</p>
+                </div>
+              </div>
             ))}
           </div>
-        </Container>
-      </section>
-
-      {/* Policy config */}
-      <section className="py-20 border-b border-line bg-surface-alt/30">
-        <Container width="3xl" padding="default">
-          <div className="mb-8" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
-              Configuration
-            </p>
-            <h2 className="text-2xl font-semibold text-ink mb-2">
-              Define your rollback policy once.
-            </h2>
-            <p className="text-sm text-ink-secondary">
-              A single stanza in your{' '}
-              <code className="font-mono text-primary text-xs">titan.yaml</code> is all Phoenix
-              needs. No runbooks, no on-call scripts.
-            </p>
-          </div>
-          <Card padding="none" className="overflow-hidden" data-reveal>
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-line bg-surface-alt/60">
-              <span className="w-2.5 h-2.5 bg-signal-danger/40" style={{ borderRadius: '1px' }} />
-              <span className="w-2.5 h-2.5 bg-signal-warning/40" style={{ borderRadius: '1px' }} />
-              <span className="w-2.5 h-2.5 bg-signal-success/40" style={{ borderRadius: '1px' }} />
-              <span className="font-mono text-[10px] text-ink-quaternary ml-2">titan.yaml</span>
-            </div>
-            <pre className="p-5 font-mono text-xs text-ink-secondary leading-relaxed overflow-x-auto">
-              {POLICY_SNIPPET}
-            </pre>
-          </Card>
         </Container>
       </section>
 
@@ -333,7 +335,7 @@ export default function SolutionInstantRollback() {
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               The status quo
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-2">
               How teams handle rollbacks today, and the cost.
             </h2>
             <p className="text-ink-secondary text-sm max-w-xl">
@@ -374,7 +376,7 @@ export default function SolutionInstantRollback() {
                   <p className="text-[11px] font-mono text-red-400/80 uppercase tracking-wider mb-1">
                     Failure mode
                   </p>
-                  <p className="text-xs text-ink-tertiary leading-relaxed">{item.failure}</p>
+                  <p className="text-sm text-ink-tertiary leading-relaxed">{item.failure}</p>
                 </div>
               </Card>
             ))}
@@ -383,13 +385,13 @@ export default function SolutionInstantRollback() {
       </section>
 
       {/* Comparison */}
-      <section className="py-20 border-b border-line">
+      <section className="py-16 border-b border-line">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               How we compare
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-2">
               DeployTitan vs. the alternatives.
             </h2>
           </div>
@@ -436,7 +438,7 @@ export default function SolutionInstantRollback() {
       <section className="py-20">
         <Container width="4xl" padding="default">
           <div className="text-center" data-reveal>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-4">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-4">
               See Phoenix roll back a live canary in under 10 seconds.
             </h2>
             <p className="text-ink-secondary text-sm mb-8 max-w-lg mx-auto">
@@ -467,6 +469,8 @@ export default function SolutionInstantRollback() {
           </div>
         </Container>
       </section>
+
+      <SolutionNav currentRoute="/solutions/instant-rollback" />
     </>
   )
 }

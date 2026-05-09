@@ -5,6 +5,8 @@ import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
+import { CodeBlock } from '../../components/shared/CodeBlock'
+import { SolutionNav } from '../../components/shared/SolutionNav'
 
 const PHASES = [
   {
@@ -104,15 +106,15 @@ export default function SolutionProgressiveDelivery() {
       </section>
 
       {/* Narrative */}
-      <section className="py-20 border-b border-line bg-surface-alt/20">
+      <section className="py-16 border-b border-line bg-surface-alt/20">
         <Container width="4xl" padding="default">
-          <div className="flex flex-col gap-10" data-reveal>
+          <div className="flex flex-col gap-10 max-w-prose" data-reveal>
             {/* The scene */}
             <div>
               <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
                 The situation
               </p>
-              <blockquote className="text-xl lg:text-2xl font-semibold text-ink leading-snug border-l-2 border-primary pl-6 mb-6">
+              <blockquote className="text-xl lg:text-2xl font-semibold text-ink/90 italic leading-snug mb-6">
                 "It's Thursday. The feature's ready. Someone suggests shipping tomorrow morning
                 instead of today, just to be safe."
               </blockquote>
@@ -200,7 +202,7 @@ export default function SolutionProgressiveDelivery() {
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               The transformation
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug">
               Before and after DeployTitan.
             </h2>
           </div>
@@ -248,7 +250,7 @@ export default function SolutionProgressiveDelivery() {
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               How it works
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug">
               Four phases, one workflow.
             </h2>
           </div>
@@ -262,7 +264,7 @@ export default function SolutionProgressiveDelivery() {
                 data-reveal-delay={String(i)}
               >
                 <div className="flex items-start justify-between mb-4">
-                  <span className="font-mono text-3xl font-bold text-ink/8 leading-none select-none">
+                  <span className="font-mono text-3xl font-bold text-ink/15 leading-none select-none">
                     {phase.number}
                   </span>
                   <div className="text-right">
@@ -275,7 +277,7 @@ export default function SolutionProgressiveDelivery() {
                 <h3 className="text-base font-semibold text-ink mb-2 leading-snug">
                   {phase.title}
                 </h3>
-                <p className="text-sm text-ink-secondary leading-relaxed">{phase.body}</p>
+                <p className="text-base text-ink-secondary leading-relaxed">{phase.body}</p>
               </Card>
             ))}
           </div>
@@ -283,13 +285,13 @@ export default function SolutionProgressiveDelivery() {
       </section>
 
       {/* Code snippet */}
-      <section className="py-20 border-b border-line bg-surface-alt/30">
+      <section className="py-14 border-b border-line bg-surface-alt/30">
         <Container width="3xl" padding="default">
           <div className="mb-8" data-reveal>
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               One command
             </p>
-            <h2 className="text-2xl font-semibold text-ink mb-2">
+            <h2 className="text-2xl font-semibold text-ink leading-snug mb-2">
               Canary to production in a single CLI call.
             </h2>
             <p className="text-sm text-ink-secondary">
@@ -297,35 +299,29 @@ export default function SolutionProgressiveDelivery() {
               automatically.
             </p>
           </div>
-          <Card padding="none" className="overflow-hidden" data-reveal>
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-line bg-surface-alt/60">
-              <span className="w-2.5 h-2.5 bg-signal-danger/40" style={{ borderRadius: '1px' }} />
-              <span className="w-2.5 h-2.5 bg-signal-warning/40" style={{ borderRadius: '1px' }} />
-              <span className="w-2.5 h-2.5 bg-signal-success/40" style={{ borderRadius: '1px' }} />
-              <span className="font-mono text-[10px] text-ink-quaternary ml-2">terminal</span>
-            </div>
-            <div className="p-5 font-mono text-sm leading-relaxed">
-              <p className="text-ink-quaternary">
-                # Deploy with canary strategy, auto-rollback on SLO breach
-              </p>
-              <p className="text-ink mt-2">
-                <span className="text-primary">$</span> dt deploy --strategy canary --canary-weight
-                5 --auto-rollback
-              </p>
-              <p className="text-ink-tertiary mt-3">
-                ✓ Risk score: 12/100 (low): 0 SLO violations in last 7d
-              </p>
-              <p className="text-ink-tertiary">
-                ✓ Blast radius: 2 downstream services (non-critical)
-              </p>
-              <p className="text-ink-tertiary">→ Shifting 5% traffic to v2.4.1...</p>
-              <p className="text-signal-success mt-1">
-                ✓ p99 stable at 43ms (+2ms). Stepping to 25%.
-              </p>
-              <p className="text-signal-success">✓ p99 stable at 44ms. Stepping to 100%.</p>
-              <p className="text-primary mt-1 font-semibold">✓ Deploy complete. 8m 43s total.</p>
-            </div>
-          </Card>
+          <div data-reveal>
+          <CodeBlock variant="terminal" filename="terminal" copy={false}>
+            <p className="text-ink-quaternary">
+              # Deploy with canary strategy, auto-rollback on SLO breach
+            </p>
+            <p className="text-ink mt-2">
+              <span className="text-primary">$</span> dt deploy --strategy canary --canary-weight
+              5 --auto-rollback
+            </p>
+            <p className="text-ink-tertiary mt-3">
+              ✓ Risk score: 12/100 (low): 0 SLO violations in last 7d
+            </p>
+            <p className="text-ink-tertiary">
+              ✓ Blast radius: 2 downstream services (non-critical)
+            </p>
+            <p className="text-ink-tertiary">→ Shifting 5% traffic to v2.4.1...</p>
+            <p className="text-signal-success mt-1">
+              ✓ p99 stable at 43ms (+2ms). Stepping to 25%.
+            </p>
+            <p className="text-signal-success">✓ p99 stable at 44ms. Stepping to 100%.</p>
+            <p className="text-primary mt-1 font-semibold">✓ Deploy complete. 8m 43s total.</p>
+          </CodeBlock>
+          </div>
         </Container>
       </section>
 
@@ -336,7 +332,7 @@ export default function SolutionProgressiveDelivery() {
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               The status quo
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-2">
               What teams are doing today, and why it breaks.
             </h2>
             <p className="text-ink-secondary text-sm max-w-xl">
@@ -377,7 +373,7 @@ export default function SolutionProgressiveDelivery() {
                   <p className="text-[11px] font-mono text-red-400/80 uppercase tracking-wider mb-1">
                     Failure mode
                   </p>
-                  <p className="text-xs text-ink-tertiary leading-relaxed">{item.failure}</p>
+                  <p className="text-sm text-ink-tertiary leading-relaxed">{item.failure}</p>
                 </div>
               </Card>
             ))}
@@ -386,14 +382,14 @@ export default function SolutionProgressiveDelivery() {
       </section>
 
       {/* Comparison */}
-      <section className="py-20 border-b border-line">
+      <section className="py-20 border-b border-line bg-surface-alt/20">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               How we compare
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
-              DeployTitan vs. the alternatives.
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-2">
+              Rollout + Foresight vs. Argo + Spinnaker.
             </h2>
           </div>
           <div className="overflow-x-auto" data-reveal>
@@ -403,7 +399,7 @@ export default function SolutionProgressiveDelivery() {
                   <th className="text-left py-3 pr-6 text-xs font-mono uppercase tracking-wider text-ink-tertiary w-1/4">
                     Capability
                   </th>
-                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-primary">
+                  <th className="py-3 px-4 text-xs font-mono uppercase tracking-wider text-primary bg-primary/[0.04] border-x border-primary/10">
                     DeployTitan
                   </th>
                   <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-ink-tertiary">
@@ -424,7 +420,7 @@ export default function SolutionProgressiveDelivery() {
                 ].map(([cap, dt, diy, spinnaker]) => (
                   <tr key={String(cap)} className="border-b border-line/50">
                     <td className="py-3 pr-6 text-xs text-ink-secondary">{cap}</td>
-                    <td className="py-3 px-4 text-center text-xs text-signal-success font-mono">{dt}</td>
+                    <td className="py-3 px-4 text-center text-xs text-signal-success font-mono bg-primary/[0.03] border-x border-primary/8">{dt}</td>
                     <td className="py-3 px-4 text-center text-xs text-ink-tertiary font-mono">{diy}</td>
                     <td className="py-3 px-4 text-center text-xs text-ink-tertiary font-mono">{spinnaker}</td>
                   </tr>
@@ -439,7 +435,7 @@ export default function SolutionProgressiveDelivery() {
       <section className="py-20">
         <Container width="4xl" padding="default">
           <div className="text-center" data-reveal>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-4">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-4">
               See it running on your stack in 20 minutes.
             </h2>
             <p className="text-ink-secondary text-sm mb-8 max-w-lg mx-auto">
@@ -470,6 +466,8 @@ export default function SolutionProgressiveDelivery() {
           </div>
         </Container>
       </section>
+
+      <SolutionNav currentRoute="/solutions/progressive-delivery" />
     </>
   )
 }

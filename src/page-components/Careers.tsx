@@ -68,7 +68,7 @@ export default function Careers() {  const [filter, setFilter] = useState<string
           <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
             Benefits
           </span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
             What we offer
           </h2>
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -89,7 +89,7 @@ export default function Careers() {  const [filter, setFilter] = useState<string
             <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
               Open roles
             </span>
-            <h2 className="mt-2 text-2xl font-display font-medium text-ink tracking-tight">
+            <h2 className="mt-2 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
               {filtered.length} open position{filtered.length !== 1 ? 's' : ''}
             </h2>
           </div>

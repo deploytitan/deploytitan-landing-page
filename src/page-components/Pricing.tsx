@@ -167,7 +167,7 @@ const FAQS: { q: string; a: React.ReactNode }[] = [
     a: (
       <>
         Yes. Email us at{' '}
-        <a href="mailto:support@deploytitan.com" className="text-primary hover:underline">
+        <a href="mailto:support@deploytitan.com" className="text-ink-secondary underline hover:text-ink transition-colors">
           support@deploytitan.com
         </a>{' '}
         and we&apos;ll sort you out.
@@ -223,11 +223,14 @@ function formatCredits(n: number): string {
 
 function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
   const [open, setOpen] = useState(false)
+  const id = React.useId()
+  const answerId = `faq-answer-${id}`
   return (
     <div className="border-line border-b last:border-b-0">
       <button
         onClick={() => setOpen(!open)}
         aria-expanded={open}
+        aria-controls={answerId}
         className="text-ink hover:text-primary flex w-full items-center justify-between py-5 text-left text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
       >
         {q}
@@ -244,7 +247,17 @@ function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
       </button>
-      {open && <p className="text-ink-secondary pb-5 text-sm leading-relaxed">{a}</p>}
+      <div
+        id={answerId}
+        role="region"
+        aria-labelledby={undefined}
+        className="grid transition-[grid-template-rows] duration-200 ease-out"
+        style={{ gridTemplateRows: open ? '1fr' : '0fr' }}
+      >
+        <div className="overflow-hidden">
+          <p className="text-ink-secondary pb-5 text-sm leading-relaxed">{a}</p>
+        </div>
+      </div>
     </div>
   )
 }
@@ -284,7 +297,7 @@ function PlanCard({
       data-reveal
     >
       {isHighlighted && (
-        <p className="text-primary border-primary/30 mb-4 self-start border px-2 py-1 font-mono text-[10px] tracking-widest uppercase">
+        <p className="text-ink-secondary border-primary/30 mb-4 self-start border px-2 py-1 font-mono text-[10px] tracking-widest uppercase">
           Most popular
         </p>
       )}
@@ -306,7 +319,7 @@ function PlanCard({
 
       {/* Credits badge */}
       {credits != null && (
-        <p className="text-primary mb-1 font-mono text-xs">
+        <p className="text-ink-secondary mb-1 font-mono text-xs">
           {formatCredits(credits)} credits / month included
         </p>
       )}
@@ -328,6 +341,7 @@ function PlanCard({
         href={checkoutUrl}
         target={isMail ? '_self' : '_blank'}
         rel={isMail ? undefined : 'noopener noreferrer'}
+        aria-label={`${cta} — ${name} plan`}
         className={`mt-auto px-4 py-2.5 text-center text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
           isHighlighted
             ? 'bg-primary text-ink hover:bg-primary-light'
@@ -384,8 +398,8 @@ export default function Pricing({ polarProducts }: Props) {
       {/* ── Hero ── */}
       <section className="blueprint-grid border-line border-b pt-28 pb-16">
         <Container width="3xl" padding="default" className="text-center" data-reveal>
-          <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">Pricing</p>
-          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl">
+          <p className="text-ink-tertiary mb-4 font-mono text-xs tracking-widest uppercase">Pricing</p>
+          <h1 className="text-ink mb-5 text-4xl leading-tight font-medium lg:text-5xl">
             Pay for what you deploy.
             <br className="hidden md:block" /> Not for who you hire.
           </h1>
@@ -401,7 +415,7 @@ export default function Pricing({ polarProducts }: Props) {
       <section className="border-line border-b py-16">
         <Container width="4xl" padding="default">
           <div className="mb-10 text-center" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">Plans</p>
+            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">Plans</p>
             <h2 className="text-ink text-2xl font-semibold">Simple, predictable plans</h2>
             <p className="text-ink-secondary mt-2 text-sm">
               Credits are shared across your whole team: no seat counting required.
@@ -450,7 +464,7 @@ export default function Pricing({ polarProducts }: Props) {
             </a>
           </div>
 
-          <p className="text-ink-quaternary mt-6 text-center font-mono text-xs">
+          <p className="text-ink-tertiary mt-6 text-center font-mono text-xs">
             Credits shared across unlimited orgs, projects &amp; users · Unused credits expire
             monthly · Active subscription required
           </p>
@@ -461,7 +475,7 @@ export default function Pricing({ polarProducts }: Props) {
       <section className="border-line border-b py-20">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
               How billing works
             </p>
             <p className="text-ink max-w-2xl text-2xl font-semibold leading-snug">
@@ -471,14 +485,12 @@ export default function Pricing({ polarProducts }: Props) {
           </div>
 
           <dl className="border-line divide-line divide-y border-t" data-reveal>
-            {VALUE_PROPS.map((vp, i) => (
+            {VALUE_PROPS.map((vp) => (
               <div
                 key={vp.heading}
                 className="grid grid-cols-1 gap-2 py-6 md:grid-cols-[2fr_3fr] md:gap-12"
               >
-                <dt
-                  className={`text-ink text-sm leading-snug ${i % 2 === 0 ? 'font-semibold' : 'font-medium'}`}
-                >
+                <dt className="text-ink text-sm leading-snug font-medium">
                   {vp.heading}
                 </dt>
                 <dd className="text-ink-secondary text-sm leading-relaxed">{vp.body}</dd>
@@ -492,7 +504,7 @@ export default function Pricing({ polarProducts }: Props) {
       <section className="border-line bg-surface-alt/40 border-b py-20">
         <Container width="4xl" padding="default">
           <div className="mb-8" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
               Is Starter enough?
             </p>
             <h2 className="text-ink mb-2 text-2xl font-semibold">
@@ -573,12 +585,12 @@ export default function Pricing({ polarProducts }: Props) {
               </div>
               <div className="text-right">
                 <p className="text-ink font-mono text-2xl font-bold">228</p>
-                <p className="text-primary mt-0.5 font-mono text-xs">22 credits remaining</p>
+                <p className="text-ink-secondary mt-0.5 font-mono text-xs">22 credits remaining</p>
               </div>
             </div>
           </div>
 
-          <p className="text-ink-quaternary mt-5 text-center font-mono text-xs" data-reveal>
+          <p className="text-ink-tertiary mt-5 text-center font-mono text-xs" data-reveal>
             Each deployable unit (container, Lambda, monolith) counts as 1 credit per action:
             regardless of how many routes, endpoints, or paths it serves. Browsing dashboards,
             viewing history, and reading reports is always free.
@@ -590,7 +602,7 @@ export default function Pricing({ polarProducts }: Props) {
       <section className="border-line border-b py-20">
         <Container width="5xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
               What costs a credit
             </p>
             <h2 className="text-ink mb-2 text-2xl font-semibold">Every action. One credit.</h2>
@@ -605,7 +617,7 @@ export default function Pricing({ polarProducts }: Props) {
           <div className="grid grid-cols-1 gap-x-12 gap-y-10 md:grid-cols-2">
             {FEATURE_MATRIX.map((cat) => (
               <div key={cat.category} data-reveal>
-                <p className="text-primary border-line mb-4 border-b pb-2 font-mono text-[10px] tracking-widest uppercase">
+                <p className="text-ink-tertiary border-line mb-4 border-b pb-2 font-mono text-[10px] tracking-widest uppercase">
                   {cat.category}
                 </p>
                 <ul className="flex flex-col gap-3">
@@ -615,7 +627,7 @@ export default function Pricing({ polarProducts }: Props) {
                         <p className="text-ink text-sm font-medium">{f.name}</p>
                         <p className="text-ink-tertiary mt-0.5 text-xs">{f.description}</p>
                       </div>
-                      <span className="text-primary border-primary/30 mt-0.5 shrink-0 border px-2 py-0.5 font-mono text-[10px]">
+                      <span className="text-ink-secondary border-primary/30 mt-0.5 shrink-0 border px-2 py-0.5 font-mono text-[10px]">
                         1 credit
                       </span>
                     </li>
@@ -631,7 +643,7 @@ export default function Pricing({ polarProducts }: Props) {
             data-reveal
           >
             <svg
-              className="text-primary mt-0.5 shrink-0"
+              className="text-ink-secondary mt-0.5 shrink-0"
               width="14"
               height="14"
               viewBox="0 0 24 24"
@@ -658,7 +670,7 @@ export default function Pricing({ polarProducts }: Props) {
       <section className="border-line border-b py-24">
         <Container width="3xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">FAQ</p>
+            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">FAQ</p>
             <h2 className="text-ink text-2xl font-semibold">Common questions</h2>
           </div>
           <div data-reveal>
@@ -672,7 +684,7 @@ export default function Pricing({ polarProducts }: Props) {
       {/* ── Install strip ── */}
       <section className="border-line border-b py-16">
         <Container width="3xl" padding="default" className="text-center">
-          <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase" data-reveal>
+          <p className="text-ink-tertiary mb-4 font-mono text-xs tracking-widest uppercase" data-reveal>
             Get started now
           </p>
           <p className="text-ink mb-8 text-lg font-semibold" data-reveal>

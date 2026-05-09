@@ -144,7 +144,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
         <Link
           href="/solutions"
           onClick={onClose}
-          className="text-primary hover:bg-surface-alt block px-8 py-3 text-sm font-medium transition-colors"
+          className="text-ink-secondary hover:bg-surface-alt block px-8 py-3 text-sm font-medium transition-colors hover:text-ink"
         >
           View all solutions →
         </Link>
@@ -184,7 +184,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
       {/* Auth buttons */}
       <div className="border-line mt-auto flex flex-col gap-3 border-t px-6 py-8 md:mb-[unset]">
         <div className="mb-1 flex items-center justify-between">
-          <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
+          <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
             Appearance
           </span>
           <ThemeToggle />

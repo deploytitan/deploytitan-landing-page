@@ -1,0 +1,385 @@
+/* ==========================================================================
+   DeployTitan Component CSS
+   @deploytitan/design-tokens/components.css
+
+   Shared utility classes, keyframes, and component patterns.
+   Import after your tailwindcss import:
+
+     @import 'tailwindcss';
+     @import "@deploytitan/design-tokens/tokens";
+     @import "@deploytitan/design-tokens/components";
+
+   Or use the combined entry point:
+     @import "@deploytitan/design-tokens";
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   Keyframes
+   ---------------------------------------------------------------------- */
+@keyframes ping-anim {
+    75%, 100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse-anim {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.5; }
+}
+
+@keyframes scan-line {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes slideInLog {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gold-shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+}
+
+/* -------------------------------------------------------------------------
+   Base
+   ---------------------------------------------------------------------- */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Noise texture overlay — material depth at 2% opacity */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+}
+
+.dark body::after {
+    opacity: 0.035;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+/* -------------------------------------------------------------------------
+   Background motifs
+   ---------------------------------------------------------------------- */
+
+/* Neutral grid — light mode */
+.hero-grid {
+    background-image:
+        linear-gradient(rgba(8, 5, 3, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(8, 5, 3, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+
+.dark .hero-grid {
+    background-image:
+        linear-gradient(rgba(245, 244, 241, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 244, 241, 0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+
+/* Blueprint grid — amber-tinted, 120px major / 24px minor */
+.blueprint-grid {
+    background-image:
+        linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(201, 168, 76, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201, 168, 76, 0.02) 1px, transparent 1px);
+    background-size:
+        120px 120px,
+        120px 120px,
+        24px  24px,
+        24px  24px;
+}
+
+.dark .blueprint-grid {
+    background-image:
+        linear-gradient(rgba(212, 180, 84, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 180, 84, 0.06) 1px, transparent 1px),
+        linear-gradient(rgba(212, 180, 84, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 180, 84, 0.03) 1px, transparent 1px);
+    background-size:
+        120px 120px,
+        120px 120px,
+        24px  24px,
+        24px  24px;
+}
+
+/* -------------------------------------------------------------------------
+   Corner accent (technical blueprint motif)
+   Draws right-angle marks at two opposing corners using amber at 30% opacity.
+   Use sparingly: one per section maximum.
+   ---------------------------------------------------------------------- */
+.corner-accent {
+    position: relative;
+}
+
+.corner-accent::before,
+.corner-accent::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: var(--color-primary);
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.corner-accent::before {
+    top: 0;
+    left: 0;
+    border-top:  1.5px solid;
+    border-left: 1.5px solid;
+}
+
+.corner-accent::after {
+    bottom: 0;
+    right:  0;
+    border-bottom: 1.5px solid;
+    border-right:  1.5px solid;
+}
+
+/* -------------------------------------------------------------------------
+   Gold line — horizontal amber divider
+   ---------------------------------------------------------------------- */
+.gold-line {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201, 168, 76, 0.6), transparent);
+}
+
+/* -------------------------------------------------------------------------
+   Nav link underline — hairline amber grow on hover
+   ---------------------------------------------------------------------- */
+.nav-link-underline {
+    position: relative;
+}
+
+.nav-link-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--color-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link-underline:hover::after {
+    transform: scaleX(1);
+}
+
+/* -------------------------------------------------------------------------
+   Sharp card — 2px radius, amber hover ring
+   ---------------------------------------------------------------------- */
+.sharp-card {
+    border-radius: 2px;
+    border: 1px solid var(--color-line);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.sharp-card:hover {
+    border-color: rgba(201, 168, 76, 0.3);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.04),
+        0 0 0 1px rgba(201, 168, 76, 0.06);
+}
+
+.dark .sharp-card:hover {
+    border-color: rgba(212, 180, 84, 0.25);
+    box-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(212, 180, 84, 0.08);
+}
+
+/* -------------------------------------------------------------------------
+   Capability row — used in feature/product lists
+   ---------------------------------------------------------------------- */
+.cap-row {
+    transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cap-row:hover {
+    border-color: rgba(201, 168, 76, 0.25);
+    background: var(--color-surface);
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.04),
+        0 0 0 1px rgba(201, 168, 76, 0.08);
+}
+
+.dark .cap-row:hover {
+    border-color: rgba(212, 180, 84, 0.2);
+    background: #161512;
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(212, 180, 84, 0.06);
+}
+
+/* -------------------------------------------------------------------------
+   Spotlight card — cursor-following amber radial glow
+   ---------------------------------------------------------------------- */
+.spotlight-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.spotlight-card::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(
+        circle at center,
+        rgba(201, 168, 76, 0.08) 0%,
+        rgba(201, 168, 76, 0.03) 30%,
+        transparent 70%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transform: translate(-50%, -50%);
+    top:  var(--spotlight-y, 50%);
+    left: var(--spotlight-x, 50%);
+}
+
+.spotlight-card:hover::before {
+    opacity: 1;
+}
+
+.dark .spotlight-card::before {
+    background: radial-gradient(
+        circle at center,
+        rgba(212, 180, 84, 0.12) 0%,
+        rgba(212, 180, 84, 0.05) 30%,
+        transparent 70%
+    );
+}
+
+/* -------------------------------------------------------------------------
+   Capability modal — the only blur in the system (focus-lock mechanism)
+   ---------------------------------------------------------------------- */
+.cap-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(8, 5, 3, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.cap-modal-backdrop.open {
+    opacity: 1;
+}
+
+.dark .cap-modal-backdrop {
+    background: rgba(8, 5, 3, 0.75);
+}
+
+.cap-modal-panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+    max-width: 880px;
+    width: 100%;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    transform: translateY(12px) scale(0.98);
+    opacity: 0;
+    transition:
+        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity   0.3s ease;
+}
+
+.cap-modal-backdrop.open .cap-modal-panel {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.dark .cap-modal-panel {
+    background: var(--color-surface-alt);
+    border-color: var(--color-line);
+}
+
+/* -------------------------------------------------------------------------
+   Log entry animation
+   ---------------------------------------------------------------------- */
+.log-entry {
+    animation: slideInLog 0.3s ease forwards;
+}
+
+/* -------------------------------------------------------------------------
+   Dark mode compatibility shim
+   ---------------------------------------------------------------------- */
+.dark .bg-white {
+    background-color: var(--color-surface-alt) !important;
+}
+
+.dark [data-nav-scrolled='true'] {
+    background: rgba(13, 12, 10, 0.92) !important;
+}
+
+/* -------------------------------------------------------------------------
+   Interactive element cursors
+   ---------------------------------------------------------------------- */
+a,
+button,
+[role='button'],
+[onclick],
+.cursor-pointer,
+input[type='submit'],
+input[type='button'],
+input[type='reset'],
+select,
+label[for],
+summary {
+    cursor: pointer;
+}
+
+/* -------------------------------------------------------------------------
+   Reduced motion — all animations off for users who prefer it
+   ---------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration:      0.01ms !important;
+        animation-iteration-count: 1    !important;
+        transition-duration:     0.01ms !important;
+        scroll-behavior:         auto   !important;
+    }
+}

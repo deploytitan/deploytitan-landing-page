@@ -135,16 +135,6 @@ export const generatedNodes: GraphNode[] = [
     "file": "src/app/products/titan-foresight/page.tsx"
   },
   {
-    "id": "/products/titan-insight",
-    "label": "Titan Insight",
-    "file": "src/app/products/titan-insight/page.tsx"
-  },
-  {
-    "id": "/products/titan-ledger",
-    "label": "Titan Ledger",
-    "file": "src/app/products/titan-ledger/page.tsx"
-  },
-  {
     "id": "/products/titan-phoenix",
     "label": "Titan Phoenix",
     "file": "src/app/products/titan-phoenix/page.tsx"
@@ -153,16 +143,6 @@ export const generatedNodes: GraphNode[] = [
     "id": "/products/titan-rollout",
     "label": "Titan Rollout",
     "file": "src/app/products/titan-rollout/page.tsx"
-  },
-  {
-    "id": "/products/titan-sandbox",
-    "label": "Titan Sandbox",
-    "file": "src/app/products/titan-sandbox/page.tsx"
-  },
-  {
-    "id": "/products/titan-shield",
-    "label": "Titan Shield",
-    "file": "src/app/products/titan-shield/page.tsx"
   },
   {
     "id": "/roadmap",
@@ -183,11 +163,6 @@ export const generatedNodes: GraphNode[] = [
     "id": "/solutions/instant-rollback",
     "label": "Instant Rollback",
     "file": "src/app/solutions/instant-rollback/page.tsx"
-  },
-  {
-    "id": "/solutions/multi-cloud-resilience",
-    "label": "Multi Cloud Resilience",
-    "file": "src/app/solutions/multi-cloud-resilience/page.tsx"
   },
   {
     "id": "/solutions",
@@ -295,11 +270,6 @@ export const generatedLinks: GraphLink[] = [
   {
     "source": "/for/-for-dev-ops",
     "target": "/solutions/progressive-delivery",
-    "kind": "link"
-  },
-  {
-    "source": "/for/-for-s-r-e",
-    "target": "/solutions/multi-cloud-resilience",
     "kind": "link"
   },
   {

@@ -1,7 +1,6 @@
 'use client'
 
 import { APP_URL } from '@/lib/env'
-import { Solution } from '../../components/Solution'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { InstallTabs } from '../../components/shared/InstallTabs'
 import { useScrollReveal } from '../../utils'
@@ -31,6 +30,38 @@ rollout "my-api" {
     trigger = "error_rate > 0.5% OR p99_latency > 200ms"
   }
 }`
+
+// Primary: the 2 most differentiating Rollout capabilities
+const PRIMARY_CAPABILITIES = [
+  {
+    title: 'Traffic splitting with real-signal gates',
+    desc: 'Shift a configurable percentage of traffic to the new version. Rollout expands automatically as health gates pass and pauses the moment a signal breaches its threshold, before users notice.',
+  },
+  {
+    title: 'Strategy flexibility: canary, blue-green, ring',
+    desc: 'One CLI command, three strategies. Canary for gradual expansion, blue-green for instant cutover with a clean fallback, ring for staged rollout by team, region, or customer tier.',
+  },
+]
+
+// Supporting: 4 tighter items
+const SUPPORTING_CAPABILITIES = [
+  {
+    title: 'Health gates as code',
+    desc: 'Define pause triggers in HCL alongside your deploy config. Error rate, p99 latency, custom metrics: any signal Rollout can observe can become a gate.',
+  },
+  {
+    title: 'Automatic cohort promotion',
+    desc: 'Rollout advances the traffic weight on a configurable interval as long as health gates hold. No manual promotion step; no human in the loop unless a gate fires.',
+  },
+  {
+    title: 'Foresight integration',
+    desc: 'Risky PRs automatically get tighter initial cohorts and shorter promotion windows. Foresight sets the policy; Rollout enforces it.',
+  },
+  {
+    title: 'Phoenix handoff on breach',
+    desc: 'If a health gate fires during rollout, Rollout pauses and hands the incident to Phoenix for scoped rollback. The two products are designed to work as a unit.',
+  },
+]
 
 const CROSS_LINKS = [
   {
@@ -92,8 +123,67 @@ export default function TitanRollout() {
         </Container>
       </section>
 
-      {/* Key capabilities — reuse existing Solution component */}
-      <Solution />
+      {/* Wedge framing */}
+      <section className="py-16 border-b border-line bg-surface-alt/20">
+        <Container width="4xl" padding="default" data-reveal>
+          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+            How Rollout is different
+          </p>
+          <p className="text-2xl font-medium text-ink leading-snug mb-4">
+            A deploy command that knows when to stop.
+          </p>
+          <p className="text-ink-secondary leading-relaxed max-w-2xl">
+            Most deployment tools move traffic and wait for a human to intervene. Rollout moves
+            traffic, watches your SLOs, and pauses or hands off to Phoenix the moment a threshold
+            breaks. The human stays in the loop only when it matters.
+          </p>
+        </Container>
+      </section>
+
+      {/* Capabilities — Rollout-specific, broken grid hierarchy */}
+      <section className="py-24 border-b border-line">
+        <Container width="6xl" padding="default">
+          <div className="mb-10" data-reveal>
+            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              Capabilities
+            </p>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
+              Traffic control with real guardrails.
+            </h2>
+            {/* Leadership brief */}
+            <p className="text-ink-secondary max-w-2xl leading-relaxed">
+              Rollout turns a single deploy command into a progressive, gated release. It shifts
+              traffic in configurable increments, advances automatically when health gates hold, and
+              hands off to Phoenix the moment they don't. Engineers ship more; on-call gets fewer
+              pages.
+            </p>
+          </div>
+
+          {/* Primary capabilities: 2 lead items */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-reveal>
+            {PRIMARY_CAPABILITIES.map((c) => (
+              <div
+                key={c.title}
+                className="border border-line p-6 bg-surface-alt/30"
+                style={{ borderRadius: '2px' }}
+              >
+                <h3 className="text-base font-semibold text-ink mb-2">{c.title}</h3>
+                <p className="text-sm text-ink-secondary leading-relaxed">{c.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Supporting capabilities: 4 tighter items */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" data-reveal>
+            {SUPPORTING_CAPABILITIES.map((c) => (
+              <Card key={c.title} className="flex flex-col gap-2">
+                <h3 className="text-sm font-semibold text-ink">{c.title}</h3>
+                <p className="text-sm text-ink-tertiary leading-relaxed">{c.desc}</p>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </section>
 
       {/* Quickstart */}
       <section className="py-24 border-t border-line">
@@ -174,18 +264,19 @@ export default function TitanRollout() {
               </Card>
             ))}
           </div>
+          {/* Harden: replaced dead doc links with functional alternatives */}
           <div className="mt-8 flex items-center gap-6" data-reveal>
             <a
-              href="/docs/titan-rollout"
+              href="#capabilities"
               className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
             >
-              Read the docs →
+              See capabilities →
             </a>
             <a
-              href="/docs/titan-rollout/integrations"
+              href={`${APP_URL}/signup`}
               className="text-sm text-ink-tertiary hover:text-ink-secondary transition-colors"
             >
-              See all integrations
+              Start free trial
             </a>
           </div>
         </Container>
@@ -195,7 +286,7 @@ export default function TitanRollout() {
       <section className="py-16 border-t border-line">
         <Container width="6xl" padding="default">
           <p
-            className="text-xs font-mono tracking-widest uppercase text-ink-tertiary mb-6"
+            className="text-xs font-mono tracking-widest uppercase text-ink-secondary mb-6 font-medium"
             data-reveal
           >
             Also in DeployTitan
@@ -215,8 +306,6 @@ export default function TitanRollout() {
           </div>
         </Container>
       </section>
-
-      
     </>
   )
 }

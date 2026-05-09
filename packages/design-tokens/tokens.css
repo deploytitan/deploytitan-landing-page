@@ -1,0 +1,97 @@
+/* ==========================================================================
+   DeployTitan Design Tokens
+   @deploytitan/design-tokens/tokens.css
+
+   Import this in your Tailwind v4 CSS entry point:
+     @import "@deploytitan/design-tokens/tokens";
+
+   Or import everything at once:
+     @import "@deploytitan/design-tokens";
+   ========================================================================== */
+
+/* Dark mode variant — toggled via .dark class on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* -------------------------------------------------------------------------
+   Theme: light mode (default)
+   All tokens follow the DeployTitan "Instrument Panel" visual language.
+   Single precision amber accent (#c9a84c), warm-tinted neutrals, 2px radius.
+   See DESIGN.md for full rationale.
+   ---------------------------------------------------------------------- */
+@theme {
+    /* Fonts */
+    --font-sans:    'Instrument Sans', system-ui, sans-serif;
+    --font-display: 'Inter', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+
+    /* Surfaces */
+    --color-surface:     #fafaf9;
+    --color-surface-alt: #f5f4f1;
+
+    /* Ink hierarchy */
+    --color-ink:            #1a1512;
+    --color-ink-secondary:  #3d3530;
+    --color-ink-tertiary:   #6b6059;
+    --color-ink-quaternary: #9e9189;
+
+    /* Lines */
+    --color-line:        #e5e2dc;
+    --color-line-subtle: #eeece8;
+
+    /* Signal colors */
+    --color-signal-success: #22c55e;
+    --color-signal-warning: #f59e0b;
+    --color-signal-danger:  #ef4444;
+    --color-signal-deploy:  #3b82f6;
+
+    /* Precision amber (primary accent) */
+    --color-gold:         #c9a84c;
+    --color-gold-light:   #e8d48b;
+    --color-gold-dark:    #a68a3e;
+    --color-gold-muted:   rgba(201, 168, 76, 0.15);
+
+    /* Primary alias — same values as gold, future-proofs against re-brand */
+    --color-primary:       #c9a84c;
+    --color-primary-light: #e8d48b;
+    --color-primary-dark:  #a68a3e;
+    --color-primary-muted: rgba(201, 168, 76, 0.15);
+
+    /* Layout */
+    --max-width-page: 1400px;
+
+    /* Radius — 2px is non-negotiable; it signals precision, not softness */
+    --radius-sharp: 2px;
+}
+
+/* -------------------------------------------------------------------------
+   Dark palette — overrides every theme token when .dark is on <html>
+   ---------------------------------------------------------------------- */
+.dark {
+    --color-surface:     #0d0c0a;
+    --color-surface-alt: #161512;
+
+    --color-ink:            #f5f4f1;
+    --color-ink-secondary:  #c8c2b8;
+    --color-ink-tertiary:   #8a8078;
+    --color-ink-quaternary: #4a453e;
+
+    --color-line:        #2a2825;
+    --color-line-subtle: #1e1c19;
+
+    /* Signal colors lift one step for contrast against dark surfaces */
+    --color-signal-success: #4ade80;
+    --color-signal-warning: #fbbf24;
+    --color-signal-danger:  #f87171;
+    --color-signal-deploy:  #60a5fa;
+
+    /* Amber brightens slightly to maintain perceptual weight on dark surface */
+    --color-gold:         #d4b454;
+    --color-gold-light:   #e8d48b;
+    --color-gold-dark:    #c9a84c;
+    --color-gold-muted:   rgba(212, 180, 84, 0.12);
+
+    --color-primary:       #d4b454;
+    --color-primary-light: #e8d48b;
+    --color-primary-dark:  #c9a84c;
+    --color-primary-muted: rgba(212, 180, 84, 0.12);
+}

@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { InstallTabs } from './shared/InstallTabs'
-import { CodeBlock } from './shared/CodeBlock'
+import { CodeBlock, InlineCode } from './shared/CodeBlock'
 import { useScrollReveal } from '../utils'
 import { Container } from './shared/Container'
-import { Card } from './shared/Card'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+import { useTheme } from '../hooks/useTheme'
 
 const DEPLOY_SNIPPET = `# 1. Authenticate
 dt login
@@ -30,6 +30,18 @@ dt deploy \\
 function TerminalOutput() {
   const ref = useRef<HTMLPreElement>(null)
   const reducedMotion = useReducedMotion()
+  const { resolved } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+
+  const theme = mounted ? resolved : 'light'
+  const bgColor = theme === 'dark' ? 'var(--color-dark-surface, #0d0c0a)' : 'var(--color-surface-alt, #f5f4f1)'
+  const headerBg = theme === 'dark' ? 'border-white/[0.06] bg-white/[0.02]' : 'border-black/[0.06] bg-black/[0.02]'
+  const labelColor = theme === 'dark' ? 'rgba(245,244,241,0.3)' : 'rgba(26,21,18,0.3)'
+  const iconBg = theme === 'dark' ? 'rgba(201,168,76,0.15)' : 'rgba(201,168,76,0.12)'
+  const iconBorder = theme === 'dark' ? 'rgba(201,168,76,0.2)' : 'rgba(201,168,76,0.25)'
+  const iconStroke = 'rgba(201,168,76,0.8)'
+  const textColor = theme === 'dark' ? 'var(--color-signal-success)' : 'var(--color-ink-secondary, #3d3530)'
 
   useEffect(() => {
     const lines = [
@@ -80,11 +92,34 @@ function TerminalOutput() {
   }, [reducedMotion])
 
   return (
-    <pre
-      ref={ref}
-      className="font-mono text-[12px] leading-[1.8] whitespace-pre min-h-[220px]"
-      style={{ color: 'var(--color-signal-success)' }}
-    />
+    <div
+      className="border border-line overflow-hidden"
+      style={{ borderRadius: '2px', backgroundColor: bgColor }}
+    >
+      {/* Header bar — same structure as CodeBlock */}
+      <div className={`flex items-center gap-2 px-4 py-2.5 border-b ${headerBg}`}>
+        <div
+          className="flex h-4 w-4 items-center justify-center"
+          style={{ backgroundColor: iconBg, borderRadius: '1px', border: `1px solid ${iconBorder}` }}
+        >
+          <svg width="8" height="8" viewBox="0 0 12 12" fill="none">
+            <path d="M1 3l3 2-3 2" stroke={iconStroke} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M7 8h4" stroke={iconStroke} strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </div>
+        <span className="font-mono text-[11px]" style={{ color: labelColor }}>
+          deploytitan: dt deploy
+        </span>
+      </div>
+      {/* Animated output */}
+      <div className="px-4 py-4">
+        <pre
+          ref={ref}
+          className="font-mono text-[12px] leading-[1.8] whitespace-pre min-h-[220px]"
+          style={{ color: textColor }}
+        />
+      </div>
+    </div>
   )
 }
 
@@ -106,9 +141,7 @@ export function Quickstart() {
           </h2>
           <p className="text-ink-secondary text-base leading-relaxed">
             Install the{' '}
-            <code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1.5 py-0.5 rounded">
-              dt
-            </code>{' '}
+            <InlineCode>dt</InlineCode>{' '}
             CLI, authenticate, and ship your first canary deployment before lunch.
           </p>
         </div>
@@ -131,31 +164,7 @@ export function Quickstart() {
           </div>
 
           {/* Right — animated terminal */}
-          <Card
-            tone="muted"
-            className="border border-line overflow-hidden"
-            style={{ backgroundColor: 'var(--color-dark-surface, #0d0c0a)' }}
-          >
-            {/* Instrument panel header bar — matches TrafficSplitVisual pattern */}
-            <div
-              className="flex items-center gap-2 mb-5 border-b pb-3"
-              style={{ borderColor: 'rgba(255,255,255,0.06)' }}
-            >
-              <div
-                className="flex h-4 w-4 items-center justify-center"
-                style={{ backgroundColor: 'rgba(201,168,76,0.15)', borderRadius: '1px', border: '1px solid rgba(201,168,76,0.2)' }}
-              >
-                <svg width="8" height="8" viewBox="0 0 12 12" fill="none">
-                  <path d="M1 3l3 2-3 2" stroke="rgba(201,168,76,0.8)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M7 8h4" stroke="rgba(201,168,76,0.8)" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-              </div>
-              <span className="font-mono text-[11px]" style={{ color: 'rgba(245,244,241,0.3)' }}>
-                deploytitan: dt deploy
-              </span>
-            </div>
-            <TerminalOutput />
-          </Card>
+          <TerminalOutput />
         </div>
       </Container>
     </section>

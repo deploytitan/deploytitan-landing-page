@@ -189,7 +189,7 @@ export function Reframe() {
 
               {/* Closing reframe line */}
               <div className="pt-6 border-t border-line text-center">
-                <p className="text-base font-display font-medium tracking-[-0.01em] text-ink">
+                <p className="text-base font-medium tracking-[-0.01em] text-ink">
                   Deployments became the bottleneck.
                 </p>
                 <p className="text-sm text-ink-secondary mt-1">

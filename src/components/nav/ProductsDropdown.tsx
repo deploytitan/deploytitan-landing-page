@@ -156,10 +156,10 @@ export function ProductsDropdown({ onClose }: Props) {
     >
       {/* Top bar */}
       <div className="border-line-subtle flex items-center justify-between border-b px-6 pt-5 pb-3">
-        <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
+        <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
           Products
         </span>
-        <span className="text-ink-quaternary text-xs">
+        <span className="text-ink-tertiary text-xs">
           What it does · Detect · Deliver · Defend · Recover · Measure
         </span>
       </div>
@@ -178,7 +178,7 @@ export function ProductsDropdown({ onClose }: Props) {
           >
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="text-primary/70 group-hover:text-primary transition-colors">
+                <span className="text-ink-tertiary group-hover:text-ink-secondary transition-colors">
                   {p.icon}
                 </span>
                 <span className="font-display text-ink group-hover:text-primary-dark text-sm font-semibold transition-colors">
@@ -201,7 +201,7 @@ export function ProductsDropdown({ onClose }: Props) {
 
       {/* Coming soon strip */}
       <div className="border-line-subtle bg-surface-alt/30 flex items-center gap-6 border-t px-6 py-3">
-        <span className="text-ink-quaternary shrink-0 font-mono text-[10px] tracking-widest uppercase">
+        <span className="text-ink-tertiary shrink-0 font-mono text-[10px] tracking-widest uppercase">
           More products coming soon
         </span>
         {COMING_SOON.map((p) => (
@@ -215,7 +215,7 @@ export function ProductsDropdown({ onClose }: Props) {
             <span className="text-ink-secondary group-hover:text-ink text-xs font-semibold transition-colors">
               {p.eyebrow}
             </span>
-            <span className="text-ink-quaternary hidden text-xs md:inline">— {p.tagline}</span>
+            <span className="text-ink-tertiary hidden text-xs md:inline">— {p.tagline}</span>
           </Link>
         ))}
       </div>
@@ -232,7 +232,7 @@ export function ProductsDropdown({ onClose }: Props) {
         <Link
           href="/pricing"
           onClick={onClose}
-          className="text-primary hover:text-primary-dark text-xs font-medium transition-colors"
+          className="text-ink-secondary hover:text-ink text-xs font-medium transition-colors"
         >
           View pricing →
         </Link>

@@ -19,7 +19,8 @@ rollback:
     notify: [slack, pagerduty]
     packet: true         # generate incident packet for Insight`
 
-const CAPABILITIES = [
+// Primary capabilities: 2 lead the section, 4 support beneath
+const PRIMARY_CAPABILITIES = [
   {
     title: 'SLO-triggered automatic rollback',
     desc: 'Define an SLO threshold and a measurement window. Phoenix watches continuously and acts the moment the window closes over the limit: no alert fatigue, no human required.',
@@ -28,21 +29,24 @@ const CAPABILITIES = [
     title: 'Scoped rollback: cohort, region, or flag',
     desc: "Phoenix doesn't roll back the whole service. It identifies the exact slice that's failing (a specific user cohort, a single region, or a feature flag state) and reverts only that.",
   },
+]
+
+const SUPPORTING_CAPABILITIES = [
   {
     title: 'Feature-flag-aware rollback',
-    desc: 'When a flag is the blast surface, Phoenix flips it, not the binary. Your users on unaffected variants keep running the new version without interruption.',
+    desc: 'When a flag is the blast surface, Phoenix flips it, not the binary. Unaffected variants keep running the new version.',
   },
   {
     title: 'Rollback simulation / dry-run',
-    desc: 'Run Phoenix in dry-run mode against a policy before deploying it to production. See exactly what would be rolled back, and what would be left untouched.',
+    desc: 'Run Phoenix in dry-run mode before deploying policy to production. See exactly what would be rolled back.',
   },
   {
     title: 'Post-rollback incident packet',
-    desc: 'Every Phoenix action produces a structured incident packet: what failed, what was reverted, which users were affected, and for how long. Feeds directly into Titan Insight.',
+    desc: 'Every Phoenix action produces a structured incident packet: what failed, what was reverted, which users were affected, and for how long.',
   },
   {
     title: 'Audit trail',
-    desc: 'Every rollback (automatic or manual) is recorded with the triggering SLO breach, the scope of the action, the actor (Phoenix or human), and the resolution time.',
+    desc: 'Every rollback is recorded with the triggering SLO breach, scope of action, actor (Phoenix or human), and resolution time.',
   },
 ]
 
@@ -94,7 +98,7 @@ export default function TitanPhoenix() {
           <div className="flex flex-wrap gap-4">
             <a
               href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-primary text-ink text-sm font-semibold px-5 py-2.5 hover:bg-primary-light dark:text-surface transition-colors"
+              className="inline-flex items-center gap-2 bg-primary text-ink dark:text-surface text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
               style={{ borderRadius: '2px' }}
             >
               Start free trial
@@ -113,14 +117,15 @@ export default function TitanPhoenix() {
       {/* Wedge framing */}
       <section className="py-16 border-b border-line bg-surface-alt/20">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
             How Phoenix is different
           </p>
-          <blockquote className="text-xl font-semibold text-ink leading-snug mb-4 border-l-2 border-primary pl-5">
+          {/* Fixed: replaced side-stripe blockquote with weight/scale contrast */}
+          <p className="text-2xl font-medium text-ink leading-snug mb-4">
             "Argo rolls back the deployment.
             <br />
             Phoenix rolls back the failure."
-          </blockquote>
+          </p>
           <p className="text-ink-secondary leading-relaxed max-w-2xl">
             Deployment-level rollback tools revert the whole service. Phoenix identifies the scope
             of the failure first, then acts only on that scope. The rest of your users keep running
@@ -143,25 +148,44 @@ export default function TitanPhoenix() {
         </Container>
       </section>
 
-      {/* Capabilities */}
+      {/* Capabilities — broken grid hierarchy */}
       <section className="py-24 border-b border-line">
         <Container width="6xl" padding="default">
-          <div className="mb-12" data-reveal>
+          <div className="mb-10" data-reveal>
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               Capabilities
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
               The only product in the suite that undoes a release.
             </h2>
-            <p className="text-ink-secondary max-w-xl">
-              Scoped, SLO-triggered, and audited, every time.
+            {/* Leadership brief: 2-3 sentence scan summary */}
+            <p className="text-ink-secondary max-w-2xl leading-relaxed">
+              Phoenix owns one job: undo what broke, nothing else. It identifies the exact scope of
+              a failure, whether a user cohort, a region, or a feature flag, and reverts only that
+              slice. The rest of your service keeps running the new version, uninterrupted.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {CAPABILITIES.map((c) => (
-              <Card key={c.title} className="flex flex-col gap-3" data-reveal>
+
+          {/* Primary capabilities: 2 full-width lead items */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-reveal>
+            {PRIMARY_CAPABILITIES.map((c) => (
+              <div
+                key={c.title}
+                className="border border-line p-6 bg-surface-alt/30"
+                style={{ borderRadius: '2px' }}
+              >
+                <h3 className="text-base font-semibold text-ink mb-2">{c.title}</h3>
+                <p className="text-sm text-ink-secondary leading-relaxed">{c.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Supporting capabilities: 4 tighter items */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" data-reveal>
+            {SUPPORTING_CAPABILITIES.map((c) => (
+              <Card key={c.title} className="flex flex-col gap-2" data-reveal>
                 <h3 className="text-sm font-semibold text-ink">{c.title}</h3>
-                <p className="text-xs text-ink-tertiary leading-relaxed">{c.desc}</p>
+                <p className="text-sm text-ink-tertiary leading-relaxed">{c.desc}</p>
               </Card>
             ))}
           </div>
@@ -244,18 +268,19 @@ export default function TitanPhoenix() {
               </Card>
             ))}
           </div>
+          {/* Harden: replaced dead links with functional in-page anchors */}
           <div className="mt-8 flex items-center gap-6" data-reveal>
             <a
-              href="/docs/titan-phoenix"
+              href="#capabilities"
               className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
             >
-              Read the docs →
+              See capabilities →
             </a>
             <a
-              href="/docs/titan-phoenix/integrations"
+              href={`${APP_URL}/signup`}
               className="text-sm text-ink-tertiary hover:text-ink-secondary transition-colors"
             >
-              See all integrations
+              Start free trial
             </a>
           </div>
         </Container>
@@ -265,7 +290,7 @@ export default function TitanPhoenix() {
       <section className="py-16 border-t border-line">
         <Container width="6xl" padding="default">
           <p
-            className="text-xs font-mono tracking-widest uppercase text-ink-tertiary mb-6"
+            className="text-xs font-mono tracking-widest uppercase text-ink-secondary mb-6 font-medium"
             data-reveal
           >
             Also in DeployTitan
@@ -285,8 +310,6 @@ export default function TitanPhoenix() {
           </div>
         </Container>
       </section>
-
-      
     </>
   )
 }

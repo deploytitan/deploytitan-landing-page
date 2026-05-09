@@ -1,7 +1,7 @@
 import { PortableText, type PortableTextComponents } from 'next-sanity'
 import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
-import { CodeBlock } from '@/components/shared/CodeBlock'
+import { CodeBlock, InlineCode } from '@/components/shared/CodeBlock'
 
 type Lang = 'bash' | 'yaml' | 'powershell' | 'dockerfile' | 'tsx' | 'hcl' | 'diff' | 'json'
 
@@ -58,9 +58,7 @@ const components: PortableTextComponents = {
     strong: ({ children }) => <strong className="font-semibold text-ink">{children}</strong>,
     em: ({ children }) => <em className="italic">{children}</em>,
     code: ({ children }) => (
-      <code className="font-mono text-[13px] text-primary bg-primary/8 px-1.5 py-0.5 rounded-sm">
-        {children}
-      </code>
+      <InlineCode variant="accent">{children}</InlineCode>
     ),
     link: ({ value, children }) => {
       const target = value?.href?.startsWith('http') ? '_blank' : undefined

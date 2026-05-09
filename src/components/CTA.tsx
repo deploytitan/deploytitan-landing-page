@@ -230,7 +230,7 @@ export function CTA() {
                       <>
                         <span
                           className="w-3.5 h-3.5 border-2 border-ink/20 border-t-ink animate-spin"
-                          style={{ borderRadius: '50%' }}
+                          style={{ borderRadius: '2px' }}
                         />
                         Submitting...
                       </>

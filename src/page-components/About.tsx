@@ -78,7 +78,7 @@ export default function About() {
               <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
                 Company overview
               </span>
-              <h2 className="font-display text-ink mt-3 text-2xl leading-snug font-medium tracking-tight">
+              <h2 className="font-display text-ink mt-3 text-2xl leading-snug font-medium tracking-[-0.02em]">
                 What DeployTitan is,
                 <br />
                 and who it's built for.
@@ -156,7 +156,7 @@ export default function About() {
                 <p className="text-ink-quaternary mb-3 font-mono text-[10px] tracking-widest uppercase">
                   Vision
                 </p>
-                <p className="font-display text-ink text-base leading-snug font-medium">
+                <p className="text-ink text-base leading-snug font-medium">
                   A world where any engineering team — regardless of size or resources — can deploy
                   with the same confidence as the best teams on the planet.
                 </p>
@@ -169,7 +169,7 @@ export default function About() {
                   { value: 'Pune + Remote', label: 'Where we work' },
                 ].map((stat) => (
                   <Card key={stat.label} tone="muted">
-                    <p className="font-display text-ink text-2xl font-medium">{stat.value}</p>
+                     <p className="text-ink text-2xl font-medium">{stat.value}</p>
                     <p className="text-ink-tertiary mt-1 text-xs">{stat.label}</p>
                   </Card>
                 ))}
@@ -185,7 +185,7 @@ export default function About() {
           <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
             Values
           </span>
-          <h2 className="font-display text-ink mt-3 text-2xl font-medium tracking-tight">
+          <h2 className="font-display text-ink mt-3 text-2xl font-medium tracking-[-0.02em]">
             How we work
           </h2>
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -205,7 +205,7 @@ export default function About() {
           <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
             Team
           </span>
-          <h2 className="font-display text-ink mt-3 text-2xl font-medium tracking-tight">
+          <h2 className="font-display text-ink mt-3 text-2xl font-medium tracking-[-0.02em]">
             The people building it
           </h2>
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -213,7 +213,7 @@ export default function About() {
               <Card key={person.name} tone="muted">
                 {/* Avatar placeholder */}
                 <div
-                  className="bg-primary-muted border-primary/20 font-display text-primary-dark mb-4 flex h-12 w-12 items-center justify-center border text-lg font-medium"
+                  className="bg-primary-muted border-primary/20 text-primary-dark mb-4 flex h-12 w-12 items-center justify-center border text-lg font-medium"
                   style={{ borderRadius: '2px' }}
                 >
                   {person.name.charAt(0)}

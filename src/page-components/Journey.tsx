@@ -3,6 +3,7 @@
 import { useScrollReveal } from '../utils'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
+import { Button } from '../components/shared/Button'
 
 const PRIMARY = 'var(--color-primary)'
 
@@ -101,18 +102,16 @@ export default function Journey() {
             <figure
               data-reveal
               className="border-line my-8 border-t border-b py-7"
-              aria-label="Founder reflection"
             >
-              <span
-                className="mb-3 block font-mono text-[10px] tracking-widest uppercase"
-                style={{ color: PRIMARY }}
-              >
-                &#x201C;
-              </span>
-              <p className="text-ink text-xl leading-relaxed font-medium">
-                I watched smart, capable people slow themselves down, not because they lacked
-                discipline, but because their tooling made every release feel dangerous.
-              </p>
+              <blockquote>
+                <p className="text-ink text-xl leading-relaxed font-medium">
+                  I watched smart, capable people slow themselves down, not because they lacked
+                  discipline, but because their tooling made every release feel dangerous.
+                </p>
+              </blockquote>
+              <figcaption className="mt-3 font-mono text-[10px] tracking-widest uppercase" style={{ color: PRIMARY }}>
+                — Justine, founder
+              </figcaption>
             </figure>
 
             <p data-reveal className="text-ink-secondary text-lg leading-relaxed">
@@ -283,21 +282,24 @@ export default function Journey() {
               Join the engineers who are already shipping with confidence. Early access is open.
             </p>
             <div className="flex flex-col justify-center gap-4 pt-2 sm:flex-row">
-              <a
+              <Button
+                as="a"
                 href="https://console.deploytitan.com/login"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-surface transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                style={{ background: PRIMARY }}
+                variant="primary"
+                size="sm"
                 aria-label="Get started with DeployTitan"
               >
                 Get started
-              </a>
-              <a
+              </Button>
+              <Button
+                as="a"
                 href="mailto:justine@deploytitan.com"
-                className="border-line text-ink hover:bg-surface-alt/40 inline-flex items-center justify-center border px-6 py-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                variant="outline"
+                size="sm"
                 aria-label="Email Justine, founder of DeployTitan"
               >
                 Talk to the founder
-              </a>
+              </Button>
             </div>
           </div>
         </Container>

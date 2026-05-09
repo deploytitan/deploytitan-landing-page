@@ -29,7 +29,7 @@ function WaitlistForm() {
 
   if (state === 'success') {
     return (
-      <p className="text-primary font-mono text-xs">
+      <p className="text-ink-secondary font-mono text-xs">
         You&apos;re on the list — we&apos;ll be in touch at GA.
       </p>
     )
@@ -40,7 +40,9 @@ function WaitlistForm() {
       onSubmit={handleSubmit}
       className="flex w-full flex-col justify-end gap-2 sm:flex-row lg:w-[unset]"
     >
+      <label htmlFor="waitlist-name" className="sr-only">Your name</label>
       <input
+        id="waitlist-name"
         type="text"
         placeholder="Your name"
         required
@@ -49,7 +51,9 @@ function WaitlistForm() {
         className="bg-surface border-line text-ink placeholder:text-ink-quaternary focus:border-primary/40 flex-1 grow-0 border px-3 py-2.5 text-sm transition-colors focus:outline-none md:w-42"
         style={{ borderRadius: '2px' }}
       />
+      <label htmlFor="waitlist-email" className="sr-only">Work email</label>
       <input
+        id="waitlist-email"
         type="email"
         placeholder="Work email"
         required

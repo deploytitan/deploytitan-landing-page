@@ -28,7 +28,7 @@ export default function Brand() {
         <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
           Logo
         </span>
-        <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+        <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
           The wordmark
         </h2>
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -89,7 +89,7 @@ export default function Brand() {
           <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
             Colours
           </span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
             Brand palette
           </h2>
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -120,7 +120,7 @@ export default function Brand() {
           <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
             Typography
           </span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
             Type system
           </h2>
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -133,7 +133,7 @@ export default function Brand() {
               },
               {
                 role: 'Body',
-                family: 'Inter',
+                family: 'Instrument Sans',
                 sample: 'The deployment control plane for modern engineering teams.',
                 className: 'text-base text-ink-secondary',
               },

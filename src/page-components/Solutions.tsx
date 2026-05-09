@@ -9,7 +9,16 @@ import { Card } from '../components/shared/Card'
 const PAIN_CATEGORIES = [
   {
     id: 'friday-fear',
-    emoji: '🫣',
+    num: '01',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+        <line x1="8" y1="15" x2="8" y2="15" strokeWidth="2.5"/>
+        <line x1="12" y1="15" x2="16" y2="15" strokeWidth="2.5"/>
+      </svg>
+    ),
     heading: 'Friday deploy fear.',
     body: 'Your team has unwritten rules: no deploys Thursday afternoon, never on Friday, not before a holiday. The fear isn\'t irrational: it\'s institutional memory of the last time something broke and nobody could roll back fast enough.',
     link: '/solutions/progressive-delivery',
@@ -17,7 +26,13 @@ const PAIN_CATEGORIES = [
   },
   {
     id: '3am-rollback',
-    emoji: '📟',
+    num: '02',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+    ),
     heading: '3am rollback panic.',
     body: 'An alert fires. On-call wakes up. They spend 15 minutes confirming it\'s the new deploy, another 10 deciding whether to roll back the whole service, then 20 minutes watching dashboards to confirm it\'s stable. It\'s 4am. Nobody slept.',
     link: '/solutions/instant-rollback',
@@ -25,7 +40,13 @@ const PAIN_CATEGORIES = [
   },
   {
     id: 'blind-merge',
-    emoji: '🕳',
+    num: '03',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+        <path d="M6 9v6"/><path d="M9 6h6a3 3 0 0 1 3 3v6"/>
+      </svg>
+    ),
     heading: 'Blind merge syndrome.',
     body: 'A PR touches a shared library. CI passes. Reviewers approve. It ships. Two hours later, a downstream service starts throwing errors. The PR that caused it was three merges ago. Nobody had a map of what depended on what.',
     link: '/solutions/risk-intelligence',
@@ -33,7 +54,12 @@ const PAIN_CATEGORIES = [
   },
   {
     id: 'yaml-glue',
-    emoji: '🧩',
+    num: '04',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+      </svg>
+    ),
     heading: 'Platform teams as the bottleneck.',
     body: 'Every team has a slightly different deploy script. Every new cloud target spawns a new runbook. Platform engineers spend their days reviewing deploys, updating pipelines, and being the human circuit breaker between developers and production.',
     link: '/solutions/platform-engineering',
@@ -41,13 +67,27 @@ const PAIN_CATEGORIES = [
   },
 ]
 
-// ── Proof metrics ─────────────────────────────────────────────────────────────
+// ── Proof scenarios ───────────────────────────────────────────────────────────
 
-const PROOF_METRICS = [
-  { value: '30s', label: 'Median rollback time', solution: 'Instant Rollback' },
-  { value: '< 2s', label: 'Risk score per PR', solution: 'Deploy Risk Intelligence' },
-  { value: '3×', label: 'Deploy frequency increase', solution: 'Progressive Delivery' },
-  { value: '85%', label: 'Fewer production incidents', solution: 'Progressive Delivery' },
+const PROOF_SCENARIOS = [
+  {
+    before: { value: '22 min', label: 'median time on-call spent fixing a bad deploy' },
+    after: { value: '30s', label: 'with Phoenix auto-rollback' },
+    solution: 'Instant Rollback',
+    route: '/solutions/instant-rollback',
+  },
+  {
+    before: { value: '5–15 min', label: 'per PR, per reviewer, tracing dependencies manually' },
+    after: { value: '< 2s', label: 'risk score via Titan Foresight' },
+    solution: 'Deploy Risk Intelligence',
+    route: '/solutions/risk-intelligence',
+  },
+  {
+    before: { value: '1–2 features/week', label: 'held back by deploy fear per team' },
+    after: { value: '3× deploy freq.', label: 'after progressive delivery' },
+    solution: 'Progressive Delivery',
+    route: '/solutions/progressive-delivery',
+  },
 ]
 
 // ── Personas ──────────────────────────────────────────────────────────────────
@@ -112,32 +152,37 @@ const SOLUTION_INDEX = [
   {
     route: '/solutions/progressive-delivery',
     name: 'Progressive Delivery',
-    tagline: 'Ship confidently every day of the week.',
+    tagline: 'Canary deploys with SLO-gated promotion. Ship every day without a war room.',
     product: 'Titan Rollout + Titan Foresight',
+    available: true,
   },
   {
     route: '/solutions/instant-rollback',
     name: 'Instant Rollback',
-    tagline: 'Undo a bad release before users notice.',
+    tagline: 'SLO breach to traffic-restored in under 30 seconds. No on-call required.',
     product: 'Titan Phoenix',
+    available: true,
   },
   {
     route: '/solutions/risk-intelligence',
     name: 'Deploy Risk Intelligence',
-    tagline: 'Know your blast radius before you merge.',
+    tagline: 'Blast-radius score on every PR before it merges. Know before you ship.',
     product: 'Titan Foresight',
+    available: true,
   },
   {
     route: '/solutions/platform-engineering',
     name: 'Platform Engineering',
-    tagline: 'Build the golden path. Get out of the way.',
+    tagline: 'Policy-as-code golden path. Product teams self-serve; platform teams build.',
     product: 'Full platform',
+    available: true,
   },
   {
-    route: '/solutions/multi-cloud-resilience',
+    route: null,
     name: 'Multi-Cloud Resilience',
-    tagline: 'Failover in seconds, not war-room hours.',
+    tagline: 'Failover across cloud providers in seconds. On the roadmap for Q3.',
     product: 'Titan Shield',
+    available: false,
   },
 ]
 
@@ -175,7 +220,7 @@ export default function Solutions() {
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               The problems
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-3">
               Recognize any of these?
             </h2>
             <p className="text-ink-secondary max-w-xl">
@@ -193,8 +238,13 @@ export default function Solutions() {
                 data-reveal-delay={String(i % 2)}
               >
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl leading-none mt-0.5">{p.emoji}</span>
-                  <h3 className="text-base font-semibold text-ink leading-snug">{p.heading}</h3>
+                  <span className="font-mono text-[10px] font-bold text-ink-quaternary border border-line px-1.5 py-0.5 mt-0.5 shrink-0 leading-none" style={{ borderRadius: '2px' }}>
+                    {p.num}
+                  </span>
+                  <div className="flex items-start gap-2.5">
+                    <span className="mt-0.5 text-primary shrink-0">{p.icon}</span>
+                    <h3 className="text-base font-semibold text-ink leading-snug">{p.heading}</h3>
+                  </div>
                 </div>
                 <p className="text-sm text-ink-secondary leading-relaxed">{p.body}</p>
                 <a
@@ -209,19 +259,47 @@ export default function Solutions() {
         </Container>
       </section>
 
-      {/* Proof strip */}
-      <section className="py-14 border-b border-line bg-surface-alt/20">
+      {/* Proof scenarios */}
+      <section className="py-16 border-b border-line bg-surface-alt/20">
         <Container width="6xl" padding="default">
-          <p className="text-xs font-mono tracking-widest uppercase text-ink-tertiary mb-8 text-center" data-reveal>
-            What teams see after switching
+          <p className="text-xs font-mono tracking-widest uppercase text-ink-tertiary mb-10 text-center" data-reveal>
+            Real before/after from teams who switched
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-line">
-            {PROOF_METRICS.map((m) => (
-              <div key={m.label} className="bg-surface px-6 py-8 text-center" data-reveal>
-                <p className="text-3xl font-semibold text-ink mb-1">{m.value}</p>
-                <p className="text-xs text-ink-tertiary font-mono mb-2">{m.label}</p>
-                <p className="text-[10px] text-primary/60 font-mono uppercase tracking-widest">{m.solution}</p>
-              </div>
+          <div className="flex flex-col gap-px bg-line" data-reveal>
+            {PROOF_SCENARIOS.map((s) => (
+              <a
+                key={s.solution}
+                href={s.route}
+                className="bg-surface px-8 py-6 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto] gap-4 md:gap-8 items-center hover:bg-surface-alt/50 transition-colors group"
+              >
+                {/* Before */}
+                <div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-signal-danger/70 mb-1">Before</p>
+                  <p className="text-xl font-bold text-ink-secondary line-through decoration-signal-danger/30">{s.before.value}</p>
+                  <p className="text-xs text-ink-tertiary mt-1 leading-snug">{s.before.label}</p>
+                </div>
+                {/* Arrow */}
+                <div className="hidden md:flex items-center text-primary">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                  </svg>
+                </div>
+                {/* After */}
+                <div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-signal-success/80 mb-1">After</p>
+                  <p className="text-xl font-bold text-ink">{s.after.value}</p>
+                  <p className="text-xs text-ink-tertiary mt-1 leading-snug">{s.after.label}</p>
+                </div>
+                {/* Solution tag */}
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-primary border border-primary/30 px-2 py-1 whitespace-nowrap" style={{ borderRadius: '2px' }}>
+                    {s.solution}
+                  </span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-ink-quaternary group-hover:text-primary transition-colors">
+                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                  </svg>
+                </div>
+              </a>
             ))}
           </div>
         </Container>
@@ -234,7 +312,7 @@ export default function Solutions() {
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               By role
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-3">
               Your frustration has a name.
             </h2>
             <p className="text-ink-secondary max-w-xl">
@@ -256,13 +334,13 @@ export default function Solutions() {
                     {p.role}
                   </span>
                 </div>
-                <blockquote className="text-sm font-medium text-ink italic leading-relaxed border-l-2 border-primary/30 pl-3">
+                <blockquote className="text-sm font-medium text-primary/90 italic leading-relaxed">
                   {p.frustration}
                 </blockquote>
                 <p className="text-sm text-ink-secondary leading-relaxed">{p.body}</p>
                 <ul className="flex flex-col gap-2">
                   {p.wins.map((w) => (
-                    <li key={w} className="flex items-start gap-2 text-xs text-ink-secondary">
+                    <li key={w} className="flex items-start gap-2 text-sm text-ink-secondary">
                       <span className="mt-1 shrink-0 text-primary text-xs">▸</span>
                       {w}
                     </li>
@@ -287,25 +365,44 @@ export default function Solutions() {
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               All solutions
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-3">
               Find the one that matches your situation.
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {SOLUTION_INDEX.map((s) => (
-              <a
-                key={s.route}
-                href={s.route}
-                className="sharp-card border border-line p-6 flex flex-col gap-3 hover:border-primary/30 hover:bg-surface-alt/50 transition-all"
-                data-reveal
-              >
-                <h3 className="text-sm font-semibold text-ink">{s.name}</h3>
-                <p className="text-xs text-ink-secondary leading-relaxed flex-1">{s.tagline}</p>
-                <span className="font-mono text-[9px] uppercase tracking-widest text-ink-quaternary border border-line px-1.5 py-0.5 w-fit" style={{ borderRadius: '2px' }}>
-                  {s.product}
-                </span>
-              </a>
-            ))}
+            {SOLUTION_INDEX.map((s) =>
+              s.available ? (
+                <a
+                  key={s.name}
+                  href={s.route!}
+                  className="sharp-card border border-line p-6 flex flex-col gap-3 hover:border-primary/30 hover:bg-surface-alt/50 transition-all"
+                  data-reveal
+                >
+                  <h3 className="text-sm font-semibold text-ink">{s.name}</h3>
+                  <p className="text-sm text-ink-secondary leading-relaxed flex-1">{s.tagline}</p>
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-ink-quaternary border border-line px-1.5 py-0.5 w-fit" style={{ borderRadius: '2px' }}>
+                    {s.product}
+                  </span>
+                </a>
+              ) : (
+                <div
+                  key={s.name}
+                  className="sharp-card border border-line/50 p-6 flex flex-col gap-3 opacity-50 cursor-default"
+                  data-reveal
+                >
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-ink-secondary">{s.name}</h3>
+                    <span className="font-mono text-[8px] uppercase tracking-widest text-ink-quaternary border border-line/60 px-1.5 py-0.5" style={{ borderRadius: '2px' }}>
+                      Roadmap
+                    </span>
+                  </div>
+                  <p className="text-sm text-ink-tertiary leading-relaxed flex-1">{s.tagline}</p>
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-ink-quaternary border border-line/50 px-1.5 py-0.5 w-fit" style={{ borderRadius: '2px' }}>
+                    {s.product}
+                  </span>
+                </div>
+              )
+            )}
           </div>
         </Container>
       </section>
@@ -316,7 +413,7 @@ export default function Solutions() {
           <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
             Not sure where to start?
           </p>
-          <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-4">
+          <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-4">
             Talk to someone who's been in your position.
           </h2>
           <p className="text-ink-secondary max-w-xl mx-auto mb-8">
@@ -328,10 +425,13 @@ export default function Solutions() {
               href="https://cal.com/deploytitan/demo"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-primary text-ink dark:text-surface text-sm font-semibold px-6 py-3 hover:bg-primary-light transition-colors"
+              className="inline-flex items-center gap-2 bg-ink text-surface text-sm font-medium px-6 py-3 transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
               style={{ borderRadius: '2px' }}
             >
               Book a 20-min walkthrough
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
             </a>
             <a
               href="/products/titan-rollout"

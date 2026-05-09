@@ -5,6 +5,7 @@ import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
+import { SolutionNav } from '../../components/shared/SolutionNav'
 
 const RISK_FACTORS = [
   {
@@ -123,15 +124,15 @@ export default function SolutionRiskIntelligence() {
       </section>
 
       {/* Narrative */}
-      <section className="py-20 border-b border-line bg-surface-alt/20">
+      <section className="py-16 border-b border-line bg-surface-alt/20">
         <Container width="4xl" padding="default">
-          <div className="flex flex-col gap-10" data-reveal>
+          <div className="flex flex-col gap-10 max-w-prose" data-reveal>
             {/* The scene */}
             <div>
               <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
                 The situation
               </p>
-              <blockquote className="text-xl lg:text-2xl font-semibold text-ink leading-snug border-l-2 border-primary pl-6 mb-6">
+              <blockquote className="text-xl lg:text-2xl font-semibold text-ink/90 italic leading-snug mb-6">
                 "The PR looked fine. Two approvals. Staging passed. It shipped Thursday at noon.
                 By 12:40, three teams were paging."
               </blockquote>
@@ -216,17 +217,17 @@ export default function SolutionRiskIntelligence() {
       </section>
 
       {/* Risk factors */}
-      <section className="py-20 border-b border-line">
+      <section className="py-24 border-b border-line">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               Risk model
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-2">
               Six factors. One score.
             </h2>
             <p className="text-ink-secondary text-sm max-w-lg">
-              Sentinel weighs six signals against your specific service's history and dependency
+              Titan Foresight weighs six signals against your specific service's history and dependency
               graph to produce a calibrated risk score.
             </p>
           </div>
@@ -266,12 +267,12 @@ export default function SolutionRiskIntelligence() {
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               Guardrails
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-2">
               Automated enforcement, not just warnings.
             </h2>
             <p className="text-ink-secondary text-sm max-w-lg">
               Configure what happens at each risk threshold. From advisory notifications to hard
-              blocks: you define the policy, Sentinel enforces it.
+              blocks: you define the policy, Titan Foresight enforces it.
             </p>
           </div>
           <div className="flex flex-col gap-4" data-reveal>
@@ -301,13 +302,13 @@ export default function SolutionRiskIntelligence() {
       </section>
 
       {/* PR annotation screenshot-style */}
-      <section className="py-20 border-b border-line bg-surface-alt/30">
+      <section className="py-16 border-b border-line bg-surface-alt/30">
         <Container width="3xl" padding="default">
           <div className="mb-8" data-reveal>
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               GitHub integration
             </p>
-            <h2 className="text-2xl font-semibold text-ink mb-2">
+            <h2 className="text-2xl font-semibold text-ink leading-snug mb-2">
               Risk score on every PR. No workflow change required.
             </h2>
           </div>
@@ -379,7 +380,7 @@ export default function SolutionRiskIntelligence() {
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               The status quo
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-2">
               How teams assess deploy risk today, and why it fails.
             </h2>
             <p className="text-ink-secondary text-sm max-w-xl">
@@ -420,7 +421,7 @@ export default function SolutionRiskIntelligence() {
                   <p className="text-[11px] font-mono text-red-400/80 uppercase tracking-wider mb-1">
                     Failure mode
                   </p>
-                  <p className="text-xs text-ink-tertiary leading-relaxed">{item.failure}</p>
+                  <p className="text-sm text-ink-tertiary leading-relaxed">{item.failure}</p>
                 </div>
               </Card>
             ))}
@@ -429,14 +430,14 @@ export default function SolutionRiskIntelligence() {
       </section>
 
       {/* Comparison */}
-      <section className="py-20 border-b border-line">
+      <section className="py-16 border-b border-line">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               How we compare
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
-              DeployTitan vs. the alternatives.
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-2">
+              Foresight vs. gut feel and DORA dashboards.
             </h2>
           </div>
           <div className="overflow-x-auto" data-reveal>
@@ -482,7 +483,7 @@ export default function SolutionRiskIntelligence() {
       <section className="py-20">
         <Container width="4xl" padding="default">
           <div className="text-center" data-reveal>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-4">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-4">
               See a risk score on one of your real PRs.
             </h2>
             <p className="text-ink-secondary text-sm mb-8 max-w-lg mx-auto">
@@ -513,6 +514,8 @@ export default function SolutionRiskIntelligence() {
           </div>
         </Container>
       </section>
+
+      <SolutionNav currentRoute="/solutions/risk-intelligence" />
     </>
   )
 }

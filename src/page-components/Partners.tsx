@@ -99,7 +99,7 @@ export default function Partners() {
             <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
               Partner program
             </span>
-            <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+            <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
               Integrate with DeployTitan
             </h2>
             <p className="mt-3 text-sm text-ink-secondary leading-relaxed">

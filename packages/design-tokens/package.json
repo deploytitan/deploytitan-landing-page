@@ -1,0 +1,31 @@
+{
+  "name": "@deploytitan/design-tokens",
+  "version": "0.1.0",
+  "description": "DeployTitan design system tokens: colors, typography, spacing, and utility classes",
+  "license": "UNLICENSED",
+  "private": false,
+  "type": "module",
+  "exports": {
+    ".": "./index.css",
+    "./tokens": "./tokens.css",
+    "./components": "./components.css"
+  },
+  "files": [
+    "index.css",
+    "tokens.css",
+    "components.css",
+    "DESIGN.md",
+    "PRODUCT.md"
+  ],
+  "scripts": {
+    "sync-context": "cp ../../PRODUCT.md ./PRODUCT.md && cp ../../DESIGN.md ./DESIGN.md && echo 'Context files synced.'",
+    "link-local": "pnpm link --global",
+    "publish-pkg": "npm publish --access public"
+  },
+  "keywords": [
+    "deploytitan",
+    "design-tokens",
+    "tailwind",
+    "css"
+  ]
+}

@@ -5,6 +5,7 @@ import { useScrollReveal } from '../../utils'
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
+import { CodeBlock } from '../../components/shared/CodeBlock'
 
 const CLOUDS = [
   {
@@ -270,39 +271,36 @@ export default function SolutionMultiCloudResilience() {
               Define failover policy once. Never touch it again.
             </h2>
           </div>
-          <Card padding="none" className="overflow-hidden" data-reveal>
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-line bg-surface-alt/60">
-              <span className="font-mono text-[10px] text-ink-quaternary">failover.hcl</span>
-            </div>
-            <div className="p-5 font-mono text-sm leading-relaxed text-ink-secondary">
-              <p>
-                <span className="text-primary">failover_policy</span>{' '}
-                <span className="text-ink">"production"</span> {'{'}
-              </p>
-              <p className="ml-4 text-ink-secondary">
-                primary_region = <span className="text-signal-success">"aws/us-east-1"</span>
-              </p>
-              <p className="ml-4 text-ink-secondary">
-                failover_regions = [<span className="text-signal-success">"gcp/us-central1"</span>,{' '}
-                <span className="text-signal-success">"aws/eu-west-1"</span>]
-              </p>
-              <p className="ml-4 mt-2 text-ink-secondary">trigger {'{'}</p>
-              <p className="ml-8 text-ink-secondary">
-                error_rate_threshold = <span className="text-primary">0.05</span>
-              </p>
-              <p className="ml-8 text-ink-secondary">
-                p99_latency_ms = <span className="text-primary">500</span>
-              </p>
-              <p className="ml-8 text-ink-secondary">
-                consecutive_failures = <span className="text-primary">3</span>
-              </p>
-              <p className="ml-4">{'}'}</p>
-              <p className="ml-4 mt-2 text-ink-secondary">
-                rto_target_seconds = <span className="text-primary">30</span>
-              </p>
-              <p>{'}'}</p>
-            </div>
-          </Card>
+          <div data-reveal>
+          <CodeBlock variant="code" filename="failover.hcl" copy={false}>
+            <p className="text-ink-secondary">
+              <span className="text-primary">failover_policy</span>{' '}
+              <span className="text-ink">"production"</span> {'{'}
+            </p>
+            <p className="ml-4 text-ink-secondary">
+              primary_region = <span className="text-signal-success">"aws/us-east-1"</span>
+            </p>
+            <p className="ml-4 text-ink-secondary">
+              failover_regions = [<span className="text-signal-success">"gcp/us-central1"</span>,{' '}
+              <span className="text-signal-success">"aws/eu-west-1"</span>]
+            </p>
+            <p className="ml-4 mt-2 text-ink-secondary">trigger {'{'}</p>
+            <p className="ml-8 text-ink-secondary">
+              error_rate_threshold = <span className="text-primary">0.05</span>
+            </p>
+            <p className="ml-8 text-ink-secondary">
+              p99_latency_ms = <span className="text-primary">500</span>
+            </p>
+            <p className="ml-8 text-ink-secondary">
+              consecutive_failures = <span className="text-primary">3</span>
+            </p>
+            <p className="ml-4 text-ink-secondary">{'}'}</p>
+            <p className="ml-4 mt-2 text-ink-secondary">
+              rto_target_seconds = <span className="text-primary">30</span>
+            </p>
+            <p className="text-ink-secondary">{'}'}</p>
+          </CodeBlock>
+          </div>
         </Container>
       </section>
 

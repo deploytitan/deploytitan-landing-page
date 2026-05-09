@@ -1,0 +1,18 @@
+/* ==========================================================================
+   DeployTitan Design System
+   @deploytitan/design-tokens
+
+   Full entry point: tokens + component classes.
+   Import after @import 'tailwindcss':
+
+     @import 'tailwindcss';
+     @import "@deploytitan/design-tokens";
+
+   Or import layers separately for finer control:
+     @import 'tailwindcss';
+     @import "@deploytitan/design-tokens/tokens";
+     @import "@deploytitan/design-tokens/components";
+   ========================================================================== */
+
+@import "./tokens.css";
+@import "./components.css";

@@ -32,7 +32,7 @@ export function LogoCloud() {
               >
                 <span className="font-mono text-[9px] font-bold text-ink/60">{logo.abbr}</span>
               </div>
-              <span className="font-display text-sm font-medium text-ink tracking-tight">{logo.name}</span>
+              <span className="text-sm font-medium text-ink tracking-tight">{logo.name}</span>
             </div>
           ))}
         </div>

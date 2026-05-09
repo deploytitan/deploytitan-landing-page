@@ -190,7 +190,7 @@ export function Problem() {
                     </svg>
                   </div>
 
-                  <p className="text-xl font-display font-medium tracking-[-0.015em] leading-[1.3] mb-3">
+                  <p className="text-xl font-medium tracking-[-0.015em] leading-[1.3] mb-3">
                     Over time, shipping becomes{' '}
                     <span className="text-ink-secondary">stressful instead of routine.</span>
                   </p>

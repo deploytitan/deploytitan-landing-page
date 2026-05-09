@@ -25,18 +25,23 @@ dt foresight score --service my-api --ref HEAD
 #   Ownership    : platform-team (primary), payments (secondary)
 #   Recommendation: tighten rollout policy to 5% initial cohort`
 
-const CAPABILITIES = [
+// Primary: the 2 most differentiating capabilities, shown at larger scale
+const PRIMARY_CAPABILITIES = [
   {
     title: 'PR risk score',
-    desc: 'Every pull request gets a single, explained score, computed from your live dependency graph, change size, and historical failure patterns for this service.',
+    desc: 'Every pull request gets a single, explained score, computed from your live dependency graph, change size, and historical failure patterns for this service. One number. Enough context to act on it.',
   },
   {
     title: 'Blast-radius graph',
-    desc: 'Visualise exactly which downstream services are at risk before the branch merges. Ownership attributed automatically from CODEOWNERS and team mappings.',
+    desc: 'Visualise exactly which downstream services are at risk before the branch merges. Ownership attributed automatically from CODEOWNERS and team mappings, so the right people are looped in before anything ships.',
   },
+]
+
+// Supporting: 4 tighter items beneath
+const SUPPORTING_CAPABILITIES = [
   {
     title: 'Ownership-aware attribution',
-    desc: 'Risk is broken down by the teams who own the affected services, so the right people are looped in before a risky change ships, not after.',
+    desc: 'Risk broken down by the teams who own the affected services, so the right people are notified before a risky change ships, not after.',
   },
   {
     title: 'Risk-based rollout policy',
@@ -44,11 +49,11 @@ const CAPABILITIES = [
   },
   {
     title: 'Inline PR surface',
-    desc: 'Risk score, blast-radius summary, and recommended rollout policy posted as a PR check: no dashboard to open, no tool-switching required.',
+    desc: 'Risk score, blast-radius summary, and recommended rollout policy posted as a PR check. No dashboard to open, no tool-switching required.',
   },
   {
     title: 'Slack & webhook delivery',
-    desc: 'Risk assessments delivered where your team already works. Configurable thresholds for when to notify, when to block, and when to auto-approve.',
+    desc: 'Risk assessments delivered where your team works. Configurable thresholds for when to notify, when to block, and when to auto-approve.',
   },
 ]
 
@@ -107,12 +112,12 @@ export default function TitanForesight() {
       {/* What Foresight owns */}
       <section className="py-16 border-b border-line bg-surface-alt/20">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
             What Foresight owns
           </p>
-          <h2 className="text-xl font-semibold text-ink mb-3">
+          <p className="text-2xl font-medium text-ink leading-snug mb-4">
             Foresight owns what we know before we ship.
-          </h2>
+          </p>
           <p className="text-ink-secondary leading-relaxed max-w-2xl">
             Pre-merge. Pre-deploy. Before any traffic moves. Foresight is the judgment layer,
             turning a code change into a risk assessment that shapes how the version ships.
@@ -120,25 +125,44 @@ export default function TitanForesight() {
         </Container>
       </section>
 
-      {/* Capabilities */}
+      {/* Capabilities — broken grid hierarchy */}
       <section className="py-24 border-b border-line">
         <Container width="6xl" padding="default">
-          <div className="mb-12" data-reveal>
+          <div className="mb-10" data-reveal>
             <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
               Capabilities
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
               From change to verdict in seconds.
             </h2>
-            <p className="text-ink-secondary max-w-xl">
-              No manual risk reviews. No tribal knowledge. One score, explained, for every change.
+            {/* Leadership brief */}
+            <p className="text-ink-secondary max-w-2xl leading-relaxed">
+              Foresight slots between code review and deploy, producing one risk score per PR with
+              enough context to act on: blast radius, ownership map, and a recommended rollout
+              policy. No manual risk reviews, no tribal knowledge required.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {CAPABILITIES.map((c) => (
-              <Card key={c.title} className="flex flex-col gap-3" data-reveal>
+
+          {/* Primary capabilities: 2 lead items */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-reveal>
+            {PRIMARY_CAPABILITIES.map((c) => (
+              <div
+                key={c.title}
+                className="border border-line p-6 bg-surface-alt/30"
+                style={{ borderRadius: '2px' }}
+              >
+                <h3 className="text-base font-semibold text-ink mb-2">{c.title}</h3>
+                <p className="text-sm text-ink-secondary leading-relaxed">{c.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Supporting capabilities: 4 tighter items */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" data-reveal>
+            {SUPPORTING_CAPABILITIES.map((c) => (
+              <Card key={c.title} className="flex flex-col gap-2">
                 <h3 className="text-sm font-semibold text-ink">{c.title}</h3>
-                <p className="text-xs text-ink-tertiary leading-relaxed">{c.desc}</p>
+                <p className="text-sm text-ink-tertiary leading-relaxed">{c.desc}</p>
               </Card>
             ))}
           </div>
@@ -222,18 +246,19 @@ export default function TitanForesight() {
               </Card>
             ))}
           </div>
+          {/* Harden: replaced dead doc links with functional alternatives */}
           <div className="mt-8 flex items-center gap-6" data-reveal>
             <a
-              href="/docs/titan-foresight"
+              href="#capabilities"
               className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
             >
-              Read the docs →
+              See capabilities →
             </a>
             <a
-              href="/docs/titan-foresight/integrations"
+              href={`${APP_URL}/signup`}
               className="text-sm text-ink-tertiary hover:text-ink-secondary transition-colors"
             >
-              See all integrations
+              Start free trial
             </a>
           </div>
         </Container>
@@ -243,7 +268,7 @@ export default function TitanForesight() {
       <section className="py-16 border-t border-line">
         <Container width="6xl" padding="default">
           <p
-            className="text-xs font-mono tracking-widest uppercase text-ink-tertiary mb-6"
+            className="text-xs font-mono tracking-widest uppercase text-ink-secondary mb-6 font-medium"
             data-reveal
           >
             Also in DeployTitan
@@ -263,8 +288,6 @@ export default function TitanForesight() {
           </div>
         </Container>
       </section>
-
-      
     </>
   )
 }

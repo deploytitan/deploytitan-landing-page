@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { CodeBlock } from '../components/shared/CodeBlock'
+import { CodeBlock, InlineCode } from '../components/shared/CodeBlock'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 
@@ -84,7 +84,7 @@ export default function CLI() {
               CLI Reference
             </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
-              The <code className="font-mono text-primary-dark">dt</code> command.
+              The <InlineCode variant="accent">dt</InlineCode> command.
             </h1>
             <p className="mt-5 text-lg text-ink-secondary leading-relaxed max-w-lg">
               A single static binary that connects to your Kubernetes clusters, GitHub Actions
@@ -129,7 +129,7 @@ export default function CLI() {
         <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
           Quickstart
         </span>
-        <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+        <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
           Up in 60 seconds
         </h2>
         <p className="mt-2 text-sm text-ink-secondary max-w-lg">
@@ -147,7 +147,7 @@ export default function CLI() {
           <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
             Install
           </span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
             Get the binary
           </h2>
           <p className="mt-2 text-sm text-ink-secondary">
@@ -189,16 +189,14 @@ export default function CLI() {
           <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
             Commands
           </span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
             Core commands
           </h2>
           <div className="mt-8 flex flex-col divide-y divide-line">
             {commands.map((c) => (
               <div key={c.cmd} className="py-6 grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
                 <div>
-                  <code className="font-mono text-sm font-semibold text-primary-dark bg-primary-muted px-2 py-1 rounded-sm">
-                    {c.cmd}
-                  </code>
+                  <InlineCode variant="accent">{c.cmd}</InlineCode>
                   <p className="mt-2 text-sm text-ink-secondary">{c.description}</p>
                 </div>
                 <div className="max-w-md">
@@ -216,14 +214,12 @@ export default function CLI() {
           <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
             CI/CD
           </span>
-          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-tight">
+          <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
             Drop into your pipeline
           </h2>
           <p className="mt-2 text-sm text-ink-secondary max-w-lg">
             The{' '}
-            <code className="font-mono text-xs text-primary bg-primary-muted px-1 py-0.5 rounded-sm">
-              dt
-            </code>{' '}
+            <InlineCode variant="accent">dt</InlineCode>{' '}
             CLI is designed to run inside GitHub Actions, GitLab CI, CircleCI, and any shell-based
             runner.
           </p>
