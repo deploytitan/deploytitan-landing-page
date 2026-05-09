@@ -215,6 +215,13 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
             </div>
 
             <Link
+              href="/blog"
+              className="text-ink-secondary hover:text-ink nav-link-underline text-sm transition-colors"
+            >
+              Blog
+            </Link>
+
+            <Link
               href="/pricing"
               className="text-ink-secondary hover:text-ink nav-link-underline text-sm transition-colors"
             >
@@ -222,10 +229,10 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
             </Link>
 
             <Link
-              href="/blog"
+              href="/journey"
               className="text-ink-secondary hover:text-ink nav-link-underline text-sm transition-colors"
             >
-              Blog
+              My Journey
             </Link>
           </div>
 

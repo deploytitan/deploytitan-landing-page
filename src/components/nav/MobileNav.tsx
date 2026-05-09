@@ -165,10 +165,10 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
 
       {/* Flat links */}
       {[
-        { label: 'How it works', route: '/how-it-works' },
+        // { label: 'How it works', route: '/how-it-works' },
         { label: 'Pricing', route: '/pricing' },
         { label: 'Blog', route: '/blog' },
-        // { label: 'Docs', route: '/docs' },
+        { label: 'My Journey', route: '/journey' },
       ].map((l) => (
         <Link
           key={l.route}

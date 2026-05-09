@@ -45,7 +45,7 @@ export default function Journey() {
             <br className="hidden md:block" /> because I lived the problem.
           </h1>
           <p className="text-ink-secondary text-xl leading-relaxed">
-            Not from a whiteboard. Not from a VC pitch. From 7 years of watching brilliant engineers
+            Not from a whiteboard. Not from a VC pitch. From 8 years of watching brilliant engineers
             treat every deployment like defusing a bomb — and deciding I'd had enough.
           </p>
         </Container>
@@ -59,7 +59,7 @@ export default function Journey() {
             className="text-ink-tertiary mb-8 inline-flex items-center gap-3 font-mono text-xs tracking-widest uppercase"
           >
             <span className="bg-primary/40 h-px w-6" />
-            Seven years of the same fear
+            Eight years of the same fear
           </span>
 
           <div className="space-y-6">

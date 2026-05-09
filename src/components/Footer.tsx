@@ -146,7 +146,7 @@ export function Footer() {
           <ul className="flex flex-col gap-3">
             {[
               { label: 'About', to: '/about' },
-              { label: 'Our journey', to: '/journey' },
+              { label: 'My journey', to: '/journey' },
               // { label: 'Careers', to: '/careers' },
               { label: 'Contact', to: '/contact' },
               // { label: 'Press', to: '/press' },
