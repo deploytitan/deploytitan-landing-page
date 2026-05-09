@@ -2,7 +2,11 @@ import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { codeInput } from '@sanity/code-input'
-import { presentationTool, defineLocations, type PresentationPluginOptions } from 'sanity/presentation'
+import {
+  defineLocations,
+  type PresentationPluginOptions,
+  presentationTool,
+} from 'sanity/presentation'
 import { apiVersion, dataset, projectId } from './src/sanity/env'
 import { schemaTypes } from './src/sanity/schemas'
 import { structure } from './src/sanity/structure'
@@ -30,7 +34,7 @@ export default defineConfig({
     presentationTool({
       resolve,
       previewUrl: {
-        origin: 'http://localhost:3000',
+        initial: 'http://localhost:3000',
         previewMode: {
           enable: '/api/draft-mode/enable',
         },
