@@ -2,7 +2,6 @@
 
 import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
-import Link from 'next/link'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
@@ -78,21 +77,23 @@ export default function SolutionInstantRollback() {
             Powered by Titan Phoenix
           </div>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
-            Undo a bad release
-            <br className="hidden md:block" /> before users notice.
+            Your on-call is the
+            <br className="hidden md:block" /> last line of defense.
           </h1>
           <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
-            Instant rollback isn't a runbook. It's an automatic system that detects SLO breaches,
-            scopes the blast radius, and restores traffic in under 10 seconds — without waking
-            anyone up.
+            A bad deploy fires PagerDuty. Someone wakes up. They read through Grafana, confirm the
+            problem is real, find the right kubectl command, and watch dashboards for another 20
+            minutes to verify recovery. By then, thousands of users have already hit the bug.
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <a
-              href={`${APP_URL}/signup`}
+              href="https://cal.com/deploytitan/demo"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium dark:text-surface transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
               style={{ borderRadius: '2px' }}
             >
-              Start free trial
+              Book a 20-min walkthrough
               <svg
                 width="12"
                 height="12"
@@ -105,12 +106,103 @@ export default function SolutionInstantRollback() {
                 <polyline points="12 5 19 12 12 19" />
               </svg>
             </a>
-            <Link
-              href="/products/titan-phoenix"
+            <a
+              href={`${APP_URL}/signup`}
               className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
             >
-              Explore Titan Phoenix →
-            </Link>
+              Start free trial →
+            </a>
+          </div>
+        </Container>
+      </section>
+
+      {/* Narrative */}
+      <section className="py-20 border-b border-line bg-surface-alt/20">
+        <Container width="4xl" padding="default">
+          <div className="flex flex-col gap-10" data-reveal>
+            {/* The scene */}
+            <div>
+              <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+                The situation
+              </p>
+              <blockquote className="text-xl lg:text-2xl font-semibold text-ink leading-snug border-l-2 border-primary pl-6 mb-6">
+                "3:14 AM. PagerDuty fires. The senior engineer on call squints at Grafana,
+                confirms it's real, and starts looking for the rollback runbook."
+              </blockquote>
+              <p className="text-ink-secondary leading-relaxed">
+                By the time they've identified the bad deploy, found the right command, executed it,
+                and confirmed recovery — 22 minutes have passed. Error rates were elevated for every
+                one of those minutes. Every user who hit checkout during that window got an error.
+                The post-mortem will call this a "fast response." It wasn't fast enough.
+              </p>
+            </div>
+
+            {/* The villain */}
+            <div>
+              <p className="text-xs font-mono tracking-widest uppercase text-red-400/80 mb-4">
+                The real problem
+              </p>
+              <p className="text-ink leading-relaxed text-base">
+                The rollback tools already exist. <code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1 py-0.5">kubectl rollout undo</code> works.
+                The problem is the pipeline from "error rate spikes" to "rollback complete" runs
+                entirely through a human being — who has to be awake, alert, and in front of a
+                laptop to execute it. That pipeline has a minimum latency of 10–15 minutes on a
+                good night. On a bad night, it's 45.
+              </p>
+              <p className="text-ink-secondary leading-relaxed text-base mt-4">
+                There's a second, quieter problem: most rollbacks are too broad. Rolling back the
+                entire service when only 3% of users — in one region, on one feature flag — are
+                affected is a blunt instrument. You're degrading the 97% to protect the 3%. And
+                you still have to redeploy when you're ready to try again.
+              </p>
+            </div>
+
+            {/* Cost of inaction */}
+            <div className="sharp-card border border-signal-danger/20 bg-signal-danger/[0.03] p-6">
+              <p className="text-xs font-mono tracking-widest uppercase text-signal-danger/80 mb-4">
+                Cost of staying put
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {[
+                  {
+                    stat: '12–25 min',
+                    label: 'mean time to rollback',
+                    detail: 'Median time from PagerDuty alert to traffic fully restored, when a human executes the rollback manually.',
+                  },
+                  {
+                    stat: '~$5,400',
+                    label: 'per minute of downtime',
+                    detail: 'Median cost of unplanned downtime for a mid-size B2B SaaS. A 20-minute incident is a $108k event.',
+                  },
+                  {
+                    stat: '2–4×',
+                    label: 'faster burnout',
+                    detail: 'Engineers on high-rotation on-call with manual rollback processes burn out significantly faster than those on automated systems.',
+                  },
+                ].map((item) => (
+                  <div key={item.stat}>
+                    <p className="text-2xl font-bold text-signal-danger/80 mb-1">{item.stat}</p>
+                    <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-2">{item.label}</p>
+                    <p className="text-xs text-ink-secondary leading-relaxed">{item.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* The resolution */}
+            <div>
+              <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+                The fix
+              </p>
+              <p className="text-ink-secondary leading-relaxed">
+                The rollback decision needs to happen before the human wakes up. That means a
+                system continuously watching your SLO metrics — not alerts, which are already late
+                — and triggering a scoped reversion the moment a measurement window closes over
+                your threshold. No runbook. No approval. No redeploy. Just traffic back where it
+                was, in under 10 seconds, with an automatic incident packet generated for the
+                post-mortem.
+              </p>
+            </div>
           </div>
         </Container>
       </section>
@@ -234,7 +326,147 @@ export default function SolutionInstantRollback() {
         </Container>
       </section>
 
-      
+      {/* What teams do today */}
+      <section className="py-20 border-b border-line">
+        <Container width="6xl" padding="default">
+          <div className="mb-12" data-reveal>
+            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              The status quo
+            </p>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+              How teams handle rollbacks today — and the cost.
+            </h2>
+            <p className="text-ink-secondary text-sm max-w-xl">
+              The manual rollback playbook has three failure modes: too slow, too broad, and too
+              dependent on a human being awake.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              {
+                tool: 'kubectl rollout undo',
+                workaround: 'SRE wakes up, confirms the issue is real, runs kubectl rollout undo, watches dashboards for 20 minutes to verify recovery.',
+                failure: 'Mean time from deploy to rollback decision: 12–25 minutes. That\'s 12–25 minutes of every user hitting the bug.',
+              },
+              {
+                tool: 'Redeploy last good tag',
+                workaround: 'Trigger a new pipeline run for the previous image tag. Wait for CI, wait for deploy, watch for health checks.',
+                failure: 'A full redeploy takes 6–15 minutes. You\'re also burning CI minutes and potentially racing against another deploy.',
+              },
+              {
+                tool: 'Feature flag kill switch',
+                workaround: 'Toggle a LaunchDarkly flag to disable the bad feature. Requires the engineer who wrote the flag to be available.',
+                failure: 'Flags don\'t roll back infrastructure changes, DB migrations, or cross-service API changes. Half of rollbacks need more than a flag.',
+              },
+            ].map((item, i) => (
+              <Card
+                key={item.tool}
+                padding="none"
+                className="p-7"
+                data-reveal
+                data-reveal-delay={String(i)}
+              >
+                <p className="font-mono text-xs text-primary mb-3 uppercase tracking-wider">
+                  {item.tool}
+                </p>
+                <p className="text-sm text-ink-secondary mb-4 leading-relaxed">{item.workaround}</p>
+                <div className="border-t border-line pt-4">
+                  <p className="text-[11px] font-mono text-red-400/80 uppercase tracking-wider mb-1">
+                    Failure mode
+                  </p>
+                  <p className="text-xs text-ink-tertiary leading-relaxed">{item.failure}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Comparison */}
+      <section className="py-20 border-b border-line">
+        <Container width="5xl" padding="default">
+          <div className="mb-12" data-reveal>
+            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              How we compare
+            </p>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+              DeployTitan vs. the alternatives.
+            </h2>
+          </div>
+          <div className="overflow-x-auto" data-reveal>
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-line">
+                  <th className="text-left py-3 pr-6 text-xs font-mono uppercase tracking-wider text-ink-tertiary w-1/4">
+                    Capability
+                  </th>
+                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-primary">
+                    DeployTitan
+                  </th>
+                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-ink-tertiary">
+                    Manual runbook
+                  </th>
+                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-ink-tertiary">
+                    Feature flags only
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Automatic rollback (no human needed)', '✓', '✗', '✗'],
+                  ['Scoped to failing cohort only', '✓', '✗ (full service)', '✗'],
+                  ['Traffic restored in < 10s', '✓', '✗ (6–25 min)', '~ (flag toggle only)'],
+                  ['SLO-aware trigger', '✓', '✗ (alert-based)', '✗'],
+                  ['Structured incident packet', '✓', '✗ (manual postmortem)', '✗'],
+                ].map(([cap, dt, manual, flags]) => (
+                  <tr key={String(cap)} className="border-b border-line/50">
+                    <td className="py-3 pr-6 text-xs text-ink-secondary">{cap}</td>
+                    <td className="py-3 px-4 text-center text-xs text-signal-success font-mono">{dt}</td>
+                    <td className="py-3 px-4 text-center text-xs text-ink-tertiary font-mono">{manual}</td>
+                    <td className="py-3 px-4 text-center text-xs text-ink-tertiary font-mono">{flags}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Container>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-20">
+        <Container width="4xl" padding="default">
+          <div className="text-center" data-reveal>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-4">
+              See Phoenix roll back a live canary in under 10 seconds.
+            </h2>
+            <p className="text-ink-secondary text-sm mb-8 max-w-lg mx-auto">
+              We'll trigger a real SLO breach in a sandbox environment and show you exactly what
+              Phoenix does — automatically, before you'd even finish reading the alert.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <a
+                href="https://cal.com/deploytitan/demo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium dark:text-surface transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
+                style={{ borderRadius: '2px' }}
+              >
+                Book a 20-min walkthrough
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+              <a
+                href={`${APP_URL}/signup`}
+                className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+              >
+                Start free trial →
+              </a>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   )
 }

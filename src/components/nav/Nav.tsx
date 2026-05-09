@@ -108,7 +108,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
     <>
       <nav
         ref={navRef}
-        className="fixed left-0 right-0 z-50 transition-all duration-500"
+        className="fixed right-0 left-0 z-50 transition-all duration-500"
         style={{
           top: barHeight,
           background: scrolled
@@ -121,24 +121,24 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
           borderBottom: scrolled ? '1px solid var(--color-line)' : '1px solid transparent',
         }}
       >
-        <div className="max-w-page justify-between md:justify-normal mx-auto px-6 lg:px-12 flex items-center h-20 gap-8">
+        <div className="max-w-page mx-auto flex h-20 items-center justify-between gap-8 px-6 md:justify-normal lg:px-12">
           {/* Logo */}
-          <Link href="/" className="flex items-center shrink-0 group">
+          <Link href="/" className="group flex shrink-0 items-center">
             <span className="font-display text-2xl font-medium tracking-[-0.02em]">Deploy</span>
-            <span className="font-display text-2xl font-medium tracking-[-0.02em] text-primary-dark">
+            <span className="font-display text-primary-dark text-2xl font-medium tracking-[-0.02em]">
               Titan
             </span>
           </Link>
 
           {/* Desktop centre nav */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden items-center gap-8 lg:flex">
             {/* Products dropdown */}
             <div className="relative">
               <button
                 onClick={() => toggleDropdown('products')}
                 aria-expanded={activeDropdown === 'products'}
                 aria-haspopup="true"
-                className="flex items-center gap-1 text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline"
+                className="text-ink-secondary hover:text-ink nav-link-underline flex items-center gap-1 text-sm transition-colors"
               >
                 Products
                 <svg
@@ -179,7 +179,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                 onClick={() => toggleDropdown('solutions')}
                 aria-expanded={activeDropdown === 'solutions'}
                 aria-haspopup="true"
-                className="flex items-center gap-1 text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline"
+                className="text-ink-secondary hover:text-ink nav-link-underline flex items-center gap-1 text-sm transition-colors"
               >
                 Solutions
                 <svg
@@ -216,25 +216,25 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
 
             <Link
               href="/pricing"
-              className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline"
+              className="text-ink-secondary hover:text-ink nav-link-underline text-sm transition-colors"
             >
               Pricing
             </Link>
 
             <Link
-              href="/customers"
-              className="text-sm text-ink-secondary hover:text-ink transition-colors nav-link-underline"
+              href="/blog"
+              className="text-ink-secondary hover:text-ink nav-link-underline text-sm transition-colors"
             >
-              Customers
+              Blog
             </Link>
           </div>
 
           {/* Desktop auth */}
-          <div className="hidden lg:flex items-center gap-2 ml-auto">
+          <div className="ml-auto hidden items-center gap-2 lg:flex">
             <ThemeToggle className="mr-1" />
             <a
               href={`${CONSOLE_URL}/login`}
-              className="inline-flex items-center gap-2 bg-ink text-surface px-5 py-2.5 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
+              className="bg-ink text-surface inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.97]"
               style={{ borderRadius: '2px' }}
             >
               Get started
@@ -258,20 +258,20 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
           {/* Mobile hamburger */}
           <button
             onClick={toggleMobile}
-            className="lg:hidden flex flex-col gap-[5px] p-2"
+            className="flex flex-col gap-[5px] p-2 lg:hidden"
             aria-label="Toggle menu"
             aria-expanded={mobileOpen}
           >
             <span
-              className="block w-5 h-[1.5px] bg-ink transition-all origin-center"
+              className="bg-ink block h-[1.5px] w-5 origin-center transition-all"
               style={{ transform: mobileOpen ? 'rotate(45deg) translate(4.5px, 4.5px)' : 'none' }}
             />
             <span
-              className="block w-5 h-[1.5px] bg-ink transition-all"
+              className="bg-ink block h-[1.5px] w-5 transition-all"
               style={{ opacity: mobileOpen ? 0 : 1 }}
             />
             <span
-              className="block w-5 h-[1.5px] bg-ink transition-all origin-center"
+              className="bg-ink block h-[1.5px] w-5 origin-center transition-all"
               style={{ transform: mobileOpen ? 'rotate(-45deg) translate(4.5px, -4.5px)' : 'none' }}
             />
           </button>
@@ -279,7 +279,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
 
         {/* Gold shimmer accent under nav when scrolled */}
         {scrolled && (
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+          <div className="via-primary/20 absolute bottom-0 left-1/2 h-px w-32 -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent" />
         )}
       </nav>
 

@@ -157,11 +157,13 @@ export default function SolutionPlatformEngineering() {
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <a
-              href={`${APP_URL}/signup`}
+              href="https://cal.com/deploytitan/demo"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium dark:text-surface transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
               style={{ borderRadius: '2px' }}
             >
-              Start free trial
+              Book a 20-min walkthrough
               <svg
                 width="12"
                 height="12"
@@ -175,12 +177,10 @@ export default function SolutionPlatformEngineering() {
               </svg>
             </a>
             <a
-              href="https://cal.com/deploytitan/demo"
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`${APP_URL}/signup`}
               className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
             >
-              Talk to a platform engineer →
+              Start free trial →
             </a>
           </div>
         </Container>
@@ -263,7 +263,147 @@ export default function SolutionPlatformEngineering() {
         </Container>
       </section>
 
-      
+      {/* What teams do today */}
+      <section className="py-20 border-b border-line">
+        <Container width="6xl" padding="default">
+          <div className="mb-12" data-reveal>
+            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              The status quo
+            </p>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+              What platform teams are stuck doing — instead of building.
+            </h2>
+            <p className="text-ink-secondary text-sm max-w-xl">
+              Platform engineering teams spend most of their time as human circuit breakers instead
+              of building the golden path they were hired to create.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              {
+                tool: 'Deployment ticket queue',
+                workaround: 'Product teams open JIRA tickets for every production deploy. Platform team reviews, approves, and sometimes executes the deployment.',
+                failure: 'Platform team becomes the bottleneck. 2-day deploy queue. Product engineers stop shipping because the process is too slow.',
+              },
+              {
+                tool: 'Per-cloud console access',
+                workaround: 'Different engineers have different console access across AWS, GCP, and Azure. Deployments require coordinating the right person with the right access.',
+                failure: 'No unified audit trail. Runbooks differ per cloud. New engineers need weeks of onboarding before they can deploy independently.',
+              },
+              {
+                tool: 'Slack-based approval flows',
+                workaround: 'Deploys require a #deploy-approvals Slack thread with a thumbs-up from an SRE before proceeding. All manual, all async.',
+                failure: 'SREs spend 2+ hours/day reviewing deploys they don\'t fully understand. No programmatic enforcement — approvals get bypassed under pressure.',
+              },
+            ].map((item, i) => (
+              <Card
+                key={item.tool}
+                padding="none"
+                className="p-7"
+                data-reveal
+                data-reveal-delay={String(i)}
+              >
+                <p className="font-mono text-xs text-primary mb-3 uppercase tracking-wider">
+                  {item.tool}
+                </p>
+                <p className="text-sm text-ink-secondary mb-4 leading-relaxed">{item.workaround}</p>
+                <div className="border-t border-line pt-4">
+                  <p className="text-[11px] font-mono text-red-400/80 uppercase tracking-wider mb-1">
+                    Failure mode
+                  </p>
+                  <p className="text-xs text-ink-tertiary leading-relaxed">{item.failure}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Comparison */}
+      <section className="py-20 border-b border-line">
+        <Container width="5xl" padding="default">
+          <div className="mb-12" data-reveal>
+            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              How we compare
+            </p>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+              DeployTitan vs. the alternatives.
+            </h2>
+          </div>
+          <div className="overflow-x-auto" data-reveal>
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-line">
+                  <th className="text-left py-3 pr-6 text-xs font-mono uppercase tracking-wider text-ink-tertiary w-1/4">
+                    Capability
+                  </th>
+                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-primary">
+                    DeployTitan
+                  </th>
+                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-ink-tertiary">
+                    Backstage (Spotify)
+                  </th>
+                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-ink-tertiary">
+                    Internal portal (DIY)
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Policy-as-code enforcement', '✓', '~ (plugins)', '✗ (manual)'],
+                  ['Unified multi-cloud audit log', '✓', '✗', '✗'],
+                  ['Self-service with SLO guardrails', '✓', '✗', '✗'],
+                  ['IaC-native (Terraform/Pulumi)', '✓', '✗', '~'],
+                  ['Time to first golden path', '< 1 day', '2–6 months', '6–12 months'],
+                ].map(([cap, dt, backstage, diy]) => (
+                  <tr key={String(cap)} className="border-b border-line/50">
+                    <td className="py-3 pr-6 text-xs text-ink-secondary">{cap}</td>
+                    <td className="py-3 px-4 text-center text-xs text-signal-success font-mono">{dt}</td>
+                    <td className="py-3 px-4 text-center text-xs text-ink-tertiary font-mono">{backstage}</td>
+                    <td className="py-3 px-4 text-center text-xs text-ink-tertiary font-mono">{diy}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Container>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-20">
+        <Container width="4xl" padding="default">
+          <div className="text-center" data-reveal>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-4">
+              Build your golden path in a single afternoon.
+            </h2>
+            <p className="text-ink-secondary text-sm mb-8 max-w-lg mx-auto">
+              We'll walk through policy-as-code setup, show you how product teams self-serve against
+              your guardrails, and connect your existing Terraform — all in 20 minutes.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <a
+                href="https://cal.com/deploytitan/demo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium dark:text-surface transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
+                style={{ borderRadius: '2px' }}
+              >
+                Book a 20-min walkthrough
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+              <a
+                href={`${APP_URL}/signup`}
+                className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+              >
+                Start free trial →
+              </a>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   )
 }

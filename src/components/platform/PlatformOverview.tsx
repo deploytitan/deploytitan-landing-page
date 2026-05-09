@@ -15,9 +15,9 @@ function ForesightVisual() {
     { label: 'Payment gateway', value: 'dependency flagged', level: 'err' },
   ]
   return (
-    <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
-      <div className="flex items-center gap-2 text-ink-quaternary mb-1">
-        <span className="w-2 h-2 rounded-full bg-primary/60 animate-[pulse-anim_2s_ease-in-out_infinite]" />
+    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
+      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
+        <span className="bg-primary/60 h-2 w-2 animate-[pulse-anim_2s_ease-in-out_infinite] rounded-full" />
         <span>titan-foresight · PR #2847 analysis</span>
       </div>
       {checks.map((c) => (
@@ -30,11 +30,11 @@ function ForesightVisual() {
           </span>
         </div>
       ))}
-      <div className="mt-auto border-t border-line pt-3 flex items-center justify-between">
+      <div className="border-line mt-auto flex items-center justify-between border-t pt-3">
         <span className="text-ink-tertiary">Risk score</span>
         <div className="flex items-center gap-2">
-          <div className="h-1.5 w-24 bg-line rounded-full overflow-hidden">
-            <div className="h-full w-3/5 bg-signal-warning rounded-full" />
+          <div className="bg-line h-1.5 w-24 overflow-hidden rounded-full">
+            <div className="bg-signal-warning h-full w-3/5 rounded-full" />
           </div>
           <span className="text-signal-warning font-semibold">Medium</span>
         </div>
@@ -46,9 +46,9 @@ function ForesightVisual() {
 /* ── Mini visual: Titan Rollout ── */
 function RolloutVisual() {
   return (
-    <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
-      <div className="flex items-center gap-2 text-ink-quaternary mb-1">
-        <span className="w-2 h-2 rounded-full bg-signal-success animate-[pulse-anim_2s_ease-in-out_infinite]" />
+    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
+      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
+        <span className="bg-signal-success h-2 w-2 animate-[pulse-anim_2s_ease-in-out_infinite] rounded-full" />
         <span>titan-rollout · canary deploy active</span>
       </div>
       {[
@@ -60,7 +60,7 @@ function RolloutVisual() {
             <span className="text-ink-secondary">{v.label}</span>
             <span className="text-ink font-semibold">{v.pct}%</span>
           </div>
-          <div className="h-2 rounded-full bg-line overflow-hidden">
+          <div className="bg-line h-2 overflow-hidden rounded-full">
             <div
               className={`h-full ${v.color} rounded-full transition-all duration-1000`}
               style={{ width: `${v.pct}%` }}
@@ -68,12 +68,12 @@ function RolloutVisual() {
           </div>
         </div>
       ))}
-      <div className="mt-2 border border-signal-success/20 bg-signal-success/5 rounded-sm p-3 flex flex-col gap-1">
+      <div className="border-signal-success/20 bg-signal-success/5 mt-2 flex flex-col gap-1 rounded-sm border p-3">
         <span className="text-signal-success">✓ SLOs holding — error rate 0.02%</span>
         <span className="text-ink-tertiary">p95 latency: 118ms · threshold: 250ms</span>
         <span className="text-primary/80 mt-1">→ Promoting to 50% in 4 min…</span>
       </div>
-      <div className="mt-auto border-t border-line pt-3 text-ink-tertiary flex items-center justify-between">
+      <div className="border-line text-ink-tertiary mt-auto flex items-center justify-between border-t pt-3">
         <span>Auto-pause armed</span>
         <span className="text-signal-success">● monitoring</span>
       </div>
@@ -89,19 +89,19 @@ function ShieldVisual() {
     { label: 'Azure eastus', status: 'failover', latency: '—' },
   ]
   return (
-    <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
-      <div className="flex items-center gap-2 text-ink-quaternary mb-1">
-        <span className="w-2 h-2 rounded-full bg-signal-warning animate-[pulse-anim_1.5s_ease-in-out_infinite]" />
+    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
+      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
+        <span className="bg-signal-warning h-2 w-2 animate-[pulse-anim_1.5s_ease-in-out_infinite] rounded-full" />
         <span>titan-shield · failover in progress</span>
       </div>
       {regions.map((r) => (
         <div
           key={r.label}
-          className={`flex items-center justify-between border rounded-sm px-3 py-2.5 transition-colors ${r.status === 'failover' ? 'border-signal-warning/40 bg-signal-warning/5' : 'border-line'}`}
+          className={`flex items-center justify-between rounded-sm border px-3 py-2.5 transition-colors ${r.status === 'failover' ? 'border-signal-warning/40 bg-signal-warning/5' : 'border-line'}`}
         >
           <div className="flex items-center gap-2">
             <span
-              className={`w-1.5 h-1.5 rounded-full ${r.status === 'healthy' ? 'bg-signal-success' : 'bg-signal-warning animate-[pulse-anim_1s_ease-in-out_infinite]'}`}
+              className={`h-1.5 w-1.5 rounded-full ${r.status === 'healthy' ? 'bg-signal-success' : 'bg-signal-warning animate-[pulse-anim_1s_ease-in-out_infinite]'}`}
             />
             <span className="text-ink-secondary">{r.label}</span>
           </div>
@@ -110,14 +110,14 @@ function ShieldVisual() {
               {r.latency}
             </span>
             <span
-              className={`text-[10px] uppercase tracking-wide ${r.status === 'failover' ? 'text-signal-warning' : 'text-signal-success'}`}
+              className={`text-[10px] tracking-wide uppercase ${r.status === 'failover' ? 'text-signal-warning' : 'text-signal-success'}`}
             >
               {r.status}
             </span>
           </div>
         </div>
       ))}
-      <div className="border border-line rounded-sm px-3 py-2.5 text-ink-tertiary flex items-center justify-between">
+      <div className="border-line text-ink-tertiary flex items-center justify-between rounded-sm border px-3 py-2.5">
         <span>Traffic rerouted to AWS + GCP</span>
         <span className="text-signal-success">automatic</span>
       </div>
@@ -134,9 +134,9 @@ function LedgerVisual() {
     { label: 'MTTR', value: '11 min', trend: '-22%' },
   ]
   return (
-    <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
-      <div className="flex items-center gap-2 text-ink-quaternary mb-1">
-        <span className="w-2 h-2 rounded-full bg-primary/60 animate-[pulse-anim_3s_ease-in-out_infinite]" />
+    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
+      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
+        <span className="bg-primary/60 h-2 w-2 animate-[pulse-anim_3s_ease-in-out_infinite] rounded-full" />
         <span>titan-ledger · DORA · last 30 days</span>
       </div>
       {metrics.map((m) => (
@@ -152,7 +152,7 @@ function LedgerVisual() {
           </div>
         </div>
       ))}
-      <div className="mt-auto border-t border-line pt-3 text-ink-tertiary text-[10px]">
+      <div className="border-line text-ink-tertiary mt-auto border-t pt-3 text-[10px]">
         Sourced from CI/CD events · no agents · no tagging
       </div>
     </div>
@@ -168,23 +168,23 @@ function PhoenixVisual() {
     { label: 'Traffic restored', time: '14:03:09', done: true },
   ]
   return (
-    <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
-      <div className="flex items-center gap-2 text-ink-quaternary mb-1">
-        <span className="w-2 h-2 rounded-full bg-signal-danger animate-[pulse-anim_1s_ease-in-out_infinite]" />
+    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
+      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
+        <span className="bg-signal-danger h-2 w-2 animate-[pulse-anim_1s_ease-in-out_infinite] rounded-full" />
         <span>titan-phoenix · recovery in progress</span>
       </div>
       {steps.map((s) => (
         <div key={s.label} className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span
-              className={`w-1.5 h-1.5 rounded-full ${s.done ? 'bg-signal-success' : 'bg-line'}`}
+              className={`h-1.5 w-1.5 rounded-full ${s.done ? 'bg-signal-success' : 'bg-line'}`}
             />
             <span className={s.done ? 'text-ink-secondary' : 'text-ink-quaternary'}>{s.label}</span>
           </div>
           <span className="text-ink-tertiary">{s.time}</span>
         </div>
       ))}
-      <div className="mt-auto border-t border-line pt-3 flex items-center justify-between">
+      <div className="border-line mt-auto flex items-center justify-between border-t pt-3">
         <span className="text-ink-tertiary">Total recovery time</span>
         <span className="text-signal-success font-semibold">8 seconds</span>
       </div>
@@ -200,15 +200,15 @@ function InsightVisual() {
     { release: 'v2.3.9', metric: 'Session duration', delta: '-1.1%', signal: 'neg' },
   ]
   return (
-    <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
-      <div className="flex items-center gap-2 text-ink-quaternary mb-1">
-        <span className="w-2 h-2 rounded-full bg-primary/60 animate-[pulse-anim_3s_ease-in-out_infinite]" />
+    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
+      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
+        <span className="bg-primary/60 h-2 w-2 animate-[pulse-anim_3s_ease-in-out_infinite] rounded-full" />
         <span>titan-insight · deploy → outcome</span>
       </div>
       {correlations.map((c) => (
         <div key={`${c.release}-${c.metric}`} className="flex items-center justify-between gap-2">
           <span className="text-ink-tertiary shrink-0">{c.release}</span>
-          <span className="text-ink-secondary truncate flex-1 px-2">{c.metric}</span>
+          <span className="text-ink-secondary flex-1 truncate px-2">{c.metric}</span>
           <span
             className={`font-semibold ${c.signal === 'pos' ? 'text-signal-success' : 'text-signal-danger'}`}
           >
@@ -216,7 +216,7 @@ function InsightVisual() {
           </span>
         </div>
       ))}
-      <div className="mt-auto border-t border-line pt-3 text-ink-tertiary text-[10px]">
+      <div className="border-line text-ink-tertiary mt-auto border-t pt-3 text-[10px]">
         Correlates deploys with product metrics · no manual tagging
       </div>
     </div>
@@ -231,28 +231,28 @@ function SandboxVisual() {
     { branch: 'chore/deps-bump', status: 'building', age: '1m' },
   ]
   return (
-    <div className="p-6 h-full flex flex-col gap-4 font-mono text-xs">
-      <div className="flex items-center gap-2 text-ink-quaternary mb-1">
-        <span className="w-2 h-2 rounded-full bg-signal-deploy/70 animate-[pulse-anim_2.5s_ease-in-out_infinite]" />
+    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
+      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
+        <span className="bg-signal-deploy/70 h-2 w-2 animate-[pulse-anim_2.5s_ease-in-out_infinite] rounded-full" />
         <span>titan-sandbox · branch environments</span>
       </div>
       {envs.map((e) => (
         <div
           key={e.branch}
-          className="flex items-center justify-between gap-3 border border-line rounded-sm px-3 py-2"
+          className="border-line flex items-center justify-between gap-3 rounded-sm border px-3 py-2"
         >
           <span className="text-ink-secondary truncate">{e.branch}</span>
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex shrink-0 items-center gap-2">
             <span className="text-ink-tertiary">{e.age}</span>
             <span
-              className={`text-[10px] uppercase tracking-wide ${e.status === 'ready' ? 'text-signal-success' : 'text-primary/70'}`}
+              className={`text-[10px] tracking-wide uppercase ${e.status === 'ready' ? 'text-signal-success' : 'text-primary/70'}`}
             >
               {e.status}
             </span>
           </div>
         </div>
       ))}
-      <div className="mt-auto border-t border-line pt-3 text-ink-tertiary text-[10px]">
+      <div className="border-line text-ink-tertiary mt-auto border-t pt-3 text-[10px]">
         Full production topology per branch · spun up on PR open
       </div>
     </div>
@@ -314,71 +314,74 @@ const products: {
     visual: <PhoenixVisual />,
     stealth: false,
   },
-  ...(!STEALTH_PRODUCTS ? [
-    {
-      route: '/products/titan-ledger',
-      eyebrow: 'Measure · Titan Ledger',
-      name: 'DORA metrics. No agents. No tagging.',
-      tagline:
-        'Automatic deploy telemetry — every release measured from your existing CI/CD signals.',
-      description:
-        'Ledger reads your CI/CD events and produces DORA metrics, team scorecards, and trend charts — no instrumentation, no agents, no manual tagging. It records what happened. Insight explains what it meant.',
-      bullets: [
-        'Four DORA metrics computed automatically from existing events',
-        'Team and service scorecards — per-team breakdown out of the box',
-        'Trend lines — see whether delivery is improving quarter over quarter',
-      ],
-      visual: <LedgerVisual />,
-      stealth: true,
-    },
-    {
-      route: '/products/titan-insight',
-      eyebrow: 'Understand · Titan Insight',
-      name: 'Did this release actually improve anything?',
-      tagline: 'Deploy-to-metric correlation — know the outcome of every release, not just the act.',
-      description:
-        'Insight correlates every deploy with the product and business metrics that followed. See which releases drove improvements and which quietly degraded the experience.',
-      bullets: [
-        'Automatic deploy-to-outcome correlation — no manual tagging',
-        'Business metric integration — revenue, conversion, engagement',
-        'Release retrospectives — before and after, per deploy',
-      ],
-      visual: <InsightVisual />,
-      badge: 'roadmap' as const,
-      stealth: true,
-    },
-    {
-      route: '/products/titan-sandbox',
-      eyebrow: 'Preview · Titan Sandbox',
-      name: 'A production-shaped environment for every branch.',
-      tagline: 'Spin up a full-fidelity environment per PR — no shared staging, no queue.',
-      description:
-        'Every branch gets its own isolated environment that mirrors production topology. Test with real service dependencies, real data shapes, and real traffic patterns — before any user sees it.',
-      bullets: [
-        'Per-branch environments — spun up on PR open, torn down on merge',
-        'Production topology mirror — no mocked services',
-        'Zero queue — every engineer gets an environment, immediately',
-      ],
-      visual: <SandboxVisual />,
-      badge: 'roadmap' as const,
-      stealth: true,
-    },
-    {
-      route: '/products/titan-shield',
-      eyebrow: 'Defend · Titan Shield',
-      name: 'Stay up across every cloud.',
-      tagline: 'Multi-cloud failover that happens automatically — before your users notice.',
-      description:
-        'Route traffic intelligently across AWS, GCP, and Azure. When a region degrades, Shield shifts traffic in real time — zero manual intervention. This is infrastructure resilience, not release recovery.',
-      bullets: [
-        'Automatic failover across AWS, GCP, and Azure',
-        'Zero-latency in-memory routing — no proxy overhead',
-        'Built-in geo-aware failover policies',
-      ],
-      visual: <ShieldVisual />,
-      stealth: true,
-    },
-  ] as typeof products : []),
+  ...(!STEALTH_PRODUCTS
+    ? ([
+        {
+          route: '/products/titan-ledger',
+          eyebrow: 'Measure · Titan Ledger',
+          name: 'DORA metrics. No agents. No tagging.',
+          tagline:
+            'Automatic deploy telemetry — every release measured from your existing CI/CD signals.',
+          description:
+            'Ledger reads your CI/CD events and produces DORA metrics, team scorecards, and trend charts — no instrumentation, no agents, no manual tagging. It records what happened. Insight explains what it meant.',
+          bullets: [
+            'Four DORA metrics computed automatically from existing events',
+            'Team and service scorecards — per-team breakdown out of the box',
+            'Trend lines — see whether delivery is improving quarter over quarter',
+          ],
+          visual: <LedgerVisual />,
+          stealth: true,
+        },
+        {
+          route: '/products/titan-insight',
+          eyebrow: 'Understand · Titan Insight',
+          name: 'Did this release actually improve anything?',
+          tagline:
+            'Deploy-to-metric correlation — know the outcome of every release, not just the act.',
+          description:
+            'Insight correlates every deploy with the product and business metrics that followed. See which releases drove improvements and which quietly degraded the experience.',
+          bullets: [
+            'Automatic deploy-to-outcome correlation — no manual tagging',
+            'Business metric integration — revenue, conversion, engagement',
+            'Release retrospectives — before and after, per deploy',
+          ],
+          visual: <InsightVisual />,
+          badge: 'roadmap' as const,
+          stealth: true,
+        },
+        {
+          route: '/products/titan-sandbox',
+          eyebrow: 'Preview · Titan Sandbox',
+          name: 'A production-shaped environment for every branch.',
+          tagline: 'Spin up a full-fidelity environment per PR — no shared staging, no queue.',
+          description:
+            'Every branch gets its own isolated environment that mirrors production topology. Test with real service dependencies, real data shapes, and real traffic patterns — before any user sees it.',
+          bullets: [
+            'Per-branch environments — spun up on PR open, torn down on merge',
+            'Production topology mirror — no mocked services',
+            'Zero queue — every engineer gets an environment, immediately',
+          ],
+          visual: <SandboxVisual />,
+          badge: 'roadmap' as const,
+          stealth: true,
+        },
+        {
+          route: '/products/titan-shield',
+          eyebrow: 'Defend · Titan Shield',
+          name: 'Stay up across every cloud.',
+          tagline: 'Multi-cloud failover that happens automatically — before your users notice.',
+          description:
+            'Route traffic intelligently across AWS, GCP, and Azure. When a region degrades, Shield shifts traffic in real time — zero manual intervention. This is infrastructure resilience, not release recovery.',
+          bullets: [
+            'Automatic failover across AWS, GCP, and Azure',
+            'Zero-latency in-memory routing — no proxy overhead',
+            'Built-in geo-aware failover policies',
+          ],
+          visual: <ShieldVisual />,
+          stealth: true,
+        },
+      ] as typeof products)
+    : []),
 ]
 
 export function PlatformOverview() {
@@ -399,29 +402,29 @@ export function PlatformOverview() {
   const numberInText = numberInTextObj[products.length]
 
   return (
-    <section className="py-20 lg:py-28 border-t border-line relative" ref={ref}>
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+    <section className="border-line relative border-t pt-20 pb-10 lg:pt-28" ref={ref}>
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         {/* Section header */}
-        <div className="flex flex-col items-center text-center gap-3 mb-16 lg:mb-20">
-          <span className="font-mono text-xs text-primary uppercase tracking-widest">
+        <div className="mb-16 flex flex-col items-center gap-3 text-center lg:mb-20">
+          <span className="text-primary font-mono text-xs tracking-widest uppercase">
             The platform
           </span>
-          <h2 className="font-display text-3xl md:text-4xl font-medium tracking-[-0.02em] text-ink leading-tight">
+          <h2 className="font-display text-ink text-3xl leading-tight font-medium tracking-[-0.02em] md:text-4xl">
             {numberInText} products. One release lifecycle.
           </h2>
-          <p className="text-base text-ink-secondary leading-relaxed max-w-lg">
+          <p className="text-ink-secondary max-w-lg text-base leading-relaxed">
             {numberInText} products that cover every stage — from pre-merge risk to post-release
             outcome. Use one or the full platform.
           </p>
         </div>
 
         {/* Product teasers */}
-        <div className="flex flex-col divide-y divide-line">
+        <div className="divide-line flex flex-col divide-y">
           {products.map((p, index) => (
             <div
               key={p.route}
               data-reveal
-              className="py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
+              className="grid grid-cols-1 items-center gap-12 py-16 lg:grid-cols-2 lg:gap-20"
             >
               {/* Copy */}
               <div
@@ -429,21 +432,21 @@ export function PlatformOverview() {
               >
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs text-primary uppercase tracking-widest">
+                    <span className="text-primary font-mono text-xs tracking-widest uppercase">
                       {p.eyebrow}
                     </span>
                     {p.badge && <RoadmapBadge variant={p.badge} />}
                   </div>
-                  <h3 className="font-display text-2xl md:text-3xl font-semibold tracking-[-0.02em] text-ink leading-tight">
+                  <h3 className="font-display text-ink text-2xl leading-tight font-semibold tracking-[-0.02em] md:text-3xl">
                     {p.name}
                   </h3>
-                  <p className="text-base text-ink-secondary mt-1 font-medium">{p.tagline}</p>
+                  <p className="text-ink-secondary mt-1 text-base font-medium">{p.tagline}</p>
                 </div>
-                <p className="text-sm text-ink-secondary leading-relaxed">{p.description}</p>
+                <p className="text-ink-secondary text-sm leading-relaxed">{p.description}</p>
                 <ul className="flex flex-col gap-2.5">
                   {p.bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-3 text-sm text-ink-secondary">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0" />
+                    <li key={b} className="text-ink-secondary flex items-start gap-3 text-sm">
+                      <span className="bg-primary/60 mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" />
                       {b}
                     </li>
                   ))}
@@ -451,7 +454,7 @@ export function PlatformOverview() {
                 <div className="flex items-center gap-5 pt-2">
                   <Link
                     href={p.route}
-                    className="inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-primary-dark transition-colors group"
+                    className="text-ink hover:text-primary-dark group inline-flex items-center gap-2 text-sm font-medium transition-colors"
                   >
                     See details
                     <svg
@@ -471,7 +474,7 @@ export function PlatformOverview() {
                   </Link>
                   <Link
                     href="/docs"
-                    className="text-sm text-ink-tertiary hover:text-ink-secondary transition-colors"
+                    className="text-ink-tertiary hover:text-ink-secondary text-sm transition-colors"
                   >
                     Read the docs
                   </Link>
@@ -481,33 +484,33 @@ export function PlatformOverview() {
               {/* Visual */}
               <div className={`relative ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
                 <div
-                  className="border border-line bg-surface-alt/60 overflow-hidden"
+                  className="border-line bg-surface-alt/60 overflow-hidden border"
                   style={{ borderRadius: '2px', minHeight: '280px' }}
                 >
                   {p.visual}
                 </div>
-                <span className="absolute -top-px -left-px w-3 h-3 border-t-[1.5px] border-l-[1.5px] border-primary/30" />
-                <span className="absolute -bottom-px -right-px w-3 h-3 border-b-[1.5px] border-r-[1.5px] border-primary/30" />
+                <span className="border-primary/30 absolute -top-px -left-px h-3 w-3 border-t-[1.5px] border-l-[1.5px]" />
+                <span className="border-primary/30 absolute -right-px -bottom-px h-3 w-3 border-r-[1.5px] border-b-[1.5px]" />
               </div>
             </div>
           ))}
         </div>
 
         {/* Platform CTA strip */}
-        <div className="mt-12 pt-10 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-6">
-          <p className="text-sm text-ink-secondary">
+        <div className="border-line mt-12 flex flex-col items-center justify-between gap-6 border-t pt-10 sm:flex-row">
+          <p className="text-ink-secondary text-sm">
             Use one product or the full platform — pricing scales with usage.
           </p>
           <div className="flex items-center gap-4">
             <Link
               href="/pricing"
-              className="text-sm text-ink-secondary hover:text-ink transition-colors"
+              className="text-ink-secondary hover:text-ink text-sm transition-colors"
             >
               View pricing →
             </Link>
             <a
               href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-ink text-surface dark:text-surface px-5 py-2.5 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)]"
+              className="bg-ink text-surface dark:text-surface inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] active:scale-[0.97]"
               style={{ borderRadius: '2px' }}
             >
               Start free trial

@@ -3,7 +3,6 @@
 import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
-import Link from 'next/link'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
 
@@ -154,11 +153,13 @@ export default function SolutionMultiCloudResilience() {
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <a
-              href={`${APP_URL}/signup`}
+              href="https://cal.com/deploytitan/demo"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium dark:text-surface transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
               style={{ borderRadius: '2px' }}
             >
-              Start free trial
+              Book a 20-min walkthrough
               <svg
                 width="12"
                 height="12"
@@ -171,12 +172,12 @@ export default function SolutionMultiCloudResilience() {
                 <polyline points="12 5 19 12 12 19" />
               </svg>
             </a>
-            <Link
-              href="/products/titan-shield"
+            <a
+              href={`${APP_URL}/signup`}
               className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
             >
-              Explore Titan Shield →
-            </Link>
+              Start free trial →
+            </a>
           </div>
         </Container>
       </section>
@@ -305,7 +306,147 @@ export default function SolutionMultiCloudResilience() {
         </Container>
       </section>
 
-      
+      {/* What teams do today */}
+      <section className="py-20 border-b border-line">
+        <Container width="6xl" padding="default">
+          <div className="mb-12" data-reveal>
+            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              The status quo
+            </p>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+              How teams handle multi-cloud resilience today — and what breaks.
+            </h2>
+            <p className="text-ink-secondary text-sm max-w-xl">
+              Multi-cloud resilience is a spreadsheet problem dressed up as an architecture problem.
+              Teams have the infrastructure — they lack the control plane.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              {
+                tool: 'Runbook-based failover',
+                workaround: 'A 40-step runbook lives in Confluence. Three senior engineers need to be awake and coordinating to execute it correctly.',
+                failure: 'RTO of 40+ minutes on a good day. Runbooks go stale. Last DR drill was 6 months ago and it didn\'t finish.',
+              },
+              {
+                tool: 'DNS TTL tricks',
+                workaround: 'Set low TTLs on DNS records "just in case." Update Route 53 or Cloud DNS manually when a region goes down.',
+                failure: 'DNS propagation still takes 30–60 seconds globally. No awareness of partial failures or latency degradation. Binary on/off only.',
+              },
+              {
+                tool: 'Cloud-native health checks',
+                workaround: 'Use AWS Route 53 health checks or GCP Traffic Director to detect unhealthy endpoints and reroute.',
+                failure: 'Each cloud has different detection latency and routing semantics. No cross-cloud view. No policy as code — config drift is constant.',
+              },
+            ].map((item, i) => (
+              <Card
+                key={item.tool}
+                padding="none"
+                className="p-7"
+                data-reveal
+                data-reveal-delay={String(i)}
+              >
+                <p className="font-mono text-xs text-primary mb-3 uppercase tracking-wider">
+                  {item.tool}
+                </p>
+                <p className="text-sm text-ink-secondary mb-4 leading-relaxed">{item.workaround}</p>
+                <div className="border-t border-line pt-4">
+                  <p className="text-[11px] font-mono text-red-400/80 uppercase tracking-wider mb-1">
+                    Failure mode
+                  </p>
+                  <p className="text-xs text-ink-tertiary leading-relaxed">{item.failure}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Comparison */}
+      <section className="py-20 border-b border-line">
+        <Container width="5xl" padding="default">
+          <div className="mb-12" data-reveal>
+            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              How we compare
+            </p>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-2">
+              DeployTitan vs. the alternatives.
+            </h2>
+          </div>
+          <div className="overflow-x-auto" data-reveal>
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-line">
+                  <th className="text-left py-3 pr-6 text-xs font-mono uppercase tracking-wider text-ink-tertiary w-1/4">
+                    Capability
+                  </th>
+                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-primary">
+                    DeployTitan
+                  </th>
+                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-ink-tertiary">
+                    Cloud-native (per-cloud)
+                  </th>
+                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-ink-tertiary">
+                    Runbook + manual
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Automatic cross-cloud failover', '✓', '~ (per-cloud only)', '✗'],
+                  ['Failure detection time', '< 10s', '30–120s', '5–15 min (human)'],
+                  ['Policy as code (HCL)', '✓', '✗ (console config)', '✗'],
+                  ['DR drill mode (no real traffic impact)', '✓', '✗', '✗ (real risk)'],
+                  ['Single audit log across all clouds', '✓', '✗ (siloed)', '✗'],
+                ].map(([cap, dt, cloud, manual]) => (
+                  <tr key={String(cap)} className="border-b border-line/50">
+                    <td className="py-3 pr-6 text-xs text-ink-secondary">{cap}</td>
+                    <td className="py-3 px-4 text-center text-xs text-signal-success font-mono">{dt}</td>
+                    <td className="py-3 px-4 text-center text-xs text-ink-tertiary font-mono">{cloud}</td>
+                    <td className="py-3 px-4 text-center text-xs text-ink-tertiary font-mono">{manual}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Container>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-20">
+        <Container width="4xl" padding="default">
+          <div className="text-center" data-reveal>
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-4">
+              Simulate a regional failover in your environment — live.
+            </h2>
+            <p className="text-ink-secondary text-sm mb-8 max-w-lg mx-auto">
+              We'll walk through a DR drill in Titan Shield against your actual cloud topology — no
+              real traffic impacted — and show you the RTO you'd get in a real incident.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <a
+                href="https://cal.com/deploytitan/demo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium dark:text-surface transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
+                style={{ borderRadius: '2px' }}
+              >
+                Book a 20-min walkthrough
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+              <a
+                href={`${APP_URL}/signup`}
+                className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+              >
+                Start free trial →
+              </a>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   )
 }

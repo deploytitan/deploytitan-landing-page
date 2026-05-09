@@ -84,7 +84,7 @@ export function SolutionsDropdown({ onClose }: Props) {
       {/* Top bar */}
       <div className="px-6 pt-5 pb-3 border-b border-line-subtle flex items-center justify-between">
         <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Solutions</span>
-        <span className="text-xs text-ink-quaternary">By use case</span>
+        <span className="text-xs text-ink-quaternary">What problem it solves</span>
       </div>
 
       {/* 2x2 grid */}

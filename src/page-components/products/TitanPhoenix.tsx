@@ -208,6 +208,59 @@ export default function TitanPhoenix() {
         </Container>
       </section>
 
+      {/* Integrations matrix */}
+      <section className="py-20 border-t border-line">
+        <Container width="6xl" padding="default">
+          <div className="mb-10" data-reveal>
+            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              Integrations
+            </p>
+            <h2 className="text-2xl font-semibold text-ink mb-2">
+              Works with your existing stack.
+            </h2>
+            <p className="text-ink-secondary text-sm max-w-lg">
+              Phoenix watches the SLO metrics you already collect — no new instrumentation required.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-reveal>
+            {[
+              { category: 'SLO Metrics', tools: ['Datadog', 'Prometheus', 'Grafana', 'New Relic'] },
+              { category: 'Traffic', tools: ['Kubernetes', 'AWS ALB', 'Istio', 'Cloud Run'] },
+              { category: 'Feature Flags', tools: ['LaunchDarkly', 'Unleash', 'Flipt', 'Flagsmith'] },
+              { category: 'Incident', tools: ['PagerDuty', 'Opsgenie', 'Slack', 'Webhooks'] },
+            ].map((group) => (
+              <Card key={group.category} padding="none" className="p-5">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-primary mb-3">
+                  {group.category}
+                </p>
+                <ul className="flex flex-col gap-2">
+                  {group.tools.map((t) => (
+                    <li key={t} className="text-xs text-ink-secondary flex items-center gap-2">
+                      <span className="w-1 h-1 rounded-full bg-primary/50 shrink-0" />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            ))}
+          </div>
+          <div className="mt-8 flex items-center gap-6" data-reveal>
+            <a
+              href="/docs/titan-phoenix"
+              className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+            >
+              Read the docs →
+            </a>
+            <a
+              href="/docs/titan-phoenix/integrations"
+              className="text-sm text-ink-tertiary hover:text-ink-secondary transition-colors"
+            >
+              See all integrations
+            </a>
+          </div>
+        </Container>
+      </section>
+
       {/* Cross-links */}
       <section className="py-16 border-t border-line">
         <Container width="6xl" padding="default">

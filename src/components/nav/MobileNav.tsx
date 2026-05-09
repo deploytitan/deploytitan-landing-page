@@ -56,6 +56,7 @@ const productLinks = STEALTH_PRODUCTS
 
 const solutionLinks = [
   { label: 'Progressive Delivery', route: '/solutions/progressive-delivery' },
+  { label: 'Instant Rollback', route: '/solutions/instant-rollback' },
   { label: 'Multi-Cloud Resilience', route: '/solutions/multi-cloud-resilience' },
   { label: 'Deploy Risk Intelligence', route: '/solutions/risk-intelligence' },
   { label: 'Platform Engineering', route: '/solutions/platform-engineering' },
@@ -75,10 +76,10 @@ interface Props {
 function AccordionGroup({ label, children }: { label: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="border-b border-line">
+    <div className="border-line border-b">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-6 py-4 text-base font-medium text-ink"
+        className="text-ink flex w-full items-center justify-between px-6 py-4 text-base font-medium"
       >
         {label}
         <svg
@@ -106,7 +107,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
   const topOffset = barHeight + 80
   return (
     <div
-      className="fixed left-0 right-0 bottom-0 bg-surface z-40 flex flex-col overflow-y-auto"
+      className="bg-surface fixed right-0 bottom-0 left-0 z-40 flex flex-col overflow-y-auto"
       style={{ top: topOffset }}
     >
       {/* Products group */}
@@ -116,11 +117,11 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
             key={l.route}
             href={l.route}
             onClick={onClose}
-            className="flex items-center gap-2 px-8 py-3 hover:bg-surface-alt transition-colors"
+            className="hover:bg-surface-alt flex items-center gap-2 px-8 py-3 transition-colors"
           >
-            <div className="flex flex-col gap-0.5 flex-1">
-              <span className="text-sm font-medium text-ink">{l.label}</span>
-              <span className="text-xs text-ink-tertiary">{l.sub}</span>
+            <div className="flex flex-1 flex-col gap-0.5">
+              <span className="text-ink text-sm font-medium">{l.label}</span>
+              <span className="text-ink-tertiary text-xs">{l.sub}</span>
             </div>
             {l.preview && <RoadmapBadge variant="roadmap" />}
           </Link>
@@ -134,7 +135,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
             key={l.route}
             href={l.route}
             onClick={onClose}
-            className="block px-8 py-3 text-sm text-ink-secondary hover:text-ink hover:bg-surface-alt transition-colors"
+            className="text-ink-secondary hover:text-ink hover:bg-surface-alt block px-8 py-3 text-sm transition-colors"
           >
             {l.label}
           </Link>
@@ -142,7 +143,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
         <Link
           href="/solutions"
           onClick={onClose}
-          className="block px-8 py-3 text-sm text-primary font-medium hover:bg-surface-alt transition-colors"
+          className="text-primary hover:bg-surface-alt block px-8 py-3 text-sm font-medium transition-colors"
         >
           View all solutions →
         </Link>
@@ -155,7 +156,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
             key={l.route}
             href={l.route}
             onClick={onClose}
-            className="block px-8 py-3 text-sm text-ink-secondary hover:text-ink hover:bg-surface-alt transition-colors"
+            className="text-ink-secondary hover:text-ink hover:bg-surface-alt block px-8 py-3 text-sm transition-colors"
           >
             {l.label}
           </Link>
@@ -166,23 +167,23 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
       {[
         { label: 'How it works', route: '/how-it-works' },
         { label: 'Pricing', route: '/pricing' },
-        { label: 'Customers', route: '/customers' },
-        { label: 'Docs', route: '/docs' },
+        { label: 'Blog', route: '/blog' },
+        // { label: 'Docs', route: '/docs' },
       ].map((l) => (
         <Link
           key={l.route}
           href={l.route}
           onClick={onClose}
-          className="block px-6 py-4 text-base font-medium text-ink border-b border-line hover:bg-surface-alt transition-colors"
+          className="text-ink border-line hover:bg-surface-alt block border-b px-6 py-4 text-base font-medium transition-colors"
         >
           {l.label}
         </Link>
       ))}
 
       {/* Auth buttons */}
-      <div className="mt-auto px-6 py-8 flex flex-col gap-3 border-t border-line">
-        <div className="flex items-center justify-between mb-1">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+      <div className="border-line mt-auto mb-4 flex flex-col gap-3 border-t px-6 py-8 md:mb-[unset]">
+        <div className="mb-1 flex items-center justify-between">
+          <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
             Appearance
           </span>
           <ThemeToggle />
@@ -190,7 +191,7 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
         <a
           href={`${CONSOLE_URL}/login`}
           onClick={onClose}
-          className="w-full inline-flex items-center justify-center px-6 py-3 bg-ink text-surface text-sm font-medium hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] transition-all active:scale-[0.97]"
+          className="bg-ink text-surface inline-flex w-full items-center justify-center px-6 py-3 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] active:scale-[0.97]"
           style={{ borderRadius: '2px' }}
         >
           Get started

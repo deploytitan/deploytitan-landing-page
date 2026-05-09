@@ -185,6 +185,60 @@ export default function TitanForesight() {
         </Container>
       </section>
 
+      {/* Integrations matrix */}
+      <section className="py-20 border-t border-line">
+        <Container width="6xl" padding="default">
+          <div className="mb-10" data-reveal>
+            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              Integrations
+            </p>
+            <h2 className="text-2xl font-semibold text-ink mb-2">
+              Works with your existing stack.
+            </h2>
+            <p className="text-ink-secondary text-sm max-w-lg">
+              Foresight plugs into your source control, CI, and observability layer without changing
+              how your team works.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-reveal>
+            {[
+              { category: 'Source Control', tools: ['GitHub', 'GitLab', 'Bitbucket', 'Azure DevOps'] },
+              { category: 'CI / CD', tools: ['GitHub Actions', 'GitLab CI', 'Jenkins', 'CircleCI'] },
+              { category: 'Observability', tools: ['Datadog', 'Prometheus', 'Grafana', 'Honeycomb'] },
+              { category: 'Notifications', tools: ['Slack', 'GitHub PRs', 'PagerDuty', 'Webhooks'] },
+            ].map((group) => (
+              <Card key={group.category} padding="none" className="p-5">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-primary mb-3">
+                  {group.category}
+                </p>
+                <ul className="flex flex-col gap-2">
+                  {group.tools.map((t) => (
+                    <li key={t} className="text-xs text-ink-secondary flex items-center gap-2">
+                      <span className="w-1 h-1 rounded-full bg-primary/50 shrink-0" />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            ))}
+          </div>
+          <div className="mt-8 flex items-center gap-6" data-reveal>
+            <a
+              href="/docs/titan-foresight"
+              className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+            >
+              Read the docs →
+            </a>
+            <a
+              href="/docs/titan-foresight/integrations"
+              className="text-sm text-ink-tertiary hover:text-ink-secondary transition-colors"
+            >
+              See all integrations
+            </a>
+          </div>
+        </Container>
+      </section>
+
       {/* Cross-links */}
       <section className="py-16 border-t border-line">
         <Container width="6xl" padding="default">

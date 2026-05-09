@@ -160,7 +160,7 @@ export function ProductsDropdown({ onClose }: Props) {
           Products
         </span>
         <span className="text-ink-quaternary text-xs">
-          Detect · Deliver · Defend · Recover · Measure
+          What it does · Detect · Deliver · Defend · Recover · Measure
         </span>
       </div>
 
