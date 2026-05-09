@@ -37,20 +37,21 @@ const RISKS_ADDRESSED = [
   'Vendor lock-in from proprietary deployment platforms',
 ]
 
-export default function ForCTO() {  useScrollReveal()
+export default function ForCTO() {
+  useScrollReveal()
 
   return (
     <>
-      <section className="blueprint-grid pt-28 pb-20 border-b border-line">
+      <section className="blueprint-grid border-line border-b pt-28 pb-20">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+          <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
             For CTOs & VP Engineering
           </p>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
+          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl">
             The deployment platform
             <br className="hidden md:block" /> your org can rely on.
           </h1>
-          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
+          <p className="text-ink-secondary mb-8 max-w-2xl text-lg leading-relaxed">
             Deployment incidents are expensive. Manual runbooks are technical debt. Single-cloud
             dependencies are board-level risk. DeployTitan gives your engineering org the deployment
             control plane to ship faster, recover faster, and eliminate the risks that keep you up
@@ -59,7 +60,7 @@ export default function ForCTO() {  useScrollReveal()
           <div className="flex flex-wrap items-center gap-4">
             <Link
               href="/early-access"
-              className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
+              className="bg-ink text-surface inline-flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.97]"
               style={{ borderRadius: '2px' }}
             >
               Request early access
@@ -76,10 +77,10 @@ export default function ForCTO() {  useScrollReveal()
               </svg>
             </Link>
             <a
-              href="https://cal.com/deploytitan/demo"
+              href="https://cal.com/justine-deploytitan/demo"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+              className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
             >
               Schedule a call with our team →
             </a>
@@ -88,27 +89,27 @@ export default function ForCTO() {  useScrollReveal()
       </section>
 
       {/* ROI */}
-      <section className="py-20 border-b border-line">
+      <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
               Business outcomes
             </p>
-            <h2 className="text-2xl font-semibold text-ink">Measured impact on what matters.</h2>
+            <h2 className="text-ink text-2xl font-semibold">Measured impact on what matters.</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {ROI_POINTS.map((r, i) => (
               <Card
                 key={r.label}
-                className="hover:border-primary/20 hover:shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all"
+                className="hover:border-primary/20 transition-all hover:shadow-[0_2px_12px_rgba(0,0,0,0.04)]"
                 data-reveal
                 data-reveal-delay={String(i)}
               >
-                <p className="text-4xl font-bold text-ink mb-1">{r.metric}</p>
-                <p className="text-xs font-mono text-primary uppercase tracking-wider mb-3">
+                <p className="text-ink mb-1 text-4xl font-bold">{r.metric}</p>
+                <p className="text-primary mb-3 font-mono text-xs tracking-wider uppercase">
                   {r.label}
                 </p>
-                <p className="text-xs text-ink-secondary leading-relaxed">{r.body}</p>
+                <p className="text-ink-secondary text-xs leading-relaxed">{r.body}</p>
               </Card>
             ))}
           </div>
@@ -116,23 +117,23 @@ export default function ForCTO() {  useScrollReveal()
       </section>
 
       {/* Risk reduction */}
-      <section className="py-20 border-b border-line bg-surface-alt/30">
+      <section className="border-line bg-surface-alt/30 border-b py-20">
         <Container width="5xl" padding="default">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start" data-reveal>
+          <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2" data-reveal>
             <div>
-              <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+              <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
                 Risk reduction
               </p>
-              <h2 className="text-2xl font-semibold text-ink mb-4">
+              <h2 className="text-ink mb-4 text-2xl font-semibold">
                 The risks DeployTitan eliminates.
               </h2>
-              <p className="text-sm text-ink-secondary leading-relaxed mb-6">
+              <p className="text-ink-secondary mb-6 text-sm leading-relaxed">
                 Every item on this list is an incident waiting to happen — or a board question you
                 don't want to answer.
               </p>
               <ul className="flex flex-col gap-3">
                 {RISKS_ADDRESSED.map((r) => (
-                  <li key={r} className="flex items-start gap-3 text-sm text-ink-secondary">
+                  <li key={r} className="text-ink-secondary flex items-start gap-3 text-sm">
                     <svg
                       width="14"
                       height="14"
@@ -140,7 +141,7 @@ export default function ForCTO() {  useScrollReveal()
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="2.5"
-                      className="text-signal-success shrink-0 mt-0.5"
+                      className="text-signal-success mt-0.5 shrink-0"
                     >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
@@ -151,35 +152,35 @@ export default function ForCTO() {  useScrollReveal()
             </div>
             <div className="flex flex-col gap-4">
               <Card padding="sm">
-                <p className="text-xs font-mono text-ink-quaternary uppercase tracking-wider mb-3">
+                <p className="text-ink-quaternary mb-3 font-mono text-xs tracking-wider uppercase">
                   Architecture principle
                 </p>
-                <p className="text-sm font-semibold text-ink mb-2">"Your data plane, our brain."</p>
-                <p className="text-xs text-ink-secondary leading-relaxed">
+                <p className="text-ink mb-2 text-sm font-semibold">"Your data plane, our brain."</p>
+                <p className="text-ink-secondary text-xs leading-relaxed">
                   The controller runs in your VPC. Traffic never passes through DeployTitan. No
                   vendor dependency in your critical path. No data sovereignty risk.
                 </p>
                 <Link
                   href="/how-it-works"
-                  className="text-xs text-primary hover:text-primary-dark transition-colors mt-3 inline-block"
+                  className="text-primary hover:text-primary-dark mt-3 inline-block text-xs transition-colors"
                 >
                   Read the architecture →
                 </Link>
               </Card>
               <Card padding="sm">
-                <p className="text-xs font-mono text-ink-quaternary uppercase tracking-wider mb-3">
+                <p className="text-ink-quaternary mb-3 font-mono text-xs tracking-wider uppercase">
                   Security posture
                 </p>
-                <p className="text-sm font-semibold text-ink mb-2">
+                <p className="text-ink mb-2 text-sm font-semibold">
                   SOC 2 Type II in progress (Q3 2026).
                 </p>
-                <p className="text-xs text-ink-secondary leading-relaxed">
+                <p className="text-ink-secondary text-xs leading-relaxed">
                   Encrypted at rest and in transit. Immutable audit log. SCIM + SSO on Enterprise.
                   DPA available for GDPR compliance.
                 </p>
                 <Link
                   href="/security"
-                  className="text-xs text-primary hover:text-primary-dark transition-colors mt-3 inline-block"
+                  className="text-primary hover:text-primary-dark mt-3 inline-block text-xs transition-colors"
                 >
                   Security overview →
                 </Link>
@@ -188,8 +189,6 @@ export default function ForCTO() {  useScrollReveal()
           </div>
         </Container>
       </section>
-
-      
     </>
   )
 }

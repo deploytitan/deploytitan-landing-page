@@ -68,31 +68,31 @@ export default function SolutionInstantRollback() {
   return (
     <>
       {/* Hero */}
-      <section className="blueprint-grid pt-28 pb-20 border-b border-line">
+      <section className="blueprint-grid border-line border-b pt-28 pb-20">
         <Container width="4xl" padding="default" data-reveal>
           <Breadcrumbs className="mb-6" />
           <div
-            className="inline-flex items-center gap-2 font-mono text-[10px] text-primary border border-primary/30 px-2 py-1 mb-6"
+            className="text-primary border-primary/30 mb-6 inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px]"
             style={{ borderRadius: '2px' }}
           >
-            <span className="w-1.5 h-1.5 bg-signal-success" style={{ borderRadius: '1px' }} />
+            <span className="bg-signal-success h-1.5 w-1.5" style={{ borderRadius: '1px' }} />
             Powered by Titan Phoenix
           </div>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
+          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl">
             Your on-call is the
             <br className="hidden md:block" /> last line of defense.
           </h1>
-          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
+          <p className="text-ink-secondary mb-8 max-w-2xl text-lg leading-relaxed">
             A bad deploy fires PagerDuty. Someone wakes up. They read through Grafana, confirm the
             problem is real, find the right kubectl command, and watch dashboards for another 20
             minutes to verify recovery. By then, thousands of users have already hit the bug.
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <a
-              href="https://cal.com/deploytitan/demo"
+              href="https://cal.com/justine-deploytitan/demo"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium dark:text-surface transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
+              className="bg-ink text-surface dark:text-surface inline-flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.97]"
               style={{ borderRadius: '2px' }}
             >
               Book a 20-min walkthrough
@@ -110,7 +110,7 @@ export default function SolutionInstantRollback() {
             </a>
             <a
               href={`${APP_URL}/signup`}
-              className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+              className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
             >
               Start free trial →
             </a>
@@ -119,17 +119,17 @@ export default function SolutionInstantRollback() {
       </section>
 
       {/* Narrative */}
-      <section className="py-16 border-b border-line bg-surface-alt/20">
+      <section className="border-line bg-surface-alt/20 border-b py-16">
         <Container width="4xl" padding="default">
-          <div className="flex flex-col gap-10 max-w-prose" data-reveal>
+          <div className="flex max-w-prose flex-col gap-10" data-reveal>
             {/* The scene */}
             <div>
-              <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+              <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
                 The situation
               </p>
-              <blockquote className="text-xl lg:text-2xl font-semibold text-ink/90 italic leading-snug mb-6">
-                "3:14 AM. PagerDuty fires. The senior engineer on call squints at Grafana,
-                confirms it's real, and starts looking for the rollback runbook."
+              <blockquote className="text-ink/90 mb-6 text-xl leading-snug font-semibold italic lg:text-2xl">
+                "3:14 AM. PagerDuty fires. The senior engineer on call squints at Grafana, confirms
+                it's real, and starts looking for the rollback runbook."
               </blockquote>
               <p className="text-ink-secondary leading-relaxed">
                 By the time they've identified the bad deploy, found the right command, executed it,
@@ -141,51 +141,56 @@ export default function SolutionInstantRollback() {
 
             {/* The villain */}
             <div>
-              <p className="text-xs font-mono tracking-widest uppercase text-red-400/80 mb-4">
+              <p className="mb-4 font-mono text-xs tracking-widest text-red-400/80 uppercase">
                 The real problem
               </p>
-              <p className="text-ink leading-relaxed text-base">
-                The rollback tools already exist. <InlineCode>kubectl rollout undo</InlineCode> works.
-                The problem is the pipeline from "error rate spikes" to "rollback complete" runs
-                entirely through a human being, who has to be awake, alert, and in front of a
-                laptop to execute it. That pipeline has a minimum latency of 10–15 minutes on a
-                good night. On a bad night, it's 45.
+              <p className="text-ink text-base leading-relaxed">
+                The rollback tools already exist. <InlineCode>kubectl rollout undo</InlineCode>{' '}
+                works. The problem is the pipeline from "error rate spikes" to "rollback complete"
+                runs entirely through a human being, who has to be awake, alert, and in front of a
+                laptop to execute it. That pipeline has a minimum latency of 10–15 minutes on a good
+                night. On a bad night, it's 45.
               </p>
-              <p className="text-ink-secondary leading-relaxed text-base mt-4">
+              <p className="text-ink-secondary mt-4 text-base leading-relaxed">
                 There's a second, quieter problem: most rollbacks are too broad. Rolling back the
                 entire service when only 3% of users (in one region, on one feature flag) are
-                affected is a blunt instrument. You're degrading the 97% to protect the 3%. And
-                you still have to redeploy when you're ready to try again.
+                affected is a blunt instrument. You're degrading the 97% to protect the 3%. And you
+                still have to redeploy when you're ready to try again.
               </p>
             </div>
 
             {/* Cost of inaction */}
-            <div className="sharp-card border border-signal-danger/20 bg-signal-danger/[0.03] p-6">
-              <p className="text-xs font-mono tracking-widest uppercase text-signal-danger/80 mb-4">
+            <div className="sharp-card border-signal-danger/20 bg-signal-danger/[0.03] border p-6">
+              <p className="text-signal-danger/80 mb-4 font-mono text-xs tracking-widest uppercase">
                 Cost of staying put
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
                 {[
                   {
                     stat: '12–25 min',
                     label: 'mean time to rollback',
-                    detail: 'Median time from PagerDuty alert to traffic fully restored, when a human executes the rollback manually.',
+                    detail:
+                      'Median time from PagerDuty alert to traffic fully restored, when a human executes the rollback manually.',
                   },
                   {
                     stat: '~$5,400',
                     label: 'per minute of downtime',
-                    detail: 'Median cost of unplanned downtime for a mid-size B2B SaaS. A 20-minute incident is a $108k event.',
+                    detail:
+                      'Median cost of unplanned downtime for a mid-size B2B SaaS. A 20-minute incident is a $108k event.',
                   },
                   {
                     stat: '2–4×',
                     label: 'faster burnout',
-                    detail: 'Engineers on high-rotation on-call with manual rollback processes burn out significantly faster than those on automated systems.',
+                    detail:
+                      'Engineers on high-rotation on-call with manual rollback processes burn out significantly faster than those on automated systems.',
                   },
                 ].map((item) => (
                   <div key={item.stat}>
-                    <p className="text-2xl font-bold text-signal-danger/80 mb-1">{item.stat}</p>
-                    <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-2">{item.label}</p>
-                    <p className="text-xs text-ink-secondary leading-relaxed">{item.detail}</p>
+                    <p className="text-signal-danger/80 mb-1 text-2xl font-bold">{item.stat}</p>
+                    <p className="text-ink-tertiary mb-2 font-mono text-xs tracking-wider uppercase">
+                      {item.label}
+                    </p>
+                    <p className="text-ink-secondary text-xs leading-relaxed">{item.detail}</p>
                   </div>
                 ))}
               </div>
@@ -193,16 +198,15 @@ export default function SolutionInstantRollback() {
 
             {/* The resolution */}
             <div>
-              <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+              <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
                 The fix
               </p>
               <p className="text-ink-secondary leading-relaxed">
-                The rollback decision needs to happen before the human wakes up. That means a
-                system continuously watching your SLO metrics (not alerts, which are already late)
-                and triggering a scoped reversion the moment a measurement window closes over
-                your threshold. No runbook. No approval. No redeploy. Just traffic back where it
-                was, in under 10 seconds, with an automatic incident packet generated for the
-                post-mortem.
+                The rollback decision needs to happen before the human wakes up. That means a system
+                continuously watching your SLO metrics (not alerts, which are already late) and
+                triggering a scoped reversion the moment a measurement window closes over your
+                threshold. No runbook. No approval. No redeploy. Just traffic back where it was, in
+                under 10 seconds, with an automatic incident packet generated for the post-mortem.
               </p>
             </div>
           </div>
@@ -210,48 +214,53 @@ export default function SolutionInstantRollback() {
       </section>
 
       {/* Policy config — shown early so engineers can evaluate the mechanism before the walkthrough */}
-      <section className="py-14 border-b border-line bg-surface-alt/30">
+      <section className="border-line bg-surface-alt/30 border-b py-14">
         <Container width="3xl" padding="default">
           <div className="mb-8" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
               Configuration
             </p>
-            <h2 className="text-2xl font-semibold text-ink leading-snug mb-2">
+            <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold">
               Define your rollback policy once.
             </h2>
-            <p className="text-sm text-ink-secondary">
-              A single stanza in your{' '}
-              <InlineCode variant="accent">titan.yaml</InlineCode> is all Phoenix
-              needs. No runbooks, no on-call scripts.
+            <p className="text-ink-secondary text-sm">
+              A single stanza in your <InlineCode variant="accent">titan.yaml</InlineCode> is all
+              Phoenix needs. No runbooks, no on-call scripts.
             </p>
           </div>
           <div data-reveal>
-          <CodeBlock variant="terminal" filename="titan.yaml" lang="yaml" code={POLICY_SNIPPET} copy={false} />
+            <CodeBlock
+              variant="terminal"
+              filename="titan.yaml"
+              lang="yaml"
+              code={POLICY_SNIPPET}
+              copy={false}
+            />
           </div>
         </Container>
       </section>
 
       {/* Before / After */}
-      <section className="py-20 border-b border-line">
+      <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
               The transformation
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug">
+            <h2 className="text-ink text-2xl leading-snug font-semibold lg:text-3xl">
               Before and after Phoenix rollback.
             </h2>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" data-reveal>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2" data-reveal>
             {/* Before */}
             <Card padding="none" className="p-8">
-              <p className="text-[11px] font-mono tracking-widest uppercase text-red-400/70 mb-5">
+              <p className="mb-5 font-mono text-[11px] tracking-widest text-red-400/70 uppercase">
                 Without DeployTitan
               </p>
               <ul className="flex flex-col gap-4">
                 {BEFORE.map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-sm text-ink-secondary">
-                    <span className="mt-1 shrink-0 w-4 h-4 flex items-center justify-center border border-red-300/30 text-red-400/60 text-[10px] font-mono">
+                  <li key={b} className="text-ink-secondary flex items-start gap-3 text-sm">
+                    <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center border border-red-300/30 font-mono text-[10px] text-red-400/60">
                       ✗
                     </span>
                     {b}
@@ -260,14 +269,14 @@ export default function SolutionInstantRollback() {
               </ul>
             </Card>
             {/* After */}
-            <div className="sharp-card border border-primary/25 p-8 bg-primary/[0.02]">
-              <p className="text-[11px] font-mono tracking-widest uppercase text-primary mb-5">
+            <div className="sharp-card border-primary/25 bg-primary/[0.02] border p-8">
+              <p className="text-primary mb-5 font-mono text-[11px] tracking-widest uppercase">
                 With DeployTitan
               </p>
               <ul className="flex flex-col gap-4">
                 {AFTER.map((a) => (
-                  <li key={a} className="flex items-start gap-3 text-sm text-ink-secondary">
-                    <span className="mt-1 shrink-0 w-4 h-4 flex items-center justify-center border border-primary/30 text-primary text-[10px] font-mono">
+                  <li key={a} className="text-ink-secondary flex items-start gap-3 text-sm">
+                    <span className="border-primary/30 text-primary mt-1 flex h-4 w-4 shrink-0 items-center justify-center border font-mono text-[10px]">
                       ✓
                     </span>
                     {a}
@@ -280,28 +289,25 @@ export default function SolutionInstantRollback() {
       </section>
 
       {/* How it works — vertical urgency timeline */}
-      <section className="py-24 border-b border-line">
+      <section className="border-line border-b py-24">
         <Container width="4xl" padding="default">
           <div className="mb-16" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
               How it works
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug">
+            <h2 className="text-ink text-2xl leading-snug font-semibold lg:text-3xl">
               Four steps. Under 10 seconds.
             </h2>
           </div>
           <div className="relative flex flex-col gap-0" data-reveal>
             {/* Vertical connector line */}
-            <div
-              className="absolute left-[19px] top-8 bottom-8 w-px bg-line"
-              aria-hidden="true"
-            />
+            <div className="bg-line absolute top-8 bottom-8 left-[19px] w-px" aria-hidden="true" />
             {PHASES.map((phase, i) => (
               <div key={phase.number} className="relative flex gap-6 pb-10 last:pb-0">
                 {/* Step dot */}
-                <div className="shrink-0 flex flex-col items-center" style={{ width: '40px' }}>
+                <div className="flex shrink-0 flex-col items-center" style={{ width: '40px' }}>
                   <div
-                    className="w-10 h-10 flex items-center justify-center bg-surface border border-line font-mono text-[11px] font-semibold text-primary z-10"
+                    className="bg-surface border-line text-primary z-10 flex h-10 w-10 items-center justify-center border font-mono text-[11px] font-semibold"
                     style={{ borderRadius: '2px' }}
                   >
                     {phase.number}
@@ -309,18 +315,18 @@ export default function SolutionInstantRollback() {
                 </div>
                 {/* Content */}
                 <div className="flex-1 pt-1 pb-2">
-                  <div className="flex items-start justify-between gap-4 mb-2">
-                    <h3 className="text-base font-semibold text-ink leading-snug">
-                      {phase.title}
-                    </h3>
+                  <div className="mb-2 flex items-start justify-between gap-4">
+                    <h3 className="text-ink text-base leading-snug font-semibold">{phase.title}</h3>
                     <div className="shrink-0 text-right">
-                      <p className="text-xl font-bold text-primary leading-none">{phase.metric.value}</p>
-                      <p className="text-[9px] text-ink-tertiary font-mono uppercase tracking-wider mt-0.5">
+                      <p className="text-primary text-xl leading-none font-bold">
+                        {phase.metric.value}
+                      </p>
+                      <p className="text-ink-tertiary mt-0.5 font-mono text-[9px] tracking-wider uppercase">
                         {phase.metric.label}
                       </p>
                     </div>
                   </div>
-                  <p className="text-base text-ink-secondary leading-relaxed">{phase.body}</p>
+                  <p className="text-ink-secondary text-base leading-relaxed">{phase.body}</p>
                 </div>
               </div>
             ))}
@@ -329,36 +335,42 @@ export default function SolutionInstantRollback() {
       </section>
 
       {/* What teams do today */}
-      <section className="py-20 border-b border-line">
+      <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
               The status quo
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-2">
+            <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold lg:text-3xl">
               How teams handle rollbacks today, and the cost.
             </h2>
-            <p className="text-ink-secondary text-sm max-w-xl">
+            <p className="text-ink-secondary max-w-xl text-sm">
               The manual rollback playbook has three failure modes: too slow, too broad, and too
               dependent on a human being awake.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             {[
               {
                 tool: 'kubectl rollout undo',
-                workaround: 'SRE wakes up, confirms the issue is real, runs kubectl rollout undo, watches dashboards for 20 minutes to verify recovery.',
-                failure: 'Mean time from deploy to rollback decision: 12–25 minutes. That\'s 12–25 minutes of every user hitting the bug.',
+                workaround:
+                  'SRE wakes up, confirms the issue is real, runs kubectl rollout undo, watches dashboards for 20 minutes to verify recovery.',
+                failure:
+                  "Mean time from deploy to rollback decision: 12–25 minutes. That's 12–25 minutes of every user hitting the bug.",
               },
               {
                 tool: 'Redeploy last good tag',
-                workaround: 'Trigger a new pipeline run for the previous image tag. Wait for CI, wait for deploy, watch for health checks.',
-                failure: 'A full redeploy takes 6–15 minutes. You\'re also burning CI minutes and potentially racing against another deploy.',
+                workaround:
+                  'Trigger a new pipeline run for the previous image tag. Wait for CI, wait for deploy, watch for health checks.',
+                failure:
+                  "A full redeploy takes 6–15 minutes. You're also burning CI minutes and potentially racing against another deploy.",
               },
               {
                 tool: 'Feature flag kill switch',
-                workaround: 'Toggle a LaunchDarkly flag to disable the bad feature. Requires the engineer who wrote the flag to be available.',
-                failure: 'Flags don\'t roll back infrastructure changes, DB migrations, or cross-service API changes. Half of rollbacks need more than a flag.',
+                workaround:
+                  'Toggle a LaunchDarkly flag to disable the bad feature. Requires the engineer who wrote the flag to be available.',
+                failure:
+                  "Flags don't roll back infrastructure changes, DB migrations, or cross-service API changes. Half of rollbacks need more than a flag.",
               },
             ].map((item, i) => (
               <Card
@@ -368,15 +380,15 @@ export default function SolutionInstantRollback() {
                 data-reveal
                 data-reveal-delay={String(i)}
               >
-                <p className="font-mono text-xs text-primary mb-3 uppercase tracking-wider">
+                <p className="text-primary mb-3 font-mono text-xs tracking-wider uppercase">
                   {item.tool}
                 </p>
-                <p className="text-sm text-ink-secondary mb-4 leading-relaxed">{item.workaround}</p>
-                <div className="border-t border-line pt-4">
-                  <p className="text-[11px] font-mono text-red-400/80 uppercase tracking-wider mb-1">
+                <p className="text-ink-secondary mb-4 text-sm leading-relaxed">{item.workaround}</p>
+                <div className="border-line border-t pt-4">
+                  <p className="mb-1 font-mono text-[11px] tracking-wider text-red-400/80 uppercase">
                     Failure mode
                   </p>
-                  <p className="text-sm text-ink-tertiary leading-relaxed">{item.failure}</p>
+                  <p className="text-ink-tertiary text-sm leading-relaxed">{item.failure}</p>
                 </div>
               </Card>
             ))}
@@ -385,30 +397,30 @@ export default function SolutionInstantRollback() {
       </section>
 
       {/* Comparison */}
-      <section className="py-16 border-b border-line">
+      <section className="border-line border-b py-16">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
               How we compare
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-2">
+            <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold lg:text-3xl">
               DeployTitan vs. the alternatives.
             </h2>
           </div>
           <div className="overflow-x-auto" data-reveal>
-            <table className="w-full text-sm border-collapse">
+            <table className="w-full border-collapse text-sm">
               <thead>
-                <tr className="border-b border-line">
-                  <th className="text-left py-3 pr-6 text-xs font-mono uppercase tracking-wider text-ink-tertiary w-1/4">
+                <tr className="border-line border-b">
+                  <th className="text-ink-tertiary w-1/4 py-3 pr-6 text-left font-mono text-xs tracking-wider uppercase">
                     Capability
                   </th>
-                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-primary">
+                  <th className="text-primary px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
                     DeployTitan
                   </th>
-                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-ink-tertiary">
+                  <th className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
                     Manual runbook
                   </th>
-                  <th className="text-center py-3 px-4 text-xs font-mono uppercase tracking-wider text-ink-tertiary">
+                  <th className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
                     Feature flags only
                   </th>
                 </tr>
@@ -421,11 +433,17 @@ export default function SolutionInstantRollback() {
                   ['SLO-aware trigger', '✓', '✗ (alert-based)', '✗'],
                   ['Structured incident packet', '✓', '✗ (manual postmortem)', '✗'],
                 ].map(([cap, dt, manual, flags]) => (
-                  <tr key={String(cap)} className="border-b border-line/50">
-                    <td className="py-3 pr-6 text-xs text-ink-secondary">{cap}</td>
-                    <td className="py-3 px-4 text-center text-xs text-signal-success font-mono">{dt}</td>
-                    <td className="py-3 px-4 text-center text-xs text-ink-tertiary font-mono">{manual}</td>
-                    <td className="py-3 px-4 text-center text-xs text-ink-tertiary font-mono">{flags}</td>
+                  <tr key={String(cap)} className="border-line/50 border-b">
+                    <td className="text-ink-secondary py-3 pr-6 text-xs">{cap}</td>
+                    <td className="text-signal-success px-4 py-3 text-center font-mono text-xs">
+                      {dt}
+                    </td>
+                    <td className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs">
+                      {manual}
+                    </td>
+                    <td className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs">
+                      {flags}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -438,30 +456,37 @@ export default function SolutionInstantRollback() {
       <section className="py-20">
         <Container width="4xl" padding="default">
           <div className="text-center" data-reveal>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink leading-snug mb-4">
+            <h2 className="text-ink mb-4 text-2xl leading-snug font-semibold lg:text-3xl">
               See Phoenix roll back a live canary in under 10 seconds.
             </h2>
-            <p className="text-ink-secondary text-sm mb-8 max-w-lg mx-auto">
+            <p className="text-ink-secondary mx-auto mb-8 max-w-lg text-sm">
               We'll trigger a real SLO breach in a sandbox environment and show you exactly what
               Phoenix does, automatically, before you'd even finish reading the alert.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <a
-                href="https://cal.com/deploytitan/demo"
+                href="https://cal.com/justine-deploytitan/demo"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium dark:text-surface transition-all active:scale-[0.97] hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)]"
+                className="bg-ink text-surface dark:text-surface inline-flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.97]"
                 style={{ borderRadius: '2px' }}
               >
                 Book a 20-min walkthrough
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
               </a>
               <a
                 href={`${APP_URL}/signup`}
-                className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+                className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
               >
                 Start free trial →
               </a>
