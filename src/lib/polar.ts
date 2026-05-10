@@ -140,7 +140,10 @@ function mapProduct(raw: RawProduct, orgSlug: string): PolarProduct {
 // ─── Public fetch function ────────────────────────────────────────────────────
 
 export async function fetchPolarProducts(): Promise<PolarProduct[]> {
-  const baseURL = process.env.POLAR_BASE_URL ?? 'https://api.polar.sh/v1'
+  const baseURL = process.env.POLAR_BASE_URL
+  if (!baseURL) {
+    throw new Error('No base URL found for Polar API. Set POLAR_BASE_URL.')
+  }
   const token = process.env.POLAR_ACCESS_TOKEN
   const orgSlug = process.env.POLAR_ORG_SLUG ?? 'deploytitan'
 

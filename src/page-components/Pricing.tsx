@@ -373,18 +373,26 @@ export default function Pricing({ polarProducts }: Props) {
       polarProducts.length > 0
         ? polarProducts
             .filter((p) => !p.isCustom)
-            .map((p) => ({
-              id: p.id,
-              name: p.name,
-              description: p.description ?? '',
-              isHighlighted: p.isHighlighted,
-              isFree: p.isFree,
-              credits: p.credits,
-              monthlyAmount: p.monthlyPrice?.amount ?? null,
-              overageCentsPerCredit: p.overageCentsPerCredit ?? null,
-              checkoutUrl: p.checkoutUrl,
-              cta: p.isFree ? 'Get started free' : 'Get started',
-            }))
+            .map((p) => {
+              // Match to a fallback plan by normalised name for description + highlighted fallback
+              const nameLower = p.name.toLowerCase().replace(/\s+plan$/, '')
+              const fallback = FALLBACK_PLANS.find(
+                (f) => f.name.toLowerCase() === nameLower,
+              )
+              return {
+                id: p.id,
+                name: fallback?.name ?? p.name,
+                description: p.description ?? fallback?.description ?? '',
+                // metadata.highlighted takes precedence; fall back to matching fallback
+                isHighlighted: p.isHighlighted || fallback?.isHighlighted === true,
+                isFree: p.isFree,
+                credits: p.credits,
+                monthlyAmount: p.monthlyPrice?.amount ?? null,
+                overageCentsPerCredit: p.overageCentsPerCredit ?? null,
+                checkoutUrl: p.checkoutUrl,
+                cta: p.isFree ? 'Get started free' : 'Get started',
+              }
+            })
         : FALLBACK_PLANS
 
     // Sort: free first, then ascending monthly price
