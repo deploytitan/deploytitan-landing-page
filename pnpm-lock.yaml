@@ -12,9 +12,6 @@ importers:
 
   .:
     dependencies:
-      '@deploytitan/design-tokens':
-        specifier: ^0.1.0
-        version: 0.1.0
       '@radix-ui/react-accordion':
         specifier: ^1.2.12
         version: 1.2.12(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -921,9 +918,6 @@ packages:
 
   '@date-fns/utc@2.1.1':
     resolution: {integrity: sha512-SlJDfG6RPeEX8wEVv6ZB3kak4MmbtyiI2qX/5zuKdordbrhB/iaJ58GVMZgJ6P1sJaM1gMgENFYYeg1JWrCFrA==}
-
-  '@deploytitan/design-tokens@0.1.0':
-    resolution: {integrity: sha512-RCQq7Eb0J7qegf0kaR9tawLqUD1pXAzxzb/ihll15Vl3EYNlKnwaaOR/X1k1SG165/pGKNFC0wtZw3M+KeAAfA==}
 
   '@dnd-kit/accessibility@3.1.1':
     resolution: {integrity: sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==}
@@ -7858,8 +7852,6 @@ snapshots:
   '@date-fns/tz@1.4.1': {}
 
   '@date-fns/utc@2.1.1': {}
-
-  '@deploytitan/design-tokens@0.1.0': {}
 
   '@dnd-kit/accessibility@3.1.1(react@19.2.5)':
     dependencies:
