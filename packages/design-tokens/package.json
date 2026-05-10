@@ -1,6 +1,6 @@
 {
   "name": "@deploytitan/design-tokens",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "DeployTitan design system tokens: colors, typography, spacing, and utility classes",
   "license": "UNLICENSED",
   "private": false,
