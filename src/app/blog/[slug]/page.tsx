@@ -9,6 +9,7 @@ import { AuthorBadge } from '@/components/blog/AuthorBadge'
 import { Container } from '@/components/shared/Container'
 import { Breadcrumbs } from '@/components/shared/Breadcrumbs'
 import Link from 'next/link'
+import { TypedObject } from 'sanity'
 
 interface PostData {
   _id: string
@@ -19,8 +20,7 @@ interface PostData {
   coverImage?: { asset: object; alt?: string; hotspot?: object; crop?: object } | null
   author?: { name: string; image?: object; role?: string; bio?: string } | null
   categories?: { title: string; slug: { current: string } }[] | null
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body?: any[]
+  body?: TypedObject[]
 }
 
 interface Props {
@@ -33,7 +33,7 @@ export async function generateStaticParams() {
     perspective: 'published',
     stega: false,
   })
-  return (data as { slug: string }[] ?? []).map((s) => ({ slug: s.slug }))
+  return ((data as { slug: string }[]) ?? []).map((s) => ({ slug: s.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
