@@ -76,7 +76,6 @@ export default function Journey() {
           <span
             data-reveal
             className="text-ink-tertiary mb-6 inline-flex items-center gap-3 font-mono text-xs tracking-widest uppercase"
-            aria-label="Eight years of the same fear"
           >
             <span className="bg-primary/40 h-px w-6" aria-hidden="true" />
             Eight years of the same fear
@@ -129,7 +128,6 @@ export default function Journey() {
           <span
             data-reveal
             className="text-ink-tertiary mb-6 inline-flex items-center gap-3 font-mono text-xs tracking-widest uppercase"
-            aria-label="The real problem"
           >
             <span className="bg-primary/40 h-px w-6" aria-hidden="true" />
             The real problem

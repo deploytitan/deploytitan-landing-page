@@ -265,19 +265,19 @@ export default function Solutions() {
     <>
       {/* Hero */}
       <section className="blueprint-grid border-line border-b pt-28 pb-20">
-        <Container width="4xl" padding="default" data-reveal>
-          <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">Solutions</p>
-          <h1 className="text-ink mb-6 text-4xl leading-tight font-semibold lg:text-5xl">
+        <Container width="4xl" padding="default">
+          <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase" data-reveal data-reveal-delay="1">Solutions</p>
+          <h1 className="text-ink mb-6 text-4xl leading-tight font-semibold lg:text-5xl" data-reveal data-reveal-delay="2">
             You already have the tools.
             <br className="hidden md:block" /> They're not talking to each other.
           </h1>
-          <p className="text-ink-secondary mb-4 max-w-2xl text-lg leading-relaxed">
+          <p className="text-ink-secondary mb-4 max-w-2xl text-lg leading-relaxed" data-reveal data-reveal-delay="3">
             Most engineering teams have Argo, a feature flag tool, some runbooks, and PagerDuty.
             What they don't have is a system that connects them: one that scores risk before the
             merge, gates traffic on real signals, and rolls back automatically when something
             breaks.
           </p>
-          <p className="text-ink-secondary max-w-2xl text-lg leading-relaxed">
+          <p className="text-ink-secondary max-w-2xl text-lg leading-relaxed" data-reveal data-reveal-delay="4">
             That's what DeployTitan is. Not a replacement for your stack, but the connective tissue
             that makes it safe.
           </p>
@@ -342,12 +342,14 @@ export default function Solutions() {
           >
             Real before/after from teams who switched
           </p>
-          <div className="bg-line flex flex-col gap-px" data-reveal>
-            {PROOF_SCENARIOS.map((s) => (
+          <div className="bg-line flex flex-col gap-px">
+            {PROOF_SCENARIOS.map((s, i) => (
               <a
                 key={s.solution}
                 href={s.route}
                 className="bg-surface hover:bg-surface-alt/50 group grid grid-cols-1 items-center gap-4 px-8 py-6 transition-colors md:grid-cols-[1fr_auto_1fr_auto] md:gap-8"
+                data-reveal
+                data-reveal-delay={String(i + 1)}
               >
                 {/* Before */}
                 <div>

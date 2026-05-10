@@ -55,6 +55,10 @@
     --color-primary-light: #e8d48b;
     --color-primary-dark:  #a68a3e;
     --color-primary-muted: rgba(201, 168, 76, 0.15);
+    /* RGB channels for use with alpha: rgb(var(--color-primary-rgb) / <alpha>) */
+    --color-primary-rgb:   201 168 76;
+    /* WCAG AA-compliant gold for small text on light surfaces (4.5:1 ratio) */
+    --color-primary-accessible: #7a6530;
 
     /* Layout */
     --max-width-page: 1400px;
@@ -94,4 +98,7 @@
     --color-primary-light: #e8d48b;
     --color-primary-dark:  #c9a84c;
     --color-primary-muted: rgba(212, 180, 84, 0.12);
+    --color-primary-rgb:   212 180 84;
+    /* On dark surfaces #d4b454 is already high-contrast; keep original */
+    --color-primary-accessible: #d4b454;
 }

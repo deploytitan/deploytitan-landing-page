@@ -1,7 +1,7 @@
 import { Hero } from '../components/Hero'
 import { PlatformOverview } from '../components/platform/PlatformOverview'
-import { Quickstart } from '../components/Quickstart'
 import { CTA } from '../components/CTA'
+import { QuickstartLazy } from '../components/QuickstartLazy'
 
 export default function Home() {
   return (
@@ -19,7 +19,7 @@ export default function Home() {
       {/*<Integrations />*/}
 
       {/* 6. Quickstart + install tabs */}
-      <Quickstart />
+      <QuickstartLazy />
 
       {/* 7. Testimonials wall */}
       {/*<Testimonials />*/}

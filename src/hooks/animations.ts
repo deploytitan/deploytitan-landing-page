@@ -4,6 +4,37 @@ import { useCallback, useEffect, useRef } from 'react'
 import { animate, stagger } from 'animejs'
 
 /**
+ * Pause CSS animations on a container when it leaves the viewport.
+ * Sets data-anim-paused="true" when offscreen, removes it when visible.
+ * Relies on the `.css [data-anim-paused]` rule in globals.css.
+ */
+export function useAnimPause<T extends HTMLElement = HTMLDivElement>() {
+  const ref = useRef<T>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reducedMotion) {
+      el.dataset.animPaused = 'true'
+      return
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          delete el.dataset.animPaused
+        } else {
+          el.dataset.animPaused = 'true'
+        }
+      },
+      { threshold: 0.05 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+  return ref
+}
+
+/**
  * Anime.js-powered scroll reveal hook.
  * Respects prefers-reduced-motion: skips animation and reveals elements instantly.
  */
@@ -79,6 +110,16 @@ export function useStaggerReveal(selector: string, staggerDelay = 100) {
 
     const elements = container.querySelectorAll<HTMLElement>(selector)
     if (elements.length === 0) return
+
+    // Respect reduced-motion preference: skip animation, ensure visible
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReduced) {
+      elements.forEach((el) => {
+        el.style.opacity = '1'
+        el.style.transform = 'none'
+      })
+      return
+    }
 
     elements.forEach((el) => {
       el.style.opacity = '0'

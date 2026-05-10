@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { CONSOLE_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
 import { InstallTabs } from '../components/shared/InstallTabs'
@@ -220,15 +220,61 @@ function formatCredits(n: number): string {
   return String(n)
 }
 
+// ── useCountUp ────────────────────────────────────────────────────────────────
+
+function useCountUp(target: number, duration = 900) {
+  const [value, setValue] = useState(0)
+  const ref = useRef<HTMLElement | null>(null)
+  const hasRun = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduced) {
+      setValue(target)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasRun.current) {
+          hasRun.current = true
+          observer.disconnect()
+          const start = performance.now()
+          const tick = (now: number) => {
+            const elapsed = now - start
+            const progress = Math.min(elapsed / duration, 1)
+            // outExpo easing
+            const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress)
+            setValue(Math.round(eased * target))
+            if (progress < 1) requestAnimationFrame(tick)
+          }
+          requestAnimationFrame(tick)
+        }
+      },
+      { threshold: 0.5 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [target, duration])
+
+  return { value, ref }
+}
+
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
   const [open, setOpen] = useState(false)
-  const id = React.useId()
-  const answerId = `faq-answer-${id}`
+  const uid = React.useId()
+  const answerId = `faq-answer-${uid}`
+  const buttonId = `faq-btn-${uid}`
+  const contentRef = React.useRef<HTMLDivElement>(null)
   return (
     <div className="border-line border-b last:border-b-0">
       <button
+        id={buttonId}
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-controls={answerId}
@@ -243,6 +289,7 @@ function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
+          aria-hidden="true"
         >
           <line x1="12" y1="5" x2="12" y2="19" />
           <line x1="5" y1="12" x2="19" y2="12" />
@@ -250,14 +297,16 @@ function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
       </button>
       <div
         id={answerId}
+        ref={contentRef}
         role="region"
-        aria-labelledby={undefined}
-        className="grid transition-[grid-template-rows] duration-200 ease-out"
-        style={{ gridTemplateRows: open ? '1fr' : '0fr' }}
+        aria-labelledby={buttonId}
+        className="overflow-hidden transition-[max-height,opacity] duration-200 ease-out"
+        style={{
+          maxHeight: open ? (contentRef.current?.scrollHeight ?? 400) : 0,
+          opacity: open ? 1 : 0,
+        }}
       >
-        <div className="overflow-hidden">
-          <p className="text-ink-secondary pb-5 text-sm leading-relaxed">{a}</p>
-        </div>
+        <p className="text-ink-secondary pb-5 text-sm leading-relaxed">{a}</p>
       </div>
     </div>
   )
@@ -365,6 +414,7 @@ interface Props {
 
 export default function Pricing({ polarProducts }: Props) {
   useScrollReveal()
+  const { value: countedTotal, ref: totalRef } = useCountUp(228)
 
   // Build plan cards from Polar data (excluding Enterprise/custom),
   // sorted smallest (free/lowest price) to largest, or fall back to static.
@@ -407,13 +457,13 @@ export default function Pricing({ polarProducts }: Props) {
     <>
       {/* ── Hero ── */}
       <section className="blueprint-grid border-line border-b pt-28 pb-16">
-        <Container width="3xl" padding="default" className="text-center" data-reveal>
-          <p className="text-ink-tertiary mb-4 font-mono text-xs tracking-widest uppercase">Pricing</p>
-          <h1 className="text-ink mb-5 text-4xl leading-tight font-medium lg:text-5xl">
+        <Container width="3xl" padding="default" className="text-center">
+          <p className="text-ink-tertiary mb-4 font-mono text-xs tracking-widest uppercase" data-reveal data-reveal-delay="1">Pricing</p>
+          <h1 className="text-ink mb-5 text-4xl leading-tight font-medium lg:text-5xl" data-reveal data-reveal-delay="2">
             Pay for what you deploy.
             <br className="hidden md:block" /> Not for who you hire.
           </h1>
-          <p className="text-ink-secondary mx-auto max-w-xl text-lg">
+          <p className="text-ink-secondary mx-auto max-w-xl text-lg" data-reveal data-reveal-delay="3">
             Credits-based billing. Prepaid. No per-seat charges. No surprise invoices. Unlimited
             users, orgs, and projects on every plan. Every platform action costs exactly 1 credit:
             deployments, rollbacks, risk scans, all of it.
@@ -594,7 +644,7 @@ export default function Pricing({ polarProducts }: Props) {
                 <p className="text-ink-tertiary mt-0.5 text-xs">Out of 250 included in Starter</p>
               </div>
               <div className="text-right">
-                <p className="text-ink font-mono text-2xl font-bold">228</p>
+                <p ref={totalRef as React.RefObject<HTMLParagraphElement>} className="text-ink font-mono text-2xl font-bold">{countedTotal}</p>
                 <p className="text-ink-secondary mt-0.5 font-mono text-xs">22 credits remaining</p>
               </div>
             </div>

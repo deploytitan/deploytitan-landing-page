@@ -68,9 +68,10 @@ function TerminalOutput() {
     let lineIdx = 0
     let charIdx = 0
     let raf: number
+    let paused = false
 
     const tick = () => {
-      if (lineIdx >= lines.length) return
+      if (paused || lineIdx >= lines.length) return
       const line = lines[lineIdx]
       if (charIdx < line.length) {
         el.textContent += line[charIdx]
@@ -84,10 +85,26 @@ function TerminalOutput() {
       }
     }
 
+    // Pause the loop when the element scrolls out of view
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          paused = false
+          if (lineIdx < lines.length) tick()
+        } else {
+          paused = true
+          cancelAnimationFrame(raf)
+        }
+      },
+      { threshold: 0.1 },
+    )
+    observer.observe(el)
+
     const delay = setTimeout(tick, 600)
     return () => {
       clearTimeout(delay)
       cancelAnimationFrame(raf)
+      observer.disconnect()
     }
   }, [reducedMotion])
 
@@ -113,11 +130,13 @@ function TerminalOutput() {
       </div>
       {/* Animated output */}
       <div className="px-4 py-4">
-        <pre
-          ref={ref}
-          className="font-mono text-[12px] leading-[1.8] whitespace-pre min-h-[220px]"
-          style={{ color: textColor }}
-        />
+        <figure aria-label="Terminal output showing DeployTitan CLI in action">
+          <pre
+            ref={ref}
+            className="font-mono text-[12px] leading-[1.8] whitespace-pre min-h-[220px]"
+            style={{ color: textColor }}
+          />
+        </figure>
       </div>
     </div>
   )

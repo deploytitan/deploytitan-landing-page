@@ -122,25 +122,27 @@ export default function SolutionMultiCloudResilience() {
     <>
       {/* Hero */}
       <section className="blueprint-grid border-line border-b pt-28 pb-20">
-        <Container width="4xl" padding="default" data-reveal>
-          <Breadcrumbs className="mb-6" />
+        <Container width="4xl" padding="default">
+          <Breadcrumbs className="mb-6" data-reveal data-reveal-delay="1" />
           <div
             className="text-primary border-primary/30 mb-6 inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px]"
             style={{ borderRadius: '2px' }}
+            data-reveal
+            data-reveal-delay="1"
           >
             <span className="bg-signal-success h-1.5 w-1.5" style={{ borderRadius: '1px' }} />
             Powered by Titan Shield
           </div>
-          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl">
+          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl" data-reveal data-reveal-delay="2">
             Failover in seconds.
             <br className="hidden md:block" /> Not in war-room hours.
           </h1>
-          <p className="text-ink-secondary mb-8 max-w-2xl text-lg leading-relaxed">
+          <p className="text-ink-secondary mb-8 max-w-2xl text-lg leading-relaxed" data-reveal data-reveal-delay="3">
             AWS us-east-1 goes down and your on-call is still waking up. Titan Shield has already
             shifted traffic. Declarative cross-cloud routing, fully automated failover, and a DR
             drill mode that actually prepares you for the real thing.
           </p>
-          <div className="mb-8 grid max-w-sm grid-cols-3 gap-4">
+          <div className="mb-8 grid max-w-sm grid-cols-3 gap-4" data-reveal data-reveal-delay="4">
             {[
               { value: '< 30s', label: 'RTO for 99.9% of incidents' },
               { value: '10s', label: 'Failure detection time' },
@@ -152,7 +154,7 @@ export default function SolutionMultiCloudResilience() {
               </div>
             ))}
           </div>
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4" data-reveal data-reveal-delay="5">
             <a
               href="https://cal.com/justine-deploytitan/demo"
               target="_blank"

@@ -40,6 +40,7 @@ const VARIANT: Record<ButtonVariant, string> = {
     'active:scale-[0.97]',
     'transition-all',
     'dark:text-surface',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
   ].join(' '),
 
   outline: [
@@ -47,12 +48,14 @@ const VARIANT: Record<ButtonVariant, string> = {
     'hover:border-primary/40 hover:bg-primary-muted',
     'active:scale-[0.97]',
     'transition-all',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
   ].join(' '),
 
   ghost: [
     'text-ink-secondary bg-transparent',
     'hover:text-ink',
     'transition-colors',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
   ].join(' '),
 
   icon: [
@@ -60,12 +63,14 @@ const VARIANT: Record<ButtonVariant, string> = {
     'hover:text-ink',
     'transition-colors',
     'inline-flex items-center gap-1',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
   ].join(' '),
 
   dismiss: [
     'text-surface/50 bg-transparent',
     'hover:text-surface/80',
     'transition-colors',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
   ].join(' '),
 }
 

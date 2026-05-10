@@ -167,7 +167,7 @@ export function CTA() {
             <div className="p-10 lg:p-16 flex flex-col justify-center">
               <span
                 data-reveal
-                data-reveal-delay="1"
+                data-reveal-delay="3"
                 className="inline-flex items-center gap-3 text-sm font-mono text-ink-secondary mb-5"
               >
                 <span className="w-8 h-px bg-primary/40" />
@@ -176,7 +176,7 @@ export function CTA() {
 
               <h3
                 data-reveal
-                data-reveal-delay="2"
+                data-reveal-delay="4"
                 className="font-display font-medium text-2xl lg:text-3xl tracking-[-0.02em] leading-[1.2] mb-3"
               >
                 Get notified when we launch self-serve.
@@ -184,7 +184,7 @@ export function CTA() {
 
               <p
                 data-reveal
-                data-reveal-delay="3"
+                data-reveal-delay="5"
                 className="text-sm text-ink-secondary leading-relaxed mb-8 max-w-sm"
               >
                 We're working with a small group of teams to shape the product. Leave your email to
@@ -195,29 +195,37 @@ export function CTA() {
                 <form
                   onSubmit={handleSubmit}
                   data-reveal
-                  data-reveal-delay="4"
+                  data-reveal-delay="6"
                   className="space-y-3 max-w-sm"
                 >
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Your name"
-                    required
-                    autoComplete="name"
-                    disabled={submitting}
-                    className="w-full px-5 py-4 border border-line text-sm bg-surface-alt text-ink placeholder:text-ink-quaternary focus:outline-none focus:border-primary/40 transition-colors disabled:opacity-50"
-                    style={{ borderRadius: '2px' }}
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Work email"
-                    required
-                    autoComplete="email"
-                    disabled={submitting}
-                    className="w-full px-5 py-4 border border-line text-sm bg-surface-alt text-ink placeholder:text-ink-quaternary focus:outline-none focus:border-primary/40 transition-colors disabled:opacity-50"
-                    style={{ borderRadius: '2px' }}
-                  />
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="cta-name" className="sr-only">Your name</label>
+                    <input
+                      id="cta-name"
+                      type="text"
+                      name="name"
+                      placeholder="Your name"
+                      required
+                      autoComplete="name"
+                      disabled={submitting}
+                      className="w-full px-5 py-4 border border-line text-sm bg-surface-alt text-ink placeholder:text-ink-quaternary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus:border-primary/40 transition-colors disabled:opacity-50"
+                      style={{ borderRadius: '2px' }}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="cta-email" className="sr-only">Work email</label>
+                    <input
+                      id="cta-email"
+                      type="email"
+                      name="email"
+                      placeholder="Work email"
+                      required
+                      autoComplete="email"
+                      disabled={submitting}
+                      className="w-full px-5 py-4 border border-line text-sm bg-surface-alt text-ink placeholder:text-ink-quaternary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus:border-primary/40 transition-colors disabled:opacity-50"
+                      style={{ borderRadius: '2px' }}
+                    />
+                  </div>
                   <Button
                     type="submit"
                     variant="outline"
@@ -229,6 +237,8 @@ export function CTA() {
                     {submitting ? (
                       <>
                         <span
+                          role="status"
+                          aria-label="Submitting"
                           className="w-3.5 h-3.5 border-2 border-ink/20 border-t-ink animate-spin"
                           style={{ borderRadius: '2px' }}
                         />
@@ -239,14 +249,14 @@ export function CTA() {
                     )}
                   </Button>
                   {error && (
-                    <p className="text-xs text-signal-danger font-mono text-center pt-1">{error}</p>
+                    <p role="alert" className="text-xs text-signal-danger font-mono text-center pt-1">{error}</p>
                   )}
                   <p className="text-xs text-ink-tertiary font-mono text-center pt-1">
                     No spam. Just product updates.
                   </p>
                 </form>
               ) : (
-                <div data-reveal className="flex flex-col items-start gap-3 py-4">
+                <div className="success-reveal flex flex-col items-start gap-3 py-4">
                   <div className="flex items-center gap-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -270,7 +280,7 @@ export function CTA() {
               )}
 
               {/* Urgency signal */}
-              <div data-reveal data-reveal-delay="5" className="mt-8 pt-6 border-t border-line">
+              <div data-reveal data-reveal-delay="7" className="mt-8 pt-6 border-t border-line">
                 <div className="flex items-center gap-3">
                   <div className="relative flex h-2 w-2">
                     <span

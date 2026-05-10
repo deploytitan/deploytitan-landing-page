@@ -78,19 +78,19 @@ export default function TitanForesight() {
     <>
       {/* Hero */}
       <section className="blueprint-grid pt-28 pb-20 border-b border-line">
-        <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+        <Container width="4xl" padding="default">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4" data-reveal data-reveal-delay="1">
             Titan Foresight · Detect
           </p>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6">
+          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6" data-reveal data-reveal-delay="2">
             Score every change
             <br className="hidden md:block" /> before it ships.
           </h1>
-          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
+          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8" data-reveal data-reveal-delay="3">
             Foresight reads each PR against your live dependency graph and produces one explained
             risk score. Risky changes get tighter rollout policies, automatically.
           </p>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4" data-reveal data-reveal-delay="4">
             <a
               href={`${APP_URL}/signup`}
               className="inline-flex items-center gap-2 bg-primary text-ink dark:text-surface text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
@@ -274,12 +274,13 @@ export default function TitanForesight() {
             Also in DeployTitan
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {CROSS_LINKS.map((l) => (
+            {CROSS_LINKS.map((l, i) => (
               <a
                 key={l.href}
                 href={l.href}
                 className="sharp-card border border-line p-5 flex flex-col gap-1.5 hover:border-primary/30 hover:bg-surface-alt/50 transition-colors"
                 data-reveal
+                data-reveal-delay={String(i + 1)}
               >
                 <span className="text-sm font-semibold text-ink">{l.label}</span>
                 <span className="text-xs text-ink-tertiary">{l.desc}</span>

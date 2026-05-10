@@ -11,6 +11,27 @@ import { Button } from '../shared/Button'
 import { useTheme } from '../../hooks/useTheme'
 import { CONSOLE_URL } from '@/lib/env'
 
+/** Trap Tab/Shift-Tab within `container`. Call the returned cleanup when done. */
+function trapFocus(container: HTMLElement): () => void {
+  const focusable = container.querySelectorAll<HTMLElement>(
+    'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+  )
+  if (!focusable.length) return () => {}
+  const first = focusable[0]
+  const last = focusable[focusable.length - 1]
+
+  const handler = (e: KeyboardEvent) => {
+    if (e.key !== 'Tab') return
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus() }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus() }
+    }
+  }
+  container.addEventListener('keydown', handler)
+  return () => container.removeEventListener('keydown', handler)
+}
+
 type DropdownKey = 'products' | 'solutions' | null
 
 /** Keeps a dropdown mounted for `exitMs` after it logically closes so CSS exit
@@ -45,6 +66,10 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   const [activeDropdown, setActiveDropdown] = useState<DropdownKey>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const navRef = useRef<HTMLElement>(null)
+  const mobileNavRef = useRef<HTMLDivElement>(null)
+  const productsDropdownRef = useRef<HTMLDivElement>(null)
+  const solutionsDropdownRef = useRef<HTMLDivElement>(null)
+  const hamburgerRef = useRef<HTMLButtonElement>(null)
   const pathname = usePathname()
   const { resolved } = useTheme()
 
@@ -75,24 +100,50 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
-  // ESC closes everything
+  // ESC closes everything and returns focus to trigger
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setActiveDropdown(null)
         setMobileOpen(false)
         document.body.style.overflow = ''
+        hamburgerRef.current?.focus()
       }
     }
     document.addEventListener('keydown', handler)
     return () => document.removeEventListener('keydown', handler)
   }, [])
 
+  // Move focus into dropdown panel when it opens
+  useEffect(() => {
+    if (activeDropdown === 'products' && productsDropdownRef.current) {
+      const first = productsDropdownRef.current.querySelector<HTMLElement>('a, button')
+      first?.focus()
+    } else if (activeDropdown === 'solutions' && solutionsDropdownRef.current) {
+      const first = solutionsDropdownRef.current.querySelector<HTMLElement>('a, button')
+      first?.focus()
+    }
+  }, [activeDropdown])
+
+  // Focus trap in mobile nav
+  useEffect(() => {
+    if (!mobileOpen || !mobileNavRef.current) return
+    // Move focus into the mobile nav
+    const first = mobileNavRef.current.querySelector<HTMLElement>('a, button')
+    first?.focus()
+    const cleanup = trapFocus(mobileNavRef.current)
+    return cleanup
+  }, [mobileOpen])
+
   const toggleDropdown = useCallback((key: DropdownKey) => {
     setActiveDropdown((prev) => (prev === key ? null : key))
   }, [])
 
   const closeDropdown = useCallback(() => setActiveDropdown(null), [])
+
+  // Active state helpers
+  const isProductsActive = pathname.startsWith('/products')
+  const isSolutionsActive = pathname.startsWith('/solutions')
 
   const toggleMobile = () => {
     const next = !mobileOpen
@@ -103,6 +154,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   const closeMobile = () => {
     setMobileOpen(false)
     document.body.style.overflow = ''
+    hamburgerRef.current?.focus()
   }
 
   return (
@@ -125,8 +177,8 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
         <div className="max-w-page mx-auto flex h-20 items-center justify-between gap-8 px-6 md:justify-normal lg:px-12">
           {/* Logo */}
           <Link href="/" className="group flex shrink-0 items-center">
-            <span className="font-display text-2xl font-medium tracking-[-0.02em]">Deploy</span>
-            <span className="font-display text-primary-dark text-2xl font-medium tracking-[-0.02em]">
+            <span className="font-display text-2xl font-medium tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-70">Deploy</span>
+            <span className="font-display text-primary-dark text-2xl font-medium tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-100">
               Titan
             </span>
           </Link>
@@ -138,8 +190,8 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
               <button
                 onClick={() => toggleDropdown('products')}
                 aria-expanded={activeDropdown === 'products'}
-                aria-haspopup="true"
-                className="text-ink-secondary hover:text-ink nav-link-underline flex items-center gap-1 text-sm transition-colors"
+                aria-haspopup="menu"
+                className={`nav-link-underline flex items-center gap-1 text-sm transition-colors ${isProductsActive ? 'nav-link-active text-primary' : 'text-ink-secondary hover:text-ink'}`}
               >
                 Products
                 <svg
@@ -153,12 +205,14 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                   strokeLinejoin="round"
                   className="mt-px transition-transform duration-200"
                   style={{ transform: activeDropdown === 'products' ? 'rotate(180deg)' : 'none' }}
+                  aria-hidden="true"
                 >
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </button>
               {products.mounted && (
                 <div
+                  ref={productsDropdownRef}
                   className="transition-[opacity,transform] duration-[180ms] ease-out"
                   style={{
                     opacity: products.visible ? 1 : 0,
@@ -179,8 +233,8 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
               <button
                 onClick={() => toggleDropdown('solutions')}
                 aria-expanded={activeDropdown === 'solutions'}
-                aria-haspopup="true"
-                className="text-ink-secondary hover:text-ink nav-link-underline flex items-center gap-1 text-sm transition-colors"
+                aria-haspopup="menu"
+                className={`nav-link-underline flex items-center gap-1 text-sm transition-colors ${isSolutionsActive ? 'nav-link-active text-primary' : 'text-ink-secondary hover:text-ink'}`}
               >
                 Solutions
                 <svg
@@ -194,12 +248,14 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                   strokeLinejoin="round"
                   className="mt-px transition-transform duration-200"
                   style={{ transform: activeDropdown === 'solutions' ? 'rotate(180deg)' : 'none' }}
+                  aria-hidden="true"
                 >
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </button>
               {solutions.mounted && (
                 <div
+                  ref={solutionsDropdownRef}
                   className="transition-[opacity,transform] duration-[180ms] ease-out"
                   style={{
                     opacity: solutions.visible ? 1 : 0,
@@ -217,21 +273,21 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
 
             <Link
               href="/blog"
-              className="text-ink-secondary hover:text-ink nav-link-underline text-sm transition-colors"
+              className={`nav-link-underline text-sm transition-colors ${pathname.startsWith('/blog') ? 'nav-link-active text-primary' : 'text-ink-secondary hover:text-ink'}`}
             >
               Blog
             </Link>
 
             <Link
               href="/pricing"
-              className="text-ink-secondary hover:text-ink nav-link-underline text-sm transition-colors"
+              className={`nav-link-underline text-sm transition-colors ${pathname === '/pricing' ? 'nav-link-active text-primary' : 'text-ink-secondary hover:text-ink'}`}
             >
               Pricing
             </Link>
 
             <Link
               href="/journey"
-              className="text-ink-secondary hover:text-ink nav-link-underline text-sm transition-colors"
+              className={`nav-link-underline text-sm transition-colors ${pathname.startsWith('/journey') ? 'nav-link-active text-primary' : 'text-ink-secondary hover:text-ink'}`}
             >
               My Journey
             </Link>
@@ -252,6 +308,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className="opacity-70"
+                aria-hidden="true"
               >
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
@@ -259,12 +316,14 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
             </Button>
           </div>
 
-          {/* Mobile hamburger */}
+          {/* Mobile hamburger — p-3 for 44px touch target */}
           <button
+            ref={hamburgerRef}
             onClick={toggleMobile}
-            className="flex flex-col gap-[5px] p-2 lg:hidden"
-            aria-label="Toggle menu"
+            className="flex flex-col gap-[5px] p-3 lg:hidden"
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
           >
             <span
               className="bg-ink block h-[1.5px] w-5 origin-center transition-all"
@@ -282,13 +341,15 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
         </div>
 
         {/* Gold shimmer accent under nav when scrolled */}
-        {scrolled && (
-          <div className="via-primary/20 absolute bottom-0 left-1/2 h-px w-32 -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent" />
-        )}
+        <div
+          className="absolute bottom-0 left-1/2 h-px w-40 -translate-x-1/2 bg-gradient-to-r from-transparent via-[color:var(--color-primary)] to-transparent transition-opacity duration-500"
+          style={{ opacity: scrolled ? 0.35 : 0 }}
+          aria-hidden="true"
+        />
       </nav>
 
       {/* Mobile overlay */}
-      {mobileOpen && <MobileNav onClose={closeMobile} barHeight={barHeight} />}
+      {mobileOpen && <MobileNav ref={mobileNavRef} id="mobile-nav" onClose={closeMobile} barHeight={barHeight} />}
     </>
   )
 }

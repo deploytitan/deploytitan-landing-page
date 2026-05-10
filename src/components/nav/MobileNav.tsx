@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { forwardRef, useId, useRef, useState } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '../shared/ThemeToggle'
 import { Button } from '../shared/Button'
@@ -69,16 +69,17 @@ const forLinks = [
   { label: 'For CTOs', route: '/for/cto' },
 ]
 
-interface Props {
-  onClose: () => void
-  barHeight?: number
-}
-
 function AccordionGroup({ label, children }: { label: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const contentId = useId()
+  const buttonId = useId()
   return (
     <div className="border-line border-b">
       <button
+        id={buttonId}
+        aria-expanded={open}
+        aria-controls={contentId}
         onClick={() => setOpen(!open)}
         className="text-ink flex w-full items-center justify-between px-6 py-4 text-base font-medium"
       >
@@ -92,23 +93,47 @@ function AccordionGroup({ label, children }: { label: string; children: React.Re
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          aria-hidden="true"
           className="text-ink-tertiary transition-transform duration-300"
           style={{ transform: open ? 'rotate(180deg)' : 'none' }}
         >
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
-      {open && <div className="pb-2">{children}</div>}
+      <div
+        id={contentId}
+        ref={contentRef}
+        role="region"
+        aria-labelledby={buttonId}
+        className="overflow-hidden transition-[max-height,opacity] duration-300 ease-out"
+        style={{
+          maxHeight: open ? (contentRef.current?.scrollHeight ?? 600) : 0,
+          opacity: open ? 1 : 0,
+        }}
+      >
+        <div className="pb-2">{children}</div>
+      </div>
     </div>
   )
 }
 
-export function MobileNav({ onClose, barHeight = 0 }: Props) {
+interface Props {
+  onClose: () => void
+  barHeight?: number
+  id?: string
+}
+
+export const MobileNav = forwardRef<HTMLDivElement, Props>(function MobileNav(
+  { onClose, barHeight = 0, id },
+  ref
+) {
   // Nav height is h-20 (80px). Offset overlay so it starts below nav + announcement bar.
   const topOffset = barHeight + 80
   return (
     <div
-      className="bg-surface fixed right-0 bottom-0 left-0 z-40 flex flex-col overflow-y-auto"
+      ref={ref}
+      id={id}
+      className="bg-surface mobile-nav-enter fixed right-0 bottom-0 left-0 z-40 flex flex-col overflow-y-auto"
       style={{ top: topOffset }}
     >
       {/* Products group */}
@@ -195,4 +220,4 @@ export function MobileNav({ onClose, barHeight = 0 }: Props) {
       </div>
     </div>
   )
-}
+})

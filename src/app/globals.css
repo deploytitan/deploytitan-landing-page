@@ -1,5 +1,29 @@
 @import 'tailwindcss';
-@import '../../node_modules/@deploytitan/design-tokens/index.css';
+@import '../../packages/design-tokens/index.css';
+
+/* Shiki syntax highlighter overrides — hoisted from CodeBlock component */
+.shiki, .shiki span {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.shiki {
+  background: transparent !important;
+}
+
+/* Pause all CSS animations on elements outside the viewport.
+   Applied by IntersectionObserver via data-anim-paused="true". */
+[data-anim-paused="true"] *,
+[data-anim-paused="true"] {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-anim-paused],
+  [data-anim-paused] * {
+    animation: none !important;
+  }
+}
 
 /* ===== Landing-page-specific styles ===== */
 
@@ -29,4 +53,61 @@
 .stack-row:hover {
     border-color: rgba(34, 197, 94, 0.4);
     background: rgba(34, 197, 94, 0.03);
+}
+
+/* Corner mark draw-in — blueprint entrance */
+@keyframes corner-draw {
+    from { opacity: 0; transform: scale(0.5); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.corner-mark {
+    animation: corner-draw 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.corner-mark-delay {
+    animation-delay: 0.2s;
+}
+
+/* CTA success state entrance */
+@keyframes success-reveal {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.success-reveal {
+    animation: success-reveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .success-reveal {
+        animation: none;
+    }
+}
+
+/* Active nav link — amber text + underline always visible */
+.nav-link-active {
+    color: var(--color-primary) !important;
+}
+
+.nav-link-active::after {
+    transform: scaleX(1) !important;
+}
+
+/* Mobile nav slide-in */
+@keyframes mobile-nav-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.mobile-nav-enter {
+    animation: mobile-nav-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mobile-nav-enter,
+    .corner-mark,
+    .corner-mark-delay {
+        animation: none;
+    }
 }

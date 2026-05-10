@@ -1,11 +1,26 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { APP_URL, STEALTH_PRODUCTS } from '@/lib/env'
 import Link from 'next/link'
 import { useScrollReveal } from '../../utils'
+import { useAnimPause } from '../../hooks/animations'
 import { RoadmapBadge } from '../shared/RoadmapBadge'
 import { Button } from '../shared/Button'
+
+/** Pauses CSS animations on its children when scrolled out of view. */
+function VisualWrapper({ children }: { children: React.ReactNode }) {
+  const ref = useAnimPause<HTMLDivElement>()
+  return (
+    <div
+      ref={ref}
+      className="border-line bg-surface-alt/60 overflow-hidden border"
+      style={{ borderRadius: '2px', minHeight: '280px' }}
+    >
+      {children}
+    </div>
+  )
+}
 
 /* ── Mini visual: Titan Foresight ── */
 function ForesightVisual() {
@@ -46,8 +61,24 @@ function ForesightVisual() {
 
 /* ── Mini visual: Titan Rollout ── */
 function RolloutVisual() {
+  const ref = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reducedMotion) { setInView(true); return }
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect() } },
+      { threshold: 0.3 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+
   return (
-    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
+    <div ref={ref} className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
       <div className="text-ink-quaternary mb-1 flex items-center gap-2">
         <span className="bg-signal-success h-2 w-2 animate-[pulse-anim_2s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
         <span>titan-rollout · canary deploy active</span>
@@ -63,8 +94,11 @@ function RolloutVisual() {
           </div>
           <div className="bg-line h-2 overflow-hidden rounded-none">
             <div
-              className={`h-full ${v.color} rounded-none transition-all duration-1000`}
-              style={{ width: `${v.pct}%` }}
+              className={`h-full ${v.color} rounded-none`}
+              style={{
+                width: inView ? `${v.pct}%` : '0%',
+                transition: 'width 900ms cubic-bezier(0.22, 1, 0.36, 1)',
+              }}
             />
           </div>
         </div>
@@ -407,7 +441,7 @@ export function PlatformOverview() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         {/* Section header */}
         <div className="mb-16 flex flex-col items-center gap-3 text-center lg:mb-20">
-          <span className="text-primary font-mono text-xs tracking-widest uppercase">
+           <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--color-primary-accessible, #7a6530)' }}>
             The platform
           </span>
           <h2 className="font-display text-ink text-3xl leading-tight font-medium tracking-[-0.02em] md:text-4xl">
@@ -433,7 +467,7 @@ export function PlatformOverview() {
               >
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-3">
-                    <span className="text-primary font-mono text-xs tracking-widest uppercase">
+                    <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--color-primary-accessible, #7a6530)' }}>
                       {p.eyebrow}
                     </span>
                     {p.badge && <RoadmapBadge variant={p.badge} />}
@@ -445,8 +479,13 @@ export function PlatformOverview() {
                 </div>
                 <p className="text-ink-secondary text-sm leading-relaxed">{p.description}</p>
                 <ul className="flex flex-col gap-2.5">
-                  {p.bullets.map((b) => (
-                    <li key={b} className="text-ink-secondary flex items-start gap-3 text-sm">
+                  {p.bullets.map((b, bi) => (
+                    <li
+                      key={b}
+                      data-reveal
+                      data-reveal-delay={bi + 1}
+                      className="text-ink-secondary flex items-start gap-3 text-sm"
+                    >
                       <span className="bg-primary/40 mt-1.5 h-1.5 w-1.5 shrink-0" style={{ borderRadius: '1px' }} />
                       {b}
                     </li>
@@ -484,14 +523,11 @@ export function PlatformOverview() {
 
               {/* Visual */}
               <div className={`relative ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
-                <div
-                  className="border-line bg-surface-alt/60 overflow-hidden border"
-                  style={{ borderRadius: '2px', minHeight: '280px' }}
-                >
+                <VisualWrapper>
                   {p.visual}
-                </div>
-                <span className="border-primary/30 absolute -top-px -left-px h-3 w-3 border-t-[1.5px] border-l-[1.5px]" />
-                <span className="border-primary/30 absolute -right-px -bottom-px h-3 w-3 border-r-[1.5px] border-b-[1.5px]" />
+                </VisualWrapper>
+                <span className="corner-mark border-primary/30 absolute -top-px -left-px h-3 w-3 border-t-[1.5px] border-l-[1.5px]" />
+                <span className="corner-mark corner-mark-delay border-primary/30 absolute -right-px -bottom-px h-3 w-3 border-r-[1.5px] border-b-[1.5px]" />
               </div>
             </div>
           ))}

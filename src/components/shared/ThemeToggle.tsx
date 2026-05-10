@@ -51,20 +51,22 @@ export function ThemeToggle({ className }: Props) {
         className,
       )}
       style={{ borderRadius: '2px' }}
-      role="group"
-      aria-label="Theme selector"
+      role="radiogroup"
+      aria-label="Theme"
     >
       {segments.map((seg) => {
         const active = mode === seg.mode
         return (
           <button
             key={seg.mode}
+            role="radio"
+            aria-checked={active}
             onClick={() => setMode(seg.mode)}
-            aria-label={`${seg.label} theme`}
-            aria-pressed={active}
+            aria-label={seg.label}
             title={seg.label}
             className={cn(
               'flex items-center justify-center w-7 h-6 transition-all duration-200',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
               active
                 ? 'bg-surface text-primary shadow-[0_1px_3px_rgba(0,0,0,0.08)] border border-primary/20'
                 : 'text-ink-quaternary hover:text-ink-secondary',

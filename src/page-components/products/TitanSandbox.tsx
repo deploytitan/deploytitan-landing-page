@@ -31,18 +31,18 @@ export default function TitanSandbox() {
     <>
       {/* Hero */}
       <section className="blueprint-grid pt-28 pb-20 border-b border-line">
-        <Container width="4xl" padding="default" data-reveal>
-          <div className="flex items-center gap-3 mb-4">
+        <Container width="4xl" padding="default">
+          <div className="flex items-center gap-3 mb-4" data-reveal data-reveal-delay="1">
             <p className="text-xs font-mono tracking-widest uppercase text-primary">
               Titan Sandbox · Reproduce
             </p>
             <RoadmapBadge variant="roadmap" />
           </div>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6">
+          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6" data-reveal data-reveal-delay="2">
             A production-shaped environment
             <br className="hidden md:block" /> for every branch.
           </h1>
-          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8">
+          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8" data-reveal data-reveal-delay="3">
             Sandbox spins up an isolated, prod-shaped environment per branch or PR, wired to real
             data shapes, torn down when you're done.
           </p>
@@ -50,6 +50,8 @@ export default function TitanSandbox() {
             href="/early-access"
             className="inline-flex items-center gap-2 bg-primary text-ink text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
             style={{ borderRadius: '2px' }}
+            data-reveal
+            data-reveal-delay="4"
           >
             Join the waitlist
           </a>

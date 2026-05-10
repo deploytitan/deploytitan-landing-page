@@ -69,25 +69,27 @@ export default function SolutionInstantRollback() {
     <>
       {/* Hero */}
       <section className="blueprint-grid border-line border-b pt-28 pb-20">
-        <Container width="4xl" padding="default" data-reveal>
-          <Breadcrumbs className="mb-6" />
+        <Container width="4xl" padding="default">
+          <Breadcrumbs className="mb-6" data-reveal data-reveal-delay="1" />
           <div
             className="text-primary border-primary/30 mb-6 inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px]"
             style={{ borderRadius: '2px' }}
+            data-reveal
+            data-reveal-delay="1"
           >
             <span className="bg-signal-success h-1.5 w-1.5" style={{ borderRadius: '1px' }} />
             Powered by Titan Phoenix
           </div>
-          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl">
+          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl" data-reveal data-reveal-delay="2">
             Your on-call is the
             <br className="hidden md:block" /> last line of defense.
           </h1>
-          <p className="text-ink-secondary mb-8 max-w-2xl text-lg leading-relaxed">
+          <p className="text-ink-secondary mb-8 max-w-2xl text-lg leading-relaxed" data-reveal data-reveal-delay="3">
             A bad deploy fires PagerDuty. Someone wakes up. They read through Grafana, confirm the
             problem is real, find the right kubectl command, and watch dashboards for another 20
             minutes to verify recovery. By then, thousands of users have already hit the bug.
           </p>
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4" data-reveal data-reveal-delay="4">
             <a
               href="https://cal.com/justine-deploytitan/demo"
               target="_blank"

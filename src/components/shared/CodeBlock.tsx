@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react'
 import { cn } from '../../utils'
 import { useTheme } from '../../hooks/useTheme'
 
+// Re-export InlineCode from its own module so importers that only need
+// InlineCode don't pull in this file (and the Shiki dynamic import chain).
+export { InlineCode } from './InlineCode'
+
 // Lazy-load shiki so it doesn't block initial render
 let highlighterPromise: Promise<import('shiki').Highlighter> | null = null
 
@@ -19,11 +23,7 @@ async function getHighlighter() {
   return highlighterPromise
 }
 
-// Inline theme overrides applied via CSS variables on the container
-const SHIKI_OVERRIDES = `
-  .shiki, .shiki span { font-family: var(--font-mono); font-size: 13px; line-height: 1.7; }
-  .shiki { background: transparent !important; }
-`
+// Shiki CSS overrides are in globals.css — no inline style injection needed
 
 export type Lang = 'bash' | 'yaml' | 'powershell' | 'dockerfile' | 'tsx' | 'hcl' | 'diff' | 'json'
 
@@ -181,7 +181,6 @@ export function CodeBlock({
         </div>
       ) : (
         <div className="px-4 py-4 overflow-x-auto">
-          <style>{SHIKI_OVERRIDES}</style>
           {html ? (
             <div dangerouslySetInnerHTML={{ __html: html }} />
           ) : (
@@ -202,36 +201,5 @@ export function CodeBlock({
 }
 
 // ---------------------------------------------------------------------------
-// InlineCode — standardized inline <code> span
+// InlineCode — see ./InlineCode.tsx (re-exported above)
 // ---------------------------------------------------------------------------
-
-interface InlineCodeProps {
-  children: React.ReactNode
-  /** "default" uses bg-ink/[0.05] (prose context); "accent" uses bg-primary-muted (callout/CTA context) */
-  variant?: 'default' | 'accent'
-  className?: string
-}
-
-/**
- * Standardized inline code element. Replaces ad-hoc `<code>` spans across the codebase.
- *
- * Usage:
- *   <InlineCode>dt deploy</InlineCode>
- *   <InlineCode variant="accent">Authorization: Bearer</InlineCode>
- */
-export function InlineCode({ children, variant = 'default', className }: InlineCodeProps) {
-  return (
-    <code
-      className={cn(
-        'font-mono text-[0.8125em] leading-none',
-        variant === 'accent'
-          ? 'text-primary bg-primary/[0.08] px-1.5 py-0.5'
-          : 'text-ink/80 bg-ink/[0.05] px-1.5 py-0.5',
-        className,
-      )}
-      style={{ borderRadius: '1px' }}
-    >
-      {children}
-    </code>
-  )
-}

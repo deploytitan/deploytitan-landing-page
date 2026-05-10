@@ -17,7 +17,7 @@ export function Footer() {
         <div className="col-span-2 flex flex-col gap-4 md:col-span-1">
           <Link href="/" className="flex items-center">
             <span className="font-display text-lg font-medium tracking-[-0.02em]">Deploy</span>
-            <span className="font-display text-primary-dark text-lg font-medium tracking-[-0.02em]">
+            <span className="font-display text-lg font-medium tracking-[-0.02em]" style={{ color: 'var(--color-primary-accessible, #7a6530)' }}>
               Titan
             </span>
           </Link>
@@ -64,9 +64,9 @@ export function Footer() {
 
         {/* Product column */}
         <div className="flex flex-col gap-4">
-          <h4 className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
+          <p className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
             Product
-          </h4>
+          </p>
           <ul className="flex flex-col gap-3">
             {(
               [
@@ -111,9 +111,9 @@ export function Footer() {
 
         {/* Support column */}
         <div className="flex flex-col gap-4">
-          <h4 className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
+          <p className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
             Resources
-          </h4>
+          </p>
           <ul className="flex flex-col gap-3">
             {[
               { label: 'Documentation', to: '/docs' },
@@ -140,9 +140,9 @@ export function Footer() {
 
         {/* Company column */}
         <div className="flex flex-col gap-4">
-          <h4 className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
+          <p className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
             Company
-          </h4>
+          </p>
           <ul className="flex flex-col gap-3">
             {[
               { label: 'About', to: '/about' },

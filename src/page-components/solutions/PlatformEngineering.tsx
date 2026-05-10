@@ -15,25 +15,27 @@ export default function SolutionPlatformEngineering() {
     <>
       {/* Hero */}
       <section className="blueprint-grid border-line border-b pt-28 pb-20">
-        <Container width="4xl" padding="default" data-reveal>
-          <Breadcrumbs className="mb-6" />
+        <Container width="4xl" padding="default">
+          <Breadcrumbs className="mb-6" data-reveal data-reveal-delay="1" />
           <div
             className="text-primary border-primary/30 mb-6 inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px]"
             style={{ borderRadius: '2px' }}
+            data-reveal
+            data-reveal-delay="1"
           >
             <span className="bg-signal-success h-1.5 w-1.5" style={{ borderRadius: '1px' }} />
             Powered by the full platform
           </div>
-          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl">
+          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl" data-reveal data-reveal-delay="2">
             Build the golden path.
             <br className="hidden md:block" /> Get out of the way.
           </h1>
-          <p className="text-ink-secondary mb-8 max-w-2xl text-lg leading-relaxed">
+          <p className="text-ink-secondary mb-8 max-w-2xl text-lg leading-relaxed" data-reveal data-reveal-delay="3">
             Platform teams shouldn't be the deployment bottleneck. DeployTitan gives you a single
             control plane to define deployment policies, enforce SLO guardrails, and let product
             teams self-serve safely across every cloud and cluster.
           </p>
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4" data-reveal data-reveal-delay="4">
             <a
               href="https://cal.com/justine-deploytitan/demo"
               target="_blank"

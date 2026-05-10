@@ -4,8 +4,33 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { sleep, useScrollReveal } from '../utils'
 import { APP_URL } from '@/lib/env'
 import { Button } from './shared/Button'
-import { InlineCode } from './shared/CodeBlock'
+import { InlineCode } from './shared/InlineCode'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+
+// Pause/resume the animation loop when the visual leaves the viewport.
+function useVisibilityPause(runningRef: React.MutableRefObject<boolean>, restart: () => void) {
+  const elRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = elRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!runningRef.current) {
+            runningRef.current = true
+            restart()
+          }
+        } else {
+          runningRef.current = false
+        }
+      },
+      { threshold: 0.1 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [runningRef, restart])
+  return elRef
+}
 
 const PRIMARY = 'var(--color-primary)'
 const PRIMARY_RGBA = 'rgba(201,168,76'
@@ -38,12 +63,15 @@ function TrafficSplitVisual() {
     { id: 'v143', label: 'v1.4.3', traffic: 0, status: 'canary', color: '#3b82f6' },
   ])
   const [cohortPinned, setCohortPinned] = useState(false)
-  const [logLines, setLogLines] = useState<{ text: string; color: string }[]>([])
+  // Use a stable counter so log lines always have unique keys even if text repeats
+  const [logLines, setLogLines] = useState<{ id: number; text: string; color: string }[]>([])
+  const logCounterRef = useRef(0)
   const runningRef = useRef(true)
   const reducedMotion = useReducedMotion()
 
   const addLog = useCallback((text: string, color: string) => {
-    setLogLines((prev) => [...prev.slice(-4), { text, color }])
+    const id = ++logCounterRef.current
+    setLogLines((prev) => [...prev.slice(-4), { id, text, color }])
   }, [])
 
   const runLoop = useCallback(async () => {
@@ -55,7 +83,7 @@ function TrafficSplitVisual() {
         { id: 'v143', label: 'v1.4.3', traffic: 0, status: 'canary', color: '#3b82f6' },
       ])
       setCohortPinned(false)
-      setLogLines([{ text: 'v1.4.2 healthy · 100% traffic', color: '#22c55e' }])
+      setLogLines([{ id: 0, text: 'v1.4.2 healthy · 100% traffic', color: '#22c55e' }])
       await sleep(2200)
       if (!runningRef.current) return
 
@@ -131,8 +159,8 @@ function TrafficSplitVisual() {
       ])
       setCohortPinned(true)
       setLogLines([
-        { text: 'beta-testers cohort pinned → v1.4.3', color: PRIMARY },
-        { text: 'Traffic: 25% on v1.4.3', color: '#3b82f6' },
+        { id: 1, text: 'beta-testers cohort pinned → v1.4.3', color: PRIMARY },
+        { id: 2, text: 'Traffic: 25% on v1.4.3', color: '#3b82f6' },
       ])
       return
     }
@@ -143,10 +171,13 @@ function TrafficSplitVisual() {
     }
   }, [runLoop, reducedMotion])
 
+  const visRef = useVisibilityPause(runningRef, runLoop)
+
   const info = phaseLabels[phase]
 
   return (
     <div
+      ref={visRef}
       className="border-line/50 bg-surface relative flex h-full w-full flex-col overflow-hidden border"
       style={{ borderRadius: '2px' }}
     >
@@ -286,8 +317,12 @@ function TrafficSplitVisual() {
             Event log
           </div>
           <div className="space-y-1">
-            {logLines.map((line, i) => (
-              <div key={i} className="log-entry flex items-center gap-2">
+            {logLines.map((line) => (
+              <div
+                key={line.id}
+                className="log-entry flex items-center gap-2"
+                style={{ animation: 'slideInLog 0.3s cubic-bezier(0.22, 1, 0.36, 1) both' }}
+              >
                 <div
                   className="h-1 w-1 shrink-0"
                   style={{ backgroundColor: line.color, borderRadius: '0.5px' }}
@@ -323,7 +358,7 @@ export function Hero() {
 
   return (
     <section
-      className="max-w-page relative mx-auto flex min-h-screen flex-col justify-center overflow-hidden"
+      className="max-w-page relative mx-auto flex min-h-[100dvh] flex-col justify-center overflow-hidden"
       ref={ref}
     >
       {/* Grid bg */}
@@ -331,17 +366,6 @@ export function Hero() {
         className="hero-grid pointer-events-none absolute inset-0 opacity-50"
         aria-hidden="true"
       />
-
-      {/* Visual — right side on desktop, below copy on mobile */}
-      <div className="absolute inset-y-0 right-0 hidden w-[52%] items-center pr-12 pl-4 lg:flex" aria-hidden="true">
-        <div className="h-[460px] w-full" data-reveal data-reveal-delay="3">
-          <TrafficSplitVisual />
-        </div>
-        {/* Gradient fades for blending */}
-        <div className="from-surface pointer-events-none absolute inset-y-0 left-0 w-32 bg-linear-to-r to-transparent" />
-        <div className="from-surface pointer-events-none absolute inset-x-0 top-0 h-20 bg-linear-to-b to-transparent" />
-        <div className="from-surface pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t to-transparent" />
-      </div>
 
       {/* Left copy */}
       <div className="relative z-10 flex w-full flex-col justify-center px-6 py-20 lg:w-[50%] lg:px-12 lg:py-0">
@@ -372,16 +396,10 @@ export function Hero() {
           </div>
 
           {/* Heading */}
-          <h1
-            data-reveal
-            data-reveal-delay="1"
-            className="font-display mb-6 text-[clamp(2rem,3.8vw,4rem)] leading-[1.08] font-medium tracking-[-0.022em]"
-          >
-            Ship more.
-            <br />
-            Break less.
-            <br />
-            <span className="relative inline-block">
+          <h1 className="font-display mb-6 text-[clamp(2rem,3.8vw,4rem)] leading-[1.08] font-medium tracking-[-0.022em]">
+            <span data-reveal data-reveal-delay="1" className="block">Ship more.</span>
+            <span data-reveal data-reveal-delay="2" className="block">Break less.</span>
+            <span data-reveal data-reveal-delay="3" className="relative inline-block">
               <span className="relative z-10">Sleep better.</span>
               <span
                 className="absolute right-0 bottom-1 left-0 -z-0 h-3"
@@ -393,7 +411,7 @@ export function Hero() {
           {/* Subtitle */}
           <p
             data-reveal
-            data-reveal-delay="2"
+            data-reveal-delay="4"
             className="text-ink-secondary mb-4 max-w-[65ch] text-lg leading-relaxed"
           >
             Releases shouldn't be the scariest part of your week. Stop guessing which release broke
@@ -403,7 +421,7 @@ export function Hero() {
           {/* Supporting line */}
           <p
             data-reveal
-            data-reveal-delay="2"
+            data-reveal-delay="4"
             className="text-ink-secondary mb-8 max-w-[65ch] text-sm leading-relaxed font-medium"
           >
             Catch risk early. Ship without fear. Learn from every release.
@@ -412,7 +430,7 @@ export function Hero() {
           {/* CTAs */}
           <div
             data-reveal
-            data-reveal-delay="3"
+            data-reveal-delay="5"
             className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-start"
           >
             <Button as="a" href="/cli" variant="primary" size="lg" className="group">
@@ -441,7 +459,7 @@ export function Hero() {
           {/* Sub-text */}
           <p
             data-reveal
-            data-reveal-delay="3"
+            data-reveal-delay="5"
             className="text-ink-tertiary mt-3 font-mono text-xs"
           >
             <InlineCode>dt login</InlineCode> creates your account from the CLI ·{' '}
@@ -451,7 +469,7 @@ export function Hero() {
           </p>
 
           {/* Trust tags */}
-          <div data-reveal data-reveal-delay="4" className="border-line mt-10 border-t pt-10">
+          <div data-reveal data-reveal-delay="6" className="border-line mt-10 border-t pt-10">
             <p
               className="mb-4 font-mono text-xs tracking-widest uppercase text-ink-tertiary"
             >
@@ -475,12 +493,27 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Mobile visual — single instance, not duplicated */}
-      <div className="px-6 pb-12 lg:hidden" data-reveal data-reveal-delay="4">
-        <div className="h-[360px] w-full">
+      {/* Visual — positioned right on desktop, flows below copy on mobile.
+          Single mount to avoid running two animation loops simultaneously. */}
+      <div
+        className="
+          lg:absolute lg:inset-y-0 lg:right-0 lg:w-[52%]
+          lg:flex lg:items-center lg:pr-12 lg:pl-4
+          px-6 pb-12 lg:px-0 lg:pb-0
+        "
+        aria-hidden="true"
+      >
+        <div
+          className="h-[360px] w-full lg:h-[460px]"
+          data-reveal
+          data-reveal-delay="3"
+        >
           <TrafficSplitVisual />
         </div>
-      </div>
-    </section>
+        {/* Gradient fades for blending — desktop only */}
+        <div className="from-surface pointer-events-none absolute inset-y-0 left-0 w-32 bg-linear-to-r to-transparent hidden lg:block" />
+        <div className="from-surface pointer-events-none absolute inset-x-0 top-0 h-20 bg-linear-to-b to-transparent hidden lg:block" />
+        <div className="from-surface pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t to-transparent hidden lg:block" />
+      </div></section>
   )
 }

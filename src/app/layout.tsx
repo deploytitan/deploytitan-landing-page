@@ -53,24 +53,23 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={`${inter.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}>
-      <head>
-        <script
-          async
-          defer
-          src="https://www.faurya.com/js/script.js"
-          data-website-id="cmoq4uh7j000kjm04sga2uksk"
-          data-domain="www.deploytitan.com"
-        ></script>
-      </head>
+      <head />
       <body suppressHydrationWarning>
-        {/* Google Analytics */}
+        {/* Google Analytics — lazyOnload fires after page load + browser idle */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-Q1CZ6Q7DVD"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="gtag-init" strategy="afterInteractive">
+        <Script id="gtag-init" strategy="lazyOnload">
           {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Q1CZ6Q7DVD');`}
         </Script>
+        {/* Faurya analytics — lazyOnload, does not block TTI */}
+        <Script
+          src="https://www.faurya.com/js/script.js"
+          strategy="lazyOnload"
+          data-website-id="cmoq4uh7j000kjm04sga2uksk"
+          data-domain="www.deploytitan.com"
+        />
 
         <ThemeProvider>
           <SiteLayoutClient>{children}</SiteLayoutClient>
