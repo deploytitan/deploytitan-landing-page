@@ -27,7 +27,7 @@
     "@vercel/analytics": "^2.0.1",
     "animejs": "^4.4.1",
     "d3-force": "^3.0.0",
-    "next": "16.2.4",
+    "next": "16.2.6",
     "next-sanity": "12",
     "posthog-js": "^1.373.5",
     "react": "19.2.5",
