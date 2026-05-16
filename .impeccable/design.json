@@ -1,90 +1,54 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-05-10T00:00:00Z",
+  "generatedAt": "2026-05-17T00:00:00.000Z",
   "title": "Design System: DeployTitan",
   "extensions": {
     "colorMeta": {
-      "surface": {
-        "role": "neutral",
-        "displayName": "Bone White",
-        "canonical": "oklch(98.5% 0.006 72)",
-        "tonalRamp": ["oklch(15% 0.006 72)", "oklch(25% 0.006 72)", "oklch(40% 0.006 72)", "oklch(55% 0.006 72)", "oklch(68% 0.006 72)", "oklch(80% 0.006 72)", "oklch(90% 0.006 72)", "oklch(98.5% 0.006 72)"]
-      },
-      "surface-alt": {
-        "role": "neutral",
-        "displayName": "Cartridge Paper",
-        "canonical": "oklch(96% 0.008 72)",
-        "tonalRamp": ["oklch(15% 0.008 72)", "oklch(28% 0.008 72)", "oklch(42% 0.008 72)", "oklch(56% 0.008 72)", "oklch(68% 0.008 72)", "oklch(78% 0.008 72)", "oklch(88% 0.008 72)", "oklch(96% 0.008 72)"]
-      },
-      "ink": {
-        "role": "neutral",
-        "displayName": "Deep Charcoal",
-        "canonical": "oklch(14% 0.012 52)",
-        "tonalRamp": ["oklch(14% 0.012 52)", "oklch(22% 0.012 52)", "oklch(34% 0.012 52)", "oklch(46% 0.012 52)", "oklch(58% 0.012 52)", "oklch(70% 0.012 52)", "oklch(82% 0.012 52)", "oklch(94% 0.012 52)"]
-      },
-      "primary": {
-        "role": "primary",
-        "displayName": "Precision Amber",
-        "canonical": "oklch(71% 0.12 78)",
-        "tonalRamp": ["oklch(20% 0.12 78)", "oklch(32% 0.12 78)", "oklch(44% 0.12 78)", "oklch(56% 0.12 78)", "oklch(65% 0.12 78)", "oklch(71% 0.12 78)", "oklch(82% 0.08 78)", "oklch(92% 0.04 78)"]
-      },
-      "primary-light": {
-        "role": "primary",
-        "displayName": "Pale Amber",
-        "canonical": "oklch(86% 0.08 80)",
-        "tonalRamp": ["oklch(20% 0.08 80)", "oklch(35% 0.08 80)", "oklch(50% 0.08 80)", "oklch(62% 0.08 80)", "oklch(72% 0.08 80)", "oklch(80% 0.08 80)", "oklch(86% 0.08 80)", "oklch(94% 0.04 80)"]
-      },
-      "signal-success": {
-        "role": "tertiary",
-        "displayName": "Healthy Green",
-        "canonical": "oklch(72% 0.22 142)",
-        "tonalRamp": ["oklch(20% 0.22 142)", "oklch(32% 0.22 142)", "oklch(44% 0.22 142)", "oklch(56% 0.22 142)", "oklch(65% 0.22 142)", "oklch(72% 0.22 142)", "oklch(82% 0.14 142)", "oklch(92% 0.06 142)"]
-      },
-      "signal-danger": {
-        "role": "tertiary",
-        "displayName": "Danger Red",
-        "canonical": "oklch(63% 0.24 25)",
-        "tonalRamp": ["oklch(20% 0.24 25)", "oklch(32% 0.24 25)", "oklch(44% 0.24 25)", "oklch(55% 0.24 25)", "oklch(63% 0.24 25)", "oklch(72% 0.18 25)", "oklch(82% 0.10 25)", "oklch(92% 0.04 25)"]
-      },
-      "signal-deploy": {
-        "role": "secondary",
-        "displayName": "Deploy Blue",
-        "canonical": "oklch(65% 0.20 250)",
-        "tonalRamp": ["oklch(20% 0.20 250)", "oklch(32% 0.20 250)", "oklch(44% 0.20 250)", "oklch(54% 0.20 250)", "oklch(65% 0.20 250)", "oklch(74% 0.16 250)", "oklch(84% 0.08 250)", "oklch(93% 0.04 250)"]
-      },
-      "dark-surface": {
-        "role": "neutral",
-        "displayName": "Deep Void",
-        "canonical": "oklch(8% 0.010 55)",
-        "tonalRamp": ["oklch(8% 0.010 55)", "oklch(14% 0.010 55)", "oklch(22% 0.010 55)", "oklch(34% 0.010 55)", "oklch(50% 0.010 55)", "oklch(65% 0.010 55)", "oklch(80% 0.010 55)", "oklch(94% 0.010 55)"]
-      }
+      "surface":            { "role": "neutral",  "displayName": "Bone White",          "canonical": "oklch(98% 0.005 80)",  "tonalRamp": ["#1a1512","#2e2a24","#484038","#645a50","#857668","#a8998a","#cdc0b0","#fafaf9"] },
+      "surface-alt":        { "role": "neutral",  "displayName": "Cartridge Paper",     "canonical": "oklch(96% 0.006 80)",  "tonalRamp": ["#1a1512","#2e2a24","#484038","#645a50","#857668","#a8998a","#cdc0b0","#f5f4f1"] },
+      "ink":                { "role": "neutral",  "displayName": "Deep Charcoal",       "canonical": "oklch(14% 0.012 50)",  "tonalRamp": ["#1a1512","#2e2a24","#484038","#645a50","#857668","#a8998a","#cdc0b0","#f5f4f1"] },
+      "ink-secondary":      { "role": "neutral",  "displayName": "Warm Ash",            "canonical": "oklch(28% 0.015 50)",  "tonalRamp": ["#1a1512","#2e2a24","#3d3530","#555048","#706860","#8d8278","#b0a89e","#f0ede8"] },
+      "ink-tertiary":       { "role": "neutral",  "displayName": "Muted Ore",           "canonical": "oklch(46% 0.018 50)",  "tonalRamp": ["#1a1512","#2e2a24","#3d3530","#555048","#6b6059","#8d8278","#b0a89e","#f0ede8"] },
+      "ink-quaternary":     { "role": "neutral",  "displayName": "Pale Ore",            "canonical": "oklch(62% 0.016 50)",  "tonalRamp": ["#1a1512","#2e2a24","#3d3530","#555048","#706860","#9e9189","#c0b8b0","#f0ede8"] },
+      "line":               { "role": "neutral",  "displayName": "Fine Line",           "canonical": "oklch(91% 0.008 80)",  "tonalRamp": ["#1a1512","#2a2825","#3d3935","#564f48","#706860","#9e9189","#cac3b8","#e5e2dc"] },
+      "line-subtle":        { "role": "neutral",  "displayName": "Ghost Line",          "canonical": "oklch(93% 0.006 80)",  "tonalRamp": ["#1a1512","#2a2825","#3d3935","#564f48","#706860","#9e9189","#cac3b8","#eeece8"] },
+      "primary":            { "role": "primary",  "displayName": "Precision Amber",     "canonical": "oklch(72% 0.12 84)",   "tonalRamp": ["#3a2d10","#5a471a","#7a6228","#9a7c35","#c9a84c","#d4b454","#e8d48b","#f7eecb"] },
+      "primary-accessible": { "role": "primary",  "displayName": "AA-Accessible Amber", "canonical": "oklch(48% 0.09 84)",   "tonalRamp": ["#3a2d10","#5a471a","#7a6530","#9a7c35","#c9a84c","#d4b454","#e8d48b","#f7eecb"] },
+      "signal-success":     { "role": "tertiary", "displayName": "Healthy Green",       "canonical": "oklch(74% 0.2 145)",   "tonalRamp": ["#052e16","#14532d","#166534","#15803d","#16a34a","#22c55e","#4ade80","#bbf7d0"] },
+      "signal-warning":     { "role": "tertiary", "displayName": "Warning Amber",       "canonical": "oklch(76% 0.18 70)",   "tonalRamp": ["#451a03","#78350f","#92400e","#b45309","#d97706","#f59e0b","#fbbf24","#fde68a"] },
+      "signal-danger":      { "role": "tertiary", "displayName": "Danger Red",          "canonical": "oklch(64% 0.22 25)",   "tonalRamp": ["#450a0a","#7f1d1d","#991b1b","#b91c1c","#dc2626","#ef4444","#f87171","#fecaca"] },
+      "signal-deploy":      { "role": "secondary","displayName": "Deploy Blue",         "canonical": "oklch(62% 0.2 250)",   "tonalRamp": ["#172554","#1e3a8a","#1d4ed8","#2563eb","#3b82f6","#60a5fa","#93c5fd","#dbeafe"] }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Hero headlines only. Three lines maximum. The `.hero-grid` section." },
-      "headline": { "displayName": "Headline", "purpose": "Section-opening statements. Once per major content block." },
-      "title": { "displayName": "Title", "purpose": "Feature names, product names, card headings. Instrument Sans." },
-      "body": { "displayName": "Body", "purpose": "Primary reading copy. Max 65–75ch line length." },
-      "label": { "displayName": "Label / Mono", "purpose": "Machine-originated data only: version strings, statuses, log lines, CLI copy, timestamps." }
+      "display":  { "displayName": "Display",  "purpose": "Hero headlines only. Three or fewer lines. Never used below the fold for section titles." },
+      "headline": { "displayName": "Headline", "purpose": "Section-opening statements. Used once per major content block." },
+      "title":    { "displayName": "Title",    "purpose": "Feature names, product names, card headings. Instrument Sans for warmth at heading scale." },
+      "body":     { "displayName": "Body",     "purpose": "Primary reading copy. Max line length 65-75ch." },
+      "label":    { "displayName": "Label",    "purpose": "JetBrains Mono exclusively. Version strings, statuses, event log entries, CLI copy, timestamps." }
     },
     "shadows": [
-      { "name": "hover-reveal", "value": "0 2px 8px rgba(0,0,0,0.04), 0 0 0 1px rgba(201,168,76,0.06)", "purpose": "Applied on hover to cards and capability rows. The amber outline ring is the tell." },
-      { "name": "hover-reveal-dark", "value": "0 2px 8px rgba(0,0,0,0.3), 0 0 0 1px rgba(212,180,84,0.08)", "purpose": "Dark mode equivalent of hover-reveal." },
-      { "name": "button-primary-hover", "value": "0 0 0 1px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.08)", "purpose": "Primary button hover ring: amber at 15% opacity." },
-      { "name": "modal-backdrop", "value": "background: rgba(8,5,3,0.5); backdrop-filter: blur(4px)", "purpose": "Modal focus lock. Only blur in the system. Not decorative." },
-      { "name": "pulse-ring", "value": "0 0 0 3px rgba(201,168,76,0.08)", "purpose": "Heartbeat pulse for live connection indicators. dd-integration-pulse." }
+      { "name": "hover-reveal",    "value": "0 2px 8px rgba(0,0,0,0.04), 0 0 0 1px rgba(201,168,76,0.06)", "purpose": "Sharp card and cap-row hover. Amber ring at 6% is the tell." },
+      { "name": "hover-reveal-dark","value": "0 2px 12px rgba(0,0,0,0.2), 0 0 0 1px rgba(212,180,84,0.08)", "purpose": "Dark mode card hover." },
+      { "name": "button-primary-hover", "value": "0 0 0 1px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.08)", "purpose": "Primary button hover ring. Gold at 15% opacity." },
+      { "name": "modal-backdrop",  "value": "background: rgba(8,5,3,0.5); backdrop-filter: blur(4px)", "purpose": "The only blur in the system. Focus-lock mechanism for .cap-modal-backdrop." },
+      { "name": "gold-pulse",      "value": "0 0 0 3px rgba(201,168,76,0.08)", "purpose": "Heartbeat ring on active live-connection indicators." }
     ],
     "motion": [
-      { "name": "ease-standard", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Default easing for all state transitions and reveals. Ease-out-quart equivalent." },
-      { "name": "ease-simple", "value": "ease-out", "purpose": "Simple state changes where precision easing is unnecessary." },
-      { "name": "fade-up", "value": "fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards", "purpose": "Scroll-reveal entrance. opacity: 0 + translateY(20px) to resting state." },
-      { "name": "nav-underline", "value": "width 0.3s cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Nav link 1px amber underline grows on hover." },
-      { "name": "gold-shimmer", "value": "gold-shimmer 4s linear infinite", "purpose": "Background-position shift on .gold-shimmer text. One-off hero motif only." },
-      { "name": "scan-line", "value": "scan-line 10s linear infinite", "purpose": "Subtle gold scan-line sweep on instrument panels. Opacity 0.015." }
+      { "name": "ease-standard",   "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "All state transitions and entrances." },
+      { "name": "slideInLog",      "value": "opacity 0->1, translateY 8px->0, 0.3s ease", "purpose": "Event log entry entrance." },
+      { "name": "scan-line",       "value": "translateX(-100%->100%), linear, infinite", "purpose": "Instrument panel gold scan overlay." },
+      { "name": "gold-shimmer",    "value": "background-position -200%->200%, 3s linear infinite", "purpose": ".gold-shimmer hero motif only. One instance per page maximum." },
+      { "name": "corner-draw",     "value": "scale(0.5->1) + opacity(0->1), 0.5s ease-out-quart", "purpose": "Blueprint corner mark entrance." },
+      { "name": "mobile-nav-in",   "value": "translateY(-8px->0) + opacity(0->1), 0.25s ease-out-quart", "purpose": "Mobile nav panel entrance." },
+      { "name": "success-reveal",  "value": "translateY(10px->0) + opacity(0->1), 0.5s ease-out-quart", "purpose": "CTA success state." },
+      { "name": "drawEdge",        "value": "stroke-dashoffset release, var(--edge-length), ease-out", "purpose": "SVG release graph edge draw-in." }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "640px" },
-      { "name": "lg", "value": "1024px" },
-      { "name": "max-page", "value": "1400px" }
+      { "name": "sm",  "value": "640px" },
+      { "name": "md",  "value": "768px" },
+      { "name": "lg",  "value": "1024px" },
+      { "name": "xl",  "value": "1280px" },
+      { "name": "2xl", "value": "1400px" }
     ]
   },
   "components": [
@@ -92,108 +56,124 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Main CTA. Deep charcoal fill, bone text, 2px radius. Amber ring surfaces on hover.",
-      "html": "<button class=\"ds-btn-primary\">Start free trial <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #1a1512; color: #fafaf9; padding: 16px 32px; border-radius: 2px; border: none; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1rem; font-weight: 500; line-height: 1; cursor: pointer; transition: box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1), transform 0.1s ease; } .ds-btn-primary:hover { box-shadow: 0 0 0 1px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.08); } .ds-btn-primary:active { transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: 2px solid #c9a84c; outline-offset: 2px; }"
+      "description": "Main CTA. Deep charcoal fill, bone surface text, gold ring on hover. Never changes color on hover.",
+      "html": "<button class=\"ds-btn-primary\">Book a Demo</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #1a1512; color: #fafaf9; padding: 14px 28px; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; line-height: 1; letter-spacing: normal; border: none; border-radius: 2px; cursor: pointer; transition: box-shadow 0.2s cubic-bezier(0.22,1,0.36,1), transform 0.1s; } .ds-btn-primary:hover { box-shadow: 0 0 0 1px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.08); } .ds-btn-primary:active { transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #fafaf9, 0 0 0 4px #c9a84c; }"
     },
     {
       "name": "Outline Button",
       "kind": "button",
       "refersTo": "button-outline",
-      "description": "Secondary CTA. Transparent fill, ink border at 15% opacity, amber tint on hover.",
-      "html": "<button class=\"ds-btn-outline\">Talk to an engineer</button>",
-      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: #1a1512; padding: 14px 32px; border-radius: 2px; border: 1px solid rgba(26,21,18,0.15); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1rem; font-weight: 500; line-height: 1; cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease, transform 0.1s ease; } .ds-btn-outline:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.15); } .ds-btn-outline:active { transform: scale(0.97); } .ds-btn-outline:focus-visible { outline: 2px solid #c9a84c; outline-offset: 2px; }"
+      "description": "Secondary CTA. Transparent, ink border. Amber-tinted on hover without going solid.",
+      "html": "<button class=\"ds-btn-outline\">View Docs</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: #1a1512; padding: 13px 28px; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; line-height: 1; border: 1px solid rgba(26,21,18,0.15); border-radius: 2px; cursor: pointer; transition: border-color 0.2s, background 0.2s, transform 0.1s; } .ds-btn-outline:hover { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.15); } .ds-btn-outline:active { transform: scale(0.97); } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px #fafaf9, 0 0 0 4px #c9a84c; }"
     },
     {
-      "name": "Sharp Card",
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Tertiary action. No border, no fill. Text only; ink-secondary to ink on hover.",
+      "html": "<button class=\"ds-btn-ghost\">Learn more <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M5 12h14M12 5l7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: #3d3530; padding: 0; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 2px; cursor: pointer; transition: color 0.15s; } .ds-btn-ghost:hover { color: #1a1512; } .ds-btn-ghost:focus-visible { outline: none; box-shadow: 0 0 0 2px #c9a84c; }"
+    },
+    {
+      "name": "Sharp Card (Default)",
       "kind": "card",
       "refersTo": "sharp-card",
-      "description": "Default container. 2px radius, hairline border, amber reveal ring on hover. Never nested.",
-      "html": "<div class=\"ds-sharp-card\"><div class=\"ds-sharp-card__label\">TITAN ROLLOUT</div><div class=\"ds-sharp-card__title\">Progressive Delivery</div><div class=\"ds-sharp-card__body\">Route traffic to new versions with surgical precision. Canary, blue/green, or cohort-pinned rollouts.</div></div>",
-      "css": ".ds-sharp-card { background: #fafaf9; border: 1px solid #e5e2dc; border-radius: 2px; padding: 24px; transition: border-color 0.3s ease, box-shadow 0.3s ease; } .ds-sharp-card:hover { border-color: rgba(201,168,76,0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 0 0 1px rgba(201,168,76,0.06); } .ds-sharp-card__label { font-family: 'JetBrains Mono', monospace; font-size: 0.6875rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: #c9a84c; margin-bottom: 8px; } .ds-sharp-card__title { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1.125rem; font-weight: 600; color: #1a1512; margin-bottom: 12px; } .ds-sharp-card__body { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1rem; line-height: 1.65; color: #3d3530; max-width: 65ch; }"
+      "description": "Standard bordered container. Amber ring surfaces on hover; no shadow at rest.",
+      "html": "<div class=\"ds-sharp-card\"><p class=\"ds-card-title\">Multi-repo coordination</p><p class=\"ds-card-body\">Model release dependencies across repositories without Slack threads.</p></div>",
+      "css": ".ds-sharp-card { background: #fafaf9; border: 1px solid #e5e2dc; border-radius: 2px; padding: 24px; transition: border-color 0.3s, box-shadow 0.3s; } .ds-sharp-card:hover { border-color: rgba(201,168,76,0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 0 0 1px rgba(201,168,76,0.06); } .ds-card-title { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1.125rem; font-weight: 600; color: #1a1512; margin: 0 0 8px; line-height: 1.3; } .ds-card-body { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1rem; font-weight: 400; color: #3d3530; margin: 0; line-height: 1.65; }"
+    },
+    {
+      "name": "Spotlight Card",
+      "kind": "card",
+      "refersTo": "spotlight-card",
+      "description": "Card with cursor-following amber radial glow. Used on high-signal feature cards.",
+      "html": "<div class=\"ds-spotlight-card\" onmousemove=\"this.style.setProperty('--sx',event.offsetX+'px');this.style.setProperty('--sy',event.offsetY+'px')\"><p class=\"ds-card-title\">Instant rollback</p><p class=\"ds-card-body\">Coordinate cross-service rollback in under 30 seconds.</p></div>",
+      "css": ".ds-spotlight-card { position: relative; overflow: hidden; background: #fafaf9; border: 1px solid #e5e2dc; border-radius: 2px; padding: 24px; transition: border-color 0.3s, box-shadow 0.3s; } .ds-spotlight-card::before { content: ''; position: absolute; width: 300px; height: 300px; background: radial-gradient(circle at center, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 30%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 1; opacity: 0; transition: opacity 0.3s ease; transform: translate(-50%,-50%); top: var(--sy, 50%); left: var(--sx, 50%); } .ds-spotlight-card:hover { border-color: rgba(201,168,76,0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 0 0 1px rgba(201,168,76,0.06); } .ds-spotlight-card:hover::before { opacity: 1; } .ds-card-title { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1.125rem; font-weight: 600; color: #1a1512; margin: 0 0 8px; line-height: 1.3; } .ds-card-body { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1rem; color: #3d3530; margin: 0; line-height: 1.65; }"
+    },
+    {
+      "name": "Capability Row",
+      "kind": "custom",
+      "refersTo": "cap-row",
+      "description": "Feature/capability list row. Amber border and compound shadow appear on hover.",
+      "html": "<div class=\"ds-cap-row\"><span class=\"ds-cap-label\">Deployment freeze management</span><span class=\"ds-cap-arrow\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M5 12h14M12 5l7 7-7 7\"/></svg></span></div>",
+      "css": ".ds-cap-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: #f5f4f1; border: 1px solid #e5e2dc; border-radius: 2px; cursor: pointer; transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease; } .ds-cap-row:hover { border-color: rgba(201,168,76,0.25); background: #fafaf9; box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px rgba(201,168,76,0.08); } .ds-cap-label { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1rem; font-weight: 500; color: #1a1512; } .ds-cap-arrow { color: #9e9189; transition: color 0.2s, transform 0.2s cubic-bezier(0.22,1,0.36,1); } .ds-cap-row:hover .ds-cap-arrow { color: #c9a84c; transform: translateX(4px); }"
     },
     {
       "name": "Status Badge",
       "kind": "chip",
-      "refersTo": null,
-      "description": "Machine-readable status indicator. 1px radius, mono font, signal-color tinted.",
-      "html": "<span class=\"ds-badge ds-badge--stable\">stable</span> <span class=\"ds-badge ds-badge--canary\">canary</span> <span class=\"ds-badge ds-badge--danger\">rolling back</span>",
-      "css": ".ds-badge { display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 1px; font-family: 'JetBrains Mono', monospace; font-size: 0.5625rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; } .ds-badge--stable { color: rgba(34,197,94,0.9); background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); } .ds-badge--canary { color: rgba(201,168,76,0.85); background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); } .ds-badge--danger { color: rgba(239,68,68,0.9); background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); } .ds-badge--deploy { color: rgba(59,130,246,0.9); background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); }"
+      "refersTo": "status-badge",
+      "description": "Machine-layer tag. Signal color at low opacity for background and border; mono uppercase.",
+      "html": "<span class=\"ds-badge ds-badge-success\">HEALTHY</span><span class=\"ds-badge ds-badge-danger\" style=\"margin-left:8px\">ROLLBACK</span><span class=\"ds-badge ds-badge-deploy\" style=\"margin-left:8px\">DEPLOYING</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 1px; font-family: 'JetBrains Mono', monospace; font-size: 0.625rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.4; } .ds-badge-success { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); color: rgba(34,197,94,0.9); } .ds-badge-danger  { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: rgba(239,68,68,0.9); } .ds-badge-deploy  { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); color: rgba(59,130,246,0.9); }"
     },
     {
-      "name": "Navigation Bar",
+      "name": "Navigation",
       "kind": "nav",
-      "refersTo": null,
-      "description": "Transparent at top. On scroll: near-white background with hairline bottom border. Amber underline on hover.",
-      "html": "<nav class=\"ds-nav\"><div class=\"ds-nav__brand\">DeployTitan</div><div class=\"ds-nav__links\"><a class=\"ds-nav__link\" href=\"#\">Products</a><a class=\"ds-nav__link\" href=\"#\">Solutions</a><a class=\"ds-nav__link\" href=\"#\">Pricing</a></div><button class=\"ds-btn-primary\" style=\"font-size:0.875rem;padding:10px 20px\">Start free trial</button></nav>",
-      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 64px; background: transparent; border-bottom: 1px solid transparent; transition: background 0.3s ease, border-color 0.3s ease; } .ds-nav--scrolled { background: rgba(250,250,249,0.9); border-bottom-color: #e5e2dc; backdrop-filter: blur(8px); } .ds-nav__brand { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1rem; font-weight: 600; color: #1a1512; } .ds-nav__links { display: flex; gap: 32px; } .ds-nav__link { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 0.875rem; font-weight: 400; color: #3d3530; text-decoration: none; position: relative; transition: color 0.2s ease; } .ds-nav__link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: #c9a84c; transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1); } .ds-nav__link:hover { color: #1a1512; } .ds-nav__link:hover::after { width: 100%; }"
+      "refersTo": "button-primary",
+      "description": "Transparent at rest; frosted border on scroll. Amber hairline underline grows on hover.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" class=\"ds-nav-link ds-nav-link-underline\">Product</a><a href=\"#\" class=\"ds-nav-link ds-nav-link-underline\">Solutions</a><a href=\"#\" class=\"ds-nav-link ds-nav-link-active ds-nav-link-underline\">Pricing</a><button class=\"ds-nav-cta\">Book a Demo</button></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 32px; padding: 0 24px; height: 56px; } .ds-nav-link { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 0.875rem; font-weight: 400; color: #3d3530; text-decoration: none; position: relative; transition: color 0.15s; } .ds-nav-link-underline::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 1px; background: #c9a84c; transform: scaleX(0); transform-origin: left; transition: transform 0.2s cubic-bezier(0.22,1,0.36,1); } .ds-nav-link:hover { color: #1a1512; } .ds-nav-link:hover::after { transform: scaleX(1); } .ds-nav-link-active { color: #c9a84c !important; } .ds-nav-link-active::after { transform: scaleX(1) !important; } .ds-nav-cta { background: #1a1512; color: #fafaf9; padding: 8px 20px; font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; border: none; border-radius: 2px; cursor: pointer; transition: box-shadow 0.2s; } .ds-nav-cta:hover { box-shadow: 0 0 0 1px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.08); }"
     },
     {
-      "name": "Mono Label",
+      "name": "Gold Line Divider",
       "kind": "custom",
-      "refersTo": null,
-      "description": "Machine-readable section label. JetBrains Mono, all-caps, amber, wide tracking. Used for panel section headers and categorical tags.",
-      "html": "<div class=\"ds-mono-label\">Active versions</div>",
-      "css": ".ds-mono-label { font-family: 'JetBrains Mono', monospace; font-size: 0.5625rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: #9e9189; }"
+      "description": "Horizontal amber fade divider. Used between major sections.",
+      "html": "<hr class=\"ds-gold-line\" />",
+      "css": ".ds-gold-line { border: none; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.6), transparent); margin: 0; }"
     },
     {
-      "name": "Corner Accent Container",
-      "kind": "custom",
-      "refersTo": null,
-      "description": "Blueprint motif: 12×12px right-angle marks at two opposing corners in precision amber at 30% opacity. Used sparingly on feature sections.",
-      "html": "<div class=\"ds-corner-accent\"><div style=\"padding:32px;font-family:'Instrument Sans',sans-serif;color:#1a1512\">Feature content here</div></div>",
-      "css": ".ds-corner-accent { position: relative; } .ds-corner-accent::before, .ds-corner-accent::after { content: ''; position: absolute; width: 12px; height: 12px; border-color: #c9a84c; opacity: 0.3; } .ds-corner-accent::before { top: 0; left: 0; border-top: 1.5px solid; border-left: 1.5px solid; } .ds-corner-accent::after { bottom: 0; right: 0; border-bottom: 1.5px solid; border-right: 1.5px solid; }"
-    },
-    {
-      "name": "Instrument Panel",
-      "kind": "custom",
-      "refersTo": null,
-      "description": "Terminal-style data panel. Header bar with mono label, main content area with signal-colored data, event log. The signature component.",
-      "html": "<div class=\"ds-panel\"><div class=\"ds-panel__header\"><div class=\"ds-panel__header-brand\"><div class=\"ds-panel__icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" width=\"10\" height=\"10\"><path d=\"M12 2L2 7l10 5 10-5-10-5z\"/><path d=\"M2 17l10 5 10-5\"/><path d=\"M2 12l10 5 10-5\"/></svg></div><span class=\"ds-mono-label\">DeployTitan — Traffic Control</span></div><div class=\"ds-panel__status\"><div class=\"ds-panel__status-dot\" style=\"background:#22c55e\"></div><span style=\"font-family:'JetBrains Mono',monospace;font-size:9px;color:#22c55e\">All traffic on v1.4.2 — stable</span></div></div><div class=\"ds-panel__body\"><div class=\"ds-mono-label\" style=\"margin-bottom:8px\">Active versions</div><div class=\"ds-panel__version-row\"><span style=\"font-family:'JetBrains Mono',monospace;font-size:11px;color:#1a1512;font-weight:500\">v1.4.2</span><span class=\"ds-badge ds-badge--stable\">stable</span><span style=\"font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;color:#22c55e;margin-left:auto\">100%</span></div></div></div>",
-      "css": ".ds-panel { background: #fafaf9; border: 1px solid rgba(229,226,220,0.5); border-radius: 2px; overflow: hidden; font-family: 'JetBrains Mono', monospace; } .ds-panel__header { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: rgba(245,244,241,0.6); border-bottom: 1px solid rgba(229,226,220,0.5); } .ds-panel__header-brand { display: flex; align-items: center; gap: 8px; } .ds-panel__icon { width: 16px; height: 16px; background: #1a1512; display: flex; align-items: center; justify-content: center; border-radius: 1px; color: #fafaf9; } .ds-panel__status { display: flex; align-items: center; gap: 8px; } .ds-panel__status-dot { width: 6px; height: 6px; border-radius: 1px; } .ds-panel__body { padding: 20px; } .ds-panel__version-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; } .ds-badge { display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 1px; font-family: 'JetBrains Mono',monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; } .ds-badge--stable { color: rgba(34,197,94,0.9); background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); }"
+      "name": "Corner Accent Card",
+      "kind": "card",
+      "refersTo": "sharp-card",
+      "description": "Blueprint motif variant. Right-angle amber marks at two opposing corners. One per section maximum.",
+      "html": "<div class=\"ds-corner-card\"><p class=\"ds-card-title\">Titan Rollouts</p><p class=\"ds-card-body\">The release coordination layer that sits above your CI/CD, GitHub, and observability tools.</p></div>",
+      "css": ".ds-corner-card { position: relative; background: #fafaf9; border: 1px solid #e5e2dc; border-radius: 2px; padding: 24px; transition: border-color 0.3s, box-shadow 0.3s; } .ds-corner-card::before, .ds-corner-card::after { content: ''; position: absolute; width: 12px; height: 12px; border-color: #c9a84c; opacity: 0.3; pointer-events: none; } .ds-corner-card::before { top: 0; left: 0; border-top: 1.5px solid; border-left: 1.5px solid; } .ds-corner-card::after { bottom: 0; right: 0; border-bottom: 1.5px solid; border-right: 1.5px solid; } .ds-corner-card:hover { border-color: rgba(201,168,76,0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 0 0 1px rgba(201,168,76,0.06); } .ds-card-title { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1.125rem; font-weight: 600; color: #1a1512; margin: 0 0 8px; line-height: 1.3; } .ds-card-body { font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 1rem; color: #3d3530; margin: 0; line-height: 1.65; }"
     }
   ],
   "narrative": {
     "northStar": "The Instrument Panel",
-    "overview": "DeployTitan's visual language is built on a single premise: aircraft-grade precision. Every surface reads like a cockpit display, purposeful and calibrated, nothing decorative. The color system uses two registers: a bone-warm neutral field that recedes, and one operational accent (precision amber) that appears only where it earns its place. Type is set in two voices: Inter for authority at scale, Instrument Sans for legibility at reading size, and JetBrains Mono for the machine layer that runs beneath both.\n\nThe system is explicitly dark-capable. Light mode reads like a technical data sheet printed on aged cartridge paper; dark mode reads like a mission-critical terminal at 2am. Neither is an afterthought. Both are deployed via the .dark class toggle; every token has a matching dark override. The 2px corner radius is non-negotiable: it signals precision without rigidity, and it distinguishes DeployTitan from the soft-edged SaaS world it explicitly rejects.\n\nThis system does not do friendly. It does not do playful. It does authoritative, calm, and specific. Engineers scanning for technical depth and leaders scanning for capability scope should both find exactly what they need, without the system trying to appeal to either with artificial warmth.",
+    "overview": "DeployTitan's visual language is built on a single premise: aircraft-grade precision. Every surface reads like a cockpit display, purposeful and calibrated, nothing decorative. The color system uses two registers: a bone-warm neutral field that recedes, and one operational accent (precision amber) that appears only where it earns its place. Type is set in two voices: Inter for authority at scale, Instrument Sans for legibility at reading size, and JetBrains Mono for the machine layer that runs beneath both.\n\nThe system is explicitly dark-capable. Light mode reads like a technical data sheet printed on aged cartridge paper; dark mode reads like a mission-critical terminal at 2am. Neither is an afterthought. Both are deployed via the .dark class toggle; every token has a matching dark override. The 2px corner radius (--radius-sharp) is non-negotiable: it signals precision without rigidity, and it distinguishes DeployTitan from the soft-edged SaaS world it explicitly rejects.\n\nThis system does not do friendly. It does not do playful. It does not do \"accessible to everyone.\" It does authoritative, calm, and specific. Engineers scanning for technical depth and leaders scanning for capability scope should both find exactly what they need, without the system trying to appeal to either with artificial warmth.",
     "keyCharacteristics": [
       "Single sharp radius (2px) applied universally; zero soft corners",
       "Precision amber accent used at ≤10% of any surface; its rarity is the point",
-      "Mono layer (JetBrains Mono) reserved strictly for machine-readable content",
+      "Mono layer (JetBrains Mono) reserved strictly for machine-readable content: labels, statuses, version strings, event logs",
       "Noise texture overlay (opacity 0.02) adds material depth without decoration",
-      "Blueprint grid motifs signal engineered structure, not ornamentation",
+      "Two grid motifs: .hero-grid (neutral 60px squares) and .blueprint-grid (amber-tinted 120px major / 24px minor) signal engineered structure, not ornamentation",
       "Full dark mode parity: every token has an override; behavior is identical, atmosphere differs"
     ],
     "rules": [
-      { "name": "The Amber Rarity Rule", "body": "Precision amber is used on ≤10% of any screen. Every use must earn its place by directing attention to something operationally significant. Decorative amber is forbidden.", "section": "colors" },
-      { "name": "The No-Pure-Extremes Rule", "body": "#000000 and #ffffff never appear. Every neutral is tinted toward the amber hue. Pure black on pure white erases the system's material character.", "section": "colors" },
-      { "name": "The Mono Boundary Rule", "body": "JetBrains Mono is used only when the content originated from a machine or system. Human-authored labels use Instrument Sans. Mixing registers violates the information hierarchy.", "section": "typography" },
-      { "name": "The Tracking Inversion Rule", "body": "Display and headline type uses negative tracking. Label mono type uses positive tracking. Body is set at normal. Never apply positive tracking to large type.", "section": "typography" },
-      { "name": "The Flat-at-Rest Rule", "body": "No element has a box-shadow at rest. Shadows are state transitions, not baseline styles.", "section": "elevation" },
-      { "name": "The Single-Blur Rule", "body": "backdrop-filter: blur() is used only on .cap-modal-backdrop as a focus-lock mechanism. Not a glass card treatment.", "section": "elevation" }
+      { "name": "The Amber Rarity Rule", "body": "Precision amber is used on ≤10% of any screen in light mode. Every use must earn its place by directing attention to something operationally significant. Decorative amber is forbidden. Amber shimmer text is a one-off motif reserved for the single hero word or standalone callout; do not proliferate it.", "section": "colors" },
+      { "name": "The No-Pure-Extremes Rule", "body": "#000000 and #ffffff never appear. Every neutral is tinted toward the amber hue (chroma 0.005-0.01 minimum). This prevents the system from reading as generic-tech monochrome.", "section": "colors" },
+      { "name": "The Mono Boundary Rule", "body": "JetBrains Mono is used only when the content originated from a machine or system: version numbers, deployment statuses, command-line strings, log lines, timestamps. Human-authored labels, section headers, and navigation use Instrument Sans. Mixing registers violates the system's information hierarchy.", "section": "typography" },
+      { "name": "The Tracking Inversion Rule", "body": "Display and headline type uses negative tracking (tightened). Label mono type uses positive tracking (widened). Body is set at normal. Never apply positive tracking to large type.", "section": "typography" },
+      { "name": "The Flat-at-Rest Rule", "body": "No element has a box-shadow at rest. Shadows are state transitions, not baseline styles. If a component needs visual weight at rest, achieve it through border, background tint, or scale, not shadow.", "section": "elevation" },
+      { "name": "The Single-Blur Rule", "body": "backdrop-filter: blur() is used only on .cap-modal-backdrop. It is not a glass card treatment; it is a focus-lock mechanism. Do not apply blur to resting cards, nav, or banners.", "section": "elevation" }
     ],
     "dos": [
-      "Do use border-radius: 2px on every interactive surface.",
-      "Do set amber only for operationally significant UI: primary CTA, active states, hover rings, status highlights.",
-      "Do use JetBrains Mono strictly for machine-originated content.",
-      "Do keep body copy to 65–75ch max line length.",
-      "Do apply prefers-reduced-motion to every animation.",
-      "Do use the surface color step (surface → surface-alt) for depth. Elevation is tonal at rest.",
-      "Do write copy that is specific, direct, and without superlatives."
+      "Do use border-radius: 2px on every interactive surface. No exceptions. A soft corner is a brand violation.",
+      "Do set amber (var(--color-primary)) only for operationally significant UI: the primary CTA, active states, hover rings, status highlights, and blueprint motifs. Never as fill color on a card at rest.",
+      "Do use JetBrains Mono strictly for machine-originated content: version strings, deployment statuses, event log lines, CLI commands, timestamps. Human-authored prose and labels use Instrument Sans.",
+      "Do keep body copy to 65-75ch max line length. Dense content at wide line lengths is an SRE's enemy.",
+      "Do apply prefers-reduced-motion media query to every animation. All keyframes must respect it.",
+      "Do use the surface color step (surface → surface-alt) to create depth. Elevation is tonal, not shadowed, at rest.",
+      "Do write copy in the voice of the best engineer in the room: specific, direct, no superlatives. 'Instant rollback in under 30 seconds' beats 'ship with confidence.'",
+      "Do keep the amber scan-line, blueprint grid, and corner-accent motifs as sparse structural signals. One per section maximum."
     ],
     "donts": [
-      "Don't use soft corners (≥4px radius). The system is 2px everywhere.",
-      "Don't use #000 or #fff. Every extreme neutral must be tinted.",
-      "Don't use amber as a decorative color: no amber card fills, no amber section backgrounds.",
-      "Don't use glassmorphism. The modal backdrop blur is a focus-lock, not a glass aesthetic.",
-      "Don't replicate the SaaS cream + purple aesthetic (Notion/Linear/Loom).",
-      "Don't replicate dark neon DevOps: terminal-green on black, aggressive gradients.",
-      "Don't replicate enterprise boring: navy blue dashboards, stock photo heroes.",
-      "Don't use gradient text on any element except the single .gold-shimmer hero motif.",
-      "Don't use border-left or border-right wider than 1px as a colored stripe on cards.",
-      "Don't build identical card grids.",
-      "Don't animate layout properties. Animate opacity and transform only.",
-      "Don't use bounce or elastic easing. All easing is ease-out-quart or ease-out."
+      "Don't use soft corners (≥4px radius). The system is border-radius: 2px everywhere. Rounded cards, pill badges, and soft inputs are prohibited.",
+      "Don't use #000 or #fff. Every extreme neutral must be tinted. Pure black on pure white reads as generic; it erases the system's material character.",
+      "Don't use amber as a decorative color: no amber card fills, no amber section backgrounds, no amber heading text (outside the single .gold-shimmer hero motif). Its rarity is the point.",
+      "Don't use glassmorphism. The .cap-modal-backdrop uses backdrop-filter: blur(4px) as a focus-lock, not a glass aesthetic. No other element uses blur. This is not a glass-card system.",
+      "Don't replicate the SaaS cream + purple aesthetic (Notion/Linear/Loom). No soft pastels, no friendly rounded corners, no 'everyone-welcome' copy. DeployTitan is infrastructure, not a productivity tool.",
+      "Don't replicate the dark neon DevOps aesthetic: terminal-green on black, aggressive gradients, glow effects. DeployTitan is enterprise-capable, not scrappy.",
+      "Don't replicate enterprise boring: navy blue dashboards, bullet-list feature pages, stock photo heroes, corporate sans-serif in grey.",
+      "Don't use gradient text (background-clip: text with a multi-color gradient) on any element except the designated .gold-shimmer hero motif, and use that motif once per page maximum.",
+      "Don't use border-left or border-right wider than 1px as a colored stripe on cards, list items, or alerts. Use full borders, background tints, or signal colors on the status dot instead.",
+      "Don't build identical card grids (same-sized cards, icon + heading + text, repeated). Use row-based layouts, data tables, or varied hierarchy within sections.",
+      "Don't animate layout properties (height, width, padding, margin). Animate opacity and transform only.",
+      "Don't use bounce or elastic easing. All easing is cubic-bezier(0.22, 1, 0.36, 1) (ease-out-quart equivalent) or ease-out. Nothing overshoots."
     ]
   }
 }

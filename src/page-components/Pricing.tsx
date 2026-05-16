@@ -100,13 +100,13 @@ function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
   const buttonId = `faq-btn-${uid}`
 
   return (
-    <div className="border-b border-line last:border-b-0">
+    <div className="border-line border-b last:border-b-0">
       <button
         id={buttonId}
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-controls={answerId}
-        className="flex w-full items-center justify-between py-5 text-left text-sm font-medium text-ink transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+        className="text-ink hover:text-primary focus-visible:ring-primary flex w-full items-center justify-between py-5 text-left text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset"
       >
         {q}
         <svg
@@ -134,7 +134,7 @@ function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
         }}
       >
         <div className="overflow-hidden">
-          <div className="pb-5 text-sm leading-7 text-ink-secondary">{a}</div>
+          <div className="text-ink-secondary pb-5 text-sm leading-7">{a}</div>
         </div>
       </div>
     </div>
@@ -144,7 +144,7 @@ function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
 function FeatureDot() {
   return (
     <span
-      className="mt-[0.4em] block h-[7px] w-[7px] shrink-0 bg-primary"
+      className="bg-primary mt-[0.4em] block h-[7px] w-[7px] shrink-0"
       style={{ borderRadius: '1px' }}
       aria-hidden="true"
     />
@@ -158,7 +158,9 @@ function annualPrice(monthly: number) {
 export default function Pricing() {
   useScrollReveal()
   const [annual, setAnnual] = useState(true)
-  const [highlightedPlan, setHighlightedPlan] = useState<'team' | 'growth' | 'enterprise' | null>(null)
+  const [highlightedPlan, setHighlightedPlan] = useState<'team' | 'growth' | 'enterprise' | null>(
+    null,
+  )
 
   const teamPrice = annual ? annualPrice(TEAM_MONTHLY) : TEAM_MONTHLY
   const growthPrice = annual ? annualPrice(GROWTH_MONTHLY) : GROWTH_MONTHLY
@@ -166,16 +168,16 @@ export default function Pricing() {
   return (
     <>
       {/* ─── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="blueprint-grid border-b border-line pb-16 pt-28">
+      <section className="blueprint-grid border-line border-b pt-28 pb-16">
         <Container width="4xl" padding="default" className="text-center">
           <p
-            className="mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-tertiary"
+            className="text-ink-tertiary mb-4 font-mono text-[11px] tracking-[0.22em] uppercase"
             data-reveal
           >
             Pricing
           </p>
           <h1
-            className="mx-auto max-w-[16ch] text-[clamp(2.8rem,6vw,5rem)] font-medium leading-[0.98] tracking-[-0.05em] text-ink"
+            className="text-ink mx-auto max-w-[16ch] text-[clamp(2.8rem,6vw,5rem)] leading-[0.98] font-medium tracking-[-0.05em]"
             data-reveal
             data-reveal-delay="1"
             style={{ textWrap: 'balance' } as React.CSSProperties}
@@ -183,34 +185,34 @@ export default function Pricing() {
             Price the workflow pain, not the infrastructure meter.
           </h1>
           <p
-            className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-ink-secondary"
+            className="text-ink-secondary mx-auto mt-6 max-w-2xl text-lg leading-8"
             data-reveal
             data-reveal-delay="2"
           >
-            DeployTitan charges for release coordination complexity: service count, team
-            boundaries, and workflow depth. Not deployments. Not runtime traffic. Not seats.
+            DeployTitan charges for release coordination complexity: service count, team boundaries,
+            and workflow depth. Not deployments. Not runtime traffic. Not seats.
           </p>
 
           {/* Pricing philosophy callout */}
           <div
-            className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-px border border-line bg-line sm:grid-cols-2"
+            className="border-line bg-line mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-px border sm:grid-cols-2"
             style={{ borderRadius: '2px' }}
             data-reveal
             data-reveal-delay="3"
           >
             <div className="bg-surface px-6 py-5 text-left">
-              <p className="mb-1 text-xs font-medium uppercase tracking-[0.1em] text-ink-tertiary">
+              <p className="text-ink-tertiary mb-1 text-xs font-medium tracking-[0.1em] uppercase">
                 Charges for
               </p>
-              <p className="text-sm leading-6 text-ink">
+              <p className="text-ink text-sm leading-6">
                 Coordination complexity, service count, workflow depth.
               </p>
             </div>
             <div className="bg-surface px-6 py-5 text-left">
-              <p className="mb-1 text-xs font-medium uppercase tracking-[0.1em] text-ink-tertiary">
+              <p className="text-ink-tertiary mb-1 text-xs font-medium tracking-[0.1em] uppercase">
                 Never charges for
               </p>
-              <p className="text-sm leading-6 text-ink">
+              <p className="text-ink text-sm leading-6">
                 Deployments, requests, runtime traffic, infrastructure consumption.
               </p>
             </div>
@@ -219,9 +221,8 @@ export default function Pricing() {
       </section>
 
       {/* ─── Plans ────────────────────────────────────────────────────────── */}
-      <section className="border-b border-line py-16">
+      <section className="border-line border-b py-16">
         <Container width="page" padding="wide">
-
           {/* Controls row: plan selector + billing toggle */}
           <div
             className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
@@ -229,11 +230,11 @@ export default function Pricing() {
           >
             {/* Service count selector — recognition task, not recall */}
             <div>
-              <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-tertiary">
+              <p className="text-ink-tertiary mb-3 font-mono text-[10px] tracking-[0.18em] uppercase">
                 How many services does your team coordinate?
               </p>
               <div
-                className="flex flex-wrap gap-px border border-line bg-line"
+                className="border-line bg-line flex flex-wrap gap-px border"
                 style={{ borderRadius: '2px' }}
                 role="group"
                 aria-label="Filter plans by service count"
@@ -245,7 +246,7 @@ export default function Pricing() {
                       key={band.plan}
                       onClick={() => setHighlightedPlan(active ? null : band.plan)}
                       aria-pressed={active}
-                      className={`px-4 py-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary ${
+                      className={`focus-visible:ring-primary px-4 py-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset ${
                         active
                           ? 'bg-ink text-surface'
                           : 'bg-surface text-ink-secondary hover:bg-surface-alt hover:text-ink'
@@ -263,7 +264,7 @@ export default function Pricing() {
               <button
                 onClick={() => setAnnual(false)}
                 aria-pressed={!annual}
-                className={`py-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 ${
+                className={`focus-visible:ring-primary py-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none ${
                   !annual ? 'text-ink' : 'text-ink-tertiary hover:text-ink-secondary'
                 }`}
               >
@@ -274,11 +275,11 @@ export default function Pricing() {
                 aria-checked={annual}
                 role="switch"
                 aria-label="Annual billing"
-                className="relative flex h-11 w-11 items-center justify-center rounded-[2px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
+                className="focus-visible:ring-primary relative flex h-11 w-11 items-center justify-center rounded-[2px] focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
               >
-                <span className="relative h-5 w-9 rounded-[2px] border border-line bg-surface-alt transition-colors">
+                <span className="border-line bg-surface-alt relative h-5 w-9 rounded-[2px] border transition-colors">
                   <span
-                    className={`absolute top-[3px] h-[11px] w-[11px] bg-ink transition-[left] duration-150 ease-out`}
+                    className={`bg-ink absolute top-[3px] h-[11px] w-[11px] transition-[left] duration-150 ease-out`}
                     style={{
                       left: annual ? 'calc(100% - 14px)' : '3px',
                       borderRadius: '1px',
@@ -289,12 +290,12 @@ export default function Pricing() {
               <button
                 onClick={() => setAnnual(true)}
                 aria-pressed={annual}
-                className={`flex items-center gap-2 py-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 ${
+                className={`focus-visible:ring-primary flex items-center gap-2 py-3 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none ${
                   annual ? 'text-ink' : 'text-ink-tertiary hover:text-ink-secondary'
                 }`}
               >
                 Annual
-                <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-primary-accessible">
+                <span className="text-primary-accessible font-mono text-[9px] tracking-[0.1em] uppercase">
                   2 months free
                 </span>
               </button>
@@ -303,38 +304,40 @@ export default function Pricing() {
 
           {/* Team + Growth side by side */}
           <div
-            className="grid grid-cols-1 gap-px border border-line bg-line lg:grid-cols-[1fr_1.6fr]"
+            className="border-line bg-line grid grid-cols-1 gap-px border lg:grid-cols-[1fr_1.6fr]"
             style={{ borderRadius: '2px' }}
             data-reveal
           >
             {/* Team — lean entry */}
             <div
-              className={`flex flex-col bg-surface p-8 transition-opacity duration-150 ${
-                highlightedPlan !== null && highlightedPlan !== 'team' ? 'opacity-40' : 'opacity-100'
+              className={`bg-surface flex flex-col p-8 transition-opacity duration-150 ${
+                highlightedPlan !== null && highlightedPlan !== 'team'
+                  ? 'opacity-40'
+                  : 'opacity-100'
               }`}
             >
               <div className="mb-8">
-                <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink-tertiary">
+                <p className="text-ink-tertiary font-mono text-[9px] tracking-[0.18em] uppercase">
                   Team
                 </p>
                 <div className="mt-4 flex items-end gap-2">
-                  <span className="font-mono text-4xl font-semibold tracking-[-0.03em] text-ink">
+                  <span className="text-ink font-mono text-4xl font-semibold tracking-[-0.03em]">
                     ${teamPrice}
                   </span>
-                  <span className="pb-1 text-sm text-ink-secondary">/mo</span>
+                  <span className="text-ink-secondary pb-1 text-sm">/mo</span>
                   {annual && (
-                    <span className="mb-[3px] font-mono text-[9px] uppercase tracking-[0.1em] text-ink-tertiary">
+                    <span className="text-ink-tertiary mb-[3px] font-mono text-[9px] tracking-[0.1em] uppercase">
                       billed annually
                     </span>
                   )}
                 </div>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-tertiary">
+                <p className="text-ink-tertiary mt-1 font-mono text-[10px] tracking-[0.1em] uppercase">
                   Up to 10 services
                 </p>
-                <p className="mt-4 text-sm leading-6 text-ink-secondary">
+                <p className="text-ink-secondary mt-4 text-sm leading-6">
                   For engineering teams validating release coordination before scaling it.
                 </p>
-                <p className="mt-3 text-xs leading-5 text-ink-tertiary">
+                <p className="text-ink-tertiary mt-3 text-xs leading-5">
                   30-day trial included. Full Growth features, up to 50 services. No card required.
                 </p>
               </div>
@@ -352,12 +355,12 @@ export default function Pricing() {
                 Start 30-day trial
               </Button>
 
-              <div className="mt-auto border-t border-line pt-6">
+              <div className="border-line mt-auto border-t pt-6">
                 <ul className="space-y-3">
                   {TEAM_FEATURES.map((f) => (
                     <li key={f} className="flex items-start gap-3">
                       <FeatureDot />
-                      <span className="text-sm leading-6 text-ink-secondary">{f}</span>
+                      <span className="text-ink-secondary text-sm leading-6">{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -366,40 +369,42 @@ export default function Pricing() {
 
             {/* Growth — dominant, structurally heavier */}
             <div
-              className={`relative flex flex-col bg-surface-alt/40 p-8 transition-opacity duration-150 ${
-                highlightedPlan !== null && highlightedPlan !== 'growth' ? 'opacity-40' : 'opacity-100'
+              className={`bg-surface-alt/40 relative flex flex-col p-8 transition-opacity duration-150 ${
+                highlightedPlan !== null && highlightedPlan !== 'growth'
+                  ? 'opacity-40'
+                  : 'opacity-100'
               }`}
             >
               {/* Most teams at this scale badge */}
               <span
-                className="absolute right-8 top-8 font-mono text-[9px] uppercase tracking-[0.18em] text-primary-accessible"
+                className="text-primary-accessible absolute top-8 right-8 font-mono text-[9px] tracking-[0.18em] uppercase"
                 aria-label="Most teams with 10 to 50 services start here"
               >
                 Most teams 10–50 services
               </span>
 
               <div className="mb-8 pr-40">
-                <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink-tertiary">
+                <p className="text-ink-tertiary font-mono text-[9px] tracking-[0.18em] uppercase">
                   Growth
                 </p>
                 <div className="mt-4 flex items-end gap-2">
-                  <span className="font-mono text-4xl font-semibold tracking-[-0.03em] text-ink">
+                  <span className="text-ink font-mono text-4xl font-semibold tracking-[-0.03em]">
                     ${growthPrice}
                   </span>
-                  <span className="pb-1 text-sm text-ink-secondary">/mo</span>
+                  <span className="text-ink-secondary pb-1 text-sm">/mo</span>
                   {annual && (
-                    <span className="mb-[3px] font-mono text-[9px] uppercase tracking-[0.1em] text-ink-tertiary">
+                    <span className="text-ink-tertiary mb-[3px] font-mono text-[9px] tracking-[0.1em] uppercase">
                       billed annually
                     </span>
                   )}
                 </div>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-tertiary">
+                <p className="text-ink-tertiary mt-1 font-mono text-[10px] tracking-[0.1em] uppercase">
                   Up to 50 services
                 </p>
-                <p className="mt-4 text-sm leading-6 text-ink-secondary">
+                <p className="text-ink-secondary mt-4 text-sm leading-6">
                   For distributed organizations coordinating release windows across multiple teams.
-                  The coordination problems change at this scale: it is no longer about tracking,
-                  it is about control.
+                  The coordination problems change at this scale: it is no longer about tracking, it
+                  is about control.
                 </p>
               </div>
 
@@ -416,15 +421,15 @@ export default function Pricing() {
                 Book a release topology review
               </Button>
 
-              <div className="mt-auto border-t border-line pt-6">
-                <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.1em] text-ink-tertiary">
+              <div className="border-line mt-auto border-t pt-6">
+                <p className="text-ink-tertiary mb-4 font-mono text-[9px] tracking-[0.1em] uppercase">
                   Everything in Team, plus:
                 </p>
                 <ul className="grid gap-3 sm:grid-cols-2">
                   {GROWTH_FEATURES.map((f) => (
                     <li key={f} className="flex items-start gap-3">
                       <FeatureDot />
-                      <span className="text-sm leading-6 text-ink-secondary">{f}</span>
+                      <span className="text-ink-secondary text-sm leading-6">{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -434,8 +439,10 @@ export default function Pricing() {
 
           {/* Enterprise — full width, capability-forward */}
           <div
-            className={`mt-px border border-line bg-surface transition-opacity duration-150 ${
-              highlightedPlan !== null && highlightedPlan !== 'enterprise' ? 'opacity-40' : 'opacity-100'
+            className={`border-line bg-surface mt-px border transition-opacity duration-150 ${
+              highlightedPlan !== null && highlightedPlan !== 'enterprise'
+                ? 'opacity-40'
+                : 'opacity-100'
             }`}
             style={{ borderRadius: '2px' }}
             data-reveal
@@ -443,23 +450,23 @@ export default function Pricing() {
           >
             <div className="grid grid-cols-1 gap-8 p-8 lg:grid-cols-[280px_1fr_auto]">
               <div>
-                <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink-tertiary">
+                <p className="text-ink-tertiary font-mono text-[9px] tracking-[0.18em] uppercase">
                   Enterprise
                 </p>
-                <p className="mt-4 text-2xl font-semibold tracking-[-0.02em] text-ink">
+                <p className="text-ink mt-4 text-2xl font-semibold tracking-[-0.02em]">
                   Custom pricing
                 </p>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-tertiary">
+                <p className="text-ink-tertiary mt-1 font-mono text-[10px] tracking-[0.1em] uppercase">
                   50+ services
                 </p>
-                <p className="mt-4 text-sm leading-6 text-ink-secondary">
-                  Scoped to your architecture. Compliance controls, private deployment options,
-                  and a named engineer who knows your rollout topology.
+                <p className="text-ink-secondary mt-4 text-sm leading-6">
+                  Scoped to your architecture. Compliance controls, private deployment options, and
+                  a named engineer who knows your rollout topology.
                 </p>
               </div>
 
               <div>
-                <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.1em] text-ink-tertiary">
+                <p className="text-ink-tertiary mb-4 font-mono text-[9px] tracking-[0.1em] uppercase">
                   Capabilities not in Growth
                 </p>
                 <ul className="grid gap-3 sm:grid-cols-2">
@@ -467,8 +474,8 @@ export default function Pricing() {
                     <li key={f.label} className="flex items-start gap-3">
                       <FeatureDot />
                       <div>
-                        <span className="text-sm leading-5 text-ink-secondary">{f.label}</span>
-                        <span className="mt-0.5 block font-mono text-[9px] uppercase tracking-[0.08em] text-ink-tertiary">
+                        <span className="text-ink-secondary text-sm leading-5">{f.label}</span>
+                        <span className="text-ink-tertiary mt-0.5 block font-mono text-[9px] tracking-[0.08em] uppercase">
                           {f.detail}
                         </span>
                       </div>
@@ -492,27 +499,26 @@ export default function Pricing() {
               </div>
             </div>
           </div>
-
         </Container>
       </section>
 
       {/* ─── Always included ──────────────────────────────────────────────── */}
-      <section className="border-b border-line py-20">
+      <section className="border-line border-b py-20">
         <Container width="4xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-tertiary">
+            <p className="text-ink-tertiary mb-3 font-mono text-[11px] tracking-[0.22em] uppercase">
               Always included
             </p>
-            <p className="max-w-xl text-2xl font-semibold leading-snug text-ink">
+            <p className="text-ink max-w-xl text-2xl leading-snug font-semibold">
               Every plan includes the foundation. No metered safety features.
             </p>
           </div>
 
-          <div className="border-t border-line" data-reveal>
+          <div className="border-line border-t" data-reveal>
             {INCLUDED_ALWAYS.map((item) => (
-              <div key={item} className="flex items-center gap-4 border-b border-line py-5">
+              <div key={item} className="border-line flex items-center gap-4 border-b py-5">
                 <FeatureDot />
-                <span className="text-sm leading-7 text-ink-secondary">{item}</span>
+                <span className="text-ink-secondary text-sm leading-7">{item}</span>
               </div>
             ))}
           </div>
@@ -520,19 +526,19 @@ export default function Pricing() {
       </section>
 
       {/* ─── Billing clarity ──────────────────────────────────────────────── */}
-      <section className="border-b border-line bg-surface-alt/35 py-20">
+      <section className="border-line bg-surface-alt/35 border-b py-20">
         <Container width="4xl" padding="default">
           <div className="mb-8" data-reveal>
-            <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-tertiary">
+            <p className="text-ink-tertiary mb-3 font-mono text-[11px] tracking-[0.22em] uppercase">
               Billing clarity
             </p>
-            <h2 className="text-2xl font-semibold text-ink">
+            <h2 className="text-ink text-2xl font-semibold">
               Simple enough to explain in one sentence.
             </h2>
           </div>
 
           <div
-            className="border border-line bg-surface"
+            className="border-line bg-surface border"
             style={{ borderRadius: '2px' }}
             data-reveal
           >
@@ -540,11 +546,11 @@ export default function Pricing() {
               <div
                 key={row.label}
                 className={`grid gap-2 px-6 py-5 sm:grid-cols-[220px_1fr] ${
-                  index < BILLING_ROWS.length - 1 ? 'border-b border-line' : ''
+                  index < BILLING_ROWS.length - 1 ? 'border-line border-b' : ''
                 }`}
               >
-                <p className="text-sm font-medium text-ink">{row.label}</p>
-                <p className="text-sm leading-7 text-ink-secondary">{row.value}</p>
+                <p className="text-ink text-sm font-medium">{row.label}</p>
+                <p className="text-ink-secondary text-sm leading-7">{row.value}</p>
               </div>
             ))}
           </div>
@@ -552,13 +558,13 @@ export default function Pricing() {
       </section>
 
       {/* ─── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="border-b border-line py-24">
+      <section className="border-line border-b py-24">
         <Container width="3xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-tertiary">
+            <p className="text-ink-tertiary mb-3 font-mono text-[11px] tracking-[0.22em] uppercase">
               FAQ
             </p>
-            <h2 className="text-2xl font-semibold text-ink">
+            <h2 className="text-ink text-2xl font-semibold">
               Questions engineers ask before signing
             </h2>
           </div>
@@ -574,46 +580,19 @@ export default function Pricing() {
       <section className="py-20">
         <Container width="3xl" padding="default" className="text-center">
           <p
-            className="mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-tertiary"
+            className="text-ink-tertiary mb-4 font-mono text-[11px] tracking-[0.22em] uppercase"
             data-reveal
           >
             Next step
           </p>
           <p
-            className="mx-auto mb-8 max-w-xl text-xl font-semibold leading-snug text-ink"
+            className="text-ink mx-auto text-xl"
             data-reveal
             style={{ textWrap: 'balance' } as React.CSSProperties}
           >
-            Bring us your release topology. We will map your dependency graph and show you where
-            the coordination breaks in the first call.
+            Bring us your release topology. We will map your dependency graph and show you where the
+            coordination breaks in the first call.
           </p>
-          <div
-            className="mx-auto flex max-w-sm flex-col gap-3 sm:flex-row"
-            data-reveal
-          >
-            <Button
-              as="a"
-              href={GROWTH_DEMO_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="primary"
-              size="lg"
-              block
-            >
-              Book a topology demo
-            </Button>
-            <Button
-              as="a"
-              href={TRIAL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="outline"
-              size="lg"
-              block
-            >
-              Start 30-day trial
-            </Button>
-          </div>
         </Container>
       </section>
     </>

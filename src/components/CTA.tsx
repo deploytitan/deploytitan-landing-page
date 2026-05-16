@@ -20,15 +20,15 @@ export function CTA() {
   const ref = useScrollReveal()
 
   return (
-    <section id="final-cta" className="relative border-t border-line py-16 lg:py-20" ref={ref}>
+    <section id="final-cta" className="border-line relative border-t py-16 lg:py-20" ref={ref}>
       <div
-        className="pointer-events-none absolute inset-0 blueprint-grid opacity-30"
+        className="blueprint-grid pointer-events-none absolute inset-0 opacity-30"
         aria-hidden="true"
       />
 
       <Container className="relative">
         <div
-          className="relative overflow-hidden border border-line bg-surface corner-accent"
+          className="border-line bg-surface corner-accent relative overflow-hidden border"
           style={{ borderRadius: '2px' }}
         >
           <div
@@ -43,19 +43,19 @@ export function CTA() {
           />
 
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            <div className="flex flex-col justify-center border-b border-line p-10 lg:border-r lg:border-b-0 lg:p-16">
+            <div className="border-line flex flex-col justify-center border-b p-10 lg:border-r lg:border-b-0 lg:p-16">
               <span
                 data-reveal
-                className="mb-5 inline-flex items-center gap-3 text-sm font-mono text-ink-secondary"
+                className="text-ink-secondary mb-5 inline-flex items-center gap-3 font-mono text-sm"
               >
-                <span className="h-px w-8 bg-primary/40" />
-                  Create account
+                <span className="bg-primary/40 h-px w-8" />
+                Create account
               </span>
 
               <h2
                 data-reveal
                 data-reveal-delay="1"
-                className="mb-4 font-display text-3xl font-medium leading-[1.12] tracking-[-0.022em] lg:text-4xl"
+                className="font-display mb-4 text-3xl leading-[1.12] font-medium tracking-[-0.022em] lg:text-4xl"
               >
                 Walk through your next
                 <br />
@@ -65,7 +65,7 @@ export function CTA() {
               <p
                 data-reveal
                 data-reveal-delay="2"
-                className="mb-8 max-w-sm text-base leading-relaxed text-ink-secondary"
+                className="text-ink-secondary mb-8 max-w-sm text-base leading-relaxed"
               >
                 We will map your release dependencies, freeze windows, approvals, and rollback
                 process against the DeployTitan workflow.
@@ -82,7 +82,7 @@ export function CTA() {
                   block
                   className="group"
                 >
-                Get started
+                  Get started
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="14"
@@ -104,7 +104,7 @@ export function CTA() {
               <div
                 data-reveal
                 data-reveal-delay="4"
-                className="mt-8 space-y-3 border-t border-line pt-6"
+                className="border-line mt-8 space-y-3 border-t pt-6"
               >
                 {trustSignals.map((ts) => (
                   <div key={ts.label} className="flex items-center gap-3">
@@ -123,7 +123,7 @@ export function CTA() {
                       <path d="M20 6 9 17l-5-5" />
                     </svg>
                     <span className="text-sm">
-                      <span className="font-medium text-ink">{ts.label}</span>
+                      <span className="text-ink font-medium">{ts.label}</span>
                       <span className="text-ink-tertiary">: {ts.detail}</span>
                     </span>
                   </div>
@@ -135,16 +135,16 @@ export function CTA() {
               <span
                 data-reveal
                 data-reveal-delay="3"
-                className="mb-5 inline-flex items-center gap-3 text-sm font-mono text-ink-secondary"
+                className="text-ink-secondary mb-5 inline-flex items-center gap-3 font-mono text-sm"
               >
-                <span className="h-px w-8 bg-primary/40" />
+                <span className="bg-primary/40 h-px w-8" />
                 Pricing
               </span>
 
               <h3
                 data-reveal
                 data-reveal-delay="4"
-                className="mb-3 font-display text-2xl font-medium leading-[1.2] tracking-[-0.02em] lg:text-3xl"
+                className="font-display mb-3 text-2xl leading-[1.2] font-medium tracking-[-0.02em] lg:text-3xl"
               >
                 Price for coordination
                 <br />
@@ -154,14 +154,14 @@ export function CTA() {
               <p
                 data-reveal
                 data-reveal-delay="5"
-                className="mb-8 max-w-sm text-sm leading-relaxed text-ink-secondary"
+                className="text-ink-secondary mb-8 max-w-sm text-sm leading-relaxed"
               >
                 Plans scale by service count and operational overhead, so teams can justify the
                 workflow without worrying about per-deployment or per-request metering.
               </p>
 
               <div data-reveal data-reveal-delay="6" className="max-w-sm space-y-4">
-                <div className="space-y-3 border-y border-line py-5">
+                <div className="border-line space-y-3 border-y py-5">
                   {[
                     'Starter: up to 10 services for smaller release surfaces',
                     'Growth: up to 50 services with rollback workflows and integrations',
@@ -169,19 +169,16 @@ export function CTA() {
                   ].map((item) => (
                     <div key={item} className="flex items-start gap-3">
                       <span
-                        className="mt-1.5 block h-2 w-2 shrink-0 bg-primary"
+                        className="bg-primary mt-1.5 block h-2 w-2 shrink-0"
                         style={{ borderRadius: '1px' }}
                       />
-                      <p className="text-sm leading-6 text-ink-secondary">{item}</p>
+                      <p className="text-ink-secondary text-sm leading-6">{item}</p>
                     </div>
                   ))}
                 </div>
 
                 <Button as="a" href="/pricing" variant="outline" size="lg" block>
                   View pricing
-                </Button>
-                <Button as="a" href="#release-workflow" variant="ghost" size="md" block>
-                  See release workflow
                 </Button>
               </div>
             </div>

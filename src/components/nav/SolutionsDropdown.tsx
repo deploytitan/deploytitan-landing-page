@@ -101,25 +101,23 @@ interface Props {
 export function SolutionsDropdown({ onClose }: Props) {
   return (
     <div
-      className="absolute top-full mt-2 bg-surface border border-line shadow-[0_8px_32px_rgba(8,5,3,0.08)] z-50"
+      className="bg-surface border-line absolute top-full z-50 mt-2 border shadow-[0_8px_32px_rgba(8,5,3,0.08)]"
       style={{ borderRadius: '2px', minWidth: '700px' }}
     >
       {/* Header */}
-      <div className="px-6 pt-4 pb-3 border-b border-line-subtle flex items-center justify-between">
-        <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
+      <div className="border-line-subtle flex items-center justify-between border-b px-6 pt-4 pb-3">
+        <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
           Solutions
         </span>
-        <span className="text-[11px] text-ink-tertiary">
-          Release coordination use cases
-        </span>
+        <span className="text-ink-tertiary text-[11px]">Release coordination use cases</span>
       </div>
 
       {/* Body: asymmetric two-zone layout */}
       <div className="flex">
         {/* Left zone: active solution */}
-        <div className="flex min-w-0 flex-1 flex-col border-r border-line">
-          <div className="border-b border-line-subtle px-5 py-2">
-            <span className="font-mono text-[9px] text-ink-tertiary uppercase tracking-widest">
+        <div className="border-line flex min-w-0 flex-1 flex-col border-r">
+          <div className="border-line-subtle border-b px-5 py-2">
+            <span className="text-ink-tertiary font-mono text-[9px] tracking-widest uppercase">
               Available now
             </span>
           </div>
@@ -128,26 +126,26 @@ export function SolutionsDropdown({ onClose }: Props) {
               key={s.route}
               href={s.route}
               onClick={onClose}
-              className="group flex flex-col gap-3 px-5 py-5 hover:bg-surface-alt transition-colors duration-150"
+              className="group hover:bg-surface-alt flex h-full flex-col gap-3 px-5 py-5 transition-colors duration-150"
             >
               <div className="flex items-center gap-2.5">
                 <span className="text-primary/60 group-hover:text-primary transition-colors duration-150">
                   {s.icon}
                 </span>
-                <span className="text-sm font-semibold tracking-tight text-ink group-hover:text-primary-dark transition-colors duration-150">
+                <span className="text-ink group-hover:text-primary-dark text-sm font-semibold tracking-tight transition-colors duration-150">
                   {s.eyebrow}
                 </span>
               </div>
-              <p className="text-[13px] text-ink-tertiary leading-relaxed max-w-[38ch]">
+              <p className="text-ink-tertiary max-w-[38ch] text-[13px] leading-relaxed">
                 {s.description}
               </p>
             </Link>
           ))}
-          <div className="mt-auto border-t border-line-subtle px-5 py-3">
+          <div className="border-line-subtle mt-auto border-t px-5 py-3">
             <Link
               href="/docs"
               onClick={onClose}
-              className="text-xs text-ink-secondary hover:text-ink transition-colors duration-150"
+              className="text-ink-secondary hover:text-ink text-xs transition-colors duration-150"
             >
               Read the docs →
             </Link>
@@ -156,31 +154,31 @@ export function SolutionsDropdown({ onClose }: Props) {
 
         {/* Right zone: roadmap solutions */}
         <div className="flex w-[280px] shrink-0 flex-col">
-          <div className="border-b border-line-subtle px-5 py-2">
-            <span className="font-mono text-[9px] text-ink-tertiary uppercase tracking-widest">
+          <div className="border-line-subtle border-b px-5 py-2">
+            <span className="text-ink-tertiary font-mono text-[9px] tracking-widest uppercase">
               Coming soon
             </span>
           </div>
-          <div className="flex flex-col divide-y divide-line-subtle">
+          <div className="divide-line-subtle flex flex-col divide-y">
             {ROADMAP_SOLUTIONS.map((s) => (
               <Link
                 key={s.route}
                 href={s.route}
                 onClick={onClose}
-                className="group flex flex-col gap-1.5 px-5 py-4 hover:bg-surface-alt/60 transition-colors duration-150"
+                className="group hover:bg-surface-alt/60 flex flex-col gap-1.5 px-5 py-4 transition-colors duration-150"
               >
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="text-ink-tertiary group-hover:text-ink-tertiary transition-colors duration-150">
                       {s.icon}
                     </span>
-                    <span className="text-[13px] font-semibold tracking-tight text-ink-secondary group-hover:text-ink transition-colors duration-150">
+                    <span className="text-ink-secondary group-hover:text-ink text-[13px] font-semibold tracking-tight transition-colors duration-150">
                       {s.eyebrow}
                     </span>
                   </div>
                   <RoadmapBadge variant="roadmap" />
                 </div>
-                <p className="pl-[22px] text-[11px] text-ink-tertiary group-hover:text-ink-tertiary leading-relaxed transition-colors duration-150">
+                <p className="text-ink-tertiary group-hover:text-ink-tertiary pl-[22px] text-[11px] leading-relaxed transition-colors duration-150">
                   {s.tagline}
                 </p>
               </Link>
@@ -190,18 +188,18 @@ export function SolutionsDropdown({ onClose }: Props) {
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-3 border-t border-line-subtle flex items-center justify-between bg-surface-alt/40">
+      <div className="border-line-subtle bg-surface-alt/40 flex items-center justify-between border-t px-6 py-3">
         <Link
           href="/solutions"
           onClick={onClose}
-          className="text-xs text-ink-secondary hover:text-ink transition-colors duration-150"
+          className="text-ink-secondary hover:text-ink text-xs transition-colors duration-150"
         >
           View all solutions →
         </Link>
         <Link
           href="/pricing"
           onClick={onClose}
-          className="text-xs text-ink-secondary hover:text-ink font-medium transition-colors duration-150"
+          className="text-ink-secondary hover:text-ink text-xs font-medium transition-colors duration-150"
         >
           View pricing →
         </Link>

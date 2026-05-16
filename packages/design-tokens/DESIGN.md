@@ -2,26 +2,46 @@
 name: DeployTitan
 description: The deployment control plane for engineering teams who ship without fear.
 colors:
+  # Light mode surfaces
   surface: "#fafaf9"
   surface-alt: "#f5f4f1"
+  # Ink hierarchy (light mode)
   ink: "#1a1512"
   ink-secondary: "#3d3530"
   ink-tertiary: "#6b6059"
   ink-quaternary: "#9e9189"
+  # Lines (light mode)
   line: "#e5e2dc"
   line-subtle: "#eeece8"
+  # Primary accent: precision amber
   primary: "#c9a84c"
   primary-light: "#e8d48b"
   primary-dark: "#a68a3e"
+  primary-accessible: "#7a6530"
+  # Gold aliases (same values; canonical token name in CSS is --color-gold-*)
+  gold: "#c9a84c"
+  gold-light: "#e8d48b"
+  gold-dark: "#a68a3e"
+  # Signal colors (light mode)
   signal-success: "#22c55e"
   signal-warning: "#f59e0b"
   signal-danger: "#ef4444"
   signal-deploy: "#3b82f6"
+  # Dark mode overrides (namespaced; applied via .dark class)
   dark-surface: "#0d0c0a"
   dark-surface-alt: "#161512"
   dark-ink: "#f5f4f1"
   dark-ink-secondary: "#c8c2b8"
+  dark-ink-tertiary: "#8a8078"
+  dark-ink-quaternary: "#4a453e"
   dark-line: "#2a2825"
+  dark-line-subtle: "#1e1c19"
+  dark-primary: "#d4b454"
+  dark-gold: "#d4b454"
+  dark-signal-success: "#4ade80"
+  dark-signal-warning: "#fbbf24"
+  dark-signal-danger: "#f87171"
+  dark-signal-deploy: "#60a5fa"
 typography:
   display:
     fontFamily: "Inter, system-ui, sans-serif"
@@ -65,29 +85,64 @@ spacing:
   xl: "40px"
   page: "48px"
 components:
+  # Buttons — all sizes use rounded-[2px]; sizing in prose
   button-primary:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.surface}"
     rounded: "{rounded.sharp}"
     padding: "16px 32px"
-  button-primary-hover:
+  button-primary-xs:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.surface}"
+    rounded: "{rounded.sharp}"
+    padding: "10px 20px"
+  button-primary-lg:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.surface}"
+    rounded: "{rounded.sharp}"
+    padding: "16px 32px"
   button-outline:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
     rounded: "{rounded.sharp}"
     padding: "14px 32px"
   button-outline-hover:
-    backgroundColor: "{colors.primary-muted}"
+    backgroundColor: "{colors.primary}"
     textColor: "{colors.ink}"
+  button-ghost:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink-secondary}"
+    rounded: "{rounded.sharp}"
+    padding: "0px"
+  button-dismiss:
+    backgroundColor: "transparent"
+    textColor: "{colors.surface}"
+    rounded: "{rounded.sharp}"
+    padding: "0px"
+  # Cards
   sharp-card:
     backgroundColor: "{colors.surface}"
     rounded: "{rounded.sharp}"
     padding: "{spacing.lg}"
-  sharp-card-hover:
+  sharp-card-muted:
+    backgroundColor: "{colors.surface-alt}"
+    rounded: "{rounded.sharp}"
+    padding: "{spacing.lg}"
+  spotlight-card:
     backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
+    rounded: "{rounded.sharp}"
+    padding: "{spacing.lg}"
+  # Capability row
+  cap-row:
+    backgroundColor: "{colors.surface-alt}"
+    rounded: "{rounded.sharp}"
+    padding: "{spacing.md}"
+  # Status badge
+  status-badge:
+    backgroundColor: "{colors.signal-success}"
+    textColor: "{colors.signal-success}"
+    rounded: "{rounded.micro}"
+    padding: "2px 6px"
 ---
 
 # Design System: DeployTitan
@@ -107,7 +162,7 @@ This system does not do friendly. It does not do playful. It does not do "access
 - Precision amber accent used at ≤10% of any surface; its rarity is the point
 - Mono layer (JetBrains Mono) reserved strictly for machine-readable content: labels, statuses, version strings, event logs
 - Noise texture overlay (opacity 0.02) adds material depth without decoration
-- Blueprint grid motifs at 120px / 24px intervals signal engineered structure, not ornamentation
+- Two grid motifs: `.hero-grid` (neutral 60px squares) and `.blueprint-grid` (amber-tinted 120px major / 24px minor) signal engineered structure, not ornamentation
 - Full dark mode parity: every token has an override; behavior is identical, atmosphere differs
 
 ## 2. Colors: The Instrument Palette
@@ -128,10 +183,12 @@ Restrained strategy: ink-tinted neutrals carry the surface; one precision amber 
 - **Ghost Line** (`#eeece8`): Subtle border. Used where a line is structurally required but should barely register.
 
 ### Signal Colors
-- **Deploy Blue** (`#3b82f6`): Active deployment state.
-- **Healthy Green** (`#22c55e`): Success, stable, and healthy states.
-- **Warning Amber** (`#f59e0b`): Warning states (distinct from the primary amber by saturation and role).
-- **Danger Red** (`#ef4444`): Error, rollback, and critical states.
+- **Deploy Blue** (`#3b82f6` / dark: `#60a5fa`): Active deployment state.
+- **Healthy Green** (`#22c55e` / dark: `#4ade80`): Success, stable, and healthy states.
+- **Warning Amber** (`#f59e0b` / dark: `#fbbf24`): Warning states (distinct from the primary amber by saturation and role).
+- **Danger Red** (`#ef4444` / dark: `#f87171`): Error, rollback, and critical states.
+
+All four signal colors lift one step in dark mode to maintain contrast against near-black surfaces.
 
 ### Named Rules
 **The Amber Rarity Rule.** Precision amber is used on ≤10% of any screen in light mode. Every use must earn its place by directing attention to something operationally significant. Decorative amber is forbidden. Amber shimmer text is a one-off motif reserved for the single hero word or standalone callout; do not proliferate it.
@@ -183,14 +240,17 @@ Sharp, dense, authoritative. Padding is generous at large sizes; the lg variant 
 - **Primary:** Deep charcoal background (`bg-ink`), bone surface text (`text-surface`). On hover: a compound ring shadow appears: `0 0 0 1px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.08)`. The gold ring at 15% opacity is the hover tell; the button does not change color.
 - **Outline:** No fill, `border border-ink/15`. On hover: border shifts to `border-primary/40`, fill becomes `bg-primary-muted`. The button becomes amber-tinged without becoming solid.
 - **Ghost:** No border, no fill. Text shifts from `text-ink-secondary` to `text-ink` on hover. Used for tertiary actions and nav triggers.
-- **Sizes:** `xs` (nav bar, compact contexts), `sm` (secondary inline CTAs), `md` (default), `lg` (hero and section-level primaries).
+- **Icon:** No padding override; for icon-only or nav trigger buttons. Same hover color shift as ghost.
+- **Dismiss:** `text-surface/50` at rest, shifts to `text-surface/80` on hover. Used exclusively for close/dismiss actions within dark surfaces (modals, overlays).
+- **Sizes:** `xs` (nav bar, compact contexts; `px-5 py-2.5`), `sm` (secondary inline CTAs; `px-5 py-3`), `md` (default; `px-6 py-3.5`), `lg` (hero and section-level primaries; `px-8 py-4`).
 
 ### Cards / Containers
 - **Corner Style:** 2px radius (`border-radius: 2px`).
-- **Background:** `var(--color-surface)` at rest; `var(--color-surface-alt)` for elevated or nested containers.
+- **Background:** `var(--color-surface)` at rest (`tone="default"`); `var(--color-surface-alt)` for elevated or nested containers (`tone="muted"`).
 - **Shadow Strategy:** None at rest. Hover applies the amber reveal compound shadow (see Elevation).
 - **Border:** `1px solid var(--color-line)` at rest; on hover shifts toward `rgba(201,168,76,0.3)`.
-- **Internal Padding:** `24px` standard; `20px` for data-dense instrument panels.
+- **Internal Padding:** `sm` (16px), `md` (20px), `lg` (24px) via `padding` prop. Default is `lg`.
+- **Variants:** `default` (sharp border); `spotlight` (adds cursor-following amber radial glow via `.spotlight-card`); `corner` (adds blueprint right-angle corner marks via `.corner-accent`); `plain` (no border or background, raw container).
 - **Signature pattern:** `.corner-accent` pseudo-elements draw 12×12px right-angle marks at two opposing corners using the primary color at 30% opacity. Used sparingly on feature sections to evoke blueprint technical drawings.
 
 ### Navigation
@@ -212,7 +272,21 @@ Sharp, dense, authoritative. Padding is generous at large sizes; the lg variant 
 - **Style:** Background is the signal color at 7–12% opacity; border is the signal color at 15–25% opacity; text is the signal color at 70–100% opacity.
 - **Font:** JetBrains Mono, `text-[8px]` to `text-[10px]`, tracking `wider`, uppercase.
 
-### Instrument Panel (Signature Component)
+### Spotlight Card
+The `.spotlight-card` variant tracks the cursor: a 300×300px radial gradient (amber at 8% → 3% → transparent) follows `--spotlight-x` / `--spotlight-y` custom properties set by JS on `mousemove`. In dark mode the glow lifts to 12% → 5%. The effect is subtle: it adds life without competing with the content. It is used on high-signal feature cards where engagement matters.
+
+### Capability Row (`.cap-row`)
+List rows used in feature/product capability sections. At rest: no shadow, `border-color: var(--color-line)`. On hover: border shifts to `rgba(201,168,76,0.25)`, background to `var(--color-surface)`, compound shadow `0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px rgba(201,168,76,0.08)`. Transition: `border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease`.
+
+### Motion Vocabulary
+All keyframes respect `prefers-reduced-motion: reduce` (transitions and animations collapsed to `0.01ms`). Easing is `cubic-bezier(0.22, 1, 0.36, 1)` throughout. Named animations:
+- `slideInLog`: log entries slide up 8px and fade in (`0.3s`). Used in event log rows.
+- `scan-line`: horizontal scan from `-100%` to `100%` (`translateX`). Used on instrument panel gold overlay.
+- `gold-shimmer`: background-position sweep `-200% → 200%`. Used on `.gold-shimmer` hero motif only.
+- `corner-draw`: scale `0.5 → 1` + opacity `0 → 1` (`0.5s`). Blueprint corner entrance.
+- `mobile-nav-in`: translateY `-8px → 0` + opacity `0 → 1` (`0.25s`). Mobile nav panel entrance.
+- `success-reveal`: translateY `10px → 0` + opacity (`0.5s`). CTA success state.
+- `drawEdge`: SVG stroke-dashoffset release. Release graph edge animation.
 The `.TrafficSplitVisual` pattern is the system's signature: a terminal-style panel with a header bar, mono labels, animated progress bars, real-time event log, and gold scan-line overlay. It demonstrates the product by being an instance of the product's vocabulary. Key rules: header bar uses `bg-surface-alt/60`; all labels are JetBrains Mono; signal colors are used directly as `color` and `backgroundColor` at low opacity; the corner radius is `2px` on the outer panel, `1px` on internal elements, `0.5px` on micro-indicators.
 
 ## 6. Do's and Don'ts
