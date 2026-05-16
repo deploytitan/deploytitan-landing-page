@@ -1,302 +1,196 @@
 'use client'
 
+import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
-
-// ── Pain categories ───────────────────────────────────────────────────────────
+import { Button } from '../components/shared/Button'
 
 const PAIN_CATEGORIES = [
   {
-    id: 'friday-fear',
+    id: 'multi-repo-chaos',
     num: '01',
     icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-        <line x1="16" y1="2" x2="16" y2="6" />
-        <line x1="8" y1="2" x2="8" y2="6" />
-        <line x1="3" y1="10" x2="21" y2="10" />
-        <line x1="8" y1="15" x2="8" y2="15" strokeWidth="2.5" />
-        <line x1="12" y1="15" x2="16" y2="15" strokeWidth="2.5" />
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
       </svg>
     ),
-    heading: 'Friday deploy fear.',
-    body: "Your team has unwritten rules: no deploys Thursday afternoon, never on Friday, not before a holiday. The fear isn't irrational: it's institutional memory of the last time something broke and nobody could roll back fast enough.",
-    link: '/solutions/progressive-delivery',
+    heading: 'Multi-repo release chaos.',
+    body: 'Six services, four teams, twelve PRs spread across repositories. The release is "ready" when someone in Slack says it is. Nobody has a complete picture of which service is blocking which, and the merge order matters but nobody owns it.',
+    link: '/solutions/release-coordination',
     linkLabel: 'How we fix this →',
   },
   {
-    id: '3am-rollback',
+    id: 'freeze-window-theater',
     num: '02',
     icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
       </svg>
     ),
-    heading: '3am rollback panic.',
-    body: "An alert fires. On-call wakes up. They spend 15 minutes confirming it's the new deploy, another 10 deciding whether to roll back the whole service, then 20 minutes watching dashboards to confirm it's stable. It's 4am. Nobody slept.",
+    heading: 'Freeze window theater.',
+    body: 'The production window opens. Whoever remembers to announce in Slack starts promoting. Half the approvals are missing. Two services needed to go in order but nobody coordinated the sequence. The freeze window closes with three things still pending.',
+    link: '/solutions/release-coordination',
+    linkLabel: 'How we fix this →',
+  },
+  {
+    id: 'blind-rollback',
+    num: '03',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+        <path d="M3 3v5h5"/>
+      </svg>
+    ),
+    heading: 'Rollback coordination missing.',
+    body: 'Production degrades thirty minutes after the release. The on-call engineer knows something needs to roll back. They do not know the revert order, which services are safe to revert independently, or who owns the database migration.',
     link: '/solutions/instant-rollback',
     linkLabel: 'How we fix this →',
   },
   {
-    id: 'blind-merge',
-    num: '03',
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="18" cy="18" r="3" />
-        <circle cx="6" cy="6" r="3" />
-        <circle cx="6" cy="18" r="3" />
-        <path d="M6 9v6" />
-        <path d="M9 6h6a3 3 0 0 1 3 3v6" />
-      </svg>
-    ),
-    heading: 'Blind merge syndrome.',
-    body: 'A PR touches a shared library. CI passes. Reviewers approve. It ships. Two hours later, a downstream service starts throwing errors. The PR that caused it was three merges ago. Nobody had a map of what depended on what.',
-    link: '/solutions/risk-intelligence',
-    linkLabel: 'How we fix this →',
-  },
-  {
-    id: 'yaml-glue',
+    id: 'no-release-visibility',
     num: '04',
     icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <polyline points="16 18 22 12 16 6" />
-        <polyline points="8 6 2 12 8 18" />
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/>
+        <path d="M8 21h8M12 17v4"/>
       </svg>
     ),
-    heading: 'Platform teams as the bottleneck.',
-    body: 'Every team has a slightly different deploy script. Every new cloud target spawns a new runbook. Platform engineers spend their days reviewing deploys, updating pipelines, and being the human circuit breaker between developers and production.',
+    heading: 'No shared release view.',
+    body: 'Platform teams live in CI. Service owners live in GitHub. Leadership asks for release status in Jira. Nobody has a single place to see the state of a release across all services, teams, and environments.',
     link: '/solutions/platform-engineering',
     linkLabel: 'How we fix this →',
   },
 ]
-
-// ── Proof scenarios ───────────────────────────────────────────────────────────
 
 const PROOF_SCENARIOS = [
   {
-    before: { value: '22 min', label: 'median time on-call spent fixing a bad deploy' },
-    after: { value: '30s', label: 'with Phoenix auto-rollback' },
-    solution: 'Instant Rollback',
+    before: { value: '4+ tools', label: 'to track one multi-service release: Slack, Jira, GitHub, CI' },
+    after: { value: '1 release record', label: 'with full dependency graph, readiness state, and timeline' },
+    solution: 'Release Coordination',
+    route: '/solutions/release-coordination',
+  },
+  {
+    before: { value: '30+ min', label: 'rollback coordination when something degrades post-release' },
+    after: { value: 'owners assigned', label: 'rollback playbooks and revert sequencing before day one' },
+    solution: 'Rollback Coordination',
     route: '/solutions/instant-rollback',
   },
   {
-    before: { value: '5–15 min', label: 'per PR, per reviewer, tracing dependencies manually' },
-    after: { value: '< 2s', label: 'risk score via Titan Foresight' },
-    solution: 'Deploy Risk Intelligence',
+    before: { value: 'discovered post-mortem', label: 'which services a release touched and what broke' },
+    after: { value: 'before promotion', label: 'blast radius, downstream impact, and migration risk surfaced early' },
+    solution: 'Release Intelligence',
     route: '/solutions/risk-intelligence',
   },
-  {
-    before: { value: '1–2 features/week', label: 'held back by deploy fear per team' },
-    after: { value: '3× deploy freq.', label: 'after progressive delivery' },
-    solution: 'Progressive Delivery',
-    route: '/solutions/progressive-delivery',
-  },
 ]
-
-// ── Personas ──────────────────────────────────────────────────────────────────
 
 const PERSONAS = [
   {
-    id: 'sre',
-    role: 'Site Reliability Engineer',
-    frustration: '"I get paged for things that should have rolled back automatically."',
-    body: "You wrote the runbook. You've tested the rollback procedure. And you still got paged at 2am because nothing runs the runbook automatically. DeployTitan closes that gap: SLO breach triggers action, not just an alert.",
+    id: 'platform',
+    role: 'Platform / DevOps Engineer',
+    frustration: '"I am the human coordination layer for every release."',
+    body: 'You get pinged on every release because nobody else has the full picture. You know which services block which. You know the merge order. DeployTitan makes that knowledge structural rather than personal.',
     wins: [
-      'SLO-triggered automatic rollback: no alert, no human in the loop',
-      'Blast-radius analysis before the deploy, not after',
-      'PagerDuty / OpsGenie: DeployTitan acts on alerts, not just sends them',
-    ],
-    link: '/solutions/instant-rollback',
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
-  },
-  {
-    id: 'devops',
-    role: 'DevOps / Platform Engineer',
-    frustration: '"I spend more time on deploy scripts than on actual engineering."',
-    body: "You're the one who gets Slack messages when a deploy breaks. You're the one who wrote the rollback runbook that nobody runs correctly. DeployTitan replaces the scaffolding: one CLI, one policy file, every cloud.",
-    wins: [
-      'One `dt deploy` replaces 200+ lines of CI/CD pipeline YAML',
-      'Policy-as-code: write the guardrails once, all teams self-serve safely',
-      'Works with your existing GitHub Actions, GitLab CI, Jenkins setup',
+      'Release objects replace the Slack thread you manage manually today',
+      'Blocking dependencies surface automatically before they become incidents',
+      'Shared release record means you stop being the bottleneck',
     ],
     link: '/solutions/platform-engineering',
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <polyline points="16 18 22 12 16 6" />
-        <polyline points="8 6 2 12 8 18" />
-      </svg>
-    ),
+  },
+  {
+    id: 'sre',
+    role: 'Site Reliability Engineer',
+    frustration: '"Rollback incidents are always worse than they should be."',
+    body: 'You know the playbook. The problem is nobody ran it before the release. Owners were not assigned, the revert order was not thought through, and the migration rollback script was not linked anywhere.',
+    wins: [
+      'Rollback owners and playbooks attached to the release before anything merges',
+      'Dependency-aware revert sequencing computed before promotion day',
+      'Blast radius and downstream impact surfaced before you promote to production',
+    ],
+    link: '/solutions/instant-rollback',
   },
   {
     id: 'manager',
-    role: 'Engineering Manager / CTO',
-    frustration: '"I don\'t know the cost of each bad release until after it happens."',
-    body: 'You know deploys are risky. You just can\'t quantify it. Every incident report says "human error" but the real cause is missing automation. DeployTitan makes your deploy pipeline safe by default, and gives you the data to prove it.',
+    role: 'Engineering Manager / VP Engineering',
+    frustration: '"I have no reliable view of release status across teams."',
+    body: 'You ask for release status and get three different answers from three different people. There is no single source of truth for what is in the current release, what is blocked, and what is approved.',
     wins: [
-      'DORA metrics tracked automatically: no manual tagging',
-      "Risk score on every PR: management can see what's risky before it ships",
-      'Full audit trail: every deploy, every rollback, every policy override',
+      'Single release record visible across platform teams, service owners, and leadership',
+      'Approval and freeze window state in one place, not across Slack and Jira',
+      'Release readiness visible before the production window opens',
     ],
-    link: '/solutions/progressive-delivery',
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="2" y="3" width="20" height="14" rx="2" />
-        <path d="M8 21h8M12 17v4" />
-      </svg>
-    ),
+    link: '/solutions/release-coordination',
   },
 ]
 
-// ── Solution index ────────────────────────────────────────────────────────────
-
 const SOLUTION_INDEX = [
   {
-    route: '/solutions/progressive-delivery',
-    name: 'Progressive Delivery',
-    tagline: 'Canary deploys with SLO-gated promotion. Ship every day without a war room.',
-    product: 'Titan Rollout + Titan Foresight',
+    route: '/solutions/release-coordination',
+    name: 'Release Coordination',
+    tagline: 'Group PRs across repos into one release object. Track dependencies, sequence merges, coordinate promotions.',
+    product: 'Titan Rollouts',
     available: true,
   },
   {
     route: '/solutions/instant-rollback',
-    name: 'Instant Rollback',
-    tagline: 'SLO breach to traffic-restored in under 30 seconds. No on-call required.',
-    product: 'Titan Phoenix',
+    name: 'Rollback Coordination',
+    tagline: 'Owners, playbooks, and revert sequencing attached to the release before anything ships.',
+    product: 'Titan Rollouts',
     available: true,
   },
   {
     route: '/solutions/risk-intelligence',
-    name: 'Deploy Risk Intelligence',
-    tagline: 'Blast-radius score on every PR before it merges. Know before you ship.',
-    product: 'Titan Foresight',
+    name: 'Release Intelligence',
+    tagline: 'Blast radius, downstream service impact, and migration risk surfaced before production promotion.',
+    product: 'Rollouts Intelligence',
     available: true,
   },
   {
     route: '/solutions/platform-engineering',
     name: 'Platform Engineering',
-    tagline: 'Policy-as-code golden path. Product teams self-serve; platform teams build.',
-    product: 'Full platform',
+    tagline: 'Shared release record across platform teams, service owners, and leadership without three different tools.',
+    product: 'Titan Rollouts',
     available: true,
   },
-  {
-    route: null,
-    name: 'Multi-Cloud Resilience',
-    tagline: 'Failover across cloud providers in seconds. On the roadmap for Q3.',
-    product: 'Titan Shield',
-    available: false,
-  },
 ]
-
-// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function Solutions() {
   useScrollReveal()
 
   return (
     <>
-      {/* Hero */}
       <section className="blueprint-grid border-line border-b pt-28 pb-20">
         <Container width="4xl" padding="default">
-          <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase" data-reveal data-reveal-delay="1">Solutions</p>
-          <h1 className="text-ink mb-6 text-4xl leading-tight font-semibold lg:text-5xl" data-reveal data-reveal-delay="2">
-            You already have the tools.
-            <br className="hidden md:block" /> They're not talking to each other.
+          <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase" data-reveal data-reveal-delay="1">Solutions</p>
+          <h1 className="text-ink mb-6 text-[clamp(2.5rem,5.5vw,5rem)] font-medium leading-[1.0] tracking-[-0.05em]" data-reveal data-reveal-delay="2">
+            Release coordination
+            <br /> for distributed teams.
           </h1>
           <p className="text-ink-secondary mb-4 max-w-2xl text-lg leading-relaxed" data-reveal data-reveal-delay="3">
-            Most engineering teams have Argo, a feature flag tool, some runbooks, and PagerDuty.
-            What they don't have is a system that connects them: one that scores risk before the
-            merge, gates traffic on real signals, and rolls back automatically when something
-            breaks.
+            GitHub manages code. CI/CD executes pipelines. Observability detects incidents.
+            Nobody coordinates the release lifecycle that spans all of them.
           </p>
           <p className="text-ink-secondary max-w-2xl text-lg leading-relaxed" data-reveal data-reveal-delay="4">
-            That's what DeployTitan is. Not a replacement for your stack, but the connective tissue
-            that makes it safe.
+            That gap is where releases become painful. DeployTitan closes it.
           </p>
         </Container>
       </section>
 
-      {/* Pain taxonomy */}
       <section className="border-line border-b py-24">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               The problems
             </p>
             <h2 className="text-ink mb-3 text-2xl leading-snug font-semibold lg:text-3xl">
               Recognize any of these?
             </h2>
             <p className="text-ink-secondary max-w-xl">
-              These aren't edge cases. They're the normal state of deployment for most engineering
-              teams, and every one of them has a specific fix.
+              Not edge cases. The normal state of deployment coordination for most distributed engineering teams.
             </p>
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -310,7 +204,7 @@ export default function Solutions() {
               >
                 <div className="flex items-start gap-3">
                   <span
-                    className="text-ink-quaternary border-line mt-0.5 shrink-0 border px-1.5 py-0.5 font-mono text-[10px] leading-none font-bold"
+                    className="text-ink-tertiary border-line mt-0.5 shrink-0 border px-1.5 py-0.5 font-mono text-[10px] leading-none font-bold"
                     style={{ borderRadius: '2px' }}
                   >
                     {p.num}
@@ -323,7 +217,7 @@ export default function Solutions() {
                 <p className="text-ink-secondary text-sm leading-relaxed">{p.body}</p>
                 <a
                   href={p.link}
-                  className="text-primary hover:text-primary-light mt-auto text-sm font-medium transition-colors"
+                  className="text-primary-accessible hover:text-primary mt-auto text-sm font-medium transition-colors"
                 >
                   {p.linkLabel}
                 </a>
@@ -333,14 +227,13 @@ export default function Solutions() {
         </Container>
       </section>
 
-      {/* Proof scenarios */}
       <section className="border-line bg-surface-alt/20 border-b py-16">
         <Container width="6xl" padding="default">
           <p
             className="text-ink-tertiary mb-10 text-center font-mono text-xs tracking-widest uppercase"
             data-reveal
           >
-            Real-world impact: the before and after
+            Before and after
           </p>
           <div className="bg-line flex flex-col gap-px">
             {PROOF_SCENARIOS.map((s, i) => (
@@ -351,39 +244,22 @@ export default function Solutions() {
                 data-reveal
                 data-reveal-delay={String(i + 1)}
               >
-                {/* Before */}
                 <div>
-                  <p className="text-signal-danger/70 mb-1 font-mono text-[10px] tracking-widest uppercase">
-                    Before
-                  </p>
-                  <p className="text-ink-secondary decoration-signal-danger/30 text-xl font-bold line-through">
-                    {s.before.value}
-                  </p>
+                  <p className="text-signal-danger/70 mb-1 font-mono text-[10px] tracking-widest uppercase">Before</p>
+                  <p className="text-ink-secondary text-xl font-bold line-through decoration-signal-danger/30">{s.before.value}</p>
                   <p className="text-ink-tertiary mt-1 text-xs leading-snug">{s.before.label}</p>
                 </div>
-                {/* Arrow */}
                 <div className="text-primary hidden items-center md:flex">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                  >
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
                   </svg>
                 </div>
-                {/* After */}
                 <div>
-                  <p className="text-signal-success/80 mb-1 font-mono text-[10px] tracking-widest uppercase">
-                    After
-                  </p>
+                  <p className="text-signal-success/80 mb-1 font-mono text-[10px] tracking-widest uppercase">After</p>
                   <p className="text-ink text-xl font-bold">{s.after.value}</p>
                   <p className="text-ink-tertiary mt-1 text-xs leading-snug">{s.after.label}</p>
                 </div>
-                {/* Solution tag */}
                 <div className="flex items-center gap-2">
                   <span
                     className="text-primary border-primary/30 border px-2 py-1 font-mono text-[9px] tracking-widest whitespace-nowrap uppercase"
@@ -398,10 +274,10 @@ export default function Solutions() {
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
-                    className="text-ink-quaternary group-hover:text-primary transition-colors"
+                    className="text-ink-tertiary group-hover:text-primary transition-colors"
                   >
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
                   </svg>
                 </div>
               </a>
@@ -410,17 +286,15 @@ export default function Solutions() {
         </Container>
       </section>
 
-      {/* By persona */}
       <section className="border-line border-b py-24">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">By role</p>
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">By role</p>
             <h2 className="text-ink mb-3 text-2xl leading-snug font-semibold lg:text-3xl">
               Your frustration has a name.
             </h2>
             <p className="text-ink-secondary max-w-xl">
-              Different roles feel the deployment problem differently. Here's what DeployTitan does
-              for each of them.
+              The release coordination problem feels different depending on where you sit in the engineering org.
             </p>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -431,15 +305,10 @@ export default function Solutions() {
                 className="hover:bg-surface-alt/50 hover:border-primary/20 flex flex-col gap-5 p-7 transition-all"
                 data-reveal
               >
-                <div className="text-primary flex items-center gap-3">
-                  {p.icon}
-                  <span className="text-ink-tertiary font-mono text-xs tracking-widest uppercase">
-                    {p.role}
-                  </span>
+                <div>
+                  <span className="text-ink-tertiary font-mono text-xs tracking-widest uppercase">{p.role}</span>
                 </div>
-                <blockquote className="text-primary/90 text-sm leading-relaxed font-medium italic">
-                  {p.frustration}
-                </blockquote>
+                <blockquote className="text-primary/90 text-sm leading-relaxed font-medium italic">{p.frustration}</blockquote>
                 <p className="text-ink-secondary text-sm leading-relaxed">{p.body}</p>
                 <ul className="flex flex-col gap-2">
                   {p.wins.map((w) => (
@@ -449,10 +318,7 @@ export default function Solutions() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href={p.link}
-                  className="text-primary hover:text-primary-light mt-auto text-sm font-medium transition-colors"
-                >
+                <a href={p.link} className="text-primary-accessible hover:text-primary mt-auto text-sm font-medium transition-colors">
                   See the solution →
                 </a>
               </Card>
@@ -461,105 +327,57 @@ export default function Solutions() {
         </Container>
       </section>
 
-      {/* Solution index */}
       <section className="border-line border-b py-24">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
-              All solutions
-            </p>
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">All solutions</p>
             <h2 className="text-ink mb-3 text-2xl leading-snug font-semibold lg:text-3xl">
               Find the one that matches your situation.
             </h2>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {SOLUTION_INDEX.map((s) =>
-              s.available ? (
-                <a
-                  key={s.name}
-                  href={s.route!}
-                  className="sharp-card border-line hover:border-primary/30 hover:bg-surface-alt/50 flex flex-col gap-3 border p-6 transition-all"
-                  data-reveal
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2">
+            {SOLUTION_INDEX.map((s) => (
+              <a
+                key={s.name}
+                href={s.route}
+                className="sharp-card border-line hover:border-primary/30 hover:bg-surface-alt/50 flex flex-col gap-3 border p-6 transition-all"
+                data-reveal
+              >
+                <h3 className="text-ink text-sm font-semibold">{s.name}</h3>
+                <p className="text-ink-secondary flex-1 text-sm leading-relaxed">{s.tagline}</p>
+                <span
+                  className="text-ink-tertiary border-line w-fit border px-1.5 py-0.5 font-mono text-[9px] tracking-widest uppercase"
+                  style={{ borderRadius: '2px' }}
                 >
-                  <h3 className="text-ink text-sm font-semibold">{s.name}</h3>
-                  <p className="text-ink-secondary flex-1 text-sm leading-relaxed">{s.tagline}</p>
-                  <span
-                    className="text-ink-quaternary border-line w-fit border px-1.5 py-0.5 font-mono text-[9px] tracking-widest uppercase"
-                    style={{ borderRadius: '2px' }}
-                  >
-                    {s.product}
-                  </span>
-                </a>
-              ) : (
-                <div
-                  key={s.name}
-                  className="sharp-card border-line/50 flex cursor-default flex-col gap-3 border p-6 opacity-50"
-                  data-reveal
-                >
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-ink-secondary text-sm font-semibold">{s.name}</h3>
-                    <span
-                      className="text-ink-quaternary border-line/60 border px-1.5 py-0.5 font-mono text-[8px] tracking-widest uppercase"
-                      style={{ borderRadius: '2px' }}
-                    >
-                      Roadmap
-                    </span>
-                  </div>
-                  <p className="text-ink-tertiary flex-1 text-sm leading-relaxed">{s.tagline}</p>
-                  <span
-                    className="text-ink-quaternary border-line/50 w-fit border px-1.5 py-0.5 font-mono text-[9px] tracking-widest uppercase"
-                    style={{ borderRadius: '2px' }}
-                  >
-                    {s.product}
-                  </span>
-                </div>
-              ),
-            )}
+                  {s.product}
+                </span>
+              </a>
+            ))}
           </div>
         </Container>
       </section>
 
-      {/* CTA */}
       <section className="py-24">
         <Container width="4xl" padding="default" className="text-center" data-reveal>
-          <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
-            Not sure where to start?
-          </p>
+          <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase">Next step</p>
           <h2 className="text-ink mb-4 text-2xl leading-snug font-semibold lg:text-3xl">
-            Talk to someone who's been in your position.
+            Bring us a messy multi-service release.
           </h2>
           <p className="text-ink-secondary mx-auto mb-8 max-w-xl">
-            We'll ask about your current deploy process, what's broken, and whether DeployTitan is
-            the right fit: no sales pitch, 20 minutes.
+            We will ask about your current release process, what is breaking, and whether
+            DeployTitan is the right fit.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="https://cal.com/justine-deploytitan/demo"
+            <Button
+              as="a"
+              href={CREATE_ACCOUNT_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-ink text-surface inline-flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.97]"
-              style={{ borderRadius: '2px' }}
+              variant="primary"
+              size="lg"
             >
-              Book a 20-min walkthrough
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </a>
-            <a
-              href="/products/titan-rollout"
-              className="border-line text-ink-secondary hover:border-primary/40 hover:text-ink inline-flex items-center gap-2 border px-6 py-3 text-sm transition-colors"
-              style={{ borderRadius: '2px' }}
-            >
-              Browse the products instead
-            </a>
+              Create account
+            </Button>
           </div>
         </Container>
       </section>

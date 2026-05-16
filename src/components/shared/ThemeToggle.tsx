@@ -69,7 +69,7 @@ export function ThemeToggle({ className }: Props) {
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
               active
                 ? 'bg-surface text-primary shadow-[0_1px_3px_rgba(0,0,0,0.08)] border border-primary/20'
-                : 'text-ink-quaternary hover:text-ink-secondary',
+                : 'text-ink-tertiary hover:text-ink-secondary',
             )}
             style={{ borderRadius: '1px' }}
           >

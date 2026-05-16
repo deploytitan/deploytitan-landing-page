@@ -4,76 +4,62 @@ import { forwardRef, useId, useRef, useState } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '../shared/ThemeToggle'
 import { Button } from '../shared/Button'
-import { CONSOLE_URL, STEALTH_PRODUCTS } from '@/lib/env'
+import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { RoadmapBadge } from '../shared/RoadmapBadge'
 
-const ALL_PRODUCT_LINKS = [
+const productLinks = [
   {
-    label: 'Titan Foresight',
-    sub: 'Pre-merge risk scoring',
-    route: '/products/titan-foresight',
-  },
-  {
-    label: 'Titan Rollout',
-    sub: 'Progressive deployments & SLO gating',
+    label: 'Titan Rollouts',
+    sub: 'Multi-service release coordination',
     route: '/products/titan-rollout',
   },
   {
-    label: 'Titan Shield',
-    sub: 'Multi-cloud failover & resilience',
-    route: '/products/titan-shield',
-    stealth: true,
+    label: 'Rollouts Intelligence',
+    sub: 'Blast radius and release risk insights',
+    route: '/products/titan-foresight',
+    preview: true,
   },
   {
-    label: 'Titan Phoenix',
-    sub: 'SLO-triggered scoped rollback',
+    label: 'Enterprise Recovery Suite',
+    sub: 'Coordinated rollback workflows',
     route: '/products/titan-phoenix',
-  },
-  {
-    label: 'Titan Ledger',
-    sub: 'DORA metrics — no agents',
-    route: '/products/titan-ledger',
-    stealth: true,
-  },
-  {
-    label: 'Titan Insight',
-    sub: 'Outcome intelligence (coming soon)',
-    route: '/products/titan-insight',
     preview: true,
-    stealth: true,
-  },
-  {
-    label: 'Titan Sandbox',
-    sub: 'Branch environments (coming soon)',
-    route: '/products/titan-sandbox',
-    preview: true,
-    stealth: true,
   },
 ]
-
-const productLinks = STEALTH_PRODUCTS
-  ? ALL_PRODUCT_LINKS.filter((l) => !l.stealth)
-  : ALL_PRODUCT_LINKS
 
 const solutionLinks = [
-  { label: 'Progressive Delivery', route: '/solutions/progressive-delivery' },
-  { label: 'Instant Rollback', route: '/solutions/instant-rollback' },
-  { label: 'Multi-Cloud Resilience', route: '/solutions/multi-cloud-resilience' },
-  { label: 'Deploy Risk Intelligence', route: '/solutions/risk-intelligence' },
-  { label: 'Platform Engineering', route: '/solutions/platform-engineering' },
+  {
+    label: 'Release Coordination',
+    sub: 'Orchestrate multi-service releases',
+    route: '/solutions/release-coordination',
+  },
+  {
+    label: 'Instant Rollback',
+    sub: 'Safe, sequenced rollback across services',
+    route: '/solutions/instant-rollback',
+    preview: true,
+  },
+  {
+    label: 'Risk Intelligence',
+    sub: 'Blast radius before you ship',
+    route: '/solutions/risk-intelligence',
+    preview: true,
+  },
+  {
+    label: 'Platform Engineering',
+    sub: 'Shared release record across all teams',
+    route: '/solutions/platform-engineering',
+    preview: true,
+  },
 ]
 
-const forLinks = [
-  { label: 'For SREs', route: '/for/sre' },
-  { label: 'For DevOps Engineers', route: '/for/devops' },
-  { label: 'For CTOs', route: '/for/cto' },
-]
 
 function AccordionGroup({ label, children }: { label: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const contentId = useId()
   const buttonId = useId()
+
   return (
     <div className="border-line border-b">
       <button
@@ -127,8 +113,8 @@ export const MobileNav = forwardRef<HTMLDivElement, Props>(function MobileNav(
   { onClose, barHeight = 0, id },
   ref
 ) {
-  // Nav height is h-20 (80px). Offset overlay so it starts below nav + announcement bar.
   const topOffset = barHeight + 80
+
   return (
     <div
       ref={ref}
@@ -136,77 +122,55 @@ export const MobileNav = forwardRef<HTMLDivElement, Props>(function MobileNav(
       className="bg-surface mobile-nav-enter fixed right-0 bottom-0 left-0 z-40 flex flex-col overflow-y-auto"
       style={{ top: topOffset }}
     >
-      {/* Products group */}
       <AccordionGroup label="Products">
-        {productLinks.map((l) => (
+        {productLinks.map((link) => (
           <Link
-            key={l.route}
-            href={l.route}
+            key={link.route}
+            href={link.route}
             onClick={onClose}
             className="hover:bg-surface-alt flex items-center gap-2 px-8 py-3 transition-colors"
           >
             <div className="flex flex-1 flex-col gap-0.5">
-              <span className="text-ink text-sm font-medium">{l.label}</span>
-              <span className="text-ink-tertiary text-xs">{l.sub}</span>
+              <span className="text-ink text-sm font-medium">{link.label}</span>
+              <span className="text-ink-tertiary text-xs">{link.sub}</span>
             </div>
-            {l.preview && <RoadmapBadge variant="roadmap" />}
+            {link.preview && <RoadmapBadge variant="roadmap" />}
           </Link>
         ))}
       </AccordionGroup>
 
-      {/* Solutions group */}
       <AccordionGroup label="Solutions">
-        {solutionLinks.map((l) => (
+        {solutionLinks.map((link) => (
           <Link
-            key={l.route}
-            href={l.route}
+            key={link.route}
+            href={link.route}
             onClick={onClose}
-            className="text-ink-secondary hover:text-ink hover:bg-surface-alt block px-8 py-3 text-sm transition-colors"
+            className="hover:bg-surface-alt flex items-center gap-2 px-8 py-3 transition-colors"
           >
-            {l.label}
-          </Link>
-        ))}
-        <Link
-          href="/solutions"
-          onClick={onClose}
-          className="text-ink-secondary hover:bg-surface-alt block px-8 py-3 text-sm font-medium transition-colors hover:text-ink"
-        >
-          View all solutions →
-        </Link>
-      </AccordionGroup>
-
-      {/* For teams group */}
-      <AccordionGroup label="For Teams">
-        {forLinks.map((l) => (
-          <Link
-            key={l.route}
-            href={l.route}
-            onClick={onClose}
-            className="text-ink-secondary hover:text-ink hover:bg-surface-alt block px-8 py-3 text-sm transition-colors"
-          >
-            {l.label}
+            <div className="flex flex-1 flex-col gap-0.5">
+              <span className="text-ink text-sm font-medium">{link.label}</span>
+              <span className="text-ink-tertiary text-xs">{link.sub}</span>
+            </div>
+            {link.preview && <RoadmapBadge variant="roadmap" />}
           </Link>
         ))}
       </AccordionGroup>
 
-      {/* Flat links */}
       {[
-        // { label: 'How it works', route: '/how-it-works' },
         { label: 'Pricing', route: '/pricing' },
         { label: 'Blog', route: '/blog' },
         { label: 'My Journey', route: '/journey' },
-      ].map((l) => (
+      ].map((link) => (
         <Link
-          key={l.route}
-          href={l.route}
+          key={link.route}
+          href={link.route}
           onClick={onClose}
           className="text-ink border-line hover:bg-surface-alt block border-b px-6 py-4 text-base font-medium transition-colors"
         >
-          {l.label}
+          {link.label}
         </Link>
       ))}
 
-      {/* Auth buttons */}
       <div className="border-line mt-auto flex flex-col gap-3 border-t px-6 py-8 md:mb-[unset]">
         <div className="mb-1 flex items-center justify-between">
           <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
@@ -214,8 +178,17 @@ export const MobileNav = forwardRef<HTMLDivElement, Props>(function MobileNav(
           </span>
           <ThemeToggle />
         </div>
-        <Button as="a" href={`${CONSOLE_URL}/login`} variant="primary" size="sm" block onClick={onClose}>
-          Get started
+        <Button
+          as="a"
+          href={CREATE_ACCOUNT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="primary"
+          size="sm"
+          block
+          onClick={onClose}
+        >
+          Create account
         </Button>
       </div>
     </div>

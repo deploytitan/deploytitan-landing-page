@@ -87,7 +87,7 @@ export function LocalGraph() {
           <circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/>
           <line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/>
         </svg>
-        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">Related pages</span>
+        <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">Related pages</span>
       </div>
 
       <div className="flex flex-col gap-1">
@@ -101,7 +101,7 @@ export function LocalGraph() {
             <span className="w-1.5 h-1.5 shrink-0" style={{ backgroundColor: n.color, borderRadius: '1px' }} />
             <span className="text-xs text-ink-secondary group-hover:text-ink transition-colors font-mono">{n.label}</span>
             {n.direction === 'incoming' && (
-              <span className="ml-auto font-mono text-[9px] text-ink-quaternary">← backlink</span>
+              <span className="ml-auto font-mono text-[9px] text-ink-tertiary">← backlink</span>
             )}
           </Link>
         ))}
@@ -109,7 +109,7 @@ export function LocalGraph() {
 
       <Link
         href="/sitemap"
-        className="mt-3 flex items-center gap-1 text-[10px] font-mono text-primary hover:text-primary-dark transition-colors"
+        className="mt-3 flex items-center gap-1 text-[10px] font-mono text-primary-accessible hover:text-primary transition-colors"
       >
         View full site graph →
       </Link>

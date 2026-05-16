@@ -17,7 +17,7 @@ const STATUS_LABELS = {
 const STATUS_COLORS = {
   ga: 'text-signal-success border-signal-success/30',
   beta: 'text-signal-warning border-signal-warning/30',
-  'coming-soon': 'text-ink-quaternary border-line',
+  'coming-soon': 'text-ink-tertiary border-line',
 }
 
 export default function Integrations() {
@@ -41,7 +41,7 @@ export default function Integrations() {
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-16 lg:py-20">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
               Integrations
             </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
@@ -129,7 +129,7 @@ export default function Integrations() {
                   {integration.products.map((p) => (
                     <span
                       key={p}
-                      className="font-mono text-[9px] text-ink-quaternary border border-line px-1.5 py-0.5"
+                      className="font-mono text-[9px] text-ink-tertiary border border-line px-1.5 py-0.5"
                       style={{ borderRadius: '2px' }}
                     >
                       {p}
@@ -245,7 +245,7 @@ export default function Integrations() {
                   {integration.products.map((p) => (
                     <span
                       key={p}
-                      className="font-mono text-[9px] text-ink-quaternary border border-line px-1.5 py-0.5"
+                      className="font-mono text-[9px] text-ink-tertiary border border-line px-1.5 py-0.5"
                       style={{ borderRadius: '2px' }}
                     >
                       {p}

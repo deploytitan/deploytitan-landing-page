@@ -113,7 +113,7 @@ export function ShiftLeft() {
                   style={{ borderColor: PRIMARY }}
                 />
 
-                <p className="text-[10px] font-mono uppercase tracking-[0.1em] mb-5 text-ink-quaternary">
+                <p className="text-[10px] font-mono uppercase tracking-[0.1em] mb-5 text-ink-tertiary">
                   PR risk analysis
                 </p>
 

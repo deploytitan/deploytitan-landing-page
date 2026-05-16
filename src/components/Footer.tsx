@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { Section } from './shared/Section'
 import { Container } from './shared/Container'
-import { STEALTH_PRODUCTS } from '@/lib/env'
 
 export function Footer() {
   return (
@@ -17,12 +16,15 @@ export function Footer() {
         <div className="col-span-2 flex flex-col gap-4 md:col-span-1">
           <Link href="/" className="flex items-center">
             <span className="font-display text-lg font-medium tracking-[-0.02em]">Deploy</span>
-            <span className="font-display text-lg font-medium tracking-[-0.02em]" style={{ color: 'var(--color-primary-accessible, #7a6530)' }}>
+            <span
+              className="font-display text-lg font-medium tracking-[-0.02em]"
+              style={{ color: 'var(--color-primary-accessible, #7a6530)' }}
+            >
               Titan
             </span>
           </Link>
-          <p className="text-ink-tertiary max-w-[180px] text-xs leading-relaxed">
-            The deployment control plane for modern engineering teams.
+          <p className="text-ink-tertiary max-w-62.5 text-xs leading-relaxed">
+            Release coordination and deployment safety for distributed engineering teams.
           </p>
           {/* Social icons */}
           <div className="mt-1 flex items-center gap-3">
@@ -70,28 +72,18 @@ export function Footer() {
           <ul className="flex flex-col gap-3">
             {(
               [
-                { label: 'Titan Foresight', to: '/products/titan-foresight' },
-                { label: 'Titan Rollout', to: '/products/titan-rollout' },
-                { label: 'Titan Phoenix', to: '/products/titan-phoenix' },
-                ...(!STEALTH_PRODUCTS
-                  ? [
-                      { label: 'Titan Ledger', to: '/products/titan-ledger' },
-                      { label: 'Titan Shield', to: '/products/titan-shield' },
-                      {
-                        label: 'Titan Insight',
-                        to: '/products/titan-insight',
-                        status: 'roadmap' as const,
-                      },
-                      {
-                        label: 'Titan Sandbox',
-                        to: '/products/titan-sandbox',
-                        status: 'roadmap' as const,
-                      },
-                    ]
-                  : []),
+                { label: 'Titan Rollouts', to: '/products/titan-rollout' },
+                {
+                  label: 'Rollouts Intelligence',
+                  to: '/products/titan-foresight',
+                  status: 'roadmap' as const,
+                },
+                {
+                  label: 'Enterprise Recovery Suite',
+                  to: '/products/titan-phoenix',
+                  status: 'roadmap' as const,
+                },
                 { label: 'Pricing', to: '/pricing' },
-                // { label: 'Customers', to: '/customers' },
-                // { label: 'Changelog', to: '/changelog' },
               ] as { label: string; to: string; status?: 'roadmap' }[]
             ).map((l) => (
               <li key={l.label}>
@@ -187,7 +179,7 @@ export function Footer() {
             </Link>
             {/*<Link*/}
             {/*  href="/security"*/}
-            {/*  className="text-xs text-ink-quaternary hover:text-ink-secondary transition-colors"*/}
+            {/*  className="text-xs text-ink-tertiary hover:text-ink-secondary transition-colors"*/}
             {/*>*/}
             {/*  Security*/}
             {/*</Link>*/}

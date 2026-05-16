@@ -1,5 +1,6 @@
 'use client'
 
+import posthog from 'posthog-js'
 import { DEMO_URL } from '@/lib/env'
 import Link from 'next/link'
 
@@ -23,33 +24,9 @@ const resources = [
     external: false,
   },
   {
-    label: 'Integrations',
-    description: 'Kubernetes, GitHub Actions, Datadog, and more',
-    route: '/integrations',
-    external: false,
-  },
-  {
-    label: 'Roadmap',
-    description: "What we're building — shipped and upcoming",
-    route: '/roadmap',
-    external: false,
-  },
-  {
     label: 'Blog',
     description: 'Engineering posts and product updates',
     route: '/blog',
-    external: false,
-  },
-  {
-    label: 'Customers',
-    description: 'Case studies from teams using DeployTitan',
-    route: '/customers',
-    external: false,
-  },
-  {
-    label: 'Changelog',
-    description: "What's new — releases and fixes",
-    route: '/changelog',
     external: false,
   },
   {
@@ -65,13 +42,18 @@ interface Props {
 }
 
 export function ResourcesDropdown({ onClose }: Props) {
+  const handleClick = (label: string, external: boolean) => {
+    posthog.capture('nav_resource_clicked', { resource_label: label, external })
+    onClose()
+  }
+
   return (
     <div
       className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-surface border border-line shadow-[0_8px_32px_rgba(8,5,3,0.08)] z-50"
       style={{ borderRadius: '2px', minWidth: '340px' }}
     >
       <div className="px-5 pt-5 pb-3 border-b border-line-subtle">
-        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+        <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
           Resources
         </span>
       </div>
@@ -84,7 +66,7 @@ export function ResourcesDropdown({ onClose }: Props) {
                 href={r.route}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={onClose}
+                onClick={() => handleClick(r.label, true)}
                 className="group flex items-start gap-3 px-5 py-3 hover:bg-surface-alt transition-colors"
               >
                 <div className="flex flex-col gap-0.5">
@@ -110,7 +92,7 @@ export function ResourcesDropdown({ onClose }: Props) {
             ) : (
               <Link
                 href={r.route}
-                onClick={onClose}
+                onClick={() => handleClick(r.label, false)}
                 className="group flex items-start gap-3 px-5 py-3 hover:bg-surface-alt transition-colors"
               >
                 <div className="flex flex-col gap-0.5">

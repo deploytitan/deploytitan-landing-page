@@ -91,7 +91,7 @@ export default async function BlogPostPage({ params }: Props) {
               {post.categories.map((cat: { title: string; slug: { current: string } }) => (
                 <span
                   key={cat.slug.current}
-                  className="text-primary border-primary/25 border px-2 py-0.5 font-mono text-[10px] tracking-widest uppercase"
+                  className="text-primary-accessible border-primary/25 border px-2 py-0.5 font-mono text-[10px] tracking-widest uppercase"
                   style={{ borderRadius: '2px' }}
                 >
                   {cat.title}
@@ -150,7 +150,7 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="mt-10">
             <Link
               href="/blog"
-              className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
+              className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
             >
               ← Back to blog
             </Link>

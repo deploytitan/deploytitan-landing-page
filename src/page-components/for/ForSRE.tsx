@@ -41,7 +41,7 @@ export default function ForSRE() {
     <>
       <section className="blueprint-grid pt-28 pb-20 border-b border-line">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-4">
             For SRE Teams
           </p>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
@@ -81,8 +81,8 @@ export default function ForSRE() {
               </svg>
             </a>
             <Link
-              href="/solutions/multi-cloud-resilience"
-              className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+              href="/solutions/instant-rollback"
+              className="text-sm font-medium text-primary-accessible hover:text-primary transition-colors"
             >
               Explore resilience solutions →
             </Link>
@@ -93,7 +93,7 @@ export default function ForSRE() {
       <section className="py-24 border-b border-line">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               SRE-specific wins
             </p>
             <h2 className="text-2xl font-semibold text-ink">Every SRE pain point, addressed.</h2>
@@ -113,7 +113,7 @@ export default function ForSRE() {
                   <p className="text-sm text-ink-secondary">{p.pain}</p>
                 </div>
                 <div className="flex items-start gap-3 border-t sm:border-t-0 sm:border-l border-line pt-4 sm:pt-0 sm:pl-4">
-                  <span className="text-primary text-[10px] font-mono uppercase tracking-wider mt-1 shrink-0">
+                  <span className="text-primary-accessible text-[10px] font-mono uppercase tracking-wider mt-1 shrink-0">
                     Fixed
                   </span>
                   <p className="text-sm text-ink-secondary">{p.solution}</p>
@@ -127,7 +127,7 @@ export default function ForSRE() {
       <section className="py-20 border-b border-line bg-surface-alt/30">
         <Container width="5xl" padding="default">
           <div className="mb-8" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               Products for SREs
             </p>
             <h2 className="text-2xl font-semibold text-ink">Titan Shield + Titan Foresight.</h2>
@@ -135,9 +135,9 @@ export default function ForSRE() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5" data-reveal>
             {[
               {
-                to: '/products/titan-shield',
-                name: 'Titan Shield',
-                desc: 'Multi-cloud failover. Declarative policy. Sub-30s RTO for 99.9% of incidents.',
+                to: '/products/titan-rollout',
+                name: 'Titan Rollout',
+                desc: 'SLO-gated canary deployments. Automated rollback fires before you are paged.',
               },
               {
                 to: '/products/titan-foresight',

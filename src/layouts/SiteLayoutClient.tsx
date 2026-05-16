@@ -34,14 +34,16 @@ export function SiteLayoutClient({ children }: { children: React.ReactNode }) {
       {/* Skip-to-main link: visible on focus, hidden otherwise */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-[2px] focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-surface focus:shadow-lg"
+        className="focus:bg-ink focus:text-surface sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-[2px] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:shadow-lg"
       >
         Skip to main content
       </a>
       <AnnouncementBar announcementRef={announcementRef} onDismiss={() => setBarDismissed(true)} />
       <Nav barHeight={barHeight} />
       {/* Push page content below the fixed nav (bar + nav ~56px) */}
-      <main id="main-content" style={{ paddingTop: barHeight + 56 }}>{children}</main>
+      <main id="main-content" style={{ paddingTop: barHeight + 0 }}>
+        {children}
+      </main>
       {pathname !== '/' && <MidCTA variant="waitlist" />}
       <Footer />
     </div>

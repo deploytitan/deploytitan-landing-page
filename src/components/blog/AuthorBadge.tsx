@@ -39,7 +39,7 @@ export function AuthorBadge({ author, publishedAt, showBio }: AuthorBadgeProps) 
           <span className="text-xs text-ink-tertiary">{author.role}</span>
         )}
         {date && (
-          <span className="text-xs font-mono text-ink-quaternary">{date}</span>
+          <span className="text-xs font-mono text-ink-tertiary">{date}</span>
         )}
         {showBio && author.bio && (
           <p className="text-sm text-ink-secondary mt-1 leading-relaxed">{author.bio}</p>

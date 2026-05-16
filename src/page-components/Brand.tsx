@@ -9,7 +9,7 @@ export default function Brand() {
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-16 lg:py-20">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
               Brand
             </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
@@ -25,7 +25,7 @@ export default function Brand() {
 
       {/* Logo */}
       <Container as="section" className="py-14">
-        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+        <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
           Logo
         </span>
         <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -86,7 +86,7 @@ export default function Brand() {
       {/* Colours */}
       <Section border="top" tone="muted" padding="none">
         <Container className="py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
             Colours
           </span>
           <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -107,7 +107,7 @@ export default function Brand() {
               <div key={c.name}>
                 <div className={`h-16 ${c.swatch}`} style={{ borderRadius: '2px' }} />
                 <p className="mt-2 text-xs font-medium text-ink">{c.name}</p>
-                <p className="font-mono text-[10px] text-ink-quaternary">{c.hex}</p>
+                <p className="font-mono text-[10px] text-ink-tertiary">{c.hex}</p>
               </div>
             ))}
           </div>
@@ -117,7 +117,7 @@ export default function Brand() {
       {/* Typography */}
       <Section border="top" padding="none">
         <Container className="py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
             Typography
           </span>
           <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -145,7 +145,7 @@ export default function Brand() {
               },
             ].map((t) => (
               <Card key={t.role} tone="muted">
-                <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest mb-3">
+                <p className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest mb-3">
                   {t.role} — {t.family}
                 </p>
                 <p className={t.className}>{t.sample}</p>

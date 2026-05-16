@@ -177,7 +177,7 @@ export default function SolutionMultiCloudResilience() {
             </a>
             <a
               href={`${APP_URL}/signup`}
-              className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
+              className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
             >
               Start free trial →
             </a>
@@ -189,7 +189,7 @@ export default function SolutionMultiCloudResilience() {
       <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               Coverage
             </p>
             <h2 className="text-ink mb-2 text-2xl font-semibold lg:text-3xl">
@@ -229,7 +229,7 @@ export default function SolutionMultiCloudResilience() {
       <section className="border-line border-b py-24">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               Scenarios
             </p>
             <h2 className="text-ink text-2xl font-semibold lg:text-3xl">
@@ -255,7 +255,7 @@ export default function SolutionMultiCloudResilience() {
                     <span>{s.before}</span>
                   </div>
                   <div className="text-ink-secondary border-line flex items-start gap-2 border-t pt-3 text-xs">
-                    <span className="text-primary mt-0.5 shrink-0 font-mono">After</span>
+                    <span className="text-primary-accessible mt-0.5 shrink-0 font-mono">After</span>
                     <span>{s.after}</span>
                   </div>
                 </div>
@@ -269,7 +269,7 @@ export default function SolutionMultiCloudResilience() {
       <section className="border-line bg-surface-alt/30 border-b py-20">
         <Container width="3xl" padding="default">
           <div className="mb-8" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               Policy as code
             </p>
             <h2 className="text-ink mb-2 text-2xl font-semibold">
@@ -313,7 +313,7 @@ export default function SolutionMultiCloudResilience() {
       <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               The status quo
             </p>
             <h2 className="text-ink mb-2 text-2xl font-semibold lg:text-3xl">
@@ -355,7 +355,7 @@ export default function SolutionMultiCloudResilience() {
                 data-reveal
                 data-reveal-delay={String(i)}
               >
-                <p className="text-primary mb-3 font-mono text-xs tracking-wider uppercase">
+                <p className="text-primary-accessible mb-3 font-mono text-xs tracking-wider uppercase">
                   {item.tool}
                 </p>
                 <p className="text-ink-secondary mb-4 text-sm leading-relaxed">{item.workaround}</p>
@@ -375,7 +375,7 @@ export default function SolutionMultiCloudResilience() {
       <section className="border-line border-b py-20">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               How we compare
             </p>
             <h2 className="text-ink mb-2 text-2xl font-semibold lg:text-3xl">
@@ -389,7 +389,7 @@ export default function SolutionMultiCloudResilience() {
                   <th className="text-ink-tertiary w-1/4 py-3 pr-6 text-left font-mono text-xs tracking-wider uppercase">
                     Capability
                   </th>
-                  <th className="text-primary px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
+                  <th className="text-primary-accessible px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
                     DeployTitan
                   </th>
                   <th className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
@@ -461,7 +461,7 @@ export default function SolutionMultiCloudResilience() {
               </a>
               <a
                 href={`${APP_URL}/signup`}
-                className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
+                className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
               >
                 Start free trial →
               </a>

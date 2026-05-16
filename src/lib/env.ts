@@ -12,6 +12,11 @@ export const APP_URL = CONSOLE_URL
 export const DEMO_URL =
   process.env.NEXT_PUBLIC_DEMO_URL || 'https://demo.deploytitan.com'
 
+// Primary conversion CTA — direct sign-up in the console
+export const CREATE_ACCOUNT_URL =
+  process.env.NEXT_PUBLIC_CREATE_ACCOUNT_URL ||
+  'https://console.deploytitan.com/create-account'
+
 export const DOCS_URL =
   process.env.NEXT_PUBLIC_DOCS_URL || 'https://docs.deploytitan.com'
 

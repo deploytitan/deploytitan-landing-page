@@ -103,7 +103,7 @@ export function BeforeAfter() {
           <div ref={withoutRef} className="px-5 sm:px-8 lg:px-12 py-6 sm:py-8 border-b border-line">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8">
               <div className="shrink-0 sm:w-36">
-                <div className="text-[9px] font-mono uppercase tracking-[0.1em] text-ink-quaternary mb-0.5">
+                <div className="text-[9px] font-mono uppercase tracking-[0.1em] text-ink-tertiary mb-0.5">
                   Without
                 </div>
                 <div className="text-xs font-mono font-medium text-ink-tertiary">DeployTitan</div>

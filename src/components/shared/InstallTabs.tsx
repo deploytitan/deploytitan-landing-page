@@ -40,7 +40,7 @@ export function InstallTabs({ className }: { className?: string }) {
             <span
               className={cn(
                 'text-[10px] font-normal',
-                active === t.id ? 'text-primary/70' : 'text-ink-quaternary',
+                active === t.id ? 'text-primary/70' : 'text-ink-tertiary',
               )}
             >
               {t.sublabel}

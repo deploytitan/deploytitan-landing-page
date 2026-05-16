@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import posthog from 'posthog-js'
 import { jobs, DEPARTMENT_LABELS, type Department } from '../data/jobs'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
@@ -47,7 +48,7 @@ export default function Careers() {  const [filter, setFilter] = useState<string
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-16 lg:py-24">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
               Careers
             </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
@@ -65,7 +66,7 @@ export default function Careers() {  const [filter, setFilter] = useState<string
       {/* Perks */}
       <Section border="bottom" tone="muted" padding="none">
         <Container className="py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
             Benefits
           </span>
           <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -86,7 +87,7 @@ export default function Careers() {  const [filter, setFilter] = useState<string
       <Container as="section" className="py-14">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
               Open roles
             </span>
             <h2 className="mt-2 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -121,12 +122,12 @@ export default function Careers() {  const [filter, setFilter] = useState<string
               <div>
                 <h3 className="text-base font-medium text-ink">{job.title}</h3>
                 <div className="mt-1.5 flex flex-wrap items-center gap-3">
-                  <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+                  <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
                     {DEPARTMENT_LABELS[job.department]}
                   </span>
-                  <span className="text-ink-quaternary text-xs">·</span>
+                  <span className="text-ink-tertiary text-xs">·</span>
                   <span className="text-xs text-ink-tertiary">{job.location}</span>
-                  <span className="text-ink-quaternary text-xs">·</span>
+                  <span className="text-ink-tertiary text-xs">·</span>
                   <span className="text-xs text-ink-tertiary capitalize">{job.type}</span>
                 </div>
                 <p className="mt-2 text-sm text-ink-secondary max-w-xl">{job.description}</p>
@@ -135,6 +136,7 @@ export default function Careers() {  const [filter, setFilter] = useState<string
                 href={`mailto:jobs@deploytitan.com?subject=Application: ${encodeURIComponent(job.title)}`}
                 className="inline-flex items-center gap-2 shrink-0 px-4 py-2.5 border border-line text-ink-secondary text-sm font-medium hover:border-primary/30 hover:text-ink transition-colors"
                 style={{ borderRadius: '2px' }}
+                onClick={() => posthog.capture('job_application_clicked', { job_title: job.title, department: job.department, location: job.location, job_type: job.type })}
               >
                 Apply
                 <svg

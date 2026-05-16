@@ -1,556 +1,327 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
-import { APP_URL, STEALTH_PRODUCTS } from '@/lib/env'
-import Link from 'next/link'
+import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
-import { useAnimPause } from '../../hooks/animations'
-import { RoadmapBadge } from '../shared/RoadmapBadge'
 import { Button } from '../shared/Button'
+import { Container } from '../shared/Container'
 
-/** Pauses CSS animations on its children when scrolled out of view. */
-function VisualWrapper({ children }: { children: React.ReactNode }) {
-  const ref = useAnimPause<HTMLDivElement>()
-  return (
-    <div
-      ref={ref}
-      className="border-line bg-surface-alt/60 overflow-hidden border"
-      style={{ borderRadius: '2px', minHeight: '280px' }}
-    >
-      {children}
-    </div>
-  )
-}
+const pains = [
+  'Manual PR coordination across repos',
+  'Freeze windows that turn into calendar theater',
+  'No shared view of release readiness or blast radius',
+  'Rollback plans that only exist after something breaks',
+]
 
-/* ── Mini visual: Titan Foresight ── */
-function ForesightVisual() {
-  const checks = [
-    { label: 'Dependency graph', value: '4 services affected', level: 'warn' },
-    { label: 'Change velocity', value: '+3 PRs this hour', level: 'warn' },
-    { label: 'Auth service', value: 'unrelated, safe', level: 'ok' },
-    { label: 'Payment gateway', value: 'dependency flagged', level: 'err' },
-  ]
-  return (
-    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
-      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-primary/30 h-2 w-2 animate-[pulse-anim_2s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
-        <span>titan-foresight · PR #2847 analysis</span>
-      </div>
-      {checks.map((c) => (
-        <div key={c.label} className="flex items-start justify-between gap-4">
-          <span className="text-ink-tertiary shrink-0">{c.label}</span>
-          <span
-            className={`text-right ${c.level === 'err' ? 'text-signal-danger' : c.level === 'warn' ? 'text-signal-warning' : 'text-signal-success'}`}
-          >
-            {c.value}
-          </span>
-        </div>
-      ))}
-      <div className="border-line mt-auto flex items-center justify-between border-t pt-3">
-        <span className="text-ink-tertiary">Risk score</span>
-        <div className="flex items-center gap-2">
-          <div className="bg-line h-1.5 w-24 overflow-hidden rounded-none">
-            <div className="bg-signal-warning h-full w-3/5 rounded-none" />
-          </div>
-          <span className="text-signal-warning font-semibold">Medium</span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/* ── Mini visual: Titan Rollout ── */
-function RolloutVisual() {
-  const ref = useRef<HTMLDivElement>(null)
-  const [inView, setInView] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reducedMotion) { setInView(true); return }
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect() } },
-      { threshold: 0.3 }
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
-
-  return (
-    <div ref={ref} className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
-      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-signal-success h-2 w-2 animate-[pulse-anim_2s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
-        <span>titan-rollout · canary deploy active</span>
-      </div>
-      {[
-        { label: 'v2.4.1 (stable)', pct: 75, color: 'bg-primary/30' },
-        { label: 'v2.4.2 (canary)', pct: 25, color: 'bg-signal-deploy/70' },
-      ].map((v) => (
-        <div key={v.label} className="flex flex-col gap-1.5">
-          <div className="flex items-center justify-between">
-            <span className="text-ink-secondary">{v.label}</span>
-            <span className="text-ink font-semibold">{v.pct}%</span>
-          </div>
-          <div className="bg-line h-2 overflow-hidden rounded-none">
-            <div
-              className={`h-full ${v.color} rounded-none`}
-              style={{
-                width: inView ? `${v.pct}%` : '0%',
-                transition: 'width 900ms cubic-bezier(0.22, 1, 0.36, 1)',
-              }}
-            />
-          </div>
-        </div>
-      ))}
-      <div className="border-signal-success/20 bg-signal-success/5 mt-2 flex flex-col gap-1 rounded-[2px] border p-3">
-        <span className="text-signal-success">✓ SLOs holding: error rate 0.02%</span>
-        <span className="text-ink-tertiary">p95 latency: 118ms · threshold: 250ms</span>
-        <span className="text-primary/80 mt-1">→ Promoting to 50% in 4 min…</span>
-      </div>
-      <div className="border-line text-ink-tertiary mt-auto flex items-center justify-between border-t pt-3">
-        <span>Auto-pause armed</span>
-        <span className="text-signal-success">● monitoring</span>
-      </div>
-    </div>
-  )
-}
-
-/* ── Mini visual: Titan Shield ── */
-function ShieldVisual() {
-  const regions = [
-    { label: 'AWS us-east-1', status: 'healthy', latency: '12ms' },
-    { label: 'GCP us-central1', status: 'healthy', latency: '18ms' },
-    { label: 'Azure eastus', status: 'failover', latency: 'n/a' },
-  ]
-  return (
-    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
-      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-signal-warning h-2 w-2 animate-[pulse-anim_1.5s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
-        <span>titan-shield · failover in progress</span>
-      </div>
-      {regions.map((r) => (
-        <div
-          key={r.label}
-          className={`flex items-center justify-between rounded-[2px] border px-3 py-2.5 transition-colors ${r.status === 'failover' ? 'border-signal-warning/40 bg-signal-warning/5' : 'border-line'}`}
-        >
-          <div className="flex items-center gap-2">
-            <span
-              className={`h-1.5 w-1.5 ${r.status === 'healthy' ? 'bg-signal-success' : 'bg-signal-warning animate-[pulse-anim_1s_ease-in-out_infinite]'}`} style={{ borderRadius: '1px' }}
-            />
-            <span className="text-ink-secondary">{r.label}</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className={r.status === 'failover' ? 'text-signal-warning' : 'text-ink-tertiary'}>
-              {r.latency}
-            </span>
-            <span
-              className={`text-[10px] tracking-wide uppercase ${r.status === 'failover' ? 'text-signal-warning' : 'text-signal-success'}`}
-            >
-              {r.status}
-            </span>
-          </div>
-        </div>
-      ))}
-      <div className="border-line text-ink-tertiary flex items-center justify-between rounded-[2px] border px-3 py-2.5">
-        <span>Traffic rerouted to AWS + GCP</span>
-        <span className="text-signal-success">automatic</span>
-      </div>
-    </div>
-  )
-}
-
-/* ── Mini visual: Titan Ledger ── */
-function LedgerVisual() {
-  const metrics = [
-    { label: 'Deploy frequency', value: '4.2 / day', trend: '+12%' },
-    { label: 'Lead time', value: '38 min', trend: '-8%' },
-    { label: 'Change failure rate', value: '1.4%', trend: '-3%' },
-    { label: 'MTTR', value: '11 min', trend: '-22%' },
-  ]
-  return (
-    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
-      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-primary/30 h-2 w-2 animate-[pulse-anim_3s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
-        <span>titan-ledger · DORA · last 30 days</span>
-      </div>
-      {metrics.map((m) => (
-        <div key={m.label} className="flex items-center justify-between">
-          <span className="text-ink-tertiary">{m.label}</span>
-          <div className="flex items-center gap-3">
-            <span className="text-ink font-semibold">{m.value}</span>
-            <span
-              className={`text-[10px] ${m.trend.startsWith('-') ? 'text-signal-success' : 'text-signal-warning'}`}
-            >
-              {m.trend}
-            </span>
-          </div>
-        </div>
-      ))}
-      <div className="border-line text-ink-tertiary mt-auto border-t pt-3 text-[10px]">
-        Sourced from CI/CD events · no agents · no tagging
-      </div>
-    </div>
-  )
-}
-
-/* ── Mini visual: Titan Phoenix ── */
-function PhoenixVisual() {
-  const steps = [
-    { label: 'Incident detected', time: '14:03:01', done: true },
-    { label: 'Blast radius scoped', time: '14:03:04', done: true },
-    { label: 'Rollback targeted', time: '14:03:07', done: true },
-    { label: 'Traffic restored', time: '14:03:09', done: true },
-  ]
-  return (
-    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
-      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-signal-danger h-2 w-2 animate-[pulse-anim_1s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
-        <span>titan-phoenix · recovery in progress</span>
-      </div>
-      {steps.map((s) => (
-        <div key={s.label} className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span
-              className={`h-1.5 w-1.5 ${s.done ? 'bg-signal-success' : 'bg-line'}`} style={{ borderRadius: '1px' }}
-            />
-            <span className={s.done ? 'text-ink-secondary' : 'text-ink-quaternary'}>{s.label}</span>
-          </div>
-          <span className="text-ink-tertiary">{s.time}</span>
-        </div>
-      ))}
-      <div className="border-line mt-auto flex items-center justify-between border-t pt-3">
-        <span className="text-ink-tertiary">Total recovery time</span>
-        <span className="text-signal-success font-semibold">8 seconds</span>
-      </div>
-    </div>
-  )
-}
-
-/* ── Mini visual: Titan Insight ── */
-function InsightVisual() {
-  const correlations = [
-    { release: 'v2.4.1', metric: 'Checkout conversion', delta: '+2.3%', signal: 'pos' },
-    { release: 'v2.4.1', metric: 'API error rate', delta: '-0.4%', signal: 'pos' },
-    { release: 'v2.3.9', metric: 'Session duration', delta: '-1.1%', signal: 'neg' },
-  ]
-  return (
-    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
-      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-primary/30 h-2 w-2 animate-[pulse-anim_3s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
-        <span>titan-insight · deploy → outcome</span>
-      </div>
-      {correlations.map((c) => (
-        <div key={`${c.release}-${c.metric}`} className="flex items-center justify-between gap-2">
-          <span className="text-ink-tertiary shrink-0">{c.release}</span>
-          <span className="text-ink-secondary flex-1 truncate px-2">{c.metric}</span>
-          <span
-            className={`font-semibold ${c.signal === 'pos' ? 'text-signal-success' : 'text-signal-danger'}`}
-          >
-            {c.delta}
-          </span>
-        </div>
-      ))}
-      <div className="border-line text-ink-tertiary mt-auto border-t pt-3 text-[10px]">
-        Correlates deploys with product metrics · no manual tagging
-      </div>
-    </div>
-  )
-}
-
-/* ── Mini visual: Titan Sandbox ── */
-function SandboxVisual() {
-  const envs = [
-    { branch: 'feature/auth-v2', status: 'ready', age: '2m' },
-    { branch: 'fix/checkout-flash', status: 'ready', age: '8m' },
-    { branch: 'chore/deps-bump', status: 'building', age: '1m' },
-  ]
-  return (
-    <div className="flex h-full flex-col gap-4 p-6 font-mono text-xs">
-      <div className="text-ink-quaternary mb-1 flex items-center gap-2">
-        <span className="bg-signal-deploy/70 h-2 w-2 animate-[pulse-anim_2.5s_ease-in-out_infinite]" style={{ borderRadius: '1px' }} />
-        <span>titan-sandbox · branch environments</span>
-      </div>
-      {envs.map((e) => (
-        <div
-          key={e.branch}
-          className="border-line flex items-center justify-between gap-3 rounded-[2px] border px-3 py-2"
-        >
-          <span className="text-ink-secondary truncate">{e.branch}</span>
-          <div className="flex shrink-0 items-center gap-2">
-            <span className="text-ink-tertiary">{e.age}</span>
-            <span
-              className={`text-[10px] tracking-wide uppercase ${e.status === 'ready' ? 'text-signal-success' : 'text-primary/70'}`}
-            >
-              {e.status}
-            </span>
-          </div>
-        </div>
-      ))}
-      <div className="border-line text-ink-tertiary mt-auto border-t pt-3 text-[10px]">
-        Full production topology per branch · spun up on PR open
-      </div>
-    </div>
-  )
-}
-
-/* ── Platform Overview section ── */
-const products: {
-  route: string
-  eyebrow: string
-  name: string
-  tagline: string
-  description: string
-  bullets: string[]
-  visual: React.ReactNode
-  badge?: 'available' | 'preview' | 'roadmap'
-  stealth?: boolean
-}[] = [
+const capabilities = [
   {
-    route: '/products/titan-foresight',
-    eyebrow: 'Detect · Titan Foresight',
-    name: 'See risk before it ships.',
-    tagline: 'One explained risk score per PR, before a single byte of traffic changes.',
-    description:
-      'Foresight reads each pull request against your live dependency graph and produces one score: safe, review, or hold. Every flag is explained. No runbook required.',
-    bullets: [
-      'Dependency graph analysis: maps which services a change can reach',
-      'Change velocity signals: flags bursts of concurrent changes',
-      'One score, fully explained: no dashboards to interpret',
-    ],
-    visual: <ForesightVisual />,
+    label: 'Release DAGs',
+    title: 'Visualize release dependencies before merge time gets risky.',
+    detail:
+      'Link pull requests into one release object, track blocking services, and sequence merges with explicit dependency awareness.',
   },
   {
-    route: '/products/titan-rollout',
-    eyebrow: 'Deliver · Titan Rollout',
-    name: 'Ship progressively. Pause on signal.',
-    tagline: 'Cohort rollouts gated on real SLO signals: promote when healthy, pause when not.',
-    description:
-      'Define rollout cohorts, set SLO thresholds, and let Rollout promote or pause automatically. Every release is a named, addressable version. Rollout moves traffic; Phoenix handles recovery.',
-    bullets: [
-      'Canary and cohort rollouts: promote by error rate, latency, or custom signals',
-      'Versioned releases: every deploy is a named, addressable version',
-      'Auto-pause on threshold breach: no 3am runbook',
-    ],
-    visual: <RolloutVisual />,
+    label: 'Release control',
+    title: 'Coordinate promotions, approvals, and freeze windows in one workflow.',
+    detail:
+      'Turn production windows into managed release plans instead of Slack threads and spreadsheet rituals.',
   },
   {
-    route: '/products/titan-phoenix',
-    eyebrow: 'Recover · Titan Phoenix',
-    name: 'Undo a bad release in seconds.',
-    tagline: 'Surgical rollback scoped to exactly where the release broke, nothing else.',
-    description:
-      'When a release causes an incident, Phoenix scopes the blast radius, targets only the affected cohort, and restores traffic in under 10 seconds. No full redeploy. No manual steps.',
-    bullets: [
-      'Blast-radius scoping: rolls back only the affected slice of traffic',
-      'Sub-10 second recovery: automated, not scripted',
-      'Paired with Rollout: promotes carefully, recovers instantly',
-    ],
-    visual: <PhoenixVisual />,
-    stealth: false,
+    label: 'Release visibility',
+    title: 'See service impact, readiness, and timeline state at a glance.',
+    detail:
+      'Give platform teams, service owners, and leadership the same release record without forcing them into three different tools.',
   },
-  ...(!STEALTH_PRODUCTS
-    ? ([
-        {
-          route: '/products/titan-ledger',
-          eyebrow: 'Measure · Titan Ledger',
-          name: 'DORA metrics. No agents. No tagging.',
-          tagline:
-            'Automatic deploy telemetry: every release measured from your existing CI/CD signals.',
-          description:
-            'Ledger reads your CI/CD events and produces DORA metrics, team scorecards, and trend charts: no instrumentation, no agents, no manual tagging. It records what happened. Insight explains what it meant.',
-          bullets: [
-            'Four DORA metrics computed automatically from existing events',
-            'Team and service scorecards: per-team breakdown out of the box',
-            'Trend lines: see whether delivery is improving quarter over quarter',
-          ],
-          visual: <LedgerVisual />,
-          stealth: true,
-        },
-        {
-          route: '/products/titan-insight',
-          eyebrow: 'Understand · Titan Insight',
-          name: 'Did this release actually improve anything?',
-          tagline:
-            'Deploy-to-metric correlation: know the outcome of every release, not just the act.',
-          description:
-            'Insight correlates every deploy with the product and business metrics that followed. See which releases drove improvements and which quietly degraded the experience.',
-          bullets: [
-            'Automatic deploy-to-outcome correlation: no manual tagging',
-            'Business metric integration: revenue, conversion, engagement',
-            'Release retrospectives: before and after, per deploy',
-          ],
-          visual: <InsightVisual />,
-          badge: 'roadmap' as const,
-          stealth: true,
-        },
-        {
-          route: '/products/titan-sandbox',
-          eyebrow: 'Preview · Titan Sandbox',
-          name: 'A production-shaped environment for every branch.',
-          tagline: 'Spin up a full-fidelity environment per PR: no shared staging, no queue.',
-          description:
-            'Every branch gets its own isolated environment that mirrors production topology. Test with real service dependencies, real data shapes, and real traffic patterns, before any user sees it.',
-          bullets: [
-            'Per-branch environments: spun up on PR open, torn down on merge',
-            'Production topology mirror: no mocked services',
-            'Zero queue: every engineer gets an environment, immediately',
-          ],
-          visual: <SandboxVisual />,
-          badge: 'roadmap' as const,
-          stealth: true,
-        },
-        {
-          route: '/products/titan-shield',
-          eyebrow: 'Defend · Titan Shield',
-          name: 'Stay up across every cloud.',
-          tagline: 'Multi-cloud failover that happens automatically, before your users notice.',
-          description:
-            'Route traffic intelligently across AWS, GCP, and Azure. When a region degrades, Shield shifts traffic in real time with zero manual intervention. This is infrastructure resilience, not release recovery.',
-          bullets: [
-            'Automatic failover across AWS, GCP, and Azure',
-            'Zero-latency in-memory routing: no proxy overhead',
-            'Built-in geo-aware failover policies',
-          ],
-          visual: <ShieldVisual />,
-          stealth: true,
-        },
-      ] as typeof products)
-    : []),
+  {
+    label: 'Rollback coordination',
+    title: 'Prepare the recovery path before the rollout starts.',
+    detail:
+      'Attach rollback owners, playbooks, and dependency-aware recovery steps to the release itself.',
+  },
+  {
+    label: 'Integrations',
+    title: 'Work inside the systems teams already trust.',
+    detail:
+      'DeployTitan sits above GitHub, GitLab, Jira, Slack, and CI/CD systems to coordinate the release lifecycle they do not manage well today.',
+  },
+]
+
+const teamFits = [
+  'Platform teams coordinating shared services across many repos',
+  'Microservice organizations where one release can touch a chain of downstream systems',
+  'Distributed engineering teams with approval, audit, or freeze-window constraints',
+  'Serverless and event-driven architectures with high release coordination overhead',
+]
+
+const toolGaps = [
+  {
+    tool: 'GitHub and GitLab',
+    role: 'Great for code review, merge state, and pull request workflow.',
+    gap: 'They do not coordinate the release itself across multiple repositories and teams.',
+  },
+  {
+    tool: 'CI/CD systems',
+    role: 'Excellent at building and executing pipelines.',
+    gap: 'They run steps, but they do not model release readiness, freeze windows, or cross-service dependency risk.',
+  },
+  {
+    tool: 'Observability platforms',
+    role: 'Helpful once something degrades in production.',
+    gap: 'They detect incidents after the fact, not the coordination problems that caused the release to become dangerous.',
+  },
+]
+
+const roadmap = [
+  {
+    phase: 'Now',
+    title: 'Titan Rollouts',
+    detail:
+      'The core product: release objects, dependency graphing, merge sequencing, release readiness, release timeline, and Slack updates.',
+  },
+  {
+    phase: 'Next',
+    title: 'Rollouts Intelligence',
+    detail:
+      'Deployment-aware insights like blast radius, downstream service impact, migration risk, and historically fragile services.',
+  },
+  {
+    phase: 'Later',
+    title: 'Enterprise Recovery Suite',
+    detail:
+      'Coordinated rollback workflows, migration safety, and recovery orchestration once the coordination layer is trusted.',
+  },
 ]
 
 export function PlatformOverview() {
   const ref = useScrollReveal()
 
-  const numberInTextObj: Record<number, string> = {
-    1: 'One',
-    2: 'Two',
-    3: 'Three',
-    4: 'Four',
-    5: 'Five',
-    6: 'Six',
-    7: 'Seven',
-    8: 'Eight',
-    9: 'Nine',
-    10: 'Ten',
-  }
-  const numberInText = numberInTextObj[products.length]
-
   return (
-    <section className="border-line relative border-t pt-20 pb-10 lg:pt-28" ref={ref}>
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        {/* Section header */}
-        <div className="mb-16 flex flex-col items-center gap-3 text-center lg:mb-20">
-           <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--color-primary-accessible, #7a6530)' }}>
-            The platform
-          </span>
-          <h2 className="font-display text-ink text-3xl leading-tight font-medium tracking-[-0.02em] md:text-4xl">
-            {numberInText} products. One release lifecycle.
-          </h2>
-          <p className="text-ink-secondary max-w-lg text-base leading-relaxed">
-            {numberInText} products that cover every stage, from pre-merge risk to post-release
-            outcome. Use one or the full platform.
-          </p>
-        </div>
-
-        {/* Product teasers */}
-        <div className="divide-line flex flex-col divide-y">
-          {products.map((p, index) => (
-            <div
-              key={p.route}
-              data-reveal
-              className="grid grid-cols-1 items-center gap-12 py-16 lg:grid-cols-2 lg:gap-20"
-            >
-              {/* Copy */}
-              <div
-                className={`flex flex-col gap-6 ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}
+    <div ref={ref}>
+      <section id="release-workflow" className="border-b border-line py-20 lg:py-24">
+        <Container width="page" padding="wide">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+            <div>
+              <p
+                data-reveal
+                className="font-mono text-[11px] tracking-[0.22em] text-ink-tertiary uppercase"
               >
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--color-primary-accessible, #7a6530)' }}>
-                      {p.eyebrow}
-                    </span>
-                    {p.badge && <RoadmapBadge variant={p.badge} />}
-                  </div>
-                  <h3 className="font-display text-ink text-2xl leading-tight font-semibold tracking-[-0.02em] md:text-3xl">
-                    {p.name}
-                  </h3>
-                  <p className="text-ink-secondary mt-1 text-base font-medium">{p.tagline}</p>
-                </div>
-                <p className="text-ink-secondary text-sm leading-relaxed">{p.description}</p>
-                <ul className="flex flex-col gap-2.5">
-                  {p.bullets.map((b, bi) => (
-                    <li
-                      key={b}
-                      data-reveal
-                      data-reveal-delay={bi + 1}
-                      className="text-ink-secondary flex items-start gap-3 text-sm"
-                    >
-                      <span className="bg-primary/40 mt-1.5 h-1.5 w-1.5 shrink-0" style={{ borderRadius: '1px' }} />
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex items-center gap-5 pt-2">
-                  <Link
-                    href={p.route}
-                    className="text-ink hover:text-primary-dark group inline-flex items-center gap-2 text-sm font-medium transition-colors"
-                  >
-                    See details
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="transition-transform group-hover:translate-x-0.5"
-                    >
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                      <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                  </Link>
-                  <Link
-                    href="/docs"
-                    className="text-ink-tertiary hover:text-ink-secondary text-sm transition-colors"
-                  >
-                    Read the docs
-                  </Link>
-                </div>
-              </div>
+                The real problem
+              </p>
+              <h2
+                data-reveal
+                data-reveal-delay="1"
+                className="mt-4 max-w-[15ch] font-display text-[clamp(2.3rem,4.2vw,4rem)] font-medium leading-[1.02] tracking-[-0.04em] text-ink"
+              >
+                Shipping one service is easy.
+              </h2>
+              <p
+                data-reveal
+                data-reveal-delay="2"
+                className="mt-5 max-w-[60ch] text-lg leading-8 text-ink-secondary"
+              >
+                Shipping twenty services across multiple teams is where releases become painful.
+                Teams end up coordinating PRs manually, waiting on freeze windows, managing risky
+                rollbacks, and chasing release visibility across Slack, Jira, and CI/CD tools.
+              </p>
+            </div>
 
-              {/* Visual */}
-              <div className={`relative ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
-                <VisualWrapper>
-                  {p.visual}
-                </VisualWrapper>
-                <span className="corner-mark border-primary/30 absolute -top-px -left-px h-3 w-3 border-t-[1.5px] border-l-[1.5px]" />
-                <span className="corner-mark corner-mark-delay border-primary/30 absolute -right-px -bottom-px h-3 w-3 border-r-[1.5px] border-b-[1.5px]" />
+            <div data-reveal data-reveal-delay="2">
+              <div className="border border-line" style={{ borderRadius: '2px' }}>
+                {pains.map((pain, index) => (
+                  <div
+                    key={pain}
+                    className="grid gap-4 border-b border-line px-5 py-5 last:border-b-0 sm:grid-cols-[72px_1fr]"
+                  >
+                    <span className="font-mono text-[10px] tracking-[0.14em] text-ink-tertiary uppercase">
+                      0{index + 1}
+                    </span>
+                    <p className="text-base leading-7 text-ink-secondary">{pain}</p>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* Platform CTA strip */}
-        <div className="border-line mt-12 flex flex-col items-center justify-between gap-6 border-t pt-10 sm:flex-row">
-          <p className="text-ink-secondary text-sm">
-            Use one product or the full platform: pricing scales with usage.
-          </p>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/pricing"
-              className="text-ink-secondary hover:text-ink text-sm transition-colors"
-            >
-              View pricing →
-            </Link>
-            <Button as="a" href={`${APP_URL}/signup`} variant="primary" size="xs">
-              Start free trial
-            </Button>
           </div>
-        </div>
-      </div>
-    </section>
+        </Container>
+      </section>
+
+      <section className="border-b border-line py-20 lg:py-24">
+        <Container width="page" padding="wide">
+          <div className="max-w-3xl">
+            <p
+              data-reveal
+              className="font-mono text-[11px] tracking-[0.22em] text-ink-tertiary uppercase"
+            >
+              What DeployTitan does
+            </p>
+            <h2
+              data-reveal
+              data-reveal-delay="1"
+              className="mt-4 font-display text-[clamp(2.2rem,4vw,3.8rem)] font-medium leading-[1.04] tracking-[-0.04em] text-ink"
+            >
+              Release coordination and deployment safety for distributed systems.
+            </h2>
+          </div>
+
+          <div className="mt-12 border-t border-line" data-reveal data-reveal-delay="2">
+            {capabilities.map((item) => (
+              <div
+                key={item.label}
+                className="grid gap-4 border-b border-line py-7 lg:grid-cols-[180px_minmax(0,0.95fr)_minmax(0,1.05fr)]"
+              >
+                <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">
+                  {item.label}
+                </p>
+                <p className="text-lg leading-7 text-ink">{item.title}</p>
+                <p className="max-w-[62ch] text-sm leading-7 text-ink-secondary">{item.detail}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-b border-line py-20 lg:py-24">
+        <Container width="page" padding="wide">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+            <div>
+              <p
+                data-reveal
+                className="font-mono text-[11px] tracking-[0.22em] text-ink-tertiary uppercase"
+              >
+                Built for modern engineering teams
+              </p>
+              <h2
+                data-reveal
+                data-reveal-delay="1"
+                className="mt-4 max-w-[16ch] font-display text-[clamp(2.1rem,3.8vw,3.5rem)] font-medium leading-[1.04] tracking-[-0.04em] text-ink"
+              >
+                For teams whose release process spans more than one service.
+              </h2>
+              <p
+                data-reveal
+                data-reveal-delay="2"
+                className="mt-5 max-w-[58ch] text-base leading-8 text-ink-secondary"
+              >
+                DeployTitan is not for every company. It is for teams with coordination overhead:
+                microservices, platform engineering, distributed ownership, and releases that need
+                more than a green pipeline to feel safe.
+              </p>
+            </div>
+
+            <div className="space-y-4" data-reveal data-reveal-delay="2">
+              {teamFits.map((item) => (
+                <div
+                  key={item}
+                  className="flex items-start gap-4 border border-line bg-surface-alt/35 px-5 py-4"
+                  style={{ borderRadius: '2px' }}
+                >
+                  <span className="mt-1.5 block h-2 w-2 shrink-0 bg-primary" style={{ borderRadius: '1px' }} />
+                  <p className="text-sm leading-7 text-ink-secondary">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-b border-line py-20 lg:py-24">
+        <Container width="page" padding="wide">
+          <div className="max-w-3xl">
+            <p
+              data-reveal
+              className="font-mono text-[11px] tracking-[0.22em] text-ink-tertiary uppercase"
+            >
+              Why existing tools fall short
+            </p>
+            <h2
+              data-reveal
+              data-reveal-delay="1"
+              className="mt-4 font-display text-[clamp(2.1rem,3.7vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.04em] text-ink"
+            >
+              Plenty of tools support shipping, almost none coordinate the release lifecycle itself.
+            </h2>
+          </div>
+
+          <div className="mt-12 border border-line" style={{ borderRadius: '2px' }} data-reveal data-reveal-delay="2">
+            <div className="grid gap-4 border-b border-line bg-surface-alt/60 px-5 py-4 lg:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)]">
+              <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">System</p>
+              <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">What it handles well</p>
+              <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">What still breaks down</p>
+            </div>
+            {toolGaps.map((row) => (
+              <div
+                key={row.tool}
+                className="grid gap-4 border-b border-line px-5 py-5 last:border-b-0 lg:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)]"
+              >
+                <p className="text-sm font-medium text-ink">{row.tool}</p>
+                <p className="text-sm leading-7 text-ink-secondary">{row.role}</p>
+                <p className="text-sm leading-7 text-ink-secondary">{row.gap}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-20 lg:py-24">
+        <Container width="page" padding="wide">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+            <div>
+              <p
+                data-reveal
+                className="font-mono text-[11px] tracking-[0.22em] text-ink-tertiary uppercase"
+              >
+                Product structure
+              </p>
+              <h2
+                data-reveal
+                data-reveal-delay="1"
+                className="mt-4 max-w-[15ch] font-display text-[clamp(2.1rem,3.8vw,3.4rem)] font-medium leading-[1.04] tracking-[-0.04em] text-ink"
+              >
+                One core product, a clear intelligence layer, and a future recovery suite.
+              </h2>
+              <p
+                data-reveal
+                data-reveal-delay="2"
+                className="mt-5 max-w-[58ch] text-base leading-8 text-ink-secondary"
+              >
+                Release coordination is where the overhead is most visible and the win is fastest
+                to prove. Titan Rollouts ships first because it solves the coordination gap teams
+                feel every release cycle. Foresight and Phoenix follow once the release system
+                owns the record.
+              </p>
+
+              <div data-reveal data-reveal-delay="3" className="mt-8">
+                <Button
+                  as="a"
+                  href={CREATE_ACCOUNT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="primary"
+                  size="lg"
+                >
+                  Create account
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-4" data-reveal data-reveal-delay="2">
+              {roadmap.map((item) => (
+                <div
+                  key={item.phase}
+                  className="border border-line bg-surface-alt/35 px-5 py-5"
+                  style={{ borderRadius: '2px' }}
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <p className="text-lg font-medium text-ink">{item.title}</p>
+                    <span className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">
+                      {item.phase}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-7 text-ink-secondary">{item.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+    </div>
   )
 }

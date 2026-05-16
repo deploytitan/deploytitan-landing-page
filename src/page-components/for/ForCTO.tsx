@@ -1,5 +1,6 @@
 'use client'
 
+import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import Link from 'next/link'
 import { Container } from '../../components/shared/Container'
@@ -44,7 +45,7 @@ export default function ForCTO() {
     <>
       <section className="blueprint-grid border-line border-b pt-28 pb-20">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
+          <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase">
             For CTOs & VP Engineering
           </p>
           <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl">
@@ -59,11 +60,11 @@ export default function ForCTO() {
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <Link
-              href="/early-access"
+              href={`${APP_URL}/signup`}
               className="bg-ink text-surface inline-flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.97]"
               style={{ borderRadius: '2px' }}
             >
-              Request early access
+              Start free trial
               <svg
                 width="12"
                 height="12"
@@ -80,7 +81,7 @@ export default function ForCTO() {
               href="https://cal.com/justine-deploytitan/demo"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
+              className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
             >
               Schedule a call with our team →
             </a>
@@ -92,7 +93,7 @@ export default function ForCTO() {
       <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               Business outcomes
             </p>
             <h2 className="text-ink text-2xl font-semibold">Measured impact on what matters.</h2>
@@ -106,7 +107,7 @@ export default function ForCTO() {
                 data-reveal-delay={String(i)}
               >
                 <p className="text-ink mb-1 text-4xl font-bold">{r.metric}</p>
-                <p className="text-primary mb-3 font-mono text-xs tracking-wider uppercase">
+                <p className="text-primary-accessible mb-3 font-mono text-xs tracking-wider uppercase">
                   {r.label}
                 </p>
                 <p className="text-ink-secondary text-xs leading-relaxed">{r.body}</p>
@@ -121,7 +122,7 @@ export default function ForCTO() {
         <Container width="5xl" padding="default">
           <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2" data-reveal>
             <div>
-              <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
+              <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase">
                 Risk reduction
               </p>
               <h2 className="text-ink mb-4 text-2xl font-semibold">
@@ -152,7 +153,7 @@ export default function ForCTO() {
             </div>
             <div className="flex flex-col gap-4">
               <Card padding="sm">
-                <p className="text-ink-quaternary mb-3 font-mono text-xs tracking-wider uppercase">
+                <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-wider uppercase">
                   Architecture principle
                 </p>
                 <p className="text-ink mb-2 text-sm font-semibold">"Your data plane, our brain."</p>
@@ -162,13 +163,13 @@ export default function ForCTO() {
                 </p>
                 <Link
                   href="/how-it-works"
-                  className="text-primary hover:text-primary-dark mt-3 inline-block text-xs transition-colors"
+                  className="text-primary-accessible hover:text-primary mt-3 inline-block text-xs transition-colors"
                 >
                   Read the architecture →
                 </Link>
               </Card>
               <Card padding="sm">
-                <p className="text-ink-quaternary mb-3 font-mono text-xs tracking-wider uppercase">
+                <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-wider uppercase">
                   Security posture
                 </p>
                 <p className="text-ink mb-2 text-sm font-semibold">
@@ -180,7 +181,7 @@ export default function ForCTO() {
                 </p>
                 <Link
                   href="/security"
-                  className="text-primary hover:text-primary-dark mt-3 inline-block text-xs transition-colors"
+                  className="text-primary-accessible hover:text-primary mt-3 inline-block text-xs transition-colors"
                 >
                   Security overview →
                 </Link>

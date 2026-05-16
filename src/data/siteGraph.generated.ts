@@ -35,6 +35,11 @@ export const generatedNodes: GraphNode[] = [
     "file": "src/app/cli/page.tsx"
   },
   {
+    "id": "/contact",
+    "label": "Contact",
+    "file": "src/app/contact/page.tsx"
+  },
+  {
     "id": "/docs",
     "label": "Docs",
     "file": "src/app/docs/page.tsx"
@@ -125,6 +130,11 @@ export const generatedNodes: GraphNode[] = [
     "file": "src/app/solutions/progressive-delivery/page.tsx"
   },
   {
+    "id": "/solutions/release-coordination",
+    "label": "Release Coordination",
+    "file": "src/app/solutions/release-coordination/page.tsx"
+  },
+  {
     "id": "/solutions/risk-intelligence",
     "label": "Risk Intelligence",
     "file": "src/app/solutions/risk-intelligence/page.tsx"
@@ -168,11 +178,6 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
-    "source": "/how-it-works",
-    "target": "/security",
-    "kind": "link"
-  },
-  {
     "source": "/integrations",
     "target": "/api-reference",
     "kind": "link"
@@ -183,8 +188,8 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
-    "source": "/solutions",
-    "target": "/products/titan-rollout",
+    "source": "/security",
+    "target": "/pricing",
     "kind": "link"
   },
   {
@@ -203,13 +208,28 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
+    "source": "/for/-for-s-r-e",
+    "target": "/solutions/instant-rollback",
+    "kind": "link"
+  },
+  {
     "source": "/integrations/-integration-detail",
     "target": "/docs",
     "kind": "link"
   },
   {
     "source": "/products/-titan-foresight",
-    "target": "/solutions",
+    "target": "/pricing",
+    "kind": "link"
+  },
+  {
+    "source": "/products/-titan-insight",
+    "target": "/pricing",
+    "kind": "link"
+  },
+  {
+    "source": "/products/-titan-ledger",
+    "target": "/pricing",
     "kind": "link"
   },
   {
@@ -219,23 +239,28 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "/products/-titan-phoenix",
-    "target": "/how-it-works",
+    "target": "/pricing",
     "kind": "link"
   },
   {
     "source": "/products/-titan-rollout",
-    "target": "/solutions",
+    "target": "/solutions/release-coordination",
+    "kind": "link"
+  },
+  {
+    "source": "/products/-titan-sandbox",
+    "target": "/pricing",
     "kind": "link"
   },
   {
     "source": "/products/-titan-shield",
-    "target": "/solutions",
+    "target": "/pricing",
     "kind": "link"
   },
   {
-    "source": "__nav__",
-    "target": "/solutions",
-    "kind": "nav"
+    "source": "/products/-titan-shield",
+    "target": "/solutions/release-coordination",
+    "kind": "link"
   },
   {
     "source": "__nav__",
@@ -269,7 +294,7 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "__nav__",
-    "target": "/how-it-works",
+    "target": "/pricing",
     "kind": "nav"
   }
 ]

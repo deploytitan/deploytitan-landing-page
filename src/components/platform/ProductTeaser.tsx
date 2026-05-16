@@ -18,7 +18,7 @@ export function ProductTeaser({ eyebrow, name, tagline, description, bullets, ro
       {/* Copy */}
       <div className="flex flex-col gap-6 lg:[direction:ltr]">
         <div className="flex flex-col gap-2">
-          <span className="font-mono text-xs text-primary uppercase tracking-widest">{eyebrow}</span>
+          <span className="font-mono text-xs text-primary-accessible uppercase tracking-widest">{eyebrow}</span>
           <h3 className="font-display text-2xl md:text-3xl font-semibold tracking-[-0.02em] text-ink leading-tight">{name}</h3>
           <p className="text-base text-ink-secondary font-medium mt-1">{tagline}</p>
         </div>

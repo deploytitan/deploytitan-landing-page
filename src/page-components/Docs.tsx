@@ -205,7 +205,7 @@ export default function Docs() {
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-16 lg:py-20">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
               Documentation
             </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
@@ -253,7 +253,7 @@ export default function Docs() {
 
       {/* Lambda quickstart */}
       <Container as="section" className="py-16">
-        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+        <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
           Lambda quickstart
         </span>
         <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em] mb-10">
@@ -281,7 +281,7 @@ export default function Docs() {
         <Container className="py-14">
           <div className="flex items-start justify-between gap-4 mb-8">
             <div>
-              <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+              <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
                 Guides
               </span>
               <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -289,7 +289,7 @@ export default function Docs() {
               </h2>
               <p className="mt-2 text-sm text-ink-secondary max-w-lg leading-relaxed">
                 These guides are being written. If you need help before they ship, email{' '}
-                <a href="mailto:justine@deploytitan.com" className="text-primary hover:underline">
+                <a href="mailto:justine@deploytitan.com" className="text-primary-accessible hover:underline">
                   justine@deploytitan.com
                 </a>
                 {' '}directly.
@@ -322,7 +322,7 @@ export default function Docs() {
         <Container className="py-14">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
             <div>
-              <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+              <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
                 Install
               </span>
               <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">

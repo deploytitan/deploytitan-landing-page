@@ -1,142 +1,116 @@
 'use client'
 
 import React, { useState } from 'react'
-import { CONSOLE_URL } from '@/lib/env'
+import { DEMO_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
-import { InstallTabs } from '../components/shared/InstallTabs'
 import { Container } from '../components/shared/Container'
 import { Button } from '../components/shared/Button'
 
-// ── Plan data ─────────────────────────────────────────────────────────────────
+// TODO: wire up per-tier CTAs to distinct entry points when demo routing supports it
+const TRIAL_URL = DEMO_URL
+const GROWTH_DEMO_URL = DEMO_URL
+const ENTERPRISE_URL = DEMO_URL
 
-const PLANS = [
-  {
-    id: 'starter',
-    name: 'Starter',
-    price: 29,
-    unit: 'mo',
-    functionLimit: 10,
-    description: 'For individual engineers and small teams validating safer deployments on Lambda.',
-    features: [
-      'Up to 10 Lambda functions under management',
-      'Unlimited deployments and rollbacks',
-      'Pre-deploy risk scan on every push',
-      'CloudWatch metric health checks included',
-      'Instant rollback in under 30 seconds',
-      'Deployment audit log (90-day retention)',
-      'titan.yaml config: no CRDs, no Helm',
-      'Community support',
-    ],
-    cta: 'Start free trial',
-    href: `${CONSOLE_URL}/login`,
-    highlighted: false,
-  },
-  {
-    id: 'pro',
-    name: 'Pro',
-    price: 149,
-    unit: 'mo',
-    functionLimit: 50,
-    description: 'For growing teams shipping multiple times a day across multiple services.',
-    features: [
-      'Up to 50 Lambda functions under management',
-      'Everything in Starter',
-      'Cohort-based rollouts (internal / free / premium)',
-      'Cross-function deployment groups',
-      'SQS / EventBridge DLQ rollback signals',
-      'Custom CloudWatch metric policies',
-      'Deployment audit log (1-year retention)',
-      'Slack and PagerDuty integration',
-      'Priority email support',
-    ],
-    cta: 'Start free trial',
-    href: `${CONSOLE_URL}/login`,
-    highlighted: true,
-  },
+const ANNUAL_DISCOUNT = 0.17 // ~2 months free
+
+const TEAM_MONTHLY = 199
+const GROWTH_MONTHLY = 999
+
+const TEAM_FEATURES = [
+  'Release coordination for up to 10 services',
+  'GitHub integration',
+  'Release DAGs and dependency tracking',
+  'Release readiness timeline',
+  'Shared release record and blockers',
+  'Unlimited team members',
+]
+
+const GROWTH_FEATURES = [
+  'Release promotion gates across environments',
+  'Multi-team rollback coordination',
+  'Cross-service dependency locking during deploy windows',
+  'Slack and Jira integrations',
+  'Release analytics and readiness reporting',
+]
+
+const ENTERPRISE_FEATURES = [
+  { label: 'SSO + SCIM provisioning', detail: 'Okta, Azure AD, Google Workspace' },
+  { label: 'Approval workflows and compliance controls', detail: 'SOC 2, change management gates' },
+  { label: 'Advanced recovery playbooks', detail: 'Coordinated rollback across 50+ services' },
+  { label: 'Private deployment options', detail: 'VPC, air-gapped, on-premises' },
+  { label: 'Dedicated deployment architect', detail: 'Named engineer for your rollout design' },
+  { label: 'SLA-backed rollback coordination', detail: 'Contractual recovery time targets' },
 ]
 
 const INCLUDED_ALWAYS = [
-  'Unlimited deployments, rollbacks, and risk scans',
-  'Unlimited team members',
-  'Reading dashboards, logs, and reports is always free',
-  'Services stay live if you downgrade — no hostage-taking',
+  'Release visibility and timeline history',
+  'Dependency graphing and blocking state',
+  'Slack release updates and blocked release alerts',
 ]
 
-// ── FAQ ───────────────────────────────────────────────────────────────────────
+const BILLING_ROWS = [
+  {
+    label: 'What pricing follows',
+    value: 'Release coordination complexity, service count, and workflow needs.',
+  },
+  {
+    label: 'What pricing does not follow',
+    value: 'Requests, deployments, runtime traffic, or infrastructure consumption.',
+  },
+  {
+    label: 'Why it matters',
+    value: 'Teams should pay for solving release pain, not for how often they ship.',
+  },
+]
 
+// Trial Q surfaced first — it is the most common hesitation at this point in the page
 const FAQS: { q: string; a: React.ReactNode }[] = [
   {
-    q: 'Why per-function rather than per-deployment?',
-    a: 'Charging per deployment creates a perverse incentive: teams avoid deploying often, which is the opposite of what safer delivery requires. A flat monthly rate per managed function removes that mental tax entirely. Deploy as often as you need.',
+    q: 'What does the 30-day trial include?',
+    a: 'Full Growth feature set, up to 50 services, no credit card required. Promotion gates, multi-team rollback, cross-service dependency locking, Slack and Jira integrations, and release analytics are all active. At the end of the trial you continue with a paid plan or cancel with no obligation.',
   },
   {
-    q: 'What counts as a "Lambda function under management"?',
-    a: 'Any Lambda function you connect to DeployTitan via titan.yaml. Functions are counted by ARN. You can add and remove functions freely; billing is based on your peak active count within a billing cycle.',
+    q: 'Why not charge per deployment?',
+    a: 'Charging per deployment punishes healthy engineering behavior. Teams should deploy when they need to, not when billing math says they can.',
   },
   {
-    q: 'Are rollbacks really unlimited?',
-    a: 'Yes. Rollbacks, risk scans, and health checks are included in the flat rate. We never charge extra for safety actions. If the detector fires and triggers a rollback at 3am, that costs you nothing extra.',
+    q: 'What counts as service complexity?',
+    a: 'Mainly the number of services, the number of teams involved in a release, and whether you need approvals, promotions, rollback workflows, or compliance controls.',
   },
   {
-    q: 'Do you support event-driven architectures (SQS, EventBridge)?',
-    a: 'DLQ-based rollback signals — if your dead-letter queue grows beyond a threshold, Titan triggers a rollback — are available on Pro. Full event-driven traffic splitting is on the roadmap after Phase 1.',
+    q: 'Do we need to replace GitHub or CI/CD?',
+    a: 'No. DeployTitan sits above your existing tooling and coordinates the release lifecycle that those systems do not manage well today.',
   },
   {
-    q: 'Does DeployTitan touch my traffic?',
-    a: "No. Your traffic never passes through DeployTitan's infrastructure. The Titan Controller runs in your AWS account, manages Lambda alias weights via the AWS API, and sends only telemetry metadata to our control plane. Zero bytes of user traffic leave your environment.",
-  },
-  {
-    q: 'What happens if I exceed the function limit?',
-    a: "You'll see a warning in the dashboard before you hit the cap. You can upgrade at any time. Existing deployments keep running; only new function registrations are blocked until you upgrade or free a slot.",
-  },
-  {
-    q: 'Can I use DeployTitan on Kubernetes or Cloud Run too?',
-    a: "Yes, both are supported. The per-function pricing applies to Lambda. Kubernetes and Cloud Run deployments are metered separately — contact us for current rates if you're multi-platform.",
-  },
-  {
-    q: 'Is there a free trial?',
-    a: (
-      <>
-        Yes. Every account starts with a 14-day full-access trial — no credit card required. Run{' '}
-        <code className="font-mono text-xs bg-surface-alt px-1.5 py-0.5" style={{ borderRadius: '1px' }}>dt login</code>{' '}
-        to create an account from the CLI, connect your first Lambda function, and run a canary deployment before you pay a cent.
-      </>
-    ),
-  },
-  {
-    q: 'Do you offer discounts for early-stage startups?',
-    a: (
-      <>
-        Yes. Email{' '}
-        <a href="mailto:support@deploytitan.com" className="text-ink-secondary underline hover:text-ink transition-colors">
-          support@deploytitan.com
-        </a>{' '}
-        and we&apos;ll sort you out.
-      </>
-    ),
+    q: 'Is Titan Rollouts the only core product right now?',
+    a: 'Yes. Titan Rollouts is the core product. Intelligence and enterprise recovery features are positioned as the next layers on top of that workflow.',
   },
 ]
 
-// ── Sub-components ────────────────────────────────────────────────────────────
+const SERVICE_BANDS = [
+  { label: 'Up to 10 services', plan: 'team' as const },
+  { label: '10 to 50 services', plan: 'growth' as const },
+  { label: 'More than 50 services', plan: 'enterprise' as const },
+]
 
 function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
   const [open, setOpen] = useState(false)
   const uid = React.useId()
   const answerId = `faq-answer-${uid}`
   const buttonId = `faq-btn-${uid}`
-  const contentRef = React.useRef<HTMLDivElement>(null)
+
   return (
-    <div className="border-line border-b last:border-b-0">
+    <div className="border-b border-line last:border-b-0">
       <button
         id={buttonId}
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-controls={answerId}
-        className="text-ink hover:text-primary flex w-full items-center justify-between py-5 text-left text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
+        className="flex w-full items-center justify-between py-5 text-left text-sm font-medium text-ink transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
       >
         {q}
         <svg
-          className={`shrink-0 transition-transform ${open ? 'rotate-45' : ''}`}
+          className={`shrink-0 transition-transform duration-200 ${open ? 'rotate-45' : ''}`}
           width="16"
           height="16"
           viewBox="0 0 24 24"
@@ -151,260 +125,442 @@ function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
       </button>
       <div
         id={answerId}
-        ref={contentRef}
         role="region"
         aria-labelledby={buttonId}
-        className="overflow-hidden transition-[max-height,opacity] duration-200 ease-out"
+        className="grid transition-[grid-template-rows,opacity] duration-200 ease-out"
         style={{
-          maxHeight: open ? (contentRef.current?.scrollHeight ?? 400) : 0,
+          gridTemplateRows: open ? '1fr' : '0fr',
           opacity: open ? 1 : 0,
         }}
       >
-        <p className="text-ink-secondary pb-5 text-sm leading-relaxed">{a}</p>
+        <div className="overflow-hidden">
+          <div className="pb-5 text-sm leading-7 text-ink-secondary">{a}</div>
+        </div>
       </div>
     </div>
   )
 }
 
-// ── PlanCard ──────────────────────────────────────────────────────────────────
-
-function PlanCard({
-  name,
-  price,
-  unit,
-  functionLimit,
-  description,
-  features,
-  cta,
-  href,
-  highlighted,
-}: (typeof PLANS)[0]) {
+function FeatureDot() {
   return (
-    <div
-      className={`flex flex-col border p-8 ${
-        highlighted ? 'border-primary/40 bg-primary/[0.03]' : 'border-line bg-surface'
-      }`}
-      style={{ borderRadius: '2px' }}
-      data-reveal
-    >
-      <p className="text-ink mb-1 text-sm font-semibold">{name}</p>
-      <p className="text-ink-secondary mb-6 text-xs leading-relaxed">{description}</p>
-
-      {/* Price */}
-      <div className="mb-1 flex items-baseline gap-1">
-        <span className="text-ink text-3xl font-bold">${price}</span>
-        <span className="text-ink-secondary text-sm">/ {unit}</span>
-      </div>
-      <p className="text-ink-secondary mb-6 font-mono text-xs">
-        Up to {functionLimit} Lambda functions
-      </p>
-
-      <Button
-        as="a"
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`${cta} — ${name} plan`}
-        variant={highlighted ? 'primary' : 'outline'}
-        size="sm"
-        block
-        className="mb-8"
-      >
-        {cta}
-      </Button>
-
-      {/* Feature list */}
-      <div className="border-line border-t pt-6">
-        <ul className="space-y-3">
-          {features.map((f) => (
-            <li key={f} className="flex items-start gap-2.5">
-              <svg
-                className="text-primary mt-0.5 shrink-0"
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-              <span className="text-ink-secondary text-xs leading-relaxed">{f}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+    <span
+      className="mt-[0.4em] block h-[7px] w-[7px] shrink-0 bg-primary"
+      style={{ borderRadius: '1px' }}
+      aria-hidden="true"
+    />
   )
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+function annualPrice(monthly: number) {
+  return Math.round(monthly * (1 - ANNUAL_DISCOUNT))
+}
 
 export default function Pricing() {
   useScrollReveal()
+  const [annual, setAnnual] = useState(true)
+  const [highlightedPlan, setHighlightedPlan] = useState<'team' | 'growth' | 'enterprise' | null>(null)
+
+  const teamPrice = annual ? annualPrice(TEAM_MONTHLY) : TEAM_MONTHLY
+  const growthPrice = annual ? annualPrice(GROWTH_MONTHLY) : GROWTH_MONTHLY
 
   return (
     <>
-      {/* ── Hero ── */}
-      <section className="blueprint-grid border-line border-b pt-28 pb-16">
-        <Container width="3xl" padding="default" className="text-center">
-          <p className="text-ink-tertiary mb-4 font-mono text-xs tracking-widest uppercase" data-reveal data-reveal-delay="1">Pricing</p>
-          <h1 className="text-ink mb-5 text-4xl leading-tight font-medium lg:text-5xl" data-reveal data-reveal-delay="2">
-            Flat rate. Unlimited deployments.
-            <br className="hidden md:block" /> No safety tax.
-          </h1>
-          <p className="text-ink-secondary mx-auto max-w-xl text-lg" data-reveal data-reveal-delay="3">
-            One price per managed Lambda function. Every deployment, rollback, and risk scan is included.
-            Charging extra for rollbacks would mean charging you for using the product correctly.
+      {/* ─── Hero ─────────────────────────────────────────────────────────── */}
+      <section className="blueprint-grid border-b border-line pb-16 pt-28">
+        <Container width="4xl" padding="default" className="text-center">
+          <p
+            className="mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-tertiary"
+            data-reveal
+          >
+            Pricing
           </p>
+          <h1
+            className="mx-auto max-w-[16ch] text-[clamp(2.8rem,6vw,5rem)] font-medium leading-[0.98] tracking-[-0.05em] text-ink"
+            data-reveal
+            data-reveal-delay="1"
+            style={{ textWrap: 'balance' } as React.CSSProperties}
+          >
+            Price the workflow pain, not the infrastructure meter.
+          </h1>
+          <p
+            className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-ink-secondary"
+            data-reveal
+            data-reveal-delay="2"
+          >
+            DeployTitan charges for release coordination complexity: service count, team
+            boundaries, and workflow depth. Not deployments. Not runtime traffic. Not seats.
+          </p>
+
+          {/* Pricing philosophy callout */}
+          <div
+            className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-px border border-line bg-line sm:grid-cols-2"
+            style={{ borderRadius: '2px' }}
+            data-reveal
+            data-reveal-delay="3"
+          >
+            <div className="bg-surface px-6 py-5 text-left">
+              <p className="mb-1 text-xs font-medium uppercase tracking-[0.1em] text-ink-tertiary">
+                Charges for
+              </p>
+              <p className="text-sm leading-6 text-ink">
+                Coordination complexity, service count, workflow depth.
+              </p>
+            </div>
+            <div className="bg-surface px-6 py-5 text-left">
+              <p className="mb-1 text-xs font-medium uppercase tracking-[0.1em] text-ink-tertiary">
+                Never charges for
+              </p>
+              <p className="text-sm leading-6 text-ink">
+                Deployments, requests, runtime traffic, infrastructure consumption.
+              </p>
+            </div>
+          </div>
         </Container>
       </section>
 
-      {/* ── Plan cards ── */}
-      <section className="border-line border-b py-16">
-        <Container width="4xl" padding="default">
-          <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {PLANS.map((plan) => (
-              <PlanCard key={plan.id} {...plan} />
-            ))}
+      {/* ─── Plans ────────────────────────────────────────────────────────── */}
+      <section className="border-b border-line py-16">
+        <Container width="page" padding="wide">
+
+          {/* Controls row: plan selector + billing toggle */}
+          <div
+            className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
+            data-reveal
+          >
+            {/* Service count selector — recognition task, not recall */}
+            <div>
+              <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-tertiary">
+                How many services does your team coordinate?
+              </p>
+              <div
+                className="flex flex-wrap gap-px border border-line bg-line"
+                style={{ borderRadius: '2px' }}
+                role="group"
+                aria-label="Filter plans by service count"
+              >
+                {SERVICE_BANDS.map((band) => {
+                  const active = highlightedPlan === band.plan
+                  return (
+                    <button
+                      key={band.plan}
+                      onClick={() => setHighlightedPlan(active ? null : band.plan)}
+                      aria-pressed={active}
+                      className={`px-4 py-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary ${
+                        active
+                          ? 'bg-ink text-surface'
+                          : 'bg-surface text-ink-secondary hover:bg-surface-alt hover:text-ink'
+                      }`}
+                    >
+                      {band.label}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Billing cycle toggle */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setAnnual(false)}
+                aria-pressed={!annual}
+                className={`py-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 ${
+                  !annual ? 'text-ink' : 'text-ink-tertiary hover:text-ink-secondary'
+                }`}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setAnnual(!annual)}
+                aria-checked={annual}
+                role="switch"
+                aria-label="Annual billing"
+                className="relative flex h-11 w-11 items-center justify-center rounded-[2px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
+              >
+                <span className="relative h-5 w-9 rounded-[2px] border border-line bg-surface-alt transition-colors">
+                  <span
+                    className={`absolute top-[3px] h-[11px] w-[11px] bg-ink transition-[left] duration-150 ease-out`}
+                    style={{
+                      left: annual ? 'calc(100% - 14px)' : '3px',
+                      borderRadius: '1px',
+                    }}
+                  />
+                </span>
+              </button>
+              <button
+                onClick={() => setAnnual(true)}
+                aria-pressed={annual}
+                className={`flex items-center gap-2 py-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 ${
+                  annual ? 'text-ink' : 'text-ink-tertiary hover:text-ink-secondary'
+                }`}
+              >
+                Annual
+                <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-primary-accessible">
+                  2 months free
+                </span>
+              </button>
+            </div>
           </div>
 
-          {/* Enterprise block */}
+          {/* Team + Growth side by side */}
           <div
-            className="border-line bg-surface-alt/60 flex flex-col items-start justify-between gap-6 border p-8 sm:flex-row sm:items-center"
+            className="grid grid-cols-1 gap-px border border-line bg-line lg:grid-cols-[1fr_1.6fr]"
             style={{ borderRadius: '2px' }}
             data-reveal
           >
-            <div>
-              <p className="text-ink mb-1 text-sm font-semibold">Enterprise</p>
-              <p className="text-ink-secondary max-w-md text-xs leading-relaxed">
-                Unlimited Lambda functions at a flat annual rate. Predictable cost for procurement.
-                Includes SSO, audit log export, private cloud deployment, SLA-backed support, and
-                compliance documentation (SOC 2, ISO 27001). Priced per-function-under-management,
-                not by credit volume.
-              </p>
-            </div>
-            <a
-              href="mailto:sales@deploytitan.com"
-              className="border-line text-ink hover:border-primary/40 hover:text-primary inline-flex shrink-0 items-center gap-2 border px-5 py-3 text-sm font-medium transition-colors"
-              style={{ borderRadius: '2px' }}
+            {/* Team — lean entry */}
+            <div
+              className={`flex flex-col bg-surface p-8 transition-opacity duration-150 ${
+                highlightedPlan !== null && highlightedPlan !== 'team' ? 'opacity-40' : 'opacity-100'
+              }`}
             >
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              <div className="mb-8">
+                <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink-tertiary">
+                  Team
+                </p>
+                <div className="mt-4 flex items-end gap-2">
+                  <span className="font-mono text-4xl font-semibold tracking-[-0.03em] text-ink">
+                    ${teamPrice}
+                  </span>
+                  <span className="pb-1 text-sm text-ink-secondary">/mo</span>
+                  {annual && (
+                    <span className="mb-[3px] font-mono text-[9px] uppercase tracking-[0.1em] text-ink-tertiary">
+                      billed annually
+                    </span>
+                  )}
+                </div>
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-tertiary">
+                  Up to 10 services
+                </p>
+                <p className="mt-4 text-sm leading-6 text-ink-secondary">
+                  For engineering teams validating release coordination before scaling it.
+                </p>
+                <p className="mt-3 text-xs leading-5 text-ink-tertiary">
+                  30-day trial included. Full Growth features, up to 50 services. No card required.
+                </p>
+              </div>
+
+              <Button
+                as="a"
+                href={TRIAL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outline"
+                size="sm"
+                block
+                className="mb-8"
               >
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-              Talk to sales
-            </a>
+                Start 30-day trial
+              </Button>
+
+              <div className="mt-auto border-t border-line pt-6">
+                <ul className="space-y-3">
+                  {TEAM_FEATURES.map((f) => (
+                    <li key={f} className="flex items-start gap-3">
+                      <FeatureDot />
+                      <span className="text-sm leading-6 text-ink-secondary">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Growth — dominant, structurally heavier */}
+            <div
+              className={`relative flex flex-col bg-surface-alt/40 p-8 transition-opacity duration-150 ${
+                highlightedPlan !== null && highlightedPlan !== 'growth' ? 'opacity-40' : 'opacity-100'
+              }`}
+            >
+              {/* Most teams at this scale badge */}
+              <span
+                className="absolute right-8 top-8 font-mono text-[9px] uppercase tracking-[0.18em] text-primary-accessible"
+                aria-label="Most teams with 10 to 50 services start here"
+              >
+                Most teams 10–50 services
+              </span>
+
+              <div className="mb-8 pr-40">
+                <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink-tertiary">
+                  Growth
+                </p>
+                <div className="mt-4 flex items-end gap-2">
+                  <span className="font-mono text-4xl font-semibold tracking-[-0.03em] text-ink">
+                    ${growthPrice}
+                  </span>
+                  <span className="pb-1 text-sm text-ink-secondary">/mo</span>
+                  {annual && (
+                    <span className="mb-[3px] font-mono text-[9px] uppercase tracking-[0.1em] text-ink-tertiary">
+                      billed annually
+                    </span>
+                  )}
+                </div>
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-tertiary">
+                  Up to 50 services
+                </p>
+                <p className="mt-4 text-sm leading-6 text-ink-secondary">
+                  For distributed organizations coordinating release windows across multiple teams.
+                  The coordination problems change at this scale: it is no longer about tracking,
+                  it is about control.
+                </p>
+              </div>
+
+              <Button
+                as="a"
+                href={GROWTH_DEMO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="primary"
+                size="sm"
+                block
+                className="mb-8"
+              >
+                Book a release topology review
+              </Button>
+
+              <div className="mt-auto border-t border-line pt-6">
+                <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.1em] text-ink-tertiary">
+                  Everything in Team, plus:
+                </p>
+                <ul className="grid gap-3 sm:grid-cols-2">
+                  {GROWTH_FEATURES.map((f) => (
+                    <li key={f} className="flex items-start gap-3">
+                      <FeatureDot />
+                      <span className="text-sm leading-6 text-ink-secondary">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
 
-          <p className="text-ink-tertiary mt-6 text-center font-mono text-xs" data-reveal>
-            14-day free trial on all plans · No credit card required · Cancel any time
-          </p>
+          {/* Enterprise — full width, capability-forward */}
+          <div
+            className={`mt-px border border-line bg-surface transition-opacity duration-150 ${
+              highlightedPlan !== null && highlightedPlan !== 'enterprise' ? 'opacity-40' : 'opacity-100'
+            }`}
+            style={{ borderRadius: '2px' }}
+            data-reveal
+            data-reveal-delay="1"
+          >
+            <div className="grid grid-cols-1 gap-8 p-8 lg:grid-cols-[280px_1fr_auto]">
+              <div>
+                <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink-tertiary">
+                  Enterprise
+                </p>
+                <p className="mt-4 text-2xl font-semibold tracking-[-0.02em] text-ink">
+                  Custom pricing
+                </p>
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-tertiary">
+                  50+ services
+                </p>
+                <p className="mt-4 text-sm leading-6 text-ink-secondary">
+                  Scoped to your architecture. Compliance controls, private deployment options,
+                  and a named engineer who knows your rollout topology.
+                </p>
+              </div>
+
+              <div>
+                <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.1em] text-ink-tertiary">
+                  Capabilities not in Growth
+                </p>
+                <ul className="grid gap-3 sm:grid-cols-2">
+                  {ENTERPRISE_FEATURES.map((f) => (
+                    <li key={f.label} className="flex items-start gap-3">
+                      <FeatureDot />
+                      <div>
+                        <span className="text-sm leading-5 text-ink-secondary">{f.label}</span>
+                        <span className="mt-0.5 block font-mono text-[9px] uppercase tracking-[0.08em] text-ink-tertiary">
+                          {f.detail}
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="flex items-start lg:items-center">
+                <Button
+                  as="a"
+                  href={ENTERPRISE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="outline"
+                  size="sm"
+                  className="shrink-0"
+                >
+                  Design your rollout architecture
+                </Button>
+              </div>
+            </div>
+          </div>
+
         </Container>
       </section>
 
-      {/* ── What's always included ── */}
-      <section className="border-line border-b py-20">
+      {/* ─── Always included ──────────────────────────────────────────────── */}
+      <section className="border-b border-line py-20">
         <Container width="4xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">Always included</p>
-            <p className="text-ink max-w-2xl text-2xl font-semibold leading-snug">
-              One deployment = the full safety stack. Risk scan, health checks, and rollback are not add-ons.
+            <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-tertiary">
+              Always included
+            </p>
+            <p className="max-w-xl text-2xl font-semibold leading-snug text-ink">
+              Every plan includes the foundation. No metered safety features.
             </p>
           </div>
 
-          <dl className="border-line divide-line divide-y border-t" data-reveal>
+          <div className="border-t border-line" data-reveal>
             {INCLUDED_ALWAYS.map((item) => (
-              <div key={item} className="flex items-center gap-4 py-5">
-                <svg
-                  className="text-primary shrink-0"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span className="text-ink-secondary text-sm leading-relaxed">{item}</span>
+              <div key={item} className="flex items-center gap-4 border-b border-line py-5">
+                <FeatureDot />
+                <span className="text-sm leading-7 text-ink-secondary">{item}</span>
               </div>
             ))}
-          </dl>
+          </div>
         </Container>
       </section>
 
-      {/* ── Billing clarity ── */}
-      <section className="border-line bg-surface-alt/40 border-b py-20">
+      {/* ─── Billing clarity ──────────────────────────────────────────────── */}
+      <section className="border-b border-line bg-surface-alt/35 py-20">
         <Container width="4xl" padding="default">
           <div className="mb-8" data-reveal>
-            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">How billing works</p>
-            <h2 className="text-ink mb-2 text-2xl font-semibold">Simple enough to explain in one sentence.</h2>
+            <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-tertiary">
+              Billing clarity
+            </p>
+            <h2 className="text-2xl font-semibold text-ink">
+              Simple enough to explain in one sentence.
+            </h2>
           </div>
 
           <div
-            className="border-line bg-surface border"
+            className="border border-line bg-surface"
             style={{ borderRadius: '2px' }}
             data-reveal
           >
-            <div className="border-line flex items-center gap-2 border-b px-6 py-4">
-              <span className="bg-primary h-2 w-2" style={{ borderRadius: '1px' }} />
-              <p className="text-ink-secondary font-mono text-xs">Billing model</p>
-            </div>
-            <div className="divide-line divide-y">
-              {[
-                {
-                  label: 'What you pay for',
-                  value: 'Lambda functions connected to DeployTitan (peak count per billing cycle)',
-                },
-                {
-                  label: 'What is always free',
-                  value: 'Deployments, rollbacks, risk scans, health checks, dashboard views, audit log reads',
-                },
-                {
-                  label: 'Team members',
-                  value: 'Unlimited on all plans',
-                },
-                {
-                  label: 'Overage',
-                  value: 'You are warned before you hit your function limit. No silent overcharges.',
-                },
-                {
-                  label: 'Cancellation',
-                  value: 'Cancel any time. Your running Lambdas keep running — DeployTitan never blocks traffic.',
-                },
-              ].map((row) => (
-                <div key={row.label} className="flex flex-col gap-1 px-6 py-4 sm:flex-row sm:items-start sm:gap-8">
-                  <p className="text-ink w-44 shrink-0 text-sm font-medium">{row.label}</p>
-                  <p className="text-ink-secondary text-sm leading-relaxed">{row.value}</p>
-                </div>
-              ))}
-            </div>
+            {BILLING_ROWS.map((row, index) => (
+              <div
+                key={row.label}
+                className={`grid gap-2 px-6 py-5 sm:grid-cols-[220px_1fr] ${
+                  index < BILLING_ROWS.length - 1 ? 'border-b border-line' : ''
+                }`}
+              >
+                <p className="text-sm font-medium text-ink">{row.label}</p>
+                <p className="text-sm leading-7 text-ink-secondary">{row.value}</p>
+              </div>
+            ))}
           </div>
         </Container>
       </section>
 
-      {/* ── FAQ ── */}
-      <section className="border-line border-b py-24">
+      {/* ─── FAQ ──────────────────────────────────────────────────────────── */}
+      <section className="border-b border-line py-24">
         <Container width="3xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">FAQ</p>
-            <h2 className="text-ink text-2xl font-semibold">Common questions</h2>
+            <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-tertiary">
+              FAQ
+            </p>
+            <h2 className="text-2xl font-semibold text-ink">
+              Questions engineers ask before signing
+            </h2>
           </div>
           <div data-reveal>
             {FAQS.map((faq) => (
@@ -414,17 +570,49 @@ export default function Pricing() {
         </Container>
       </section>
 
-      {/* ── Install strip ── */}
-      <section className="border-line border-b py-16">
+      {/* ─── Closing CTA ──────────────────────────────────────────────────── */}
+      <section className="py-20">
         <Container width="3xl" padding="default" className="text-center">
-          <p className="text-ink-tertiary mb-4 font-mono text-xs tracking-widest uppercase" data-reveal>
-            Get started now
+          <p
+            className="mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-tertiary"
+            data-reveal
+          >
+            Next step
           </p>
-          <p className="text-ink mb-8 text-lg font-semibold" data-reveal>
-            Install the CLI. Connect your first Lambda. Ship a canary in under 5 minutes.
+          <p
+            className="mx-auto mb-8 max-w-xl text-xl font-semibold leading-snug text-ink"
+            data-reveal
+            style={{ textWrap: 'balance' } as React.CSSProperties}
+          >
+            Bring us your release topology. We will map your dependency graph and show you where
+            the coordination breaks in the first call.
           </p>
-          <div className="mx-auto max-w-lg" data-reveal>
-            <InstallTabs />
+          <div
+            className="mx-auto flex max-w-sm flex-col gap-3 sm:flex-row"
+            data-reveal
+          >
+            <Button
+              as="a"
+              href={GROWTH_DEMO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="primary"
+              size="lg"
+              block
+            >
+              Book a topology demo
+            </Button>
+            <Button
+              as="a"
+              href={TRIAL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outline"
+              size="lg"
+              block
+            >
+              Start 30-day trial
+            </Button>
           </div>
         </Container>
       </section>

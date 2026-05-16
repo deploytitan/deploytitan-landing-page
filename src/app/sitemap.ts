@@ -23,11 +23,10 @@ const staticRoutes: Array<{
 
   // Solutions
   { url: '/solutions',                        changeFrequency: 'monthly', priority: 0.8 },
-  { url: '/solutions/progressive-delivery',   changeFrequency: 'monthly', priority: 0.8 },
-  { url: '/solutions/multi-cloud-resilience', changeFrequency: 'monthly', priority: 0.8 },
-  { url: '/solutions/risk-intelligence',      changeFrequency: 'monthly', priority: 0.8 },
-  { url: '/solutions/platform-engineering',   changeFrequency: 'monthly', priority: 0.8 },
-  { url: '/solutions/instant-rollback',       changeFrequency: 'monthly', priority: 0.8 },
+  { url: '/solutions/release-coordination',   changeFrequency: 'monthly', priority: 0.9 },
+  { url: '/solutions/rollback-coordination',  changeFrequency: 'monthly', priority: 0.8 },
+  { url: '/solutions/release-intelligence',   changeFrequency: 'monthly', priority: 0.8 },
+  { url: '/solutions/platform-engineering',   changeFrequency: 'monthly', priority: 0.7 },
 
   // Personas
   { url: '/for/sre',    changeFrequency: 'monthly', priority: 0.7 },

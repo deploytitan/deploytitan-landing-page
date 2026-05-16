@@ -6,6 +6,7 @@ import { InstallTabs } from '../../components/shared/InstallTabs'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
+import { ProductPageHero } from '../../components/shared/ProductPageHero'
 
 const CI_SNIPPET = `# .github/workflows/deploy.yml
 - name: Titan Foresight risk check
@@ -59,14 +60,14 @@ const SUPPORTING_CAPABILITIES = [
 
 const CROSS_LINKS = [
   {
-    label: 'Titan Rollout',
-    desc: 'Move traffic to a new version, safely',
+    label: 'Titan Rollouts',
+    desc: 'Coordinate multi-service releases',
     href: '/products/titan-rollout',
   },
   {
-    label: 'Titan Phoenix',
-    desc: 'Undo a bad release in seconds',
-    href: '/products/titan-phoenix',
+    label: 'Release Intelligence',
+    desc: 'Visibility into every release in flight',
+    href: '/solutions/release-intelligence',
   },
   { label: 'Solutions', desc: 'See all use cases', href: '/solutions' },
 ]
@@ -76,43 +77,21 @@ export default function TitanForesight() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="blueprint-grid pt-28 pb-20 border-b border-line">
-        <Container width="4xl" padding="default">
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4" data-reveal data-reveal-delay="1">
-            Titan Foresight · Detect
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6" data-reveal data-reveal-delay="2">
-            Score every change
-            <br className="hidden md:block" /> before it ships.
-          </h1>
-          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8" data-reveal data-reveal-delay="3">
-            Foresight reads each PR against your live dependency graph and produces one explained
-            risk score. Risky changes get tighter rollout policies, automatically.
-          </p>
-          <div className="flex flex-wrap gap-4" data-reveal data-reveal-delay="4">
-            <a
-              href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-primary text-ink dark:text-surface text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
-              style={{ borderRadius: '2px' }}
-            >
-              Start free trial
-            </a>
-            <a
-              href="/solutions"
-              className="inline-flex items-center gap-2 border border-line text-ink-secondary text-sm px-5 py-2.5 hover:border-primary/40 hover:text-ink transition-colors"
-              style={{ borderRadius: '2px' }}
-            >
-              See use cases
-            </a>
-          </div>
-        </Container>
-      </section>
+      <ProductPageHero
+        eyebrow="Titan Foresight · Rollouts Intelligence"
+        badge="preview"
+        heading={<>Score every change<br className="hidden md:block" /> before it ships.</>}
+        description="Foresight reads each PR against your live dependency graph and produces one explained risk score. Risky changes get tighter rollout policies, automatically."
+        ctas={[
+          { label: 'Join the waitlist', href: '/pricing' },
+          { label: 'See use cases', href: '/solutions/release-intelligence', variant: 'secondary' },
+        ]}
+      />
 
       {/* What Foresight owns */}
       <section className="py-16 border-b border-line bg-surface-alt/20">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-4">
             What Foresight owns
           </p>
           <p className="text-2xl font-medium text-ink leading-snug mb-4">
@@ -129,7 +108,7 @@ export default function TitanForesight() {
       <section className="py-24 border-b border-line">
         <Container width="6xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               Capabilities
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
@@ -173,7 +152,7 @@ export default function TitanForesight() {
       <section className="py-24 border-t border-line">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               Quickstart
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
@@ -213,7 +192,7 @@ export default function TitanForesight() {
       <section className="py-20 border-t border-line">
         <Container width="6xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               Integrations
             </p>
             <h2 className="text-2xl font-semibold text-ink mb-2">
@@ -232,7 +211,7 @@ export default function TitanForesight() {
               { category: 'Notifications', tools: ['Slack', 'GitHub PRs', 'PagerDuty', 'Webhooks'] },
             ].map((group) => (
               <Card key={group.category} padding="none" className="p-5">
-                <p className="font-mono text-[10px] uppercase tracking-wider text-primary mb-3">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-primary-accessible mb-3">
                   {group.category}
                 </p>
                 <ul className="flex flex-col gap-2">
@@ -250,7 +229,7 @@ export default function TitanForesight() {
           <div className="mt-8 flex items-center gap-6" data-reveal>
             <a
               href="#capabilities"
-              className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+              className="text-sm font-medium text-primary-accessible hover:text-primary transition-colors"
             >
               See capabilities →
             </a>

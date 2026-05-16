@@ -50,7 +50,7 @@ export function PostCard({ post }: PostCardProps) {
             {post.categories.map((cat) => (
               <span
                 key={cat.slug.current}
-                className="font-mono text-[10px] tracking-widest uppercase text-primary border border-primary/25 px-2 py-0.5"
+                className="font-mono text-[10px] tracking-widest uppercase text-primary-accessible border border-primary/25 px-2 py-0.5"
                 style={{ borderRadius: '2px' }}
               >
                 {cat.title}
@@ -72,7 +72,7 @@ export function PostCard({ post }: PostCardProps) {
             <span className="text-xs text-ink-tertiary">{post.author.name}</span>
           )}
           {post.author?.name && date && (
-            <span className="text-ink-quaternary text-xs">·</span>
+            <span className="text-ink-tertiary text-xs">·</span>
           )}
           {date && <span className="text-xs text-ink-tertiary font-mono">{date}</span>}
         </div>

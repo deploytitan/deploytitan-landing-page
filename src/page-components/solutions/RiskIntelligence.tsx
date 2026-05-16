@@ -4,8 +4,8 @@ import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
-import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
 import { SolutionNav } from '../../components/shared/SolutionNav'
+import { SolutionPageHero } from '../../components/shared/SolutionPageHero'
 
 const RISK_FACTORS = [
   {
@@ -72,58 +72,15 @@ export default function SolutionRiskIntelligence() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="blueprint-grid border-line border-b pt-28 pb-20">
-        <Container width="4xl" padding="default">
-          <Breadcrumbs className="mb-6" data-reveal data-reveal-delay="1" />
-          <div
-            className="text-primary border-primary/30 mb-6 inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px]"
-            style={{ borderRadius: '2px' }}
-            data-reveal
-            data-reveal-delay="1"
-          >
-            <span className="bg-signal-success h-1.5 w-1.5" style={{ borderRadius: '1px' }} />
-            Powered by Titan Foresight
-          </div>
-          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl" data-reveal data-reveal-delay="2">
-            You find out your
-            <br className="hidden md:block" /> blast radius in the post-mortem.
-          </h1>
-          <p className="text-ink-secondary mb-8 max-w-2xl text-lg leading-relaxed" data-reveal data-reveal-delay="3">
-            A PR ships. Something breaks. Three services you didn't know depended on this one start
-            erroring. The post-mortem question, "did anyone check the dependency graph?", has no
-            good answer, because there was no tool that did it automatically before the deploy.
-          </p>
-          <div className="flex flex-wrap items-center gap-4" data-reveal data-reveal-delay="4">
-            <a
-              href="https://cal.com/justine-deploytitan/demo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-ink text-surface dark:text-surface inline-flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.97]"
-              style={{ borderRadius: '2px' }}
-            >
-              Book a 20-min walkthrough
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </a>
-            <a
-              href={`${APP_URL}/signup`}
-              className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
-            >
-              Start free trial →
-            </a>
-          </div>
-        </Container>
-      </section>
+      <SolutionPageHero
+        poweredBy="Powered by Titan Foresight"
+        heading={<>You find out your<br className="hidden md:block" /> blast radius in the post-mortem.</>}
+        description="A PR ships. Something breaks. Three services you didn't know depended on this one start erroring. The post-mortem question, &ldquo;did anyone check the dependency graph?&rdquo;, has no good answer, because there was no tool that did it automatically before the deploy."
+        ctas={[
+          { label: 'Book a 20-min walkthrough', href: 'https://cal.com/justine-deploytitan/demo', variant: 'book', target: '_blank', rel: 'noopener noreferrer' },
+          { label: 'Start free trial →', href: `${APP_URL}/signup`, variant: 'secondary' },
+        ]}
+      />
 
       {/* Narrative */}
       <section className="border-line bg-surface-alt/20 border-b py-16">
@@ -131,7 +88,7 @@ export default function SolutionRiskIntelligence() {
           <div className="flex max-w-prose flex-col gap-10" data-reveal>
             {/* The scene */}
             <div>
-              <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
+              <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase">
                 The situation
               </p>
               <blockquote className="text-ink/90 mb-6 text-xl leading-snug font-semibold italic lg:text-2xl">
@@ -207,7 +164,7 @@ export default function SolutionRiskIntelligence() {
 
             {/* The resolution */}
             <div>
-              <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
+              <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase">
                 The fix
               </p>
               <p className="text-ink-secondary leading-relaxed">
@@ -227,7 +184,7 @@ export default function SolutionRiskIntelligence() {
       <section className="border-line border-b py-24">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               Risk model
             </p>
             <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold lg:text-3xl">
@@ -271,7 +228,7 @@ export default function SolutionRiskIntelligence() {
       <section className="border-line border-b py-20">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               Guardrails
             </p>
             <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold lg:text-3xl">
@@ -312,7 +269,7 @@ export default function SolutionRiskIntelligence() {
       <section className="border-line bg-surface-alt/30 border-b py-16">
         <Container width="3xl" padding="default">
           <div className="mb-8" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               GitHub integration
             </p>
             <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold">
@@ -326,7 +283,7 @@ export default function SolutionRiskIntelligence() {
                 height="14"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="text-ink-quaternary"
+                className="text-ink-tertiary"
               >
                 <path
                   fillRule="evenodd"
@@ -334,7 +291,7 @@ export default function SolutionRiskIntelligence() {
                   d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"
                 />
               </svg>
-              <span className="text-ink-quaternary font-mono text-[10px]">
+              <span className="text-ink-tertiary font-mono text-[10px]">
                 titan-foresight · PR #847 comment
               </span>
             </div>
@@ -344,7 +301,7 @@ export default function SolutionRiskIntelligence() {
                   DT
                 </div>
                 <span className="text-ink text-xs font-semibold">Titan Foresight</span>
-                <span className="text-ink-quaternary font-mono text-xs">just now</span>
+                <span className="text-ink-tertiary font-mono text-xs">just now</span>
               </div>
               <div className="border-line rounded-sm border p-4 font-mono text-xs">
                 <p className="text-ink mb-2 font-semibold">
@@ -384,7 +341,7 @@ export default function SolutionRiskIntelligence() {
       <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               The status quo
             </p>
             <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold lg:text-3xl">
@@ -426,7 +383,7 @@ export default function SolutionRiskIntelligence() {
                 data-reveal
                 data-reveal-delay={String(i)}
               >
-                <p className="text-primary mb-3 font-mono text-xs tracking-wider uppercase">
+                <p className="text-primary-accessible mb-3 font-mono text-xs tracking-wider uppercase">
                   {item.tool}
                 </p>
                 <p className="text-ink-secondary mb-4 text-sm leading-relaxed">{item.workaround}</p>
@@ -446,7 +403,7 @@ export default function SolutionRiskIntelligence() {
       <section className="border-line border-b py-16">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               How we compare
             </p>
             <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold lg:text-3xl">
@@ -460,7 +417,7 @@ export default function SolutionRiskIntelligence() {
                   <th className="text-ink-tertiary w-1/4 py-3 pr-6 text-left font-mono text-xs tracking-wider uppercase">
                     Capability
                   </th>
-                  <th className="text-primary px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
+                  <th className="text-primary-accessible px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
                     DeployTitan
                   </th>
                   <th className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
@@ -532,7 +489,7 @@ export default function SolutionRiskIntelligence() {
               </a>
               <a
                 href={`${APP_URL}/signup`}
-                className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
+                className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
               >
                 Start free trial →
               </a>

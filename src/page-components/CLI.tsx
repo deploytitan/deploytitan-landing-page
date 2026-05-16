@@ -80,7 +80,7 @@ export default function CLI() {
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-16 lg:py-20">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
               CLI Reference
             </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
@@ -126,7 +126,7 @@ export default function CLI() {
 
       {/* Quickstart */}
       <Container as="section" className="py-14">
-        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+        <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
           Quickstart
         </span>
         <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -144,7 +144,7 @@ export default function CLI() {
       {/* Install */}
       <Section id="install" border="top" tone="muted" padding="none">
         <Container className="py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
             Install
           </span>
           <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -156,25 +156,25 @@ export default function CLI() {
 
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
-              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+              <p className="font-mono text-xs text-ink-tertiary uppercase tracking-widest mb-3">
                 macOS
               </p>
               <CodeBlock code={installSnippets.macos} lang="bash" filename="macOS" />
             </div>
             <div>
-              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+              <p className="font-mono text-xs text-ink-tertiary uppercase tracking-widest mb-3">
                 Linux
               </p>
               <CodeBlock code={installSnippets.linux} lang="bash" filename="Linux" />
             </div>
             <div>
-              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+              <p className="font-mono text-xs text-ink-tertiary uppercase tracking-widest mb-3">
                 Windows
               </p>
               <CodeBlock code={installSnippets.windows} lang="bash" filename="Windows" />
             </div>
             <div>
-              <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+              <p className="font-mono text-xs text-ink-tertiary uppercase tracking-widest mb-3">
                 Docker
               </p>
               <CodeBlock code={installSnippets.docker} lang="bash" filename="Docker" />
@@ -186,7 +186,7 @@ export default function CLI() {
       {/* Commands */}
       <Section border="top" padding="none">
         <Container className="py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
             Commands
           </span>
           <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -211,7 +211,7 @@ export default function CLI() {
       {/* CI/CD Integration */}
       <Section border="top" tone="muted" padding="none">
         <Container className="py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
             CI/CD
           </span>
           <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">

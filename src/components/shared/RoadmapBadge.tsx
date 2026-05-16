@@ -12,7 +12,7 @@ const CONFIG = {
   preview: {
     label: 'Design partner preview',
     dot: 'bg-primary',
-    classes: 'border-primary/30 text-primary/90 bg-primary/5',
+    classes: 'border-primary/30 text-primary-accessible bg-primary/5',
   },
   roadmap: {
     label: 'Coming soon',

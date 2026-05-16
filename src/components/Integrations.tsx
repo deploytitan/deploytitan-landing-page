@@ -242,9 +242,9 @@ export function Integrations() {
           ))}
         </div>
 
-        <p className="mt-10 text-center text-xs text-ink-quaternary">
+        <p className="mt-10 text-center text-xs text-ink-tertiary">
           And many more via our open API and CLI.{' '}
-          <a href="/docs" className="text-primary hover:text-primary-dark transition-colors">
+          <a href="/docs" className="text-primary-accessible hover:text-primary transition-colors">
             Browse the directory →
           </a>
         </p>

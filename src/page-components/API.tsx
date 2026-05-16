@@ -99,7 +99,7 @@ export default function API() {
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-16 lg:py-20">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
               API Reference
             </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
@@ -145,7 +145,7 @@ export default function API() {
 
       {/* Auth */}
       <Container as="section" className="py-14">
-        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+        <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
           Authentication
         </span>
         <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -159,13 +159,13 @@ export default function API() {
         </p>
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           <div>
-            <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+            <p className="font-mono text-xs text-ink-tertiary uppercase tracking-widest mb-3">
               Request
             </p>
             <CodeBlock code={authCode} lang="bash" filename="POST /v1/deployments" />
           </div>
           <div>
-            <p className="font-mono text-xs text-ink-quaternary uppercase tracking-widest mb-3">
+            <p className="font-mono text-xs text-ink-tertiary uppercase tracking-widest mb-3">
               Response
             </p>
             <CodeBlock code={responseCode} lang="json" filename="200 OK" />
@@ -176,7 +176,7 @@ export default function API() {
       {/* Endpoints */}
       <Section id="endpoints" border="top" tone="muted" padding="none">
         <Container className="py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
             Endpoints
           </span>
           <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -192,7 +192,7 @@ export default function API() {
                 </span>
                 <code className="font-mono text-sm text-ink shrink-0">{e.path}</code>
                 <span className="text-sm text-ink-secondary">{e.description}</span>
-                <span className="ml-auto font-mono text-[10px] text-ink-quaternary uppercase tracking-widest shrink-0">
+                <span className="ml-auto font-mono text-[10px] text-ink-tertiary uppercase tracking-widest shrink-0">
                   {e.tag}
                 </span>
               </div>
@@ -204,7 +204,7 @@ export default function API() {
       {/* Webhooks */}
       <Section border="top" padding="none">
         <Container className="py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
             Webhooks
           </span>
           <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">
@@ -230,7 +230,7 @@ export default function API() {
               { label: 'API version', value: 'v1 (stable)', mono: false },
             ].map((stat) => (
               <Card key={stat.label}>
-                <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+                <p className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
                   {stat.label}
                 </p>
                 <p

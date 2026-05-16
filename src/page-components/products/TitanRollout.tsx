@@ -1,83 +1,84 @@
 'use client'
 
-import { APP_URL } from '@/lib/env'
+import { APP_URL, CREATE_ACCOUNT_URL } from '@/lib/env'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { InstallTabs } from '../../components/shared/InstallTabs'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
+import { ProductPageHero } from '../../components/shared/ProductPageHero'
 
-const DEPLOY_CODE = `# Deploy with a canary strategy
-dt deploy \\
-  --service my-api \\
-  --image registry/my-api:v2.4.1 \\
-  --strategy canary \\
-  --initial-weight 5 \\
-  --pause-on "error_rate > 0.5%"
+const RELEASE_CODE = `# Create a coordinated release across services
+dt release create \\
+  --name "checkout-v3.2" \\
+  --services "payments,cart,order-api" \\
+  --env production
 
-# Foresight scores the change before traffic shifts.
-# Cohort expands automatically as health gates pass.
-# Rollout pauses — Phoenix acts if a threshold is breached.`
+# Check status across all services
+dt release status checkout-v3.2
 
-const POLICY_CODE = `# titan-rollout.hcl
-rollout "my-api" {
-  strategy       = "canary"
-  initial_weight = 5
-  increment      = 10
-  interval       = "2m"
+# Promote to the next stage when ready
+dt release promote checkout-v3.2 --stage production`
 
-  pause {
-    trigger = "error_rate > 0.5% OR p99_latency > 200ms"
+const POLICY_CODE = `# release-policy.hcl
+release "checkout-v3.2" {
+  services = ["payments", "cart", "order-api"]
+
+  gate "pre-deploy" {
+    require = ["staging-green", "smoke-tests-pass"]
+  }
+
+  rollback {
+    trigger = "error_rate > 1% OR p99_latency > 500ms"
+    owner   = "@platform-oncall"
   }
 }`
 
-// Primary: the 2 most differentiating Rollout capabilities
 const PRIMARY_CAPABILITIES = [
   {
-    title: 'Traffic splitting with real-signal gates',
-    desc: 'Shift a configurable percentage of traffic to the new version. Rollout expands automatically as health gates pass and pauses the moment a signal breaches its threshold, before users notice.',
+    title: 'Dependency-aware release sequencing',
+    desc: 'Define which services must deploy before others. Titan Rollouts enforces the sequence, waits for health gates between stages, and surfaces any blocked step to the owning team.',
   },
   {
-    title: 'Strategy flexibility: canary, blue-green, ring',
-    desc: 'One CLI command, three strategies. Canary for gradual expansion, blue-green for instant cutover with a clean fallback, ring for staged rollout by team, region, or customer tier.',
+    title: 'Release gates and owner accountability',
+    desc: 'Each stage gate requires explicit sign-off or automated health checks. Rollouts tracks who approved, when, and what signal cleared the gate, so every release has a complete audit trail.',
   },
 ]
 
-// Supporting: 4 tighter items
 const SUPPORTING_CAPABILITIES = [
   {
-    title: 'Health gates as code',
-    desc: 'Define pause triggers in HCL alongside your deploy config. Error rate, p99 latency, custom metrics: any signal Rollout can observe can become a gate.',
+    title: 'Multi-service release graph',
+    desc: 'Model a release as a DAG of services and stages. Rollouts resolves the order, parallelizes where safe, and holds where dependencies are not yet satisfied.',
   },
   {
-    title: 'Automatic cohort promotion',
-    desc: 'Rollout advances the traffic weight on a configurable interval as long as health gates hold. No manual promotion step; no human in the loop unless a gate fires.',
+    title: 'Coordinated rollback',
+    desc: 'When a gate fires, Rollouts initiates rollback in reverse dependency order: no service rolls back before the services that depend on it are safe.',
   },
   {
-    title: 'Foresight integration',
-    desc: 'Risky PRs automatically get tighter initial cohorts and shorter promotion windows. Foresight sets the policy; Rollout enforces it.',
+    title: 'Slack and PagerDuty integration',
+    desc: 'Gate approvals, stage promotions, and rollback triggers surface in the channels your team already uses. No context switching.',
   },
   {
-    title: 'Phoenix handoff on breach',
-    desc: 'If a health gate fires during rollout, Rollout pauses and hands the incident to Phoenix for scoped rollback. The two products are designed to work as a unit.',
+    title: 'Release history and audit log',
+    desc: 'Every gate, approval, promotion, and rollback is recorded. Incident postmortems have the full timeline without manual reconstruction.',
   },
 ]
 
 const CROSS_LINKS = [
   {
-    label: 'Titan Shield',
-    desc: "Your users stay up when a region doesn't",
-    href: '/products/titan-shield',
+    label: 'Release Coordination',
+    desc: 'Orchestrate multi-service releases end to end',
+    href: '/solutions/release-coordination',
   },
   {
-    label: 'Titan Foresight',
-    desc: 'Score every change before it ships',
-    href: '/products/titan-foresight',
+    label: 'Instant Rollback',
+    desc: 'Safe, sequenced rollback across services',
+    href: '/solutions/instant-rollback',
   },
   {
-    label: 'Titan Phoenix',
-    desc: 'Undo a bad release in seconds',
-    href: '/products/titan-phoenix',
+    label: 'Risk Intelligence',
+    desc: 'Visibility into every release in flight',
+    href: '/solutions/risk-intelligence',
   },
 ]
 
@@ -86,80 +87,51 @@ export default function TitanRollout() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="blueprint-grid pt-28 pb-20 border-b border-line">
-        <Container width="4xl" padding="default">
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4" data-reveal data-reveal-delay="1">
-            Titan Rollout
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6" data-reveal data-reveal-delay="2">
-            Progressive deployments.
-            <br className="hidden md:block" /> Zero-drama releases.
-          </h1>
-          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8" data-reveal data-reveal-delay="3">
-            Shift traffic gradually, gate on real signals, and roll back in seconds, all from a
-            single{' '}
-            <code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1.5 py-0.5">
-              dt deploy
-            </code>{' '}
-            command.
-          </p>
-          <div className="flex flex-wrap gap-4" data-reveal data-reveal-delay="4">
-            <a
-              href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-primary text-ink dark:text-surface text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
-              style={{ borderRadius: '2px' }}
-            >
-              Start free trial
-            </a>
-            <a
-              href="/solutions"
-              className="inline-flex items-center gap-2 border border-line text-ink-secondary text-sm px-5 py-2.5 hover:border-primary/40 hover:text-ink transition-colors"
-              style={{ borderRadius: '2px' }}
-            >
-              See use cases
-            </a>
-          </div>
-        </Container>
-      </section>
+      <ProductPageHero
+        eyebrow="Titan Rollouts"
+        heading={<>Release coordination<br className="hidden md:block" /> for distributed teams.</>}
+        description={<>Orchestrate multi-service releases with dependency sequencing, owner-gated stages, and coordinated rollback, all from a single{' '}<code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1.5 py-0.5">dt release</code>{' '}command.</>}
+        ctas={[
+          { label: 'Create account', href: CREATE_ACCOUNT_URL, target: '_blank', rel: 'noopener noreferrer' },
+          { label: 'See use cases', href: '/solutions/release-coordination', variant: 'secondary' },
+        ]}
+      />
 
       {/* Wedge framing */}
       <section className="py-16 border-b border-line bg-surface-alt/20">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
-            How Rollout is different
+          <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-4">
+            Why Titan Rollouts
           </p>
           <p className="text-2xl font-medium text-ink leading-snug mb-4">
-            A deploy command that knows when to stop.
+            Coordination is not a spreadsheet problem.
           </p>
           <p className="text-ink-secondary leading-relaxed max-w-2xl">
-            Most deployment tools move traffic and wait for a human to intervene. Rollout moves
-            traffic, watches your SLOs, and pauses or hands off to Phoenix the moment a threshold
-            breaks. The human stays in the loop only when it matters.
+            Most teams coordinate releases over Slack threads, shared docs, and manual handoffs.
+            Titan Rollouts replaces that with a structured release graph: services declare their
+            dependencies, stages require explicit gates, and every promotion or rollback is
+            sequenced automatically.
           </p>
         </Container>
       </section>
 
-      {/* Capabilities — Rollout-specific, broken grid hierarchy */}
+      {/* Capabilities */}
       <section className="py-24 border-b border-line">
         <Container width="6xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               Capabilities
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
-              Traffic control with real guardrails.
+              From release creation to safe completion.
             </h2>
-            {/* Leadership brief */}
             <p className="text-ink-secondary max-w-2xl leading-relaxed">
-              Rollout turns a single deploy command into a progressive, gated release. It shifts
-              traffic in configurable increments, advances automatically when health gates hold, and
-              hands off to Phoenix the moment they don't. Engineers ship more; on-call gets fewer
-              pages.
+              Titan Rollouts models a release as a dependency graph of services and stages. It
+              enforces the sequence, surfaces blocked steps to the right owners, and coordinates
+              rollback when something goes wrong.
             </p>
           </div>
 
-          {/* Primary capabilities: 2 lead items */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-reveal>
             {PRIMARY_CAPABILITIES.map((c) => (
               <div
@@ -173,7 +145,6 @@ export default function TitanRollout() {
             ))}
           </div>
 
-          {/* Supporting capabilities: 4 tighter items */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" data-reveal>
             {SUPPORTING_CAPABILITIES.map((c) => (
               <Card key={c.title} className="flex flex-col gap-2">
@@ -189,18 +160,15 @@ export default function TitanRollout() {
       <section className="py-24 border-t border-line">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               Quickstart
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
-              Up and running in one command.
+              A release in three commands.
             </h2>
             <p className="text-ink-secondary max-w-xl">
-              Install the CLI, run{' '}
-              <code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1.5 py-0.5">
-                dt deploy
-              </code>
-              , and your first progressive rollout starts automatically.
+              Install the CLI, create a release, and Titan Rollouts sequences the rest according to
+              your dependency graph and gate policy.
             </p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8" data-reveal>
@@ -213,44 +181,44 @@ export default function TitanRollout() {
               </div>
               <div>
                 <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">
-                  Deploy
+                  Release
                 </p>
-                <CodeBlock code={DEPLOY_CODE} lang="bash" filename="terminal" />
+                <CodeBlock code={RELEASE_CODE} lang="bash" filename="terminal" />
               </div>
             </div>
             <div>
               <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">
                 Policy-as-code (optional)
               </p>
-              <CodeBlock code={POLICY_CODE} lang="hcl" filename="titan-rollout.hcl" />
+              <CodeBlock code={POLICY_CODE} lang="hcl" filename="release-policy.hcl" />
             </div>
           </div>
         </Container>
       </section>
 
-      {/* Integrations matrix */}
+      {/* Integrations */}
       <section className="py-20 border-t border-line">
         <Container width="6xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               Integrations
             </p>
             <h2 className="text-2xl font-semibold text-ink mb-2">
               Works with your existing stack.
             </h2>
             <p className="text-ink-secondary text-sm max-w-lg">
-              Titan Rollout plugs into the tools your team already runs: no forklift migration.
+              Titan Rollouts plugs into the tools your team already runs: no forklift migration.
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-reveal>
             {[
               { category: 'CI / CD', tools: ['GitHub Actions', 'GitLab CI', 'CircleCI', 'Buildkite'] },
               { category: 'Observability', tools: ['Datadog', 'Prometheus', 'Grafana', 'New Relic'] },
-              { category: 'Traffic', tools: ['Kubernetes Ingress', 'AWS ALB', 'Istio', 'Envoy'] },
               { category: 'Notifications', tools: ['Slack', 'PagerDuty', 'Opsgenie', 'Webhooks'] },
+              { category: 'Infrastructure', tools: ['Kubernetes', 'AWS ECS', 'Terraform', 'Helm'] },
             ].map((group) => (
               <Card key={group.category} padding="none" className="p-5">
-                <p className="font-mono text-[10px] uppercase tracking-wider text-primary mb-3">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-primary-accessible mb-3">
                   {group.category}
                 </p>
                 <ul className="flex flex-col gap-2">
@@ -264,19 +232,18 @@ export default function TitanRollout() {
               </Card>
             ))}
           </div>
-          {/* Harden: replaced dead doc links with functional alternatives */}
           <div className="mt-8 flex items-center gap-6" data-reveal>
             <a
-              href="#capabilities"
-              className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+              href="/solutions/release-coordination"
+              className="text-sm font-medium text-primary-accessible hover:text-primary transition-colors"
             >
-              See capabilities →
+              See release coordination use cases →
             </a>
             <a
-              href={`${APP_URL}/signup`}
+              href={CREATE_ACCOUNT_URL}
               className="text-sm text-ink-tertiary hover:text-ink-secondary transition-colors"
             >
-              Start free trial
+              Create account
             </a>
           </div>
         </Container>
@@ -289,7 +256,7 @@ export default function TitanRollout() {
             className="text-xs font-mono tracking-widest uppercase text-ink-secondary mb-6 font-medium"
             data-reveal
           >
-            Also in DeployTitan
+            Explore solutions
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {CROSS_LINKS.map((l, i) => (

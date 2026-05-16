@@ -9,7 +9,7 @@ import { MobileNav } from './MobileNav'
 import { ThemeToggle } from '../shared/ThemeToggle'
 import { Button } from '../shared/Button'
 import { useTheme } from '../../hooks/useTheme'
-import { CONSOLE_URL } from '@/lib/env'
+import { CREATE_ACCOUNT_URL } from '@/lib/env'
 
 /** Trap Tab/Shift-Tab within `container`. Call the returned cleanup when done. */
 function trapFocus(container: HTMLElement): () => void {
@@ -52,8 +52,6 @@ function useAnimatedDropdown(key: DropdownKey, activeDropdown: DropdownKey, exit
     if (isOpen) {
       if (timerRef.current) clearTimeout(timerRef.current)
       setMounted(true)
-      // Small rAF tick so the browser paints the initial hidden state first,
-      // giving the CSS transition something to transition FROM.
       requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)))
     } else {
       setVisible(false)
@@ -80,7 +78,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   const { resolved } = useTheme()
 
   const products = useAnimatedDropdown('products', activeDropdown)
-  const solutions = useAnimatedDropdown('solutions', activeDropdown)
+  const solutionsDropdown = useAnimatedDropdown('solutions', activeDropdown)
 
   // Close everything on route change
   useEffect(() => {
@@ -125,7 +123,8 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
     if (activeDropdown === 'products' && productsDropdownRef.current) {
       const first = productsDropdownRef.current.querySelector<HTMLElement>('a, button')
       first?.focus()
-    } else if (activeDropdown === 'solutions' && solutionsDropdownRef.current) {
+    }
+    if (activeDropdown === 'solutions' && solutionsDropdownRef.current) {
       const first = solutionsDropdownRef.current.querySelector<HTMLElement>('a, button')
       first?.focus()
     }
@@ -134,7 +133,6 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   // Focus trap in mobile nav
   useEffect(() => {
     if (!mobileOpen || !mobileNavRef.current) return
-    // Move focus into the mobile nav
     const first = mobileNavRef.current.querySelector<HTMLElement>('a, button')
     first?.focus()
     const cleanup = trapFocus(mobileNavRef.current)
@@ -147,7 +145,6 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
 
   const closeDropdown = useCallback(() => setActiveDropdown(null), [])
 
-  // Active state helpers
   const isProductsActive = pathname.startsWith('/products')
   const isSolutionsActive = pathname.startsWith('/solutions')
 
@@ -177,9 +174,18 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
             : 'transparent',
           backdropFilter: scrolled ? 'blur(12px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
-          borderBottom: scrolled ? '1px solid var(--color-line)' : '1px solid transparent',
         }}
       >
+        {/* Bottom border rendered below the dropdown panels so it doesn't bleed through */}
+        <div
+          className="pointer-events-none absolute right-0 bottom-0 left-0 h-px transition-opacity duration-500"
+          style={{
+            background: 'var(--color-line)',
+            opacity: scrolled ? 1 : 0,
+            zIndex: -1,
+          }}
+          aria-hidden="true"
+        />
         <div className="max-w-page mx-auto flex h-20 items-center justify-between gap-8 px-6 md:justify-normal lg:px-12">
           {/* Logo */}
           <Link href="/" className="group flex shrink-0 items-center">
@@ -199,7 +205,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                 onClick={() => toggleDropdown('products')}
                 aria-expanded={activeDropdown === 'products'}
                 aria-haspopup="menu"
-                className={`nav-link-underline flex items-center gap-1 text-sm transition-colors ${isProductsActive ? 'nav-link-active text-primary' : 'text-ink-secondary hover:text-ink'}`}
+                className={`nav-link-underline flex items-center gap-1 text-sm transition-colors ${isProductsActive ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
               >
                 Products
                 <svg
@@ -242,7 +248,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                 onClick={() => toggleDropdown('solutions')}
                 aria-expanded={activeDropdown === 'solutions'}
                 aria-haspopup="menu"
-                className={`nav-link-underline flex items-center gap-1 text-sm transition-colors ${isSolutionsActive ? 'nav-link-active text-primary' : 'text-ink-secondary hover:text-ink'}`}
+                className={`nav-link-underline flex items-center gap-1 text-sm transition-colors ${isSolutionsActive ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
               >
                 Solutions
                 <svg
@@ -261,16 +267,16 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </button>
-              {solutions.mounted && (
+              {solutionsDropdown.mounted && (
                 <div
                   ref={solutionsDropdownRef}
                   className="transition-[opacity,transform] duration-[180ms] ease-out"
                   style={{
-                    opacity: solutions.visible ? 1 : 0,
-                    transform: solutions.visible
+                    opacity: solutionsDropdown.visible ? 1 : 0,
+                    transform: solutionsDropdown.visible
                       ? 'translateY(0) scale(1)'
                       : 'translateY(-6px) scale(0.98)',
-                    pointerEvents: solutions.visible ? 'auto' : 'none',
+                    pointerEvents: solutionsDropdown.visible ? 'auto' : 'none',
                     transformOrigin: 'top center',
                   }}
                 >
@@ -281,21 +287,21 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
 
             <Link
               href="/blog"
-              className={`nav-link-underline text-sm transition-colors ${pathname.startsWith('/blog') ? 'nav-link-active text-primary' : 'text-ink-secondary hover:text-ink'}`}
+              className={`nav-link-underline text-sm transition-colors ${pathname.startsWith('/blog') ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
             >
               Blog
             </Link>
 
             <Link
               href="/pricing"
-              className={`nav-link-underline text-sm transition-colors ${pathname === '/pricing' ? 'nav-link-active text-primary' : 'text-ink-secondary hover:text-ink'}`}
+              className={`nav-link-underline text-sm transition-colors ${pathname === '/pricing' ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
             >
               Pricing
             </Link>
 
             <Link
               href="/journey"
-              className={`nav-link-underline text-sm transition-colors ${pathname.startsWith('/journey') ? 'nav-link-active text-primary' : 'text-ink-secondary hover:text-ink'}`}
+              className={`nav-link-underline text-sm transition-colors ${pathname.startsWith('/journey') ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
             >
               My Journey
             </Link>
@@ -304,8 +310,15 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
           {/* Desktop auth */}
           <div className="ml-auto hidden items-center gap-2 lg:flex">
             <ThemeToggle className="mr-1" />
-            <Button as="a" href={`${CONSOLE_URL}/login`} variant="primary" size="xs">
-              Get started
+            <Button
+              as="a"
+              href={CREATE_ACCOUNT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="primary"
+              size="xs"
+            >
+              Create account
               <svg
                 width="12"
                 height="12"

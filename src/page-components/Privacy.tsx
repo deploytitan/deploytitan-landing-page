@@ -4,7 +4,7 @@ export default function Privacy() {
   return (
     <section className="pt-28 pb-24">
       <Container width="3xl" padding="default">
-        <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">Legal</p>
+        <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-4">Legal</p>
         <h1 className="text-3xl font-semibold text-ink mb-2">Privacy Policy</h1>
         <p className="text-ink-tertiary font-mono text-xs mb-10">Updated at 2026-05-16</p>
 

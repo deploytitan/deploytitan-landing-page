@@ -67,9 +67,9 @@ export function Breadcrumbs({ className = '' }: BreadcrumbsProps) {
         const isLast = i === trail.length - 1
         return (
           <span key={crumb.path} className="flex items-center gap-1.5">
-            {i > 0 && <span className="text-ink-quaternary text-xs select-none">→</span>}
+            {i > 0 && <span className="text-ink-tertiary text-xs select-none">→</span>}
             {isLast ? (
-              <span className="text-xs text-primary font-mono">{crumb.label}</span>
+              <span className="text-xs text-primary-accessible font-mono">{crumb.label}</span>
             ) : (
               <Link
                 href={crumb.path}

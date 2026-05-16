@@ -6,24 +6,24 @@ const PRIMARY = 'var(--color-primary)'
 
 const values = [
   {
-    title: 'Start small, then promote',
+    title: 'Coordination before execution',
     description:
-      'Ship to one account, one tenant, one team — before you ship to everyone. Cohort deployments let you target specific users or accounts by event attributes, so real-world blast radius starts at one.',
+      'The release happens in your head long before it happens in production. DeployTitan makes the coordination work that happens in Slack threads and Jira tickets structural, visible, and auditable.',
   },
   {
-    title: 'Safety actions should never cost extra',
+    title: 'Rollback confidence is not optional',
     description:
-      'Rollbacks, health checks, and risk scans are included in every plan. We never charge more for doing the right thing.',
+      'Every release should have a named rollback owner, a linked playbook, and a computed revert sequence before anything merges. This is not nice-to-have; it is the prerequisite for a safe release.',
   },
   {
     title: 'Respect engineer time',
     description:
-      'Every hour spent manually watching a canary is an hour not spent building. We automate the toil so your team can focus on the work that matters.',
+      'Every hour spent chasing release status across four tools is an hour not spent building. DeployTitan creates one shared record so teams stop repeating themselves.',
   },
   {
     title: 'No black boxes',
     description:
-      'Every deployment decision, traffic split, cohort promotion, and rollback trigger is visible in your dashboard. You always know what Titan did and why.',
+      'Every release state, dependency block, approval, and promotion decision is visible on the release record. You always know what Titan did and why.',
   },
 ]
 
@@ -31,7 +31,7 @@ const team = [
   {
     name: 'Justine Kizhakkinedath',
     role: 'Founder',
-    bio: 'Spent years across engineering organizations watching the same Lambda deployment anxiety repeat — manual traffic cuts, missed DLQ spikes, 3am rollbacks. Built DeployTitan to make that a solved problem.',
+    bio: 'Spent years across engineering organizations watching the same release coordination pain repeat: manual Slack threads for every multi-service release, rollback incidents caused by missing ownership, and no shared view of release state across teams. Built DeployTitan to make that a solved problem.',
   },
 ]
 
@@ -48,11 +48,12 @@ export default function About() {
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-20 lg:py-28">
           <div className="">
-            <span className="text-ink-quaternary font-mono text-[11px] tracking-widest uppercase">
+            <span className="text-ink-tertiary font-mono text-[11px] tracking-widest uppercase">
               About
             </span>
             <h1 className="font-display text-ink mt-3 text-4xl leading-[1.05] font-medium tracking-tight sm:text-5xl lg:text-6xl">
-              Progressive delivery for AWS Lambda, done right.
+              Release coordination
+              for distributed engineering teams.
             </h1>
             {/* Two-line descriptor: what + for whom */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
@@ -61,8 +62,8 @@ export default function About() {
                 style={{ background: PRIMARY, opacity: 0.5 }}
               />
               <p className="text-ink-secondary text-base leading-relaxed">
-                Automated canary deployments, DLQ-driven rollbacks, and real-time risk intelligence
-                — so teams shipping Lambda functions can move fast without breaking things.
+                Multi-repo release coordination, dependency graphing, rollback ownership, and release
+                visibility for engineering teams whose releases span more than one service.
               </p>
             </div>
           </div>
@@ -75,7 +76,7 @@ export default function About() {
           <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-[1fr_2px_1fr] lg:gap-0">
             {/* Label + heading */}
             <div className="flex flex-col justify-center pr-0 lg:pr-12">
-              <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
+              <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
                 Company overview
               </span>
               <h2 className="font-display text-ink mt-3 text-2xl leading-snug font-medium tracking-[-0.02em]">
@@ -94,15 +95,15 @@ export default function About() {
             {/* Formal description */}
             <div className="flex flex-col justify-center pl-0 lg:pl-12">
               <p className="text-ink-secondary text-base leading-relaxed">
-                DeployTitan is a progressive delivery platform built specifically for AWS Lambda and
-                event-driven architectures. It gives teams canary traffic splitting via Lambda
-                alias routing, cohort deployments that target specific users or accounts by event
-                attributes, automated rollback triggered by DLQ depth and CloudWatch metrics, and
-                deployment risk intelligence — all configured through the DeployTitan platform.
+                DeployTitan is release coordination and deployment safety software for distributed
+                engineering teams. The core product, Titan Rollouts, sits above GitHub, CI/CD, and
+                observability tools to model the release lifecycle those systems do not manage well:
+                multi-repo coordination, dependency graphing, freeze window management, approval
+                flows, and rollback coordination.
               </p>
               <p className="text-ink-secondary mt-4 text-base leading-relaxed">
-                The platform is priced per managed function, not per deployment — so teams can
-                ship as often as they need without watching a cost counter.
+                Pricing is based on release coordination complexity and service count, not
+                deployments or infrastructure consumption.
               </p>
             </div>
           </div>
@@ -113,7 +114,7 @@ export default function About() {
       <Section border="bottom" padding="none">
         <Container className="py-16 lg:py-20">
           {/* Section label */}
-          <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
+          <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
             Mission &amp; Vision
           </span>
 
@@ -124,7 +125,7 @@ export default function About() {
               style={{ background: PRIMARY, opacity: 0.5 }}
             />
             <h2 className="font-display text-ink text-3xl leading-[1.1] font-medium tracking-tight sm:text-4xl">
-              Make every Lambda deployment
+              Make every multi-service release
               <br />a non-event.
             </h2>
           </div>
@@ -134,21 +135,19 @@ export default function About() {
             {/* Mission body */}
             <div className="text-ink-secondary space-y-4 text-base leading-relaxed">
               <p>
-                Lambda deployments fail in ways that generic CI/CD tools don&apos;t handle well —
-                DLQ spikes, cold start regressions, event source mapping errors. The usual response
-                is manual traffic management, Slack alerts, and someone staying awake to watch the
-                graphs.
+                Multi-service releases fail in ways that GitHub, CI/CD tools, and observability
+                platforms do not handle well: merge sequencing errors, missing rollback ownership,
+                freeze windows that open with blocked dependencies still unresolved.
               </p>
               <p>
-                DeployTitan automates that loop. You define what healthy looks like in YAML; Titan
-                watches the signals and either promotes or rolls back — without a human in the
-                critical path. And with cohort deployments, you can target the new version at a
-                specific set of users, accounts, or tenants — identified by event or context
-                attributes — before it touches everyone.
+                DeployTitan closes that coordination gap. Teams define the release, track its
+                dependencies, collect approvals, and attach rollback plans before anything ships.
+                The coordination that used to live in Slack threads and human memory becomes
+                structural and visible.
               </p>
               <p>
-                We&apos;re a small, focused team. We ship fast, we talk to our customers constantly,
-                and we build only what makes Lambda deployments safer.
+                We are a small, focused team. We talk to engineers every day and build only
+                what makes release coordination safer and more reliable.
               </p>
             </div>
 
@@ -160,13 +159,13 @@ export default function About() {
                   className="absolute top-0 left-0 h-6 w-6 border-t border-l"
                   style={{ borderColor: PRIMARY, opacity: 0.35 }}
                 />
-                <p className="text-ink-quaternary mb-3 font-mono text-[10px] tracking-widest uppercase">
+                <p className="text-ink-tertiary mb-3 font-mono text-[10px] tracking-widest uppercase">
                   Vision
                 </p>
                 <p className="text-ink text-base leading-snug font-medium">
-                  A world where any team running Lambda functions can deploy with confidence —
-                  targeting specific users or accounts first, watching the signals, and promoting
-                  automatically. No dedicated platform engineers, no manual traffic cuts, no 3am pages.
+                  A world where any distributed engineering team can coordinate a complex
+                  multi-service release without a Slack thread, a spreadsheet, or institutional
+                  knowledge that only one person has.
                 </p>
               </Card>
 
@@ -190,7 +189,7 @@ export default function About() {
       {/* ── Values ────────────────────────────────────────────────────────────── */}
       <Section border="bottom" tone="muted" padding="none">
         <Container className="py-16">
-          <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
+          <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
             Values
           </span>
           <h2 className="font-display text-ink mt-3 text-2xl font-medium tracking-[-0.02em]">
@@ -210,7 +209,7 @@ export default function About() {
       {/* ── Team ──────────────────────────────────────────────────────────────── */}
       <Section border="bottom" padding="none">
         <Container className="py-16">
-          <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
+          <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
             Team
           </span>
           <h2 className="font-display text-ink mt-3 text-2xl font-medium tracking-[-0.02em]">
@@ -231,7 +230,7 @@ export default function About() {
                   {person.name.charAt(0)}
                 </div>
                 <h3 className="text-ink text-sm font-medium">{person.name}</h3>
-                <p className="text-ink-quaternary mt-0.5 font-mono text-[10px] tracking-widest uppercase">
+                <p className="text-ink-tertiary mt-0.5 font-mono text-[10px] tracking-widest uppercase">
                   {person.role}
                 </p>
                 <p className="text-ink-secondary mt-3 text-xs leading-relaxed">{person.bio}</p>

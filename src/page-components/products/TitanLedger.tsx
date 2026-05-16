@@ -4,22 +4,23 @@ import { useScrollReveal } from '../../utils'
 import { RoadmapBadge } from '../../components/shared/RoadmapBadge'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
+import { ProductPageHero } from '../../components/shared/ProductPageHero'
 
 const CROSS_LINKS = [
   {
-    label: 'Titan Rollout',
-    desc: 'Move traffic to a new version, safely',
+    label: 'Titan Rollouts',
+    desc: 'Coordinate multi-service releases',
     href: '/products/titan-rollout',
   },
   {
-    label: 'Titan Phoenix',
-    desc: 'Undo a bad release in seconds',
-    href: '/products/titan-phoenix',
+    label: 'Release Coordination',
+    desc: 'Orchestrate multi-service releases end to end',
+    href: '/solutions/release-coordination',
   },
   {
-    label: 'Titan Foresight',
-    desc: 'Score every change before it ships',
-    href: '/products/titan-foresight',
+    label: 'Release Intelligence',
+    desc: 'Visibility into every release in flight',
+    href: '/solutions/release-intelligence',
   },
 ]
 
@@ -179,43 +180,21 @@ export default function TitanLedger() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="blueprint-grid pt-28 pb-20 border-b border-line">
-        <Container width="4xl" padding="default">
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4" data-reveal data-reveal-delay="1">
-            Titan Ledger · Measure
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6" data-reveal data-reveal-delay="2">
-            Every deploy,
-            <br className="hidden md:block" /> measured automatically.
-          </h1>
-          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8" data-reveal data-reveal-delay="3">
-            Ledger turns the events your deploys already produce into history you can act on. DORA,
-            trends, and team scorecards: no agents, no tagging.
-          </p>
-          <div className="flex flex-wrap gap-4" data-reveal data-reveal-delay="4">
-            <a
-              href="/early-access"
-              className="inline-flex items-center gap-2 bg-primary text-ink dark:text-surface text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
-              style={{ borderRadius: '2px' }}
-            >
-              Join early access
-            </a>
-            <a
-              href="/how-it-works"
-              className="inline-flex items-center gap-2 border border-line text-ink-secondary text-sm px-5 py-2.5 hover:border-primary/40 hover:text-ink transition-colors"
-              style={{ borderRadius: '2px' }}
-            >
-              How it works
-            </a>
-          </div>
-        </Container>
-      </section>
+      <ProductPageHero
+        eyebrow="Titan Ledger · Measure"
+        badge="roadmap"
+        heading={<>Every deploy,<br className="hidden md:block" /> measured automatically.</>}
+        description="Ledger turns the events your deploys already produce into history you can act on. DORA, trends, and team scorecards: no agents, no tagging."
+        ctas={[
+          { label: 'Join early access', href: '/pricing' },
+          { label: 'How it works', href: '/how-it-works', variant: 'secondary' },
+        ]}
+      />
 
       {/* What Ledger owns */}
       <section className="py-16 border-b border-line bg-surface-alt/20">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
             What Ledger owns
           </p>
           <h2 className="text-xl font-semibold text-ink mb-3">
@@ -246,7 +225,7 @@ export default function TitanLedger() {
       <section className="py-24 border-b border-line">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               Capabilities
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
@@ -277,7 +256,7 @@ export default function TitanLedger() {
         <Container width="6xl" padding="default">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div data-reveal>
-              <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
                 Architecture
               </p>
               <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-4">
@@ -357,7 +336,7 @@ export default function TitanLedger() {
       <section className="py-24 border-b border-line bg-surface-alt/20">
         <Container width="6xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               DORA Metrics
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">

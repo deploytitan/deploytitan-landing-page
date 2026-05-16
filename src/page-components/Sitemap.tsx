@@ -80,10 +80,10 @@ function GroupCard({ group, nodes, query, inboundCount, outboundCount }: GroupCa
         aria-expanded={open}
       >
         <span className="w-2.5 h-2.5 shrink-0" style={{ backgroundColor: color, borderRadius: '1px' }} />
-        <span className="font-mono text-[11px] uppercase tracking-widest text-ink-quaternary flex-1">
+        <span className="font-mono text-[11px] uppercase tracking-widest text-ink-tertiary flex-1">
           {GROUP_LABELS[group]}
         </span>
-        <span className="font-mono text-[10px] text-ink-quaternary tabular-nums">
+        <span className="font-mono text-[10px] text-ink-tertiary tabular-nums">
           {filtered.length}
         </span>
         <svg
@@ -95,7 +95,7 @@ function GroupCard({ group, nodes, query, inboundCount, outboundCount }: GroupCa
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="text-ink-quaternary transition-transform duration-200 shrink-0"
+          className="text-ink-tertiary transition-transform duration-200 shrink-0"
           style={{ transform: open ? 'rotate(0deg)' : 'rotate(-90deg)' }}
         >
           <polyline points="6 9 12 15 18 9" />
@@ -140,7 +140,7 @@ function GroupCard({ group, nodes, query, inboundCount, outboundCount }: GroupCa
                           </span>
                         )}
                       </div>
-                      <span className="block font-mono text-[10px] text-ink-quaternary mt-0.5 truncate">
+                      <span className="block font-mono text-[10px] text-ink-tertiary mt-0.5 truncate">
                         {highlight(n.id, query)}
                       </span>
                       {n.description && (
@@ -154,7 +154,7 @@ function GroupCard({ group, nodes, query, inboundCount, outboundCount }: GroupCa
                     <div className="flex items-center gap-1.5 shrink-0 mt-0.5">
                       {ob > 0 && (
                         <span
-                          className="font-mono text-[9px] text-ink-quaternary border border-line px-1.5 py-0.5 leading-none"
+                          className="font-mono text-[9px] text-ink-tertiary border border-line px-1.5 py-0.5 leading-none"
                           style={{ borderRadius: '2px' }}
                           title={`${ob} outbound links`}
                         >
@@ -309,7 +309,7 @@ function TreeNodeRow({
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-ink-quaternary transition-transform duration-150"
+            className="text-ink-tertiary transition-transform duration-150"
             style={{ transform: open ? 'rotate(0deg)' : 'rotate(-90deg)' }}
           >
             <polyline points="6 9 12 15 18 9" />
@@ -339,7 +339,7 @@ function TreeNodeRow({
                 featured
               </span>
             )}
-            <span className="font-mono text-[10px] text-ink-quaternary">
+            <span className="font-mono text-[10px] text-ink-tertiary">
               {highlight(node.id, query)}
             </span>
           </div>
@@ -354,7 +354,7 @@ function TreeNodeRow({
         <div className="flex items-center gap-1.5 shrink-0 mt-0.5">
           {ob > 0 && (
             <span
-              className="font-mono text-[9px] text-ink-quaternary border border-line px-1.5 py-0.5"
+              className="font-mono text-[9px] text-ink-tertiary border border-line px-1.5 py-0.5"
               style={{ borderRadius: '2px' }}
               title={`${ob} outbound links`}
             >
@@ -465,7 +465,7 @@ function TreeView() {
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-quaternary pointer-events-none"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-tertiary pointer-events-none"
           >
             <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
@@ -480,7 +480,7 @@ function TreeView() {
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-quaternary hover:text-ink transition-colors text-xs font-mono"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-tertiary hover:text-ink transition-colors text-xs font-mono"
             >
               ✕
             </button>
@@ -505,7 +505,7 @@ function TreeView() {
 
         {/* Result count */}
         {query && (
-          <span className="font-mono text-xs text-ink-quaternary self-center whitespace-nowrap">
+          <span className="font-mono text-xs text-ink-tertiary self-center whitespace-nowrap">
             {matchCount} match{matchCount !== 1 ? 'es' : ''}
           </span>
         )}
@@ -568,7 +568,7 @@ export default function Sitemap() {
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-10 sm:py-16">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
               Site Graph
             </span>
             <h1 className="mt-3 text-3xl sm:text-4xl font-display font-medium tracking-tight text-ink leading-[1.15]">
@@ -596,7 +596,7 @@ export default function Sitemap() {
                 </button>
               ))}
             </div>
-            <span className="font-mono text-[11px] text-ink-quaternary">
+            <span className="font-mono text-[11px] text-ink-tertiary">
               {nodeMeta.length} pages
             </span>
           </div>
@@ -612,7 +612,7 @@ export default function Sitemap() {
                 className="border border-line bg-surface-alt flex items-center justify-center"
                 style={{ height: 400, borderRadius: '2px' }}
               >
-                <span className="font-mono text-sm text-ink-quaternary animate-pulse">
+                <span className="font-mono text-sm text-ink-tertiary animate-pulse">
                   Loading graph…
                 </span>
               </div>
@@ -630,7 +630,7 @@ export default function Sitemap() {
       {view === 'graph' && (
         <Section border="top" tone="muted" padding="none">
           <Container className="py-8">
-            <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest block mb-4">
+            <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest block mb-4">
               Legend — node groups
             </span>
             <div className="flex flex-wrap gap-4">
@@ -651,15 +651,15 @@ export default function Sitemap() {
             <div className="mt-4 flex flex-wrap gap-6">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-px" style={{ backgroundColor: 'rgba(212,180,84,0.5)' }} />
-                <span className="text-xs font-mono text-ink-quaternary">CTA link</span>
+                <span className="text-xs font-mono text-ink-tertiary">CTA link</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-8 h-px" style={{ backgroundColor: 'rgba(59,130,246,0.4)' }} />
-                <span className="text-xs font-mono text-ink-quaternary">Cross-sell</span>
+                <span className="text-xs font-mono text-ink-tertiary">Cross-sell</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-8 h-px" style={{ backgroundColor: 'rgba(0,0,0,0.12)' }} />
-                <span className="text-xs font-mono text-ink-quaternary">Internal link</span>
+                <span className="text-xs font-mono text-ink-tertiary">Internal link</span>
               </div>
             </div>
           </Container>

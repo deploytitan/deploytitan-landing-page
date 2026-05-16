@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import posthog from 'posthog-js'
 import { Button } from './shared/Button'
 
 interface AnnouncementBarProps {
@@ -21,6 +22,7 @@ export function AnnouncementBar({ onDismiss, announcementRef }: AnnouncementBarP
   const linkTo = '/products/titan-foresight'
 
   const handleDismiss = () => {
+    posthog.capture('announcement_bar_dismissed', { message, link_to: linkTo })
     setDismissed(true)
     onDismiss?.()
   }
@@ -33,7 +35,11 @@ export function AnnouncementBar({ onDismiss, announcementRef }: AnnouncementBarP
       className="fixed flex flex-col md:flex-row top-0 left-0 right-0 z-[60] bg-ink text-surface text-xs font-medium min-h-9 items-center justify-center py-2 px-4 md:gap-3"
     >
       <span className="sm:inline text-surface/70 max-w-90 lg:max-w-[unset]">{message}</span>
-      <a href={linkTo} className="text-primary hover:text-primary-light transition-colors shrink-0">
+      <a
+        href={linkTo}
+        className="text-primary-accessible hover:text-primary transition-colors shrink-0"
+        onClick={() => posthog.capture('announcement_bar_link_clicked', { link_label: linkLabel, link_to: linkTo })}
+      >
         {linkLabel}
       </a>
       <Button

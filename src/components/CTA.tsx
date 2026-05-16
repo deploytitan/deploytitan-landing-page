@@ -1,110 +1,80 @@
 'use client'
 
-import { type FormEvent, useState } from 'react'
+import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
 import { Container } from './shared/Container'
 import { Button } from './shared/Button'
-import { DEMO_URL, FORM_ENDPOINT } from '@/lib/env'
-
-const PRIMARY = 'var(--color-primary)'
 
 const trustSignals = [
-  { label: 'Works with your existing stack', detail: 'No rewrites required' },
-  { label: 'No vendor lock-in', detail: 'Works with any CI/CD' },
+  {
+    label: 'GitHub, GitLab, Jira, Slack, and CI/CD integrations',
+    detail: 'Fits into the release workflow teams already use',
+  },
+  {
+    label: 'No runtime traffic proxy required',
+    detail: 'Adopt the coordination layer before touching infrastructure',
+  },
 ]
 
 export function CTA() {
   const ref = useScrollReveal()
-  const [submitted, setSubmitted] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setError(null)
-
-    if (!FORM_ENDPOINT) {
-      setError('Form endpoint not configured.')
-      return
-    }
-
-    const data = new FormData(e.currentTarget)
-    const name = data.get('name') as string
-    const email = data.get('email') as string
-
-    setSubmitting(true)
-    try {
-      await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ name, email, sheet: 'waitlist', source: 'cta' }).toString(),
-      })
-      setSubmitted(true)
-    } catch {
-      setError('Something went wrong. Please try again.')
-    } finally {
-      setSubmitting(false)
-    }
-  }
 
   return (
-    <section id="final-cta" className="py-16 lg:py-20 border-t border-line relative" ref={ref}>
-      {/* Blueprint grid background */}
+    <section id="final-cta" className="relative border-t border-line py-16 lg:py-20" ref={ref}>
       <div
-        className="absolute inset-0 blueprint-grid opacity-30 pointer-events-none"
+        className="pointer-events-none absolute inset-0 blueprint-grid opacity-30"
         aria-hidden="true"
       />
 
       <Container className="relative">
         <div
-          className="relative border border-line overflow-hidden bg-surface corner-accent"
+          className="relative overflow-hidden border border-line bg-surface corner-accent"
           style={{ borderRadius: '2px' }}
         >
-          {/* Extra corners */}
           <div
-            className="absolute top-0 right-0 w-3 h-3 border-t border-r opacity-30"
+            className="absolute top-0 right-0 h-3 w-3 border-t border-r opacity-30"
             style={{ borderColor: 'var(--color-primary)' }}
             aria-hidden="true"
           />
           <div
-            className="absolute bottom-0 left-0 w-3 h-3 border-b border-l opacity-30"
+            className="absolute bottom-0 left-0 h-3 w-3 border-b border-l opacity-30"
             style={{ borderColor: 'var(--color-primary)' }}
             aria-hidden="true"
           />
 
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            {/* Left: live demo CTA */}
-            <div className="p-10 lg:p-16 border-b lg:border-b-0 lg:border-r border-line flex flex-col justify-center">
+            <div className="flex flex-col justify-center border-b border-line p-10 lg:border-r lg:border-b-0 lg:p-16">
               <span
                 data-reveal
-                className="inline-flex items-center gap-3 text-sm font-mono text-ink-secondary mb-5"
+                className="mb-5 inline-flex items-center gap-3 text-sm font-mono text-ink-secondary"
               >
-                <span className="w-8 h-px bg-primary/40" />
-                Live demo
+                <span className="h-px w-8 bg-primary/40" />
+                  Create account
               </span>
 
               <h2
                 data-reveal
                 data-reveal-delay="1"
-                className="font-display font-medium text-3xl lg:text-4xl tracking-[-0.022em] leading-[1.12] mb-4"
+                className="mb-4 font-display text-3xl font-medium leading-[1.12] tracking-[-0.022em] lg:text-4xl"
               >
-                Start shipping
+                Walk through your next
                 <br />
-                without fear.
+                complex release.
               </h2>
 
               <p
                 data-reveal
                 data-reveal-delay="2"
-                className="text-base text-ink-secondary leading-relaxed mb-8 max-w-sm"
+                className="mb-8 max-w-sm text-base leading-relaxed text-ink-secondary"
               >
-                Works with your existing stack. No major changes required.
+                We will map your release dependencies, freeze windows, approvals, and rollback
+                process against the DeployTitan workflow.
               </p>
 
-              <div data-reveal data-reveal-delay="3" className="flex flex-col gap-3 max-w-sm">
+              <div data-reveal data-reveal-delay="3" className="flex max-w-sm flex-col gap-3">
                 <Button
                   as="a"
-                  href={DEMO_URL}
+                  href={CREATE_ACCOUNT_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="primary"
@@ -112,7 +82,7 @@ export function CTA() {
                   block
                   className="group"
                 >
-                  See live demo
+                Get started
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="14"
@@ -129,14 +99,12 @@ export function CTA() {
                     <path d="m12 5 7 7-7 7" />
                   </svg>
                 </Button>
-
               </div>
 
-              {/* Trust signals */}
               <div
                 data-reveal
                 data-reveal-delay="4"
-                className="mt-8 pt-6 border-t border-line space-y-3"
+                className="mt-8 space-y-3 border-t border-line pt-6"
               >
                 {trustSignals.map((ts) => (
                   <div key={ts.label} className="flex items-center gap-3">
@@ -146,11 +114,11 @@ export function CTA() {
                       height="14"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke={PRIMARY}
+                      stroke="var(--color-primary)"
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="flex-shrink-0 opacity-60"
+                      className="shrink-0 opacity-60"
                     >
                       <path d="M20 6 9 17l-5-5" />
                     </svg>
@@ -163,143 +131,58 @@ export function CTA() {
               </div>
             </div>
 
-            {/* Right: email capture */}
-            <div className="p-10 lg:p-16 flex flex-col justify-center">
+            <div className="flex flex-col justify-center p-10 lg:p-16">
               <span
                 data-reveal
                 data-reveal-delay="3"
-                className="inline-flex items-center gap-3 text-sm font-mono text-ink-secondary mb-5"
+                className="mb-5 inline-flex items-center gap-3 text-sm font-mono text-ink-secondary"
               >
-                <span className="w-8 h-px bg-primary/40" />
-                Early access
+                <span className="h-px w-8 bg-primary/40" />
+                Pricing
               </span>
 
               <h3
                 data-reveal
                 data-reveal-delay="4"
-                className="font-display font-medium text-2xl lg:text-3xl tracking-[-0.02em] leading-[1.2] mb-3"
+                className="mb-3 font-display text-2xl font-medium leading-[1.2] tracking-[-0.02em] lg:text-3xl"
               >
-                Get notified when we launch self-serve.
+                Price for coordination
+                <br />
+                complexity, not infra usage.
               </h3>
 
               <p
                 data-reveal
                 data-reveal-delay="5"
-                className="text-sm text-ink-secondary leading-relaxed mb-8 max-w-sm"
+                className="mb-8 max-w-sm text-sm leading-relaxed text-ink-secondary"
               >
-                We're working with a small group of teams to shape the product. Leave your email to
-                stay in the loop.
+                Plans scale by service count and operational overhead, so teams can justify the
+                workflow without worrying about per-deployment or per-request metering.
               </p>
 
-              {!submitted ? (
-                <form
-                  onSubmit={handleSubmit}
-                  data-reveal
-                  data-reveal-delay="6"
-                  className="space-y-3 max-w-sm"
-                >
-                  <div className="flex flex-col gap-1">
-                    <label htmlFor="cta-name" className="sr-only">Your name</label>
-                    <input
-                      id="cta-name"
-                      type="text"
-                      name="name"
-                      placeholder="Your name"
-                      required
-                      autoComplete="name"
-                      disabled={submitting}
-                      className="w-full px-5 py-4 border border-line text-sm bg-surface-alt text-ink placeholder:text-ink-quaternary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus:border-primary/40 transition-colors disabled:opacity-50"
-                      style={{ borderRadius: '2px' }}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <label htmlFor="cta-email" className="sr-only">Work email</label>
-                    <input
-                      id="cta-email"
-                      type="email"
-                      name="email"
-                      placeholder="Work email"
-                      required
-                      autoComplete="email"
-                      disabled={submitting}
-                      className="w-full px-5 py-4 border border-line text-sm bg-surface-alt text-ink placeholder:text-ink-quaternary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus:border-primary/40 transition-colors disabled:opacity-50"
-                      style={{ borderRadius: '2px' }}
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    variant="outline"
-                    size="lg"
-                    block
-                    disabled={submitting}
-                    className="disabled:opacity-60"
-                  >
-                    {submitting ? (
-                      <>
-                        <span
-                          role="status"
-                          aria-label="Submitting"
-                          className="w-3.5 h-3.5 border-2 border-ink/20 border-t-ink animate-spin"
-                          style={{ borderRadius: '2px' }}
-                        />
-                        Submitting...
-                      </>
-                    ) : (
-                      'Keep me updated'
-                    )}
-                  </Button>
-                  {error && (
-                    <p role="alert" className="text-xs text-signal-danger font-mono text-center pt-1">{error}</p>
-                  )}
-                  <p className="text-xs text-ink-tertiary font-mono text-center pt-1">
-                    No spam. Just product updates.
-                  </p>
-                </form>
-              ) : (
-                <div className="success-reveal flex flex-col items-start gap-3 py-4">
-                  <div className="flex items-center gap-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="#22c55e"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M20 6 9 17l-5-5" />
-                    </svg>
-                    <span className="text-base font-medium text-ink">You're on the list.</span>
-                  </div>
-                  <p className="text-sm text-ink-secondary">
-                    We'll reach out when self-serve is ready.
-                  </p>
+              <div data-reveal data-reveal-delay="6" className="max-w-sm space-y-4">
+                <div className="space-y-3 border-y border-line py-5">
+                  {[
+                    'Starter: up to 10 services for smaller release surfaces',
+                    'Growth: up to 50 services with rollback workflows and integrations',
+                    'Enterprise: SSO, compliance, and private deployment options',
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3">
+                      <span
+                        className="mt-1.5 block h-2 w-2 shrink-0 bg-primary"
+                        style={{ borderRadius: '1px' }}
+                      />
+                      <p className="text-sm leading-6 text-ink-secondary">{item}</p>
+                    </div>
+                  ))}
                 </div>
-              )}
 
-              {/* Urgency signal */}
-              <div data-reveal data-reveal-delay="7" className="mt-8 pt-6 border-t border-line">
-                <div className="flex items-center gap-3">
-                  <div className="relative flex h-2 w-2">
-                    <span
-                      className="absolute inline-flex h-full w-full bg-primary opacity-50"
-                      style={{
-                        animation: 'ping-anim 2s cubic-bezier(0,0,0.2,1) infinite',
-                        borderRadius: '1px',
-                      }}
-                    />
-                    <span
-                      className="relative inline-flex h-2 w-2 bg-primary"
-                      style={{ borderRadius: '1px' }}
-                    />
-                  </div>
-                  <span className="text-xs text-ink-secondary">
-                    Accepting early access partners,{' '}
-                    <span className="font-medium text-ink">limited availability</span>
-                  </span>
-                </div>
+                <Button as="a" href="/pricing" variant="outline" size="lg" block>
+                  View pricing
+                </Button>
+                <Button as="a" href="#release-workflow" variant="ghost" size="md" block>
+                  See release workflow
+                </Button>
               </div>
             </div>
           </div>

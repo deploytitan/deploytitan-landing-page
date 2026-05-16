@@ -2,6 +2,8 @@
 
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import posthog from 'posthog-js'
+import { APP_URL } from '@/lib/env'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { CATEGORY_LABELS, integrations } from '../../data/integrations'
 import { Section } from '../../components/shared/Section'
@@ -21,7 +23,7 @@ export default function IntegrationDetail() {
         <h1 className="font-display text-3xl font-medium text-ink mb-4">Integration not found</h1>
         <Link
           href="/integrations"
-          className="text-sm text-primary hover:text-primary-dark transition-colors"
+          className="text-sm text-primary-accessible hover:text-primary transition-colors"
         >
           ← Back to integrations
         </Link>
@@ -58,7 +60,7 @@ export default function IntegrationDetail() {
                   {integration.name}
                 </h1>
                 <span
-                  className="font-mono text-[10px] border border-line text-ink-quaternary px-2 py-0.5"
+                  className="font-mono text-[10px] border border-line text-ink-tertiary px-2 py-0.5"
                   style={{ borderRadius: '2px' }}
                 >
                   {CATEGORY_LABELS[integration.category]}
@@ -128,7 +130,7 @@ export default function IntegrationDetail() {
           <div className="flex flex-col gap-5">
             {/* Products */}
             <Card tone="muted" padding="sm">
-              <h3 className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest mb-3">
+              <h3 className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest mb-3">
                 Works with
               </h3>
               <div className="flex flex-col gap-2">
@@ -142,7 +144,7 @@ export default function IntegrationDetail() {
 
             {/* Status */}
             <Card tone="muted" padding="sm">
-              <h3 className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest mb-3">
+              <h3 className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest mb-3">
                 Status
               </h3>
               <div className="flex items-center gap-2">
@@ -164,9 +166,10 @@ export default function IntegrationDetail() {
             {/* CTA */}
             <Card tone="muted" padding="sm" className="flex flex-col gap-3">
               <Link
-                href="/early-access"
+                href={`${APP_URL}/signup`}
                 className="w-full inline-flex items-center justify-center bg-ink text-surface dark:text-surface px-4 py-2.5 text-sm font-medium hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] transition-all"
                 style={{ borderRadius: '2px' }}
+                onClick={() => posthog.capture('integration_trial_cta_clicked', { integration_name: integration.name, integration_slug: integration.slug })}
               >
                 Start free trial
               </Link>
@@ -174,6 +177,7 @@ export default function IntegrationDetail() {
                 href="/docs"
                 className="w-full inline-flex items-center justify-center border border-line text-ink-secondary hover:text-ink hover:border-primary/30 px-4 py-2.5 text-sm font-medium transition-all"
                 style={{ borderRadius: '2px' }}
+                onClick={() => posthog.capture('integration_docs_clicked', { integration_name: integration.name, integration_slug: integration.slug })}
               >
                 View docs
               </Link>

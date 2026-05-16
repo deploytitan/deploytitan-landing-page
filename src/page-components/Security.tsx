@@ -45,7 +45,7 @@ export default function Security() {
       {/* Hero */}
       <section id="top" className="blueprint-grid pt-28 pb-20 border-b border-line">
         <Container width="4xl" padding="default" className="text-center" data-reveal>
-          <p className="text-xs font-mono tracking-[0.08em] uppercase text-primary mb-4">
+          <p className="text-xs font-mono tracking-[0.08em] uppercase text-primary-accessible mb-4">
             Security
           </p>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
@@ -80,7 +80,7 @@ export default function Security() {
       <section id="principles" className="py-24 border-b border-line">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-[0.08em] uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-[0.08em] uppercase text-primary-accessible mb-3">
               Principles
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink">
@@ -98,7 +98,7 @@ export default function Security() {
                 key={p.title}
                 className="grid grid-cols-[3rem_1fr_2fr] gap-6 py-6 group hover:bg-surface-alt/50 transition-colors -mx-4 px-4"
               >
-                <div className="font-mono text-[10px] text-ink-quaternary tracking-[0.08em] pt-0.5 select-none">
+                <div className="font-mono text-[10px] text-ink-tertiary tracking-[0.08em] pt-0.5 select-none">
                   {String(i + 1).padStart(2, '0')}
                 </div>
                 <p className="text-sm font-semibold text-ink leading-snug">{p.title}</p>
@@ -114,7 +114,7 @@ export default function Security() {
         <Container width="5xl" padding="default">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start" data-reveal>
             <div>
-              <p className="text-xs font-mono tracking-[0.08em] uppercase text-primary mb-4">
+              <p className="text-xs font-mono tracking-[0.08em] uppercase text-primary-accessible mb-4">
                 Data residency
               </p>
               <h2 className="text-2xl font-semibold text-ink mb-4">
@@ -132,7 +132,7 @@ export default function Security() {
             </div>
 
             <Card padding="lg" className="text-xs leading-relaxed">
-              <p className="text-[10px] font-mono uppercase tracking-[0.08em] text-ink-quaternary mb-4">
+              <p className="text-[10px] font-mono uppercase tracking-[0.08em] text-ink-tertiary mb-4">
                 What leaves your environment
               </p>
               <div className="flex flex-col gap-2.5">
@@ -186,7 +186,7 @@ export default function Security() {
             data-reveal
           >
             <div>
-              <p className="text-xs font-mono tracking-[0.08em] uppercase text-primary mb-3">
+              <p className="text-xs font-mono tracking-[0.08em] uppercase text-primary-accessible mb-3">
                 Evaluate DeployTitan
               </p>
               <h2 className="text-2xl font-semibold text-ink mb-3">
@@ -199,7 +199,7 @@ export default function Security() {
             </div>
             <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3">
               <a
-                href="/get-started"
+                href="/pricing"
                 className="inline-flex items-center justify-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium hover:opacity-90 transition-opacity"
                 style={{ borderRadius: '2px' }}
               >
@@ -220,7 +220,7 @@ export default function Security() {
       {/* Responsible disclosure */}
       <section id="disclosure" className="py-20">
         <Container width="3xl" padding="default" className="text-center" data-reveal>
-          <p className="text-xs font-mono tracking-[0.08em] uppercase text-primary mb-4">
+          <p className="text-xs font-mono tracking-[0.08em] uppercase text-primary-accessible mb-4">
             Vulnerability disclosure
           </p>
           <h2 className="text-2xl font-semibold text-ink mb-4">Found a security issue?</h2>
@@ -228,7 +228,7 @@ export default function Security() {
             We take security reports seriously. Email{' '}
             <a
               href="mailto:security@deploytitan.com"
-              className="text-primary hover:text-primary-dark"
+              className="text-primary-accessible hover:text-primary"
             >
               security@deploytitan.com
             </a>{' '}

@@ -31,7 +31,7 @@ export default function ForDevOps() {
     <>
       <section className="blueprint-grid pt-28 pb-20 border-b border-line">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-4">
             For DevOps & Release Engineering
           </p>
           <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-5">
@@ -64,7 +64,7 @@ export default function ForDevOps() {
             </a>
             <Link
               href="/solutions/progressive-delivery"
-              className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+              className="text-sm font-medium text-primary-accessible hover:text-primary transition-colors"
             >
               Explore progressive delivery →
             </Link>
@@ -75,7 +75,7 @@ export default function ForDevOps() {
       <section className="py-24 border-b border-line">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               How it works
             </p>
             <h2 className="text-2xl font-semibold text-ink">
@@ -110,7 +110,7 @@ export default function ForDevOps() {
 
       <section className="py-20 border-b border-line bg-surface-alt/30">
         <Container width="5xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-4">
             CI/CD integrations
           </p>
           <h2 className="text-2xl font-semibold text-ink mb-5">

@@ -3,7 +3,7 @@ import Pricing from '@/page-components/Pricing'
 
 export const metadata: Metadata = {
   title: 'Pricing | DeployTitan',
-  description: 'Flat-rate pricing per Lambda function. Unlimited deployments, rollbacks, and risk scans included.',
+  description: 'DeployTitan pricing is based on release coordination complexity, not infrastructure consumption.',
 }
 
 export default function Page() {

@@ -11,7 +11,7 @@ export function SectionHeader({ eyebrow, heading, subheading, align = 'center', 
   return (
     <div className={`flex flex-col gap-3 ${alignClass} ${className}`}>
       {eyebrow && (
-        <span className="font-mono text-xs text-primary uppercase tracking-widest">{eyebrow}</span>
+        <span className="font-mono text-xs text-primary-accessible uppercase tracking-widest">{eyebrow}</span>
       )}
       <h2 className="font-display text-3xl md:text-4xl font-medium tracking-[-0.02em] text-ink leading-tight max-w-2xl">
         {heading}

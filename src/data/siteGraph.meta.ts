@@ -42,21 +42,20 @@ export const nodeMeta: NodeMeta[] = [
   { id: '/', group: 'home', weight: 5, label: 'Home', description: 'DeployTitan landing page', emoji: '🏠' },
 
   // Products
-  { id: '/products/titan-rollout',   group: 'product', weight: 4, label: 'Titan Rollout',   description: 'Progressive deployments & SLO-gated cohort rollouts' },
-  { id: '/products/titan-shield',    group: 'product', weight: 4, label: 'Titan Shield',    description: 'Multi-cloud failover & infrastructure resilience' },
-  { id: '/products/titan-foresight', group: 'product', weight: 4, label: 'Titan Foresight', description: 'Pre-merge risk scoring & dependency analysis' },
-  { id: '/products/titan-ledger',    group: 'product', weight: 4, label: 'Titan Ledger',    description: 'DORA metrics & deploy telemetry — no agents' },
-  { id: '/products/titan-phoenix',   group: 'product', weight: 4, label: 'Titan Phoenix',   description: 'SLO-triggered scoped rollback' },
-  { id: '/products/titan-insight',   group: 'product', weight: 3, label: 'Titan Insight',   description: 'Deploy-to-metric correlation & outcome intelligence (coming soon)' },
-  { id: '/products/titan-sandbox',   group: 'product', weight: 3, label: 'Titan Sandbox',   description: 'Production-shaped environments per branch (coming soon)' },
+  { id: '/products/titan-rollout',   group: 'product', weight: 5, label: 'Titan Rollouts',   description: 'Release coordination and rollback for distributed engineering teams' },
+  { id: '/products/titan-foresight', group: 'product', weight: 3, label: 'Titan Foresight (Preview)', description: 'Rollouts Intelligence — pre-merge risk scoring & dependency analysis (preview)' },
+  { id: '/products/titan-phoenix',   group: 'product', weight: 2, label: 'Titan Phoenix (Roadmap)',   description: 'SLO-triggered scoped rollback (roadmap)' },
+  { id: '/products/titan-shield',    group: 'product', weight: 2, label: 'Titan Shield (Roadmap)',    description: 'Multi-cloud resilience (roadmap)' },
+  { id: '/products/titan-ledger',    group: 'product', weight: 3, label: 'Titan Ledger',    description: 'DORA metrics & deploy telemetry — no agents' },
+  { id: '/products/titan-insight',   group: 'product', weight: 2, label: 'Titan Insight (Roadmap)',   description: 'Deploy-to-metric correlation & outcome intelligence (roadmap)' },
+  { id: '/products/titan-sandbox',   group: 'product', weight: 2, label: 'Titan Sandbox (Roadmap)',   description: 'Production-shaped environments per branch (roadmap)' },
 
   // Solutions
   { id: '/solutions',                          group: 'solution', weight: 3, label: 'Solutions Overview' },
-  { id: '/solutions/progressive-delivery',     group: 'solution', weight: 3, label: 'Progressive Delivery' },
-  { id: '/solutions/multi-cloud-resilience',   group: 'solution', weight: 3, label: 'Multi-Cloud Resilience' },
-  { id: '/solutions/risk-intelligence',        group: 'solution', weight: 3, label: 'Risk Intelligence' },
-  { id: '/solutions/platform-engineering',     group: 'solution', weight: 3, label: 'Platform Engineering' },
-  { id: '/solutions/instant-rollback',         group: 'solution', weight: 3, label: 'Instant Rollback',      description: 'SLO-triggered scoped rollback before users notice' },
+  { id: '/solutions/release-coordination',     group: 'solution', weight: 4, label: 'Release Coordination',  description: 'Orchestrate multi-service releases end to end' },
+  { id: '/solutions/rollback-coordination',    group: 'solution', weight: 3, label: 'Rollback Coordination', description: 'Safe, sequenced rollback across services' },
+  { id: '/solutions/release-intelligence',     group: 'solution', weight: 3, label: 'Release Intelligence',  description: 'Visibility into every release in flight' },
+  { id: '/solutions/platform-engineering',     group: 'solution', weight: 3, label: 'Platform Engineering',  description: 'Policy-as-code golden path' },
 
   // Personas
   { id: '/for/sre',    group: 'persona', weight: 2, label: 'For SREs' },
@@ -131,22 +130,23 @@ export const GROUP_COLORS: Record<NodeGroup, { light: string; dark: string }> = 
 
 export const extraLinks: ExtraLink[] = [
   // Product ↔ Solution cross-links
-  { source: '/products/titan-rollout',   target: '/solutions/progressive-delivery',   kind: 'cross-sell' },
-  { source: '/products/titan-shield',    target: '/solutions/multi-cloud-resilience', kind: 'cross-sell' },
-  { source: '/products/titan-foresight', target: '/solutions/risk-intelligence',      kind: 'cross-sell' },
-  { source: '/solutions/platform-engineering', target: '/products/titan-rollout',     kind: 'related' },
+  { source: '/products/titan-rollout',   target: '/solutions/release-coordination',  kind: 'cross-sell' },
+  { source: '/products/titan-rollout',   target: '/solutions/rollback-coordination', kind: 'cross-sell' },
+  { source: '/products/titan-foresight', target: '/solutions/release-intelligence',  kind: 'cross-sell' },
+  { source: '/solutions/platform-engineering', target: '/products/titan-rollout',    kind: 'related' },
 
   // Persona ↔ Product
-  { source: '/for/sre',    target: '/products/titan-phoenix',   kind: 'related' },
+  { source: '/for/sre',    target: '/products/titan-rollout',   kind: 'related' },
   { source: '/for/devops', target: '/products/titan-rollout',   kind: 'related' },
   { source: '/for/cto',    target: '/pricing',                  kind: 'related' },
   { source: '/for/cto',    target: '/security',                 kind: 'related' },
 
   // Developer ↔ Product
   { source: '/integrations', target: '/products/titan-rollout',  kind: 'related' },
-  { source: '/integrations', target: '/products/titan-shield',   kind: 'related' },
   { source: '/cli',          target: '/docs',                    kind: 'related' },
   { source: '/api-reference', target: '/docs',                   kind: 'related' },
+  { source: '/roadmap',      target: '/products/titan-foresight', kind: 'related' },
+  { source: '/roadmap',      target: '/products/titan-phoenix',  kind: 'related' },
   { source: '/roadmap',      target: '/products/titan-insight',  kind: 'related' },
   { source: '/roadmap',      target: '/products/titan-sandbox',  kind: 'related' },
   { source: '/changelog',    target: '/blog',                    kind: 'related' },

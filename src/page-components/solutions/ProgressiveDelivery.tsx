@@ -99,7 +99,7 @@ export default function SolutionProgressiveDelivery() {
             </a>
             <a
               href={`${APP_URL}/signup`}
-              className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
+              className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
             >
               Start free trial →
             </a>
@@ -113,7 +113,7 @@ export default function SolutionProgressiveDelivery() {
           <div className="flex max-w-prose flex-col gap-10" data-reveal>
             {/* The scene */}
             <div>
-              <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
+              <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase">
                 The situation
               </p>
               <blockquote className="text-ink/90 mb-6 text-xl leading-snug font-semibold italic lg:text-2xl">
@@ -187,7 +187,7 @@ export default function SolutionProgressiveDelivery() {
 
             {/* The resolution */}
             <div>
-              <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
+              <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase">
                 The fix
               </p>
               <p className="text-ink-secondary leading-relaxed">
@@ -206,7 +206,7 @@ export default function SolutionProgressiveDelivery() {
       <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               The transformation
             </p>
             <h2 className="text-ink text-2xl leading-snug font-semibold lg:text-3xl">
@@ -232,7 +232,7 @@ export default function SolutionProgressiveDelivery() {
             </Card>
             {/* After */}
             <div className="sharp-card border-primary/25 bg-primary/[0.02] border p-8">
-              <p className="text-primary mb-5 font-mono text-[11px] tracking-widest uppercase">
+              <p className="text-primary-accessible mb-5 font-mono text-[11px] tracking-widest uppercase">
                 With DeployTitan
               </p>
               <ul className="flex flex-col gap-4">
@@ -254,7 +254,7 @@ export default function SolutionProgressiveDelivery() {
       <section className="border-line border-b py-24">
         <Container width="6xl" padding="default">
           <div className="mb-16" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               How it works
             </p>
             <h2 className="text-ink text-2xl leading-snug font-semibold lg:text-3xl">
@@ -275,7 +275,7 @@ export default function SolutionProgressiveDelivery() {
                     {phase.number}
                   </span>
                   <div className="text-right">
-                    <p className="text-primary text-2xl font-bold">{phase.metric.value}</p>
+                    <p className="text-primary-accessible text-2xl font-bold">{phase.metric.value}</p>
                     <p className="text-ink-tertiary font-mono text-[10px] tracking-wider uppercase">
                       {phase.metric.label}
                     </p>
@@ -295,7 +295,7 @@ export default function SolutionProgressiveDelivery() {
       <section className="border-line bg-surface-alt/30 border-b py-14">
         <Container width="3xl" padding="default">
           <div className="mb-8" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               One command
             </p>
             <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold">
@@ -308,7 +308,7 @@ export default function SolutionProgressiveDelivery() {
           </div>
           <div data-reveal>
             <CodeBlock variant="terminal" filename="terminal" copy={false}>
-              <p className="text-ink-quaternary">
+              <p className="text-ink-tertiary">
                 # Deploy with canary strategy, auto-rollback on SLO breach
               </p>
               <p className="text-ink mt-2">
@@ -336,7 +336,7 @@ export default function SolutionProgressiveDelivery() {
       <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               The status quo
             </p>
             <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold lg:text-3xl">
@@ -378,7 +378,7 @@ export default function SolutionProgressiveDelivery() {
                 data-reveal
                 data-reveal-delay={String(i)}
               >
-                <p className="text-primary mb-3 font-mono text-xs tracking-wider uppercase">
+                <p className="text-primary-accessible mb-3 font-mono text-xs tracking-wider uppercase">
                   {item.tool}
                 </p>
                 <p className="text-ink-secondary mb-4 text-sm leading-relaxed">{item.workaround}</p>
@@ -398,7 +398,7 @@ export default function SolutionProgressiveDelivery() {
       <section className="border-line bg-surface-alt/20 border-b py-20">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               How we compare
             </p>
             <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold lg:text-3xl">
@@ -484,7 +484,7 @@ export default function SolutionProgressiveDelivery() {
               </a>
               <a
                 href={`${APP_URL}/signup`}
-                className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
+                className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
               >
                 Start free trial →
               </a>

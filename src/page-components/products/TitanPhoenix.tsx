@@ -5,6 +5,7 @@ import { CodeBlock } from '../../components/shared/CodeBlock'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
+import { ProductPageHero } from '../../components/shared/ProductPageHero'
 
 const POLICY_SNIPPET = `# titan.yaml
 rollback:
@@ -59,19 +60,19 @@ const METRICS = [
 
 const CROSS_LINKS = [
   {
-    label: 'Titan Rollout',
-    desc: 'Move traffic to a new version, safely',
+    label: 'Titan Rollouts',
+    desc: 'Coordinate multi-service releases',
     href: '/products/titan-rollout',
   },
   {
-    label: 'Titan Foresight',
-    desc: 'Score every change before it ships',
-    href: '/products/titan-foresight',
+    label: 'Instant Rollback',
+    desc: 'Safe, sequenced rollback across services',
+    href: '/solutions/instant-rollback',
   },
   {
-    label: 'Titan Ledger',
-    desc: 'Every deploy, measured automatically',
-    href: '/products/titan-ledger',
+    label: 'Risk Intelligence',
+    desc: 'Visibility into every release in flight',
+    href: '/solutions/risk-intelligence',
   },
 ]
 
@@ -80,44 +81,21 @@ export default function TitanPhoenix() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="blueprint-grid pt-28 pb-20 border-b border-line">
-        <Container width="4xl" padding="default">
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4" data-reveal data-reveal-delay="1">
-            Titan Phoenix · Recover
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6" data-reveal data-reveal-delay="2">
-            Undo a bad release
-            <br className="hidden md:block" /> in seconds, only where it broke.
-          </h1>
-          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8" data-reveal data-reveal-delay="3">
-            When a release breaks, Phoenix doesn't roll back the whole service. It reverts the exact
-            slice that's failing (bad cohort, bad region, bad flag) triggered by your SLOs in
-            seconds.
-          </p>
-          <div className="flex flex-wrap gap-4" data-reveal data-reveal-delay="4">
-            <a
-              href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-primary text-ink dark:text-surface text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
-              style={{ borderRadius: '2px' }}
-            >
-              Start free trial
-            </a>
-            <a
-              href="/how-it-works"
-              className="inline-flex items-center gap-2 border border-line text-ink-secondary text-sm px-5 py-2.5 hover:border-primary/40 hover:text-ink transition-colors"
-              style={{ borderRadius: '2px' }}
-            >
-              How it works
-            </a>
-          </div>
-        </Container>
-      </section>
+      <ProductPageHero
+        eyebrow="Titan Phoenix · Recover"
+        badge="roadmap"
+        heading={<>Undo a bad release<br className="hidden md:block" /> in seconds, only where it broke.</>}
+        description="When a release breaks, Phoenix doesn't roll back the whole service. It reverts the exact slice that's failing (bad cohort, bad region, bad flag) triggered by your SLOs in seconds."
+        ctas={[
+          { label: 'Join the waitlist', href: '/pricing' },
+          { label: 'How it works', href: '/solutions/instant-rollback', variant: 'secondary' },
+        ]}
+      />
 
       {/* Wedge framing */}
       <section className="py-16 border-b border-line bg-surface-alt/20">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-4">
             How Phoenix is different
           </p>
           {/* Fixed: replaced side-stripe blockquote with weight/scale contrast */}
@@ -152,7 +130,7 @@ export default function TitanPhoenix() {
       <section className="py-24 border-b border-line">
         <Container width="6xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               Capabilities
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
@@ -197,7 +175,7 @@ export default function TitanPhoenix() {
         <Container width="6xl" padding="default">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div data-reveal>
-              <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+              <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
                 Policy as code
               </p>
               <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-4">
@@ -236,7 +214,7 @@ export default function TitanPhoenix() {
       <section className="py-20 border-t border-line">
         <Container width="6xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               Integrations
             </p>
             <h2 className="text-2xl font-semibold text-ink mb-2">
@@ -254,7 +232,7 @@ export default function TitanPhoenix() {
               { category: 'Incident', tools: ['PagerDuty', 'Opsgenie', 'Slack', 'Webhooks'] },
             ].map((group) => (
               <Card key={group.category} padding="none" className="p-5">
-                <p className="font-mono text-[10px] uppercase tracking-wider text-primary mb-3">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-primary-accessible mb-3">
                   {group.category}
                 </p>
                 <ul className="flex flex-col gap-2">
@@ -272,7 +250,7 @@ export default function TitanPhoenix() {
           <div className="mt-8 flex items-center gap-6" data-reveal>
             <a
               href="#capabilities"
-              className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+              className="text-sm font-medium text-primary-accessible hover:text-primary transition-colors"
             >
               See capabilities →
             </a>

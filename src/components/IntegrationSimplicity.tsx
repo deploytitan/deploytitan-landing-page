@@ -157,7 +157,7 @@ export function IntegrationSimplicity() {
                   style={{ borderColor: PRIMARY }}
                 />
 
-                <p className="text-[10px] font-mono uppercase tracking-[0.1em] mb-6 text-ink-quaternary">
+                <p className="text-[10px] font-mono uppercase tracking-[0.1em] mb-6 text-ink-tertiary">
                   Works with your existing stack
                 </p>
 

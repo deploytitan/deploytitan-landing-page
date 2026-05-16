@@ -90,7 +90,7 @@ const components: PortableTextComponents = {
             />
           </div>
           {value.caption && (
-            <figcaption className="text-center text-xs text-ink-quaternary font-mono mt-2">
+            <figcaption className="text-center text-xs text-ink-tertiary font-mono mt-2">
               {value.caption}
             </figcaption>
           )}

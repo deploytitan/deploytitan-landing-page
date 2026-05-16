@@ -1,9 +1,9 @@
 'use client'
 
 import { useScrollReveal } from '../../utils'
-import { RoadmapBadge } from '../../components/shared/RoadmapBadge'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
+import { ProductPageHero } from '../../components/shared/ProductPageHero'
 
 const SIGNALS = [
   {
@@ -29,40 +29,20 @@ export default function TitanInsight() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="blueprint-grid pt-28 pb-20 border-b border-line">
-        <Container width="4xl" padding="default">
-          <div className="flex items-center gap-3 mb-4" data-reveal data-reveal-delay="1">
-            <p className="text-xs font-mono tracking-widest uppercase text-primary">
-              Titan Insight · Decide
-            </p>
-            <RoadmapBadge variant="roadmap" />
-          </div>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6" data-reveal data-reveal-delay="2">
-            Did this release
-            <br className="hidden md:block" /> actually improve anything?
-          </h1>
-          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8" data-reveal data-reveal-delay="3">
-            Insight correlates every deploy to the metrics that matter: latency, conversion,
-            revenue, error budget, and tells you which releases moved the needle and which
-            just shipped.
-          </p>
-          <a
-            href="/early-access"
-            className="inline-flex items-center gap-2 bg-primary text-ink text-sm font-semibold px-5 py-2.5 hover:bg-primary-light transition-colors"
-            style={{ borderRadius: '2px' }}
-            data-reveal
-            data-reveal-delay="4"
-          >
-            Join the waitlist
-          </a>
-        </Container>
-      </section>
+      <ProductPageHero
+        eyebrow="Titan Insight · Decide"
+        badge="roadmap"
+        heading={<>Did this release<br className="hidden md:block" /> actually improve anything?</>}
+        description="Insight correlates every deploy to the metrics that matter: latency, conversion, revenue, error budget, and tells you which releases moved the needle and which just shipped."
+        ctas={[
+          { label: 'Join the waitlist', href: '/pricing' },
+        ]}
+      />
 
       {/* What Insight owns */}
       <section className="py-16 border-b border-line bg-surface-alt/20">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
             What Insight owns
           </p>
           <h2 className="text-xl font-semibold text-ink mb-3">
@@ -79,7 +59,7 @@ export default function TitanInsight() {
       <section className="py-24 border-b border-line">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               What's coming
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">

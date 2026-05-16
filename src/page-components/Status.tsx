@@ -4,7 +4,7 @@ export default function Status() {
   return (
     <section className="pt-28 pb-24">
       <Container width="3xl" padding="default">
-        <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4">
+        <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-4">
           Infrastructure
         </p>
         <h1 className="text-3xl font-semibold text-ink mb-6">System Status</h1>
@@ -18,12 +18,12 @@ export default function Status() {
             href="https://twitter.com/deploytitan"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary hover:underline"
+            className="text-primary-accessible hover:underline"
           >
             @deploytitan
           </a>{' '}
           or email{' '}
-          <a href="mailto:support@deploytitan.com" className="text-primary hover:underline">
+          <a href="mailto:support@deploytitan.com" className="text-primary-accessible hover:underline">
             support@deploytitan.com
           </a>
           .

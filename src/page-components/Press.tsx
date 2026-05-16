@@ -31,7 +31,7 @@ export default function Press() {
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-16 lg:py-20">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
               Press
             </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
@@ -56,7 +56,7 @@ export default function Press() {
 
       {/* Press coverage */}
       <Container as="section" className="py-14">
-        <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+        <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
           Coverage
         </span>
         <div className="mt-6 flex flex-col divide-y divide-line">
@@ -69,7 +69,7 @@ export default function Press() {
               className="group py-6 flex flex-col sm:flex-row sm:items-start gap-4"
             >
               <div className="shrink-0">
-                <span className="font-mono text-[10px] text-ink-quaternary">{item.date}</span>
+                <span className="font-mono text-[10px] text-ink-tertiary">{item.date}</span>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="font-mono text-[10px] text-primary uppercase tracking-widest">
@@ -100,7 +100,7 @@ export default function Press() {
       {/* Press kit */}
       <Section border="top" tone="muted" padding="none">
         <Container className="py-14">
-          <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+          <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
             Press kit
           </span>
           <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">

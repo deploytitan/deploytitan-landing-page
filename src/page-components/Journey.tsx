@@ -56,7 +56,7 @@ export default function Journey() {
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section className="blueprint-grid border-line border-b pt-28 pb-20">
         <Container width="3xl" padding="default" data-reveal>
-          <p className="text-primary mb-4 font-mono text-xs tracking-widest uppercase">
+          <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase">
             My journey
           </p>
           <h1 className="text-ink mb-7 text-4xl leading-tight font-semibold lg:text-5xl">
@@ -234,7 +234,7 @@ export default function Journey() {
               style={{ borderColor: PRIMARY, opacity: 0.3 }}
             />
 
-            <p className="text-primary mb-6 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-6 font-mono text-xs tracking-widest uppercase">
               A note from me
             </p>
             <div className="text-ink mb-8 space-y-5 text-base leading-relaxed">
@@ -258,7 +258,7 @@ export default function Journey() {
                 <p className="text-ink text-sm font-semibold">Justine, Founder, DeployTitan</p>
                 <a
                   href="mailto:justine@deploytitan.com"
-                  className="text-primary font-mono text-xs hover:underline"
+                  className="text-primary-accessible font-mono text-xs hover:underline"
                   aria-label="Email Justine at justine@deploytitan.com"
                 >
                   justine@deploytitan.com

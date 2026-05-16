@@ -1,3 +1,6 @@
+'use client'
+
+import posthog from 'posthog-js'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
@@ -94,7 +97,7 @@ export default function Contact() {
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-16 lg:py-20">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
               Contact
             </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
@@ -119,6 +122,7 @@ export default function Contact() {
               href={`mailto:${opt.email}`}
               interactive
               className="group block"
+              onClick={() => posthog.capture('contact_email_clicked', { contact_type: opt.label, email: opt.email })}
             >
               <div
                 className="w-10 h-10 flex items-center justify-center border border-line text-ink-tertiary group-hover:text-primary group-hover:border-primary/30 transition-all mb-4"
@@ -143,25 +147,25 @@ export default function Contact() {
         <Container className="py-12">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             <div>
-              <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+              <p className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
                 Headquarters
               </p>
               <p className="mt-2 text-sm text-ink">Pune, India</p>
             </div>
             <div>
-              <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+              <p className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
                 Response time
               </p>
               <p className="mt-2 text-sm text-ink">Within 24 hours</p>
             </div>
             <div>
-              <p className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+              <p className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
                 Urgent support
               </p>
               <p className="mt-2 text-sm text-ink">
                 <a
                   href="mailto:support@deploytitan.com"
-                  className="text-primary hover:text-primary-dark transition-colors"
+                  className="text-primary-accessible hover:text-primary transition-colors"
                 >
                   support@deploytitan.com
                 </a>

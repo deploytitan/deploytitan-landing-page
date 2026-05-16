@@ -4,73 +4,30 @@ import { APP_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
-import { Breadcrumbs } from '../../components/shared/Breadcrumbs'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { SolutionNav } from '../../components/shared/SolutionNav'
+import { SolutionPageHero } from '../../components/shared/SolutionPageHero'
 
 export default function SolutionPlatformEngineering() {
   useScrollReveal()
 
   return (
     <>
-      {/* Hero */}
-      <section className="blueprint-grid border-line border-b pt-28 pb-20">
-        <Container width="4xl" padding="default">
-          <Breadcrumbs className="mb-6" data-reveal data-reveal-delay="1" />
-          <div
-            className="text-primary border-primary/30 mb-6 inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px]"
-            style={{ borderRadius: '2px' }}
-            data-reveal
-            data-reveal-delay="1"
-          >
-            <span className="bg-signal-success h-1.5 w-1.5" style={{ borderRadius: '1px' }} />
-            Powered by the full platform
-          </div>
-          <h1 className="text-ink mb-5 text-4xl leading-tight font-semibold lg:text-5xl" data-reveal data-reveal-delay="2">
-            Build the golden path.
-            <br className="hidden md:block" /> Get out of the way.
-          </h1>
-          <p className="text-ink-secondary mb-8 max-w-2xl text-lg leading-relaxed" data-reveal data-reveal-delay="3">
-            Platform teams shouldn't be the deployment bottleneck. DeployTitan gives you a single
-            control plane to define deployment policies, enforce SLO guardrails, and let product
-            teams self-serve safely across every cloud and cluster.
-          </p>
-          <div className="flex flex-wrap items-center gap-4" data-reveal data-reveal-delay="4">
-            <a
-              href="https://cal.com/justine-deploytitan/demo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-ink text-surface dark:text-surface inline-flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3),0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.97]"
-              style={{ borderRadius: '2px' }}
-            >
-              Book a 20-min walkthrough
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </a>
-            <a
-              href={`${APP_URL}/signup`}
-              className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
-            >
-              Start free trial →
-            </a>
-          </div>
-        </Container>
-      </section>
+      <SolutionPageHero
+        poweredBy="Powered by the full platform"
+        heading={<>Build the golden path.<br className="hidden md:block" /> Get out of the way.</>}
+        description="Platform teams shouldn't be the deployment bottleneck. DeployTitan gives you a single control plane to define deployment policies, enforce SLO guardrails, and let product teams self-serve safely across every cloud and cluster."
+        ctas={[
+          { label: 'Book a 20-min walkthrough', href: 'https://cal.com/justine-deploytitan/demo', variant: 'book', target: '_blank', rel: 'noopener noreferrer' },
+          { label: 'Start free trial →', href: `${APP_URL}/signup`, variant: 'secondary' },
+        ]}
+      />
 
       {/* Policy flow — replaces the identical 6-card WINS grid */}
       <section className="border-line border-b py-24">
         <Container width="5xl" padding="default">
           <div className="mb-16" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               How it works
             </p>
             <h2 className="text-ink text-2xl leading-snug font-semibold lg:text-3xl">
@@ -178,7 +135,7 @@ export default function SolutionPlatformEngineering() {
             ].map((item, i) => (
               <div key={item.step} className="bg-surface flex flex-col gap-4 p-7">
                 <div className="flex items-center justify-between">
-                  <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
+                  <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
                     Step {item.step}
                   </span>
                   <span className="text-primary opacity-70">{item.icon}</span>
@@ -196,7 +153,7 @@ export default function SolutionPlatformEngineering() {
 
           {/* Supporting capabilities — row list, not cards */}
           <div className="border-line mt-12 border-t pt-10" data-reveal>
-            <p className="text-primary mb-6 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-6 font-mono text-xs tracking-widest uppercase">
               Also included
             </p>
             <div className="grid grid-cols-1 gap-x-12 gap-y-4 sm:grid-cols-2">
@@ -244,7 +201,7 @@ export default function SolutionPlatformEngineering() {
       <section className="border-line bg-surface-alt/30 border-b py-14">
         <Container width="3xl" padding="default">
           <div className="mb-8" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               IaC native
             </p>
             <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold">
@@ -289,7 +246,7 @@ export default function SolutionPlatformEngineering() {
       <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               The status quo
             </p>
             <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold lg:text-3xl">
@@ -331,7 +288,7 @@ export default function SolutionPlatformEngineering() {
                 data-reveal
                 data-reveal-delay={String(i)}
               >
-                <p className="text-primary mb-3 font-mono text-xs tracking-wider uppercase">
+                <p className="text-primary-accessible mb-3 font-mono text-xs tracking-wider uppercase">
                   {item.tool}
                 </p>
                 <p className="text-ink-secondary mb-4 text-sm leading-relaxed">{item.workaround}</p>
@@ -351,7 +308,7 @@ export default function SolutionPlatformEngineering() {
       <section className="border-line border-b py-16">
         <Container width="5xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               How we compare
             </p>
             <h2 className="text-ink mb-2 text-2xl leading-snug font-semibold lg:text-3xl">
@@ -365,7 +322,7 @@ export default function SolutionPlatformEngineering() {
                   <th className="text-ink-tertiary w-1/4 py-3 pr-6 text-left font-mono text-xs tracking-wider uppercase">
                     Capability
                   </th>
-                  <th className="text-primary px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
+                  <th className="text-primary-accessible px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
                     DeployTitan
                   </th>
                   <th className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
@@ -437,7 +394,7 @@ export default function SolutionPlatformEngineering() {
               </a>
               <a
                 href={`${APP_URL}/signup`}
-                className="text-primary hover:text-primary-dark text-sm font-medium transition-colors"
+                className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
               >
                 Start free trial →
               </a>

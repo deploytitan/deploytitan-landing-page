@@ -30,7 +30,7 @@ export default async function BlogPage() {
       {/* Hero */}
       <section className="blueprint-grid border-line border-b pt-28 pb-16">
         <Container width="4xl" padding="default">
-          <p className="text-primary mb-3 font-mono text-xs tracking-widest uppercase">Blog</p>
+          <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">Blog</p>
           <h1 className="text-ink mb-4 text-4xl leading-tight font-semibold lg:text-5xl">
             Engineering insights.
           </h1>
@@ -52,7 +52,7 @@ export default async function BlogPage() {
             </div>
           ) : (
             <div className="py-24 text-center">
-              <p className="text-ink-quaternary font-mono text-sm">No posts published yet.</p>
+              <p className="text-ink-tertiary font-mono text-sm">No posts published yet.</p>
               <p className="text-ink-tertiary mt-1 text-sm">Check back soon.</p>
             </div>
           )}

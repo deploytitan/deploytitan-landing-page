@@ -320,7 +320,7 @@ export function SiteGraph({ height = 600, mini = false, focusId }: Props) {
 
       {/* Group filters */}
       <div className="p-3 flex flex-col gap-1 overflow-y-auto flex-1">
-        <span className="font-mono text-[9px] text-ink-quaternary uppercase tracking-widest mb-1">
+        <span className="font-mono text-[9px] text-ink-tertiary uppercase tracking-widest mb-1">
           Filter by group
         </span>
         {(Object.entries(GROUP_LABELS) as [NodeGroup, string][]).map(([g, label]) => {
@@ -349,7 +349,7 @@ export function SiteGraph({ height = 600, mini = false, focusId }: Props) {
 
       {/* Node count */}
       <div className="p-3 border-t border-line">
-        <span className="font-mono text-[10px] text-ink-quaternary">
+        <span className="font-mono text-[10px] text-ink-tertiary">
           {graphData.nodes.length} pages · {graphData.links.length} links
         </span>
       </div>

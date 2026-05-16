@@ -28,22 +28,22 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'DeployTitan — The Deployment Control Plane',
+    default: 'DeployTitan — Release Coordination for Distributed Engineering Teams',
     template: '%s — DeployTitan',
   },
   description:
-    'Progressive deployments, multi-cloud resilience, and risk intelligence for modern engineering teams. Ship faster. Sleep better.',
+    'Coordinate complex multi-service releases, reduce freeze window chaos, and avoid painful rollback incidents. Release coordination and deployment safety for distributed systems.',
   openGraph: {
-    title: 'DeployTitan — The Deployment Control Plane',
+    title: 'DeployTitan — Release Coordination for Distributed Engineering Teams',
     description:
-      'A deployment control plane that understands system dependencies and prevents unsafe releases.',
+      'Coordinate multi-service releases safely across teams and environments. Release DAGs, freeze windows, rollback coordination, and deployment visibility.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DeployTitan — The Deployment Control Plane',
+    title: 'DeployTitan — Release Coordination for Distributed Engineering Teams',
     description:
-      'A deployment control plane that understands system dependencies and prevents unsafe releases.',
+      'Coordinate multi-service releases safely across teams and environments. Release DAGs, freeze windows, rollback coordination, and deployment visibility.',
   },
   icons: {
     icon: '/favicon.svg',
@@ -53,7 +53,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={`${inter.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}>
-      <head />
+      <head>
+        {/* Apply stored theme before first paint and on bfcache restore to avoid flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var m=localStorage.getItem('dt-theme');var d=(m==='dark')||(m!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches);if(d)document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark');}catch(e){}window.addEventListener('pageshow',function(e){if(!e.persisted)return;try{var m=localStorage.getItem('dt-theme');var d=(m==='dark')||(m!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches);if(d)document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark');}catch(e){}});})();`,
+          }}
+        />
+      </head>
       <body suppressHydrationWarning>
         {/* Google Analytics — lazyOnload fires after page load + browser idle */}
         <Script

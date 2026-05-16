@@ -16,7 +16,7 @@ export function LogoCloud() {
   return (
     <section className="py-12 border-b border-line">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <p className="text-center text-xs font-mono text-ink-quaternary uppercase tracking-widest mb-8">
+        <p className="text-center text-xs font-mono text-ink-tertiary uppercase tracking-widest mb-8">
           Trusted by engineering teams shipping daily
         </p>
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">

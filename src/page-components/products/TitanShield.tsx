@@ -6,6 +6,7 @@ import { CodeBlock } from '../../components/shared/CodeBlock'
 import { InstallTabs } from '../../components/shared/InstallTabs'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
+import { ProductPageHero } from '../../components/shared/ProductPageHero'
 
 const POLICY_CODE = `# titan-shield.hcl
 failover "global-api" {
@@ -35,19 +36,19 @@ dt shield failback --service global-api --auto`
 
 const CROSS_LINKS = [
   {
-    label: 'Titan Rollout',
-    desc: 'Progressive deployments, SLO-gated',
+    label: 'Titan Rollouts',
+    desc: 'Coordinate multi-service releases',
     href: '/products/titan-rollout',
   },
   {
-    label: 'Titan Phoenix',
-    desc: 'Undo a bad release in seconds',
-    href: '/products/titan-phoenix',
+    label: 'Release Coordination',
+    desc: 'Orchestrate multi-service releases end to end',
+    href: '/solutions/release-coordination',
   },
   {
-    label: 'Titan Foresight',
-    desc: 'Score every change before it ships',
-    href: '/products/titan-foresight',
+    label: 'Rollback Coordination',
+    desc: 'Safe, sequenced rollback across services',
+    href: '/solutions/rollback-coordination',
   },
 ]
 
@@ -56,38 +57,16 @@ export default function TitanShield() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="blueprint-grid pt-28 pb-20 border-b border-line">
-        <Container width="4xl" padding="default">
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-4" data-reveal data-reveal-delay="1">
-            Titan Shield
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-semibold text-ink leading-tight mb-6" data-reveal data-reveal-delay="2">
-            Multi-cloud resilience.
-            <br className="hidden md:block" /> Failover in milliseconds.
-          </h1>
-          <p className="text-lg text-ink-secondary leading-relaxed max-w-2xl mb-8" data-reveal data-reveal-delay="3">
-            Titan Shield watches every region continuously and shifts traffic before your on-call
-            wakes up. Declare your failover policy once: never touch it again.
-          </p>
-          <div className="flex flex-wrap gap-4" data-reveal data-reveal-delay="4">
-            <a
-              href={`${APP_URL}/signup`}
-              className="inline-flex items-center gap-2 bg-primary  text-ink text-sm font-semibold dark:text-surface px-5 py-2.5 hover:bg-primary-light transition-colors"
-              style={{ borderRadius: '2px' }}
-            >
-              Start free trial
-            </a>
-            <a
-              href="/solutions"
-              className="inline-flex items-center gap-2 border border-line text-ink-secondary text-sm px-5 py-2.5 hover:border-primary/40 hover:text-ink transition-colors"
-              style={{ borderRadius: '2px' }}
-            >
-              See use cases
-            </a>
-          </div>
-        </Container>
-      </section>
+      <ProductPageHero
+        eyebrow="Titan Shield"
+        badge="roadmap"
+        heading={<>Multi-cloud resilience.<br className="hidden md:block" /> Failover in milliseconds.</>}
+        description="Titan Shield watches every region continuously and shifts traffic before your on-call wakes up. Declare your failover policy once: never touch it again."
+        ctas={[
+          { label: 'Join the waitlist', href: '/pricing' },
+          { label: 'See use cases', href: '/solutions/release-coordination', variant: 'secondary' },
+        ]}
+      />
 
       {/* Capabilities */}
       <Resilience />
@@ -96,7 +75,7 @@ export default function TitanShield() {
       <section className="py-24 border-t border-line">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
               Quickstart
             </p>
             <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">

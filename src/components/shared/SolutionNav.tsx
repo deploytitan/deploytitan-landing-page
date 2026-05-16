@@ -8,19 +8,19 @@ interface SolutionLink {
 
 const ALL_SOLUTIONS: SolutionLink[] = [
   {
-    name: 'Progressive Delivery',
-    route: '/solutions/progressive-delivery',
-    tagline: 'SLO-gated canary deploys',
+    name: 'Release Coordination',
+    route: '/solutions/release-coordination',
+    tagline: 'Orchestrate multi-service releases',
   },
   {
     name: 'Instant Rollback',
     route: '/solutions/instant-rollback',
-    tagline: 'Auto-revert in under 30s',
+    tagline: 'Safe, sequenced rollback across services',
   },
   {
     name: 'Risk Intelligence',
     route: '/solutions/risk-intelligence',
-    tagline: 'Blast-radius score per PR',
+    tagline: 'Visibility into every release in flight',
   },
   {
     name: 'Platform Engineering',
@@ -60,7 +60,7 @@ export function SolutionNav({ currentRoute }: SolutionNavProps) {
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
-                  className="text-ink-quaternary group-hover:text-primary transition-colors shrink-0"
+                  className="text-ink-tertiary group-hover:text-primary transition-colors shrink-0"
                 >
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />

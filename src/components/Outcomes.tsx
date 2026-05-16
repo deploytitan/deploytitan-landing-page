@@ -287,7 +287,7 @@ export function Outcomes() {
                     <div className="space-y-3">
                       <div>
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-[10px] font-mono uppercase tracking-[0.06em] text-ink-quaternary">
+                          <span className="text-[10px] font-mono uppercase tracking-[0.06em] text-ink-tertiary">
                             Before
                           </span>
                           <span className="text-[10px] text-ink-tertiary font-mono">

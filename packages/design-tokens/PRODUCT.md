@@ -16,11 +16,13 @@ The site must speak fluently to both without alienating either. Engineers spot p
 
 ## Product Purpose
 
-DeployTitan is a progressive delivery and deployment safety platform for modern engineering teams. It ships as a suite of 7 focused products: Titan Rollout, Titan Foresight, Titan Sandbox, Titan Shield, Titan Phoenix, Titan Ledger, and Titan Insight.
+DeployTitan is release coordination and deployment safety software for distributed engineering teams. The core product is Titan Rollouts: a release coordination layer that sits above GitHub, CI/CD, and observability tools to model the release lifecycle those systems do not manage well.
 
-Success means: engineers ship more, break less, and sleep better. The platform removes the anxiety from deployment by making progressive rollout, risk detection, instant rollback, and deployment governance automatic and auditable.
+The product solves multi-repo release coordination, deployment freeze chaos, release dependency management, release visibility, rollback coordination, and release approvals. It is not a traffic routing platform, service mesh replacement, CI/CD replacement, or multi-cloud DR layer.
 
-The primary goal of the landing site is trial and install conversion: get engineers to start a free trial or install the CLI.
+Product structure: Titan Rollouts is the single core product now. Titan Foresight (deployment-aware risk intelligence) is the next layer. Titan Phoenix (enterprise recovery) is a future roadmap item.
+
+Success means: engineering teams coordinate complex multi-service releases without manual Slack threads, spreadsheets, and release post-mortems. The primary goal of the landing site is demo booking conversion for teams with real release coordination overhead.
 
 ## Brand Personality
 
@@ -40,7 +42,7 @@ The tone is that of the best engineer in the room: speaks with authority, doesn'
 2. **The interface demonstrates the product.** Animations, live demos, and interactive elements should mirror what the product does: precision, control, observability. Don't just describe deployment safety; show it.
 3. **Dual-track legibility.** Every page should yield value to an engineer scanning for technical depth AND a leader scanning for capability scope and credibility. Neither should feel patronized.
 4. **Calm authority over excitement.** No hype, no urgency tactics. DeployTitan earns attention through competence. The tone is assured, not eager.
-5. **Ship or stay home.** Every design decision should serve the conversion funnel: free trial start or CLI install. Secondary actions exist but never compete with the primary.
+5. **Ship or stay home.** Every design decision should serve the conversion funnel: demo booking. Secondary actions exist but never compete with the primary.
 
 ## Accessibility & Inclusion
 

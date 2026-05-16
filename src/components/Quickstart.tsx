@@ -1,32 +1,28 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { InstallTabs } from './shared/InstallTabs'
-import { CodeBlock, InlineCode } from './shared/CodeBlock'
+import { CodeBlock } from './shared/CodeBlock'
 import { useScrollReveal } from '../utils'
 import { Container } from './shared/Container'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useTheme } from '../hooks/useTheme'
+import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { Button } from './shared/Button'
 
-const DEPLOY_SNIPPET = `# 1. Authenticate
+const RELEASE_SNIPPET = `# 1. Authenticate
 dt login
 
-# 2. Link your repo
-dt init --project my-api
+# 2. Create a release object from your PRs
+dt release create \\
+  --name "spring-checkout" \\
+  --prs "org/checkout-api#412,org/pricing-migration#89,org/web-storefront#203"
 
-# 3. Release with a progressive rollout
-dt deploy \\
-  --strategy canary \\
-  --initial-weight 5 \\
-  --target-weight 100 \\
-  --increment 10 \\
-  --interval 2m
+# 3. Visualize dependency graph and readiness
+dt release status spring-checkout
 
-# Titan Foresight runs risk analysis before traffic shifts.
-# Titan Shield monitors cross-region health throughout.
-# dt auto-rolls back if error rate > threshold.`
+# 4. Sequence and promote when dependencies clear
+dt release promote spring-checkout --env production`
 
-// Simple terminal typing animation
 function TerminalOutput() {
   const ref = useRef<HTMLPreElement>(null)
   const reducedMotion = useReducedMotion()
@@ -45,15 +41,18 @@ function TerminalOutput() {
 
   useEffect(() => {
     const lines = [
-      '$ dt deploy --strategy canary',
-      '  ✓ Risk score: 12 / 100  (low)',
-      '  ✓ Blast radius: 1 service affected',
-      '  → Shifting 5% traffic to v2.4.1…',
-      '  → 10% — p99: 38 ms  errors: 0.00%',
-      '  → 25% — p99: 41 ms  errors: 0.01%',
-      '  → 50% — p99: 40 ms  errors: 0.00%',
-      '  → 100%: rollout complete in 12m 04s',
-      '  ✓ Deployment successful',
+      '$ dt release status spring-checkout',
+      '',
+      '  Release: spring-checkout',
+      '  Services: 4   PRs: 6   Blockers: 1',
+      '',
+      '  checkout-api       ── Ready    (waiting on pricing-migration)',
+      '  pricing-migration  ── Blocked  (schema review required)',
+      '  web-storefront     ── Staging  (QA passed)',
+      '  fulfillment-worker ── Approved (rollback playbook linked)',
+      '',
+      '  ⚠  1 blocking dependency must clear before promotion.',
+      '  ✓  Rollback owners assigned for all 4 services.',
     ]
     const el = ref.current
     if (!el) return
@@ -76,16 +75,15 @@ function TerminalOutput() {
       if (charIdx < line.length) {
         el.textContent += line[charIdx]
         charIdx++
-        raf = requestAnimationFrame(() => setTimeout(tick, 18))
+        raf = requestAnimationFrame(() => setTimeout(tick, 14))
       } else {
         el.textContent += '\n'
         lineIdx++
         charIdx = 0
-        raf = requestAnimationFrame(() => setTimeout(tick, lineIdx === 0 ? 300 : 80))
+        raf = requestAnimationFrame(() => setTimeout(tick, lineIdx === 0 ? 300 : 60))
       }
     }
 
-    // Pause the loop when the element scrolls out of view
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -113,7 +111,6 @@ function TerminalOutput() {
       className="border border-line overflow-hidden"
       style={{ borderRadius: '2px', backgroundColor: bgColor }}
     >
-      {/* Header bar — same structure as CodeBlock */}
       <div className={`flex items-center gap-2 px-4 py-2.5 border-b ${headerBg}`}>
         <div
           className="flex h-4 w-4 items-center justify-center"
@@ -125,12 +122,11 @@ function TerminalOutput() {
           </svg>
         </div>
         <span className="font-mono text-[11px]" style={{ color: labelColor }}>
-          deploytitan: dt deploy
+          deploytitan: dt release status
         </span>
       </div>
-      {/* Animated output */}
       <div className="px-4 py-4">
-        <figure aria-label="Terminal output showing DeployTitan CLI in action">
+        <figure aria-label="Terminal output showing DeployTitan release status">
           <pre
             ref={ref}
             className="font-mono text-[12px] leading-[1.8] whitespace-pre min-h-[220px]"
@@ -148,41 +144,64 @@ export function Quickstart() {
   return (
     <section className="py-24 border-t border-line" ref={ref}>
       <Container width="6xl" padding="default">
-        {/* Heading */}
         <div className="mb-14 max-w-xl" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary mb-3">
+          <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
             Get started
           </p>
           <h2 className="text-3xl lg:text-4xl font-semibold text-ink leading-tight mb-4">
-            Deploy in minutes,
+            From messy release to
             <br />
-            not days.
+            coordinated workflow.
           </h2>
           <p className="text-ink-secondary text-base leading-relaxed">
-            Install the{' '}
-            <InlineCode>dt</InlineCode>{' '}
-            CLI, authenticate, and ship your first canary deployment before lunch.
+            Connect your repos, link your PRs into a release object, and get shared
+            visibility across your entire release before anything ships.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start" data-reveal>
-          {/* Left — install tabs */}
           <div className="flex flex-col gap-6">
             <div>
               <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">
-                Step 1: Install
+                Steps 1 to 4: coordinate a release
               </p>
-              <InstallTabs />
+              <CodeBlock code={RELEASE_SNIPPET} lang="bash" filename="terminal" />
+            </div>
+            <div
+              className="border border-primary/20 bg-primary/[0.04] p-5"
+              style={{ borderRadius: '2px' }}
+            >
+              <p className="font-mono text-[10px] tracking-[0.16em] text-primary-accessible uppercase mb-3">
+                What you get immediately
+              </p>
+              <ul className="space-y-2.5">
+                {[
+                  'Shared release record visible to all teams involved',
+                  'Blocking dependencies flagged before they cause incidents',
+                  'Rollback owners and playbooks attached before rollout begins',
+                  'Slack notifications when a release is blocked or ready to promote',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span className="mt-2 block h-1.5 w-1.5 shrink-0 bg-primary" style={{ borderRadius: '1px' }} />
+                    <span className="text-sm leading-7 text-ink-secondary">{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
             <div>
-              <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">
-                Step 2–4: Deploy
-              </p>
-              <CodeBlock code={DEPLOY_SNIPPET} lang="bash" filename="terminal" />
+              <Button
+                as="a"
+                href={CREATE_ACCOUNT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="primary"
+                size="md"
+              >
+                Create account
+              </Button>
             </div>
           </div>
 
-          {/* Right — animated terminal */}
           <TerminalOutput />
         </div>
       </Container>

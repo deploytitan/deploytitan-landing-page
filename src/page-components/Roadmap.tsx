@@ -14,98 +14,108 @@ interface RoadmapItem {
 }
 
 const items: RoadmapItem[] = [
-  // Shipped
+  // Shipped — Phase 1: Titan Rollouts (release coordination core)
   {
-    title: 'Canary deployments with automatic promotion',
+    title: 'Multi-service release graph',
     description:
-      'Progressive traffic shifting with SLO-gated auto-promotion at 10%, 25%, 50%, 100%.',
+      'Model a release as a dependency-aware DAG across services. Rollouts enforces sequence, waits for health gates between stages, and surfaces blocked steps to the owning team.',
     status: 'shipped',
     quarter: 'Q1 2026',
-    tags: ['Core', 'Titan Rollout'],
+    tags: ['Core', 'Titan Rollouts'],
   },
   {
-    title: 'Multi-cloud blast-radius isolation',
+    title: 'Owner-gated stage approvals',
     description:
-      'Deployment scope controls to limit blast radius across AWS, GCP, and Azure simultaneously.',
+      'Each release stage requires explicit sign-off or automated health checks. Rollouts tracks who approved, when, and what signal cleared the gate.',
     status: 'shipped',
     quarter: 'Q1 2026',
-    tags: ['Core', 'Titan Shield'],
+    tags: ['Core', 'Titan Rollouts'],
+  },
+  {
+    title: 'Coordinated rollback',
+    description:
+      'When a gate fires, Rollouts initiates rollback in reverse dependency order: no service rolls back before the services that depend on it are safe.',
+    status: 'shipped',
+    quarter: 'Q1 2026',
+    tags: ['Core', 'Titan Rollouts'],
   },
   {
     title: 'GitHub Actions native integration',
     description:
-      'First-class action for triggering, monitoring, and rolling back deployments from your CI workflow.',
+      'First-class action for creating, monitoring, promoting, and rolling back releases from your CI workflow.',
     status: 'shipped',
     quarter: 'Q4 2025',
     tags: ['Integrations'],
   },
   {
-    title: 'Datadog + PagerDuty signal routing',
-    description: 'Route Datadog alerts and PagerDuty incidents directly into SLO guardrails.',
+    title: 'Slack and PagerDuty integration',
+    description:
+      'Gate approvals, stage promotions, and rollback triggers surface in the channels your team already uses.',
     status: 'shipped',
     quarter: 'Q4 2025',
-    tags: ['Integrations', 'Titan Foresight'],
+    tags: ['Integrations'],
   },
-  // In progress
+  // In progress — Phase 2: Rollouts Intelligence (Foresight)
   {
-    title: 'ArgoCD native sync',
+    title: 'Rollouts Intelligence: pre-merge risk scoring',
     description:
-      'Deep integration with ArgoCD — use DeployTitan rollout policies with GitOps workflows.',
+      'Every PR gets a risk score computed from your live dependency graph, change size, and historical failure patterns. Risky changes get tighter gate policies automatically.',
+    status: 'in-progress',
+    quarter: 'Q2 2026',
+    tags: ['Rollouts Intelligence', 'Titan Foresight'],
+  },
+  {
+    title: 'Release audit log and incident timeline',
+    description:
+      'Every gate, approval, promotion, and rollback recorded with full context. Postmortems have the complete timeline without manual reconstruction.',
+    status: 'in-progress',
+    quarter: 'Q2 2026',
+    tags: ['Core', 'Compliance'],
+  },
+  {
+    title: 'ArgoCD and Flux native sync',
+    description:
+      'Deep integration with GitOps workflows — use Titan Rollouts release coordination with ArgoCD or Flux as the delivery layer.',
     status: 'in-progress',
     quarter: 'Q2 2026',
     tags: ['Integrations', 'Kubernetes'],
   },
-  {
-    title: 'Deployment cost attribution',
-    description: 'Per-deployment cloud cost tracking linked to your AWS / GCP billing accounts.',
-    status: 'in-progress',
-    quarter: 'Q2 2026',
-    tags: ['Observability', 'Titan Ledger'],
-  },
-  {
-    title: 'RBAC and audit log',
-    description:
-      'Role-based access control with full audit trail — who deployed what, when, and from where.',
-    status: 'in-progress',
-    quarter: 'Q2 2026',
-    tags: ['Security'],
-  },
   // Planned
   {
-    title: 'Terraform / Pulumi IaC deployments',
+    title: 'RBAC and team-scoped permissions',
     description:
-      'Bring infrastructure changes under the same progressive delivery model as application deployments.',
+      'Role-based access control with team-scoped release permissions — engineers own their services, platform teams set the guardrails.',
     status: 'planned',
     quarter: 'Q3 2026',
-    tags: ['IaC'],
+    tags: ['Security', 'Enterprise'],
   },
   {
-    title: 'Deployment SLA reporting',
+    title: 'Release SLA reporting',
     description:
-      'Automated weekly SLA reports — MTTR, MTBF, deployment frequency, and change failure rate.',
+      'Automated reporting on release cadence, gate failure rates, mean time to rollback, and coordination overhead per team.',
     status: 'planned',
     quarter: 'Q3 2026',
     tags: ['Observability'],
   },
   {
-    title: 'Feature flag management',
+    title: 'Titan Phoenix: SLO-triggered scoped rollback',
     description:
-      'Built-in feature flags tied to deployment steps — ship dark, then flip the switch.',
+      'Automatic rollback triggered by SLO breach, scoped to the exact cohort, region, or flag that broke — not the entire service.',
     status: 'planned',
-    quarter: 'Q3 2026',
-    tags: ['Core'],
+    quarter: 'Q4 2026',
+    tags: ['Titan Phoenix', 'Roadmap'],
   },
   // Considering
   {
-    title: 'ML-based rollback prediction',
+    title: 'Titan Shield: cross-region release coordination',
     description:
-      'Use historical deployment signals to predict and pre-emptively roll back risky releases.',
+      'Coordinate releases and rollbacks across regions with automatic failover coordination built into the release graph.',
     status: 'considering',
-    tags: ['AI', 'Core'],
+    tags: ['Titan Shield', 'Enterprise'],
   },
   {
     title: 'On-premise / air-gapped deployment',
-    description: 'Run DeployTitan entirely within your VPC — no outbound traffic required.',
+    description: 'Run Titan Rollouts entirely within your VPC — no outbound traffic required.',
     status: 'considering',
     tags: ['Enterprise'],
   },
@@ -149,7 +159,7 @@ export default function Roadmap() {
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-16 lg:py-20">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
               Roadmap
             </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
@@ -213,7 +223,7 @@ export default function Roadmap() {
                     <div className="flex items-start justify-between gap-3">
                       <h3 className="text-sm font-medium text-ink leading-snug">{item.title}</h3>
                       {item.quarter && (
-                        <span className="font-mono text-[10px] text-ink-quaternary shrink-0">
+                        <span className="font-mono text-[10px] text-ink-tertiary shrink-0">
                           {item.quarter}
                         </span>
                       )}

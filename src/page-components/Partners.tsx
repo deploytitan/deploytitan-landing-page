@@ -48,7 +48,7 @@ export default function Partners() {
       <Section border="bottom" padding="none" className="blueprint-grid">
         <Container className="py-16 lg:py-20">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
               Partners
             </span>
             <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
@@ -75,7 +75,7 @@ export default function Partners() {
       {partners.map((group) => (
         <Section key={group.category} border="top" padding="none">
           <Container className="py-12">
-            <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
               {group.category}
             </span>
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -96,7 +96,7 @@ export default function Partners() {
       <Section border="top" tone="muted" padding="none">
         <Container className="py-14">
           <div className="max-w-xl">
-            <span className="font-mono text-[10px] text-ink-quaternary uppercase tracking-widest">
+            <span className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
               Partner program
             </span>
             <h2 className="mt-3 text-2xl font-display font-medium text-ink tracking-[-0.02em]">

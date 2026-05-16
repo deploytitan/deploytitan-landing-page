@@ -22,7 +22,7 @@ export function InlineCode({ children, variant = 'default', className }: InlineC
       className={cn(
         'font-mono text-[0.8125em] leading-none',
         variant === 'accent'
-          ? 'text-primary bg-primary/[0.08] px-1.5 py-0.5'
+          ? 'text-primary-accessible bg-primary/[0.08] px-1.5 py-0.5'
           : 'text-ink/80 bg-ink/[0.05] px-1.5 py-0.5',
         className,
       )}
