@@ -73,26 +73,26 @@ const STEPS = [
   {
     number: '01',
     title: 'Define policy',
-    body: 'Write a deployment policy in HCL or YAML. Specify allowed strategies, risk thresholds, SLO references, and failover targets. Check it into git like any other config.',
-    detail: 'HCL or YAML · git-native · version-controlled',
+    body: 'Write a deployment policy in YAML. Specify allowed strategies, risk thresholds, SLO references, and failover targets. Check it into git like any other config.',
+    detail: 'YAML · git-native · version-controlled',
   },
   {
     number: '02',
     title: 'CI pushes a deploy event',
-    body: "Your existing CI pipeline calls dt deploy (or the REST API). DeployTitan records the deployment intent, runs Sentinel's pre-deploy analysis, and calculates a risk score.",
+    body: "Your existing CI pipeline calls dt deploy (or the REST API). DeployTitan records the deployment intent, runs Foresight's pre-deploy analysis, and calculates a risk score.",
     detail: 'REST API · risk scoring · pre-deploy analysis',
   },
   {
     number: '03',
     title: 'The controller executes it',
-    body: 'The Titan Controller — a lightweight process running in your infrastructure — polls the API and translates the deployment intent into native L7 config for your platform: nginx weights, ALB target group weights, Cloudflare traffic rules.',
-    detail: 'In-VPC · native L7 · no proxy',
+    body: 'The Titan Controller runs in your AWS account and updates Lambda alias weights via the AWS API. For Lambda, no proxy and no sidecar: the controller manages traffic natively through alias routing. For Kubernetes, it configures nginx weights or ALB target groups.',
+    detail: 'Lambda alias routing · In-VPC · native L7 · no proxy',
   },
   {
     number: '04',
     title: 'Metrics gate each step',
-    body: 'At each canary step, the controller polls your Datadog or Prometheus metrics. If SLOs hold, it advances. If they breach, it rolls back automatically. No human in the loop.',
-    detail: 'Datadog · Prometheus · auto-rollback',
+    body: 'At each canary step, the controller polls your CloudWatch, Datadog, or Prometheus metrics. If SLOs hold, it advances. If they breach, it rolls back automatically — no human in the loop.',
+    detail: 'CloudWatch · Datadog · Prometheus · auto-rollback',
   },
   {
     number: '05',

@@ -6,24 +6,24 @@ const PRIMARY = 'var(--color-primary)'
 
 const values = [
   {
-    title: 'Ship with confidence, not fear',
+    title: 'Start small, then promote',
     description:
-      'Deployments should be a non-event. We build tooling that makes releasing software feel safe — not like defusing a bomb.',
+      'Ship to one account, one tenant, one team — before you ship to everyone. Cohort deployments let you target specific users or accounts by event attributes, so real-world blast radius starts at one.',
   },
   {
-    title: 'Transparency by default',
+    title: 'Safety actions should never cost extra',
     description:
-      'Every deployment decision, metric, and incident is surfaced to your team automatically. No black boxes.',
+      'Rollbacks, health checks, and risk scans are included in every plan. We never charge more for doing the right thing.',
   },
   {
     title: 'Respect engineer time',
     description:
-      'Every hour spent manually babysitting a rollout is an hour not spent building. We automate the toil.',
+      'Every hour spent manually watching a canary is an hour not spent building. We automate the toil so your team can focus on the work that matters.',
   },
   {
-    title: 'Meet teams where they are',
+    title: 'No black boxes',
     description:
-      'Whether you run five microservices or five hundred, on one cloud or three, DeployTitan fits around your stack.',
+      'Every deployment decision, traffic split, cohort promotion, and rollback trigger is visible in your dashboard. You always know what Titan did and why.',
   },
 ]
 
@@ -31,7 +31,7 @@ const team = [
   {
     name: 'Justine Kizhakkinedath',
     role: 'Founder',
-    bio: 'Spent years thinking about why deployments are still scary.',
+    bio: 'Spent years across engineering organizations watching the same Lambda deployment anxiety repeat — manual traffic cuts, missed DLQ spikes, 3am rollbacks. Built DeployTitan to make that a solved problem.',
   },
 ]
 
@@ -52,7 +52,7 @@ export default function About() {
               About
             </span>
             <h1 className="font-display text-ink mt-3 text-4xl leading-[1.05] font-medium tracking-tight sm:text-5xl lg:text-6xl">
-              We're building the deployment control plane you deserve.
+              Progressive delivery for AWS Lambda, done right.
             </h1>
             {/* Two-line descriptor: what + for whom */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
@@ -61,8 +61,8 @@ export default function About() {
                 style={{ background: PRIMARY, opacity: 0.5 }}
               />
               <p className="text-ink-secondary text-base leading-relaxed">
-                Progressive delivery and automated recovery — so engineering teams can ship fast
-                without shipping fear.
+                Automated canary deployments, DLQ-driven rollbacks, and real-time risk intelligence
+                — so teams shipping Lambda functions can move fast without breaking things.
               </p>
             </div>
           </div>
@@ -94,15 +94,15 @@ export default function About() {
             {/* Formal description */}
             <div className="flex flex-col justify-center pl-0 lg:pl-12">
               <p className="text-ink-secondary text-base leading-relaxed">
-                DeployTitan is a deployment control plane for engineering teams that need to ship
-                software safely and frequently. The platform provides progressive delivery,
-                automated rollback, and real-time risk intelligence — giving teams the controls and
-                visibility they need to deploy with confidence across any cloud environment.
+                DeployTitan is a progressive delivery platform built specifically for AWS Lambda and
+                event-driven architectures. It gives teams canary traffic splitting via Lambda
+                alias routing, cohort deployments that target specific users or accounts by event
+                attributes, automated rollback triggered by DLQ depth and CloudWatch metrics, and
+                deployment risk intelligence — all configured through the DeployTitan platform.
               </p>
               <p className="text-ink-secondary mt-4 text-base leading-relaxed">
-                Built for teams running Kubernetes, AWS Lambda, and GCP Cloud Run, DeployTitan
-                removes the manual toil and guesswork from every release — whether you deploy once a
-                week or dozens of times a day.
+                The platform is priced per managed function, not per deployment — so teams can
+                ship as often as they need without watching a cost counter.
               </p>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function About() {
               style={{ background: PRIMARY, opacity: 0.5 }}
             />
             <h2 className="font-display text-ink text-3xl leading-[1.1] font-medium tracking-tight sm:text-4xl">
-              Make every deployment
+              Make every Lambda deployment
               <br />a non-event.
             </h2>
           </div>
@@ -134,14 +134,21 @@ export default function About() {
             {/* Mission body */}
             <div className="text-ink-secondary space-y-4 text-base leading-relaxed">
               <p>
-                The best engineering teams in the world deploy hundreds of times a day. They're not
-                special — they just have better tooling. DeployTitan gives every team access to the
-                same progressive delivery, automated rollback, and risk intelligence that elite
-                teams spent years building for themselves.
+                Lambda deployments fail in ways that generic CI/CD tools don&apos;t handle well —
+                DLQ spikes, cold start regressions, event source mapping errors. The usual response
+                is manual traffic management, Slack alerts, and someone staying awake to watch the
+                graphs.
               </p>
               <p>
-                We're a small, focused team. We ship fast. We talk to our customers constantly. And
-                we believe the future of software delivery is calm, confident, and automated.
+                DeployTitan automates that loop. You define what healthy looks like in YAML; Titan
+                watches the signals and either promotes or rolls back — without a human in the
+                critical path. And with cohort deployments, you can target the new version at a
+                specific set of users, accounts, or tenants — identified by event or context
+                attributes — before it touches everyone.
+              </p>
+              <p>
+                We&apos;re a small, focused team. We ship fast, we talk to our customers constantly,
+                and we build only what makes Lambda deployments safer.
               </p>
             </div>
 
@@ -157,8 +164,9 @@ export default function About() {
                   Vision
                 </p>
                 <p className="text-ink text-base leading-snug font-medium">
-                  A world where any engineering team — regardless of size or resources — can deploy
-                  with the same confidence as the best teams on the planet.
+                  A world where any team running Lambda functions can deploy with confidence —
+                  targeting specific users or accounts first, watching the signals, and promoting
+                  automatically. No dedicated platform engineers, no manual traffic cuts, no 3am pages.
                 </p>
               </Card>
 
@@ -208,6 +216,10 @@ export default function About() {
           <h2 className="font-display text-ink mt-3 text-2xl font-medium tracking-[-0.02em]">
             The people building it
           </h2>
+          <p className="text-ink-secondary mt-2 text-sm max-w-lg leading-relaxed">
+            Small and focused. We talk to engineers every day and ship fast because there are no
+            layers between the people building the product and the people using it.
+          </p>
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {team.map((person) => (
               <Card key={person.name} tone="muted">

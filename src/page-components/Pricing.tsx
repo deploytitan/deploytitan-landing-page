@@ -1,173 +1,113 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 import { CONSOLE_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
 import { InstallTabs } from '../components/shared/InstallTabs'
 import { Container } from '../components/shared/Container'
 import { Button } from '../components/shared/Button'
-import type { PolarProduct } from '../lib/polar'
 
-// ── Feature credit matrix ─────────────────────────────────────────────────────
+// ── Plan data ─────────────────────────────────────────────────────────────────
 
-const FEATURE_MATRIX = [
+const PLANS = [
   {
-    category: 'Deployments',
+    id: 'starter',
+    name: 'Starter',
+    price: 29,
+    unit: 'mo',
+    functionLimit: 10,
+    description: 'For individual engineers and small teams validating safer deployments on Lambda.',
     features: [
-      {
-        name: 'Standard deployment',
-        credits: 1,
-        description: 'Push a new version to any environment',
-      },
-      {
-        name: 'Canary deployment',
-        credits: 1,
-        description: 'Gradual traffic shift with automatic promotion',
-      },
-      {
-        name: 'Blue / green deployment',
-        credits: 1,
-        description: 'Zero-downtime swap with instant rollback',
-      },
-      {
-        name: 'Multi-region deployment',
-        credits: 1,
-        description: 'Fan out to multiple regions in one operation',
-      },
+      'Up to 10 Lambda functions under management',
+      'Unlimited deployments and rollbacks',
+      'Pre-deploy risk scan on every push',
+      'CloudWatch metric health checks included',
+      'Instant rollback in under 30 seconds',
+      'Deployment audit log (90-day retention)',
+      'titan.yaml config: no CRDs, no Helm',
+      'Community support',
     ],
+    cta: 'Start free trial',
+    href: `${CONSOLE_URL}/login`,
+    highlighted: false,
   },
   {
-    category: 'Risk & Safety',
+    id: 'pro',
+    name: 'Pro',
+    price: 149,
+    unit: 'mo',
+    functionLimit: 50,
+    description: 'For growing teams shipping multiple times a day across multiple services.',
     features: [
-      {
-        name: 'Pre-deploy risk scan',
-        credits: 1,
-        description: 'Automated change-risk analysis before every push',
-      },
-      {
-        name: 'Deployment health check',
-        credits: 1,
-        description: 'Post-deploy signal aggregation and scoring',
-      },
-      {
-        name: 'Automatic rollback trigger',
-        credits: 1,
-        description: 'Detected regression kicks off instant rollback',
-      },
-      {
-        name: 'Manual rollback',
-        credits: 1,
-        description: 'One-click revert to any previous stable version',
-      },
+      'Up to 50 Lambda functions under management',
+      'Everything in Starter',
+      'Cohort-based rollouts (internal / free / premium)',
+      'Cross-function deployment groups',
+      'SQS / EventBridge DLQ rollback signals',
+      'Custom CloudWatch metric policies',
+      'Deployment audit log (1-year retention)',
+      'Slack and PagerDuty integration',
+      'Priority email support',
     ],
-  },
-  {
-    category: 'Observability',
-    features: [
-      {
-        name: 'Deployment timeline event',
-        credits: 1,
-        description: 'Every deploy recorded with full audit trail',
-      },
-      {
-        name: 'Diff & change report',
-        credits: 1,
-        description: 'Structured summary of what changed and why',
-      },
-      { name: 'SLO impact report', credits: 1, description: 'Post-deploy SLO drift analysis' },
-    ],
-  },
-  {
-    category: 'Integrations',
-    features: [
-      {
-        name: 'CI/CD pipeline trigger',
-        credits: 1,
-        description: 'Kick off a pipeline via Titan from any workflow',
-      },
-      {
-        name: 'Slack / PagerDuty alert',
-        credits: 1,
-        description: 'Outbound notification on deploy events',
-      },
-      {
-        name: 'Webhook dispatch',
-        credits: 1,
-        description: 'Custom payload sent to your systems on any event',
-      },
-    ],
+    cta: 'Start free trial',
+    href: `${CONSOLE_URL}/login`,
+    highlighted: true,
   },
 ]
 
-// ── Value props ───────────────────────────────────────────────────────────────
-
-const VALUE_PROPS = [
-  {
-    heading: 'Unlimited orgs, projects, and users.',
-    body: 'Every seat, every org, every project is included: no caps, no per-user charges, no add-on tiers. Onboard your whole company. Credits are pooled into a single billing account that multiple members across multiple orgs and projects can draw from.',
-  },
-  {
-    heading: 'One billing account. Shared across everything.',
-    body: 'Your billing account is not tied to a single org or project. Multiple members can manage it, and usage from every org, every project, and every team draws from the same credit pool. One invoice. Full visibility.',
-  },
-  {
-    heading: 'One credit = one deployable unit.',
-    body: 'Credits are counted per instance: a container, a Lambda function, a monolith. Deploy 5 separate services and that is 5 credits. Roll back 2 microservices and that is 2 credits. But deploy a single Docker container that serves 50 routes, or a monolith Lambda, that is 1 credit. We count what actually gets deployed, not how many endpoints or paths it serves.',
-  },
-  {
-    heading: 'Credits out? Your services keep running.',
-    body: 'Exhausted your monthly credits? Everything already deployed stays live: we never touch your running services or block traffic. Only new deployments from the platform pause until your next billing cycle or a top-up. No hostage-taking, ever.',
-  },
-  {
-    heading: 'Prepaid. No surprise invoices.',
-    body: "You subscribe monthly and your credit allowance is granted upfront each cycle. Unused credits expire at month end; they do not roll over. If you need more mid-cycle, additional credits are available at your plan's overage rate. No hidden charges.",
-  },
-  {
-    heading: 'Billing accounts are transferable.',
-    body: 'We do not issue refunds, but billing accounts can be transferred to another owner or organisation at any time. If your team structure changes, your credits go with you.',
-  },
+const INCLUDED_ALWAYS = [
+  'Unlimited deployments, rollbacks, and risk scans',
+  'Unlimited team members',
+  'Reading dashboards, logs, and reports is always free',
+  'Services stay live if you downgrade — no hostage-taking',
 ]
 
 // ── FAQ ───────────────────────────────────────────────────────────────────────
 
 const FAQS: { q: string; a: React.ReactNode }[] = [
   {
-    q: 'How do credits work?',
-    a: 'Every plan includes a monthly credit allowance granted at the start of each billing cycle. Each platform action (a deployment, a risk scan, a rollback, a webhook dispatch) consumes exactly 1 credit, regardless of which org, project, or user triggered it. Credits that are not used by month end expire; they do not roll over.',
+    q: 'Why per-function rather than per-deployment?',
+    a: 'Charging per deployment creates a perverse incentive: teams avoid deploying often, which is the opposite of what safer delivery requires. A flat monthly rate per managed function removes that mental tax entirely. Deploy as often as you need.',
   },
   {
-    q: 'Are there really no limits on users, orgs, or projects?',
-    a: 'None. You can create unlimited organisations, unlimited projects, and invite unlimited users. Everyone on your account draws from the same shared credit pool. We do not count seats, we do not charge per org, and we do not gate features behind team size.',
+    q: 'What counts as a "Lambda function under management"?',
+    a: 'Any Lambda function you connect to DeployTitan via titan.yaml. Functions are counted by ARN. You can add and remove functions freely; billing is based on your peak active count within a billing cycle.',
   },
   {
-    q: 'How does the billing account work across multiple orgs?',
-    a: 'A billing account is a single entity that can be managed by multiple members. All orgs and projects linked to that billing account share its credit balance. You can see a unified usage breakdown (by org, by project, by action type) in the billing dashboard.',
+    q: 'Are rollbacks really unlimited?',
+    a: 'Yes. Rollbacks, risk scans, and health checks are included in the flat rate. We never charge extra for safety actions. If the detector fires and triggers a rollback at 3am, that costs you nothing extra.',
   },
   {
-    q: 'What happens when I run out of credits mid-month?',
-    a: "Your running services are never affected. Everything already deployed keeps receiving traffic normally. Only new deployments initiated from the DeployTitan platform are paused. Credits reset at the start of your next billing cycle, or you can purchase additional credits at your plan's overage rate to resume immediately.",
+    q: 'Do you support event-driven architectures (SQS, EventBridge)?',
+    a: 'DLQ-based rollback signals — if your dead-letter queue grows beyond a threshold, Titan triggers a rollback — are available on Pro. Full event-driven traffic splitting is on the roadmap after Phase 1.',
   },
   {
-    q: 'Do unused credits roll over?',
-    a: 'No. Unused credits expire at the end of each monthly billing cycle. An active subscription must be maintained to receive your credit grant each month. If you consistently have leftover credits, a smaller plan may be a better fit; the dashboard will surface this.',
+    q: 'Does DeployTitan touch my traffic?',
+    a: "No. Your traffic never passes through DeployTitan's infrastructure. The Titan Controller runs in your AWS account, manages Lambda alias weights via the AWS API, and sends only telemetry metadata to our control plane. Zero bytes of user traffic leave your environment.",
   },
   {
-    q: 'Do you offer refunds?',
-    a: 'We do not issue refunds for unused credits. However, billing accounts are fully transferable: if your team structure changes or you want to hand the account to another owner or organisation, you can do that and the remaining credit balance transfers with it.',
+    q: 'What happens if I exceed the function limit?',
+    a: "You'll see a warning in the dashboard before you hit the cap. You can upgrade at any time. Existing deployments keep running; only new function registrations are blocked until you upgrade or free a slot.",
   },
   {
-    q: 'Why not per-seat pricing?',
-    a: 'Seat-based pricing punishes team growth. A deployment triggered by a senior engineer costs the same infrastructure resources as one triggered by a contractor. We charge for what actually runs on our platform, not for who can log in.',
+    q: 'Can I use DeployTitan on Kubernetes or Cloud Run too?',
+    a: "Yes, both are supported. The per-function pricing applies to Lambda. Kubernetes and Cloud Run deployments are metered separately — contact us for current rates if you're multi-platform.",
   },
   {
-    q: 'Can I switch plans later?',
-    a: 'Yes: upgrade or downgrade at any time. Your credit balance adjusts immediately on upgrade. There are no lock-in periods on monthly plans.',
-  },
-  {
-    q: 'Do you offer discounts for startups or open source projects?',
+    q: 'Is there a free trial?',
     a: (
       <>
-        Yes. Email us at{' '}
+        Yes. Every account starts with a 14-day full-access trial — no credit card required. Run{' '}
+        <code className="font-mono text-xs bg-surface-alt px-1.5 py-0.5" style={{ borderRadius: '1px' }}>dt login</code>{' '}
+        to create an account from the CLI, connect your first Lambda function, and run a canary deployment before you pay a cent.
+      </>
+    ),
+  },
+  {
+    q: 'Do you offer discounts for early-stage startups?',
+    a: (
+      <>
+        Yes. Email{' '}
         <a href="mailto:support@deploytitan.com" className="text-ink-secondary underline hover:text-ink transition-colors">
           support@deploytitan.com
         </a>{' '}
@@ -176,92 +116,6 @@ const FAQS: { q: string; a: React.ReactNode }[] = [
     ),
   },
 ]
-
-// ── Static fallback plans (shown when Polar returns no products) ──────────────
-
-const FALLBACK_PLANS = [
-  {
-    id: 'starter',
-    name: 'Starter',
-    description: 'For individual engineers and small teams getting started with safer deployments.',
-    isHighlighted: false,
-    isFree: false,
-    isCustom: false,
-    credits: 250,
-    monthlyAmount: 1000,
-    overageCentsPerCredit: 4.0,
-    checkoutUrl: `${CONSOLE_URL}/login`,
-    cta: 'Get started',
-  },
-  {
-    id: 'pro',
-    name: 'Pro',
-    description: 'For growing engineering teams shipping multiple times a day.',
-    isHighlighted: true,
-    isFree: false,
-    isCustom: false,
-    credits: 1500,
-    monthlyAmount: 3900,
-    overageCentsPerCredit: 2.6,
-    checkoutUrl: `${CONSOLE_URL}/login`,
-    cta: 'Get started',
-  },
-]
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function formatCents(cents: number): string {
-  return `$${Math.round(cents / 100)}`
-}
-
-function formatCredits(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, '')}K`
-  return String(n)
-}
-
-// ── useCountUp ────────────────────────────────────────────────────────────────
-
-function useCountUp(target: number, duration = 900) {
-  const [value, setValue] = useState(0)
-  const ref = useRef<HTMLElement | null>(null)
-  const hasRun = useRef(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduced) {
-      setValue(target)
-      return
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasRun.current) {
-          hasRun.current = true
-          observer.disconnect()
-          const start = performance.now()
-          const tick = (now: number) => {
-            const elapsed = now - start
-            const progress = Math.min(elapsed / duration, 1)
-            // outExpo easing
-            const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress)
-            setValue(Math.round(eased * target))
-            if (progress < 1) requestAnimationFrame(tick)
-          }
-          requestAnimationFrame(tick)
-        }
-      },
-      { threshold: 0.5 },
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [target, duration])
-
-  return { value, ref }
-}
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
@@ -314,144 +168,83 @@ function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
 
 // ── PlanCard ──────────────────────────────────────────────────────────────────
 
-interface PlanCardProps {
-  name: string
-  description: string
-  isHighlighted: boolean
-  isFree: boolean
-  credits: number | null
-  monthlyAmount: number | null // cents
-  overageCentsPerCredit: number | null
-  checkoutUrl: string
-  cta: string
-}
-
 function PlanCard({
   name,
+  price,
+  unit,
+  functionLimit,
   description,
-  isHighlighted,
-  isFree,
-  credits,
-  monthlyAmount,
-  overageCentsPerCredit,
-  checkoutUrl,
+  features,
   cta,
-}: PlanCardProps) {
-  const isMail = checkoutUrl.startsWith('mailto:')
-
+  href,
+  highlighted,
+}: (typeof PLANS)[0]) {
   return (
     <div
-      className={`sharp-card flex flex-col border p-8 ${
-        isHighlighted ? 'border-primary/40 bg-primary/[0.03]' : 'border-line bg-surface'
+      className={`flex flex-col border p-8 ${
+        highlighted ? 'border-primary/40 bg-primary/[0.03]' : 'border-line bg-surface'
       }`}
+      style={{ borderRadius: '2px' }}
       data-reveal
     >
-      {isHighlighted && (
-        <p className="text-ink-secondary border-primary/30 mb-4 self-start border px-2 py-1 font-mono text-[10px] tracking-widest uppercase">
-          Most popular
-        </p>
-      )}
-
       <p className="text-ink mb-1 text-sm font-semibold">{name}</p>
       <p className="text-ink-secondary mb-6 text-xs leading-relaxed">{description}</p>
 
       {/* Price */}
-      <div className="mb-1">
-        {isFree ? (
-          <p className="text-ink text-3xl font-bold">Free</p>
-        ) : monthlyAmount != null ? (
-          <div className="flex items-baseline gap-1">
-            <span className="text-ink text-3xl font-bold">{formatCents(monthlyAmount)}</span>
-            <span className="text-ink-secondary text-sm">/ mo</span>
-          </div>
-        ) : (
-          <p className="text-ink text-3xl font-bold">—</p>
-        )}
+      <div className="mb-1 flex items-baseline gap-1">
+        <span className="text-ink text-3xl font-bold">${price}</span>
+        <span className="text-ink-secondary text-sm">/ {unit}</span>
       </div>
-
-      {/* Credits badge */}
-      {credits != null && (
-        <p className="text-ink-secondary mb-1 font-mono text-xs">
-          {formatCredits(credits)} credits / month included
-        </p>
-      )}
-
-      {/* Overage rate */}
-      {overageCentsPerCredit != null && (
-        <div className="border-line mb-6 mt-3 border-t pt-4">
-          <p className="text-ink-secondary mb-0.5 font-mono text-xs">Additional credits</p>
-          <p className="text-ink font-mono text-sm font-semibold">
-            ${(overageCentsPerCredit / 100).toFixed(3).replace(/0+$/, '').replace(/\.$/, '')}{' '}
-            <span className="text-ink-secondary font-normal">/ credit</span>
-          </p>
-        </div>
-      )}
-      {overageCentsPerCredit == null && credits == null && <div className="mb-6" />}
-      {overageCentsPerCredit == null && credits != null && <div className="mb-6" />}
+      <p className="text-ink-secondary mb-6 font-mono text-xs">
+        Up to {functionLimit} Lambda functions
+      </p>
 
       <Button
         as="a"
-        href={checkoutUrl}
-        target={isMail ? '_self' : '_blank'}
-        rel={isMail ? undefined : 'noopener noreferrer'}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
         aria-label={`${cta} — ${name} plan`}
-        variant={isHighlighted ? 'primary' : 'outline'}
+        variant={highlighted ? 'primary' : 'outline'}
         size="sm"
         block
-        className="mt-auto"
+        className="mb-8"
       >
         {cta}
       </Button>
+
+      {/* Feature list */}
+      <div className="border-line border-t pt-6">
+        <ul className="space-y-3">
+          {features.map((f) => (
+            <li key={f} className="flex items-start gap-2.5">
+              <svg
+                className="text-primary mt-0.5 shrink-0"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              <span className="text-ink-secondary text-xs leading-relaxed">{f}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-interface Props {
-  polarProducts: PolarProduct[]
-}
-
-export default function Pricing({ polarProducts }: Props) {
+export default function Pricing() {
   useScrollReveal()
-  const { value: countedTotal, ref: totalRef } = useCountUp(228)
-
-  // Build plan cards from Polar data (excluding Enterprise/custom),
-  // sorted smallest (free/lowest price) to largest, or fall back to static.
-  const plans: PlanCardProps[] = (() => {
-    const source =
-      polarProducts.length > 0
-        ? polarProducts
-            .filter((p) => !p.isCustom)
-            .map((p) => {
-              // Match to a fallback plan by normalised name for description + highlighted fallback
-              const nameLower = p.name.toLowerCase().replace(/\s+plan$/, '')
-              const fallback = FALLBACK_PLANS.find(
-                (f) => f.name.toLowerCase() === nameLower,
-              )
-              return {
-                id: p.id,
-                name: fallback?.name ?? p.name,
-                description: p.description ?? fallback?.description ?? '',
-                // metadata.highlighted takes precedence; fall back to matching fallback
-                isHighlighted: p.isHighlighted || fallback?.isHighlighted === true,
-                isFree: p.isFree,
-                credits: p.credits,
-                monthlyAmount: p.monthlyPrice?.amount ?? null,
-                overageCentsPerCredit: p.overageCentsPerCredit ?? null,
-                checkoutUrl: p.checkoutUrl,
-                cta: p.isFree ? 'Get started free' : 'Get started',
-              }
-            })
-        : FALLBACK_PLANS
-
-    // Sort: free first, then ascending monthly price
-    return [...source].sort((a, b) => {
-      if (a.isFree && !b.isFree) return -1
-      if (!a.isFree && b.isFree) return 1
-      return (a.monthlyAmount ?? 0) - (b.monthlyAmount ?? 0)
-    })
-  })()
 
   return (
     <>
@@ -460,13 +253,12 @@ export default function Pricing({ polarProducts }: Props) {
         <Container width="3xl" padding="default" className="text-center">
           <p className="text-ink-tertiary mb-4 font-mono text-xs tracking-widest uppercase" data-reveal data-reveal-delay="1">Pricing</p>
           <h1 className="text-ink mb-5 text-4xl leading-tight font-medium lg:text-5xl" data-reveal data-reveal-delay="2">
-            Pay for what you deploy.
-            <br className="hidden md:block" /> Not for who you hire.
+            Flat rate. Unlimited deployments.
+            <br className="hidden md:block" /> No safety tax.
           </h1>
           <p className="text-ink-secondary mx-auto max-w-xl text-lg" data-reveal data-reveal-delay="3">
-            Credits-based billing. Prepaid. No per-seat charges. No surprise invoices. Unlimited
-            users, orgs, and projects on every plan. Every platform action costs exactly 1 credit:
-            deployments, rollbacks, risk scans, all of it.
+            One price per managed Lambda function. Every deployment, rollback, and risk scan is included.
+            Charging extra for rollbacks would mean charging you for using the product correctly.
           </p>
         </Container>
       </section>
@@ -474,17 +266,9 @@ export default function Pricing({ polarProducts }: Props) {
       {/* ── Plan cards ── */}
       <section className="border-line border-b py-16">
         <Container width="4xl" padding="default">
-          <div className="mb-10 text-center" data-reveal>
-            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">Plans</p>
-            <h2 className="text-ink text-2xl font-semibold">Simple, predictable plans</h2>
-            <p className="text-ink-secondary mt-2 text-sm">
-              Credits are shared across your whole team: no seat counting required.
-            </p>
-          </div>
-
           <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {plans.map((plan) => (
-              <PlanCard key={plan.name} {...plan} />
+            {PLANS.map((plan) => (
+              <PlanCard key={plan.id} {...plan} />
             ))}
           </div>
 
@@ -497,9 +281,10 @@ export default function Pricing({ polarProducts }: Props) {
             <div>
               <p className="text-ink mb-1 text-sm font-semibold">Enterprise</p>
               <p className="text-ink-secondary max-w-md text-xs leading-relaxed">
-                Custom credit volumes, dedicated support SLAs, SSO, audit logs, private cloud
-                deployment, and compliance documentation (SOC 2, ISO 27001). Pricing tailored to
-                your scale.
+                Unlimited Lambda functions at a flat annual rate. Predictable cost for procurement.
+                Includes SSO, audit log export, private cloud deployment, SLA-backed support, and
+                compliance documentation (SOC 2, ISO 27001). Priced per-function-under-management,
+                not by credit volume.
               </p>
             </div>
             <a
@@ -524,204 +309,92 @@ export default function Pricing({ polarProducts }: Props) {
             </a>
           </div>
 
-          <p className="text-ink-tertiary mt-6 text-center font-mono text-xs">
-            Credits shared across unlimited orgs, projects &amp; users · Unused credits expire
-            monthly · Active subscription required
+          <p className="text-ink-tertiary mt-6 text-center font-mono text-xs" data-reveal>
+            14-day free trial on all plans · No credit card required · Cancel any time
           </p>
         </Container>
       </section>
 
-      {/* ── Value props ── */}
+      {/* ── What's always included ── */}
       <section className="border-line border-b py-20">
-        <Container width="5xl" padding="default">
-          <div className="mb-12" data-reveal>
-            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
-              How billing works
-            </p>
+        <Container width="4xl" padding="default">
+          <div className="mb-10" data-reveal>
+            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">Always included</p>
             <p className="text-ink max-w-2xl text-2xl font-semibold leading-snug">
-              Credits are the only unit of measure. Everything else, users, orgs, projects, seats,
-              is unlimited and free.
+              One deployment = the full safety stack. Risk scan, health checks, and rollback are not add-ons.
             </p>
           </div>
 
           <dl className="border-line divide-line divide-y border-t" data-reveal>
-            {VALUE_PROPS.map((vp) => (
-              <div
-                key={vp.heading}
-                className="grid grid-cols-1 gap-2 py-6 md:grid-cols-[2fr_3fr] md:gap-12"
-              >
-                <dt className="text-ink text-sm leading-snug font-medium">
-                  {vp.heading}
-                </dt>
-                <dd className="text-ink-secondary text-sm leading-relaxed">{vp.body}</dd>
+            {INCLUDED_ALWAYS.map((item) => (
+              <div key={item} className="flex items-center gap-4 py-5">
+                <svg
+                  className="text-primary shrink-0"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span className="text-ink-secondary text-sm leading-relaxed">{item}</span>
               </div>
             ))}
           </dl>
         </Container>
       </section>
 
-      {/* ── Credit calculator example ── */}
+      {/* ── Billing clarity ── */}
       <section className="border-line bg-surface-alt/40 border-b py-20">
         <Container width="4xl" padding="default">
           <div className="mb-8" data-reveal>
-            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
-              Is Starter enough?
-            </p>
-            <h2 className="text-ink mb-2 text-2xl font-semibold">
-              250 credits goes further than you think.
-            </h2>
-            <p className="text-ink-secondary max-w-xl text-sm">
-              We sized the Starter plan so that the vast majority of teams will never need to
-              upgrade. Here is a realistic month for a small engineering team: 5 services, deployed
-              once every working day, with a risk scan on every push.
-            </p>
+            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">How billing works</p>
+            <h2 className="text-ink mb-2 text-2xl font-semibold">Simple enough to explain in one sentence.</h2>
           </div>
 
-          {/* Example scenario */}
           <div
             className="border-line bg-surface border"
             style={{ borderRadius: '2px' }}
             data-reveal
           >
-            {/* Header */}
             <div className="border-line flex items-center gap-2 border-b px-6 py-4">
               <span className="bg-primary h-2 w-2" style={{ borderRadius: '1px' }} />
-              <p className="text-ink-secondary font-mono text-xs">
-                Scenario: 5 services, 1 deploy / day, every working day
-              </p>
+              <p className="text-ink-secondary font-mono text-xs">Billing model</p>
             </div>
-
-            {/* Line items */}
             <div className="divide-line divide-y">
               {[
                 {
-                  action: 'Deployments',
-                  calc: '5 services × 1× / day × 22 working days',
-                  credits: 110,
+                  label: 'What you pay for',
+                  value: 'Lambda functions connected to DeployTitan (peak count per billing cycle)',
                 },
                 {
-                  action: 'Pre-deploy risk scans',
-                  calc: '1 scan per deployment: 5 services × 1× / day × 22 days',
-                  credits: 110,
+                  label: 'What is always free',
+                  value: 'Deployments, rollbacks, risk scans, health checks, dashboard views, audit log reads',
                 },
                 {
-                  action: 'Rollbacks, week 1',
-                  calc: '2 services rolled back after a bad release',
-                  credits: 2,
+                  label: 'Team members',
+                  value: 'Unlimited on all plans',
                 },
                 {
-                  action: 'Rollbacks, week 2',
-                  calc: '1 service rolled back mid-deploy',
-                  credits: 1,
+                  label: 'Overage',
+                  value: 'You are warned before you hit your function limit. No silent overcharges.',
                 },
                 {
-                  action: 'Rollbacks, week 3',
-                  calc: '3 services rolled back after a config change went wrong',
-                  credits: 3,
-                },
-                {
-                  action: 'Rollbacks, week 4',
-                  calc: '2 services rolled back during hotfix gone sideways',
-                  credits: 2,
+                  label: 'Cancellation',
+                  value: 'Cancel any time. Your running Lambdas keep running — DeployTitan never blocks traffic.',
                 },
               ].map((row) => (
-                <div key={row.action} className="flex items-center justify-between gap-4 px-6 py-4">
-                  <div>
-                    <p className="text-ink text-sm font-medium">{row.action}</p>
-                    <p className="text-ink-tertiary mt-0.5 text-xs">{row.calc}</p>
-                  </div>
-                  <div className="shrink-0 text-right">
-                    <span className="text-ink font-mono text-sm font-semibold">{row.credits}</span>
-                  </div>
+                <div key={row.label} className="flex flex-col gap-1 px-6 py-4 sm:flex-row sm:items-start sm:gap-8">
+                  <p className="text-ink w-44 shrink-0 text-sm font-medium">{row.label}</p>
+                  <p className="text-ink-secondary text-sm leading-relaxed">{row.value}</p>
                 </div>
               ))}
             </div>
-
-            {/* Total */}
-            <div className="border-line bg-surface-alt/60 flex items-center justify-between border-t px-6 py-4">
-              <div>
-                <p className="text-ink text-sm font-semibold">Total credits used</p>
-                <p className="text-ink-tertiary mt-0.5 text-xs">Out of 250 included in Starter</p>
-              </div>
-              <div className="text-right">
-                <p ref={totalRef as React.RefObject<HTMLParagraphElement>} className="text-ink font-mono text-2xl font-bold">{countedTotal}</p>
-                <p className="text-ink-secondary mt-0.5 font-mono text-xs">22 credits remaining</p>
-              </div>
-            </div>
-          </div>
-
-          <p className="text-ink-tertiary mt-5 text-center font-mono text-xs" data-reveal>
-            Each deployable unit (container, Lambda, monolith) counts as 1 credit per action:
-            regardless of how many routes, endpoints, or paths it serves. Browsing dashboards,
-            viewing history, and reading reports is always free.
-          </p>
-        </Container>
-      </section>
-
-      {/* ── Feature credit matrix ── */}
-      <section className="border-line border-b py-20">
-        <Container width="5xl" padding="default">
-          <div className="mb-10" data-reveal>
-            <p className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
-              What costs a credit
-            </p>
-            <h2 className="text-ink mb-2 text-2xl font-semibold">Every action. One credit.</h2>
-            <p className="text-ink-secondary max-w-xl text-sm">
-              Credits are counted per deployable unit: each container, Lambda function, or
-              standalone instance is one credit. A single monolith or single-container service is
-              always 1 credit regardless of how many routes or endpoints it serves. No environment
-              surcharges, no region premiums.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-x-12 gap-y-10 md:grid-cols-2">
-            {FEATURE_MATRIX.map((cat) => (
-              <div key={cat.category} data-reveal>
-                <p className="text-ink-tertiary border-line mb-4 border-b pb-2 font-mono text-[10px] tracking-widest uppercase">
-                  {cat.category}
-                </p>
-                <ul className="flex flex-col gap-3">
-                  {cat.features.map((f) => (
-                    <li key={f.name} className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-ink text-sm font-medium">{f.name}</p>
-                        <p className="text-ink-tertiary mt-0.5 text-xs">{f.description}</p>
-                      </div>
-                      <span className="text-ink-secondary border-primary/30 mt-0.5 shrink-0 border px-2 py-0.5 font-mono text-[10px]">
-                        1 credit
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div
-            className="border-line bg-surface-alt/40 mt-10 flex items-start gap-3 border p-5"
-            style={{ borderRadius: '2px' }}
-            data-reveal
-          >
-            <svg
-              className="text-ink-secondary mt-0.5 shrink-0"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12.01" y2="16" />
-            </svg>
-            <p className="text-ink-secondary text-xs leading-relaxed">
-              <span className="text-ink font-medium">Reading data is always free.</span> Browsing
-              the dashboard, viewing deployment history, audit logs, and reports never consumes
-              credits. Credits are only deducted when you initiate an action on the platform.
-            </p>
           </div>
         </Container>
       </section>
@@ -748,7 +421,7 @@ export default function Pricing({ polarProducts }: Props) {
             Get started now
           </p>
           <p className="text-ink mb-8 text-lg font-semibold" data-reveal>
-            Install the CLI and try it for free in under 2 minutes.
+            Install the CLI. Connect your first Lambda. Ship a canary in under 5 minutes.
           </p>
           <div className="mx-auto max-w-lg" data-reveal>
             <InstallTabs />

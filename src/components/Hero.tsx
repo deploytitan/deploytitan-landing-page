@@ -378,19 +378,19 @@ export function Hero() {
             >
               <span className="relative flex h-2 w-2">
                 <span
-                  className="bg-signal-success absolute inline-flex h-full w-full opacity-75"
+                  className="bg-primary absolute inline-flex h-full w-full opacity-60"
                   style={{
                     animation: reducedMotion ? 'none' : 'ping-anim 1.5s cubic-bezier(0,0,0.2,1) infinite',
                     borderRadius: '1px',
                   }}
                 />
                 <span
-                  className="bg-signal-success relative inline-flex h-2 w-2"
+                  className="bg-primary relative inline-flex h-2 w-2"
                   style={{ borderRadius: '1px' }}
                 />
               </span>
               <span className="text-ink-secondary font-mono text-xs">
-                Live public demo available
+                Early access open · 14-day free trial
               </span>
             </div>
           </div>
@@ -414,8 +414,8 @@ export function Hero() {
             data-reveal-delay="4"
             className="text-ink-secondary mb-4 max-w-[65ch] text-lg leading-relaxed"
           >
-            Releases shouldn't be the scariest part of your week. Stop guessing which release broke
-            production.
+            The only progressive delivery platform built for AWS Lambda and event-driven architectures.
+            Canary deployments, automatic rollback, and cohort-based rollouts — without Kubernetes, Helm, or CRDs.
           </p>
 
           {/* Supporting line */}
@@ -424,7 +424,7 @@ export function Hero() {
             data-reveal-delay="4"
             className="text-ink-secondary mb-8 max-w-[65ch] text-sm leading-relaxed font-medium"
           >
-            Catch risk early. Ship without fear. Learn from every release.
+            One config file. One CLI command. Instant rollback in under 30 seconds.
           </p>
 
           {/* CTAs */}
@@ -433,8 +433,8 @@ export function Hero() {
             data-reveal-delay="5"
             className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-start"
           >
-            <Button as="a" href="/cli" variant="primary" size="lg" className="group">
-              Install the CLI
+            <Button as="a" href={`${APP_URL}/login`} variant="primary" size="lg" className="group">
+              Start free trial
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -451,8 +451,8 @@ export function Hero() {
                 <path d="m12 5 7 7-7 7" />
               </svg>
             </Button>
-            <Button as="a" href={`${APP_URL}/login`} variant="outline" size="lg">
-              Start free trial
+            <Button as="a" href="/cli" variant="outline" size="lg">
+              Install the CLI
             </Button>
           </div>
 
@@ -462,7 +462,8 @@ export function Hero() {
             data-reveal-delay="5"
             className="text-ink-tertiary mt-3 font-mono text-xs"
           >
-            <InlineCode>dt login</InlineCode> creates your account from the CLI ·{' '}
+            No credit card required ·{' '}
+            <InlineCode>dt login</InlineCode> creates your account ·{' '}
             <a href="/journey" className="text-ink-secondary underline hover:text-ink transition-colors">
               Why we built this →
             </a>

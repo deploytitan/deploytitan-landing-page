@@ -23,9 +23,15 @@ function trapFocus(container: HTMLElement): () => void {
   const handler = (e: KeyboardEvent) => {
     if (e.key !== 'Tab') return
     if (e.shiftKey) {
-      if (document.activeElement === first) { e.preventDefault(); last.focus() }
+      if (document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      }
     } else {
-      if (document.activeElement === last) { e.preventDefault(); first.focus() }
+      if (document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
     }
   }
   container.addEventListener('keydown', handler)
@@ -177,8 +183,10 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
         <div className="max-w-page mx-auto flex h-20 items-center justify-between gap-8 px-6 md:justify-normal lg:px-12">
           {/* Logo */}
           <Link href="/" className="group flex shrink-0 items-center">
-            <span className="font-display text-2xl font-medium tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-70">Deploy</span>
-            <span className="font-display text-primary-dark text-2xl font-medium tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-100">
+            <span className="font-display text-2xl font-medium tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-70">
+              Deploy
+            </span>
+            <span className="font-display text-primary-dark text-2xl font-medium tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-70">
               Titan
             </span>
           </Link>
@@ -349,7 +357,9 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
       </nav>
 
       {/* Mobile overlay */}
-      {mobileOpen && <MobileNav ref={mobileNavRef} id="mobile-nav" onClose={closeMobile} barHeight={barHeight} />}
+      {mobileOpen && (
+        <MobileNav ref={mobileNavRef} id="mobile-nav" onClose={closeMobile} barHeight={barHeight} />
+      )}
     </>
   )
 }

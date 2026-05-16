@@ -277,7 +277,8 @@ export default function Journey() {
               Ready to deploy without the dread?
             </h2>
             <p className="text-ink-secondary mx-auto max-w-xl text-lg leading-relaxed">
-              Join the engineers who are already shipping with confidence. Early access is open.
+              Early access is open. 14-day free trial, no credit card required. Run your first
+              Lambda canary in under 5 minutes.
             </p>
             <div className="flex flex-col justify-center gap-4 pt-2 sm:flex-row">
               <Button
@@ -285,9 +286,9 @@ export default function Journey() {
                 href="https://console.deploytitan.com/login"
                 variant="primary"
                 size="sm"
-                aria-label="Get started with DeployTitan"
+                aria-label="Start your free trial of DeployTitan"
               >
-                Get started
+                Start free trial
               </Button>
               <Button
                 as="a"

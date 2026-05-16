@@ -340,7 +340,7 @@ export default function Solutions() {
             className="text-ink-tertiary mb-10 text-center font-mono text-xs tracking-widest uppercase"
             data-reveal
           >
-            Real before/after from teams who switched
+            Real-world impact: the before and after
           </p>
           <div className="bg-line flex flex-col gap-px">
             {PROOF_SCENARIOS.map((s, i) => (
