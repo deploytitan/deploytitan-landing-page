@@ -1,6 +1,7 @@
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
+import { BrandLogo } from '../components/shared/BrandLogo'
 
 export default function Brand() {
   return (
@@ -33,14 +34,10 @@ export default function Brand() {
         </h2>
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Card tone="muted" padding="none" className="p-10 flex items-center justify-center">
-            <span className="font-display text-3xl font-medium tracking-[-0.02em]">
-              Deploy<span className="text-primary-dark">Titan</span>
-            </span>
+            <BrandLogo variant="light-mode" className="h-10 w-auto" />
           </Card>
           <Card padding="none" className="bg-ink p-10 flex items-center justify-center">
-            <span className="font-display text-3xl font-medium tracking-[-0.02em] text-surface">
-              Deploy<span className="text-primary">Titan</span>
-            </span>
+            <BrandLogo variant="dark-mode" className="h-10 w-auto" />
           </Card>
         </div>
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -218,47 +218,7 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
-    "source": "/products/-titan-foresight",
-    "target": "/pricing",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-insight",
-    "target": "/pricing",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-ledger",
-    "target": "/pricing",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-ledger",
-    "target": "/how-it-works",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-phoenix",
-    "target": "/pricing",
-    "kind": "link"
-  },
-  {
     "source": "/products/-titan-rollout",
-    "target": "/solutions/release-coordination",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-sandbox",
-    "target": "/pricing",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-shield",
-    "target": "/pricing",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-shield",
     "target": "/solutions/release-coordination",
     "kind": "link"
   },
@@ -285,6 +245,11 @@ export const generatedLinks: GraphLink[] = [
   {
     "source": "__nav__",
     "target": "/pricing",
+    "kind": "nav"
+  },
+  {
+    "source": "__nav__",
+    "target": "/docs",
     "kind": "nav"
   },
   {

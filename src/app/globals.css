@@ -112,6 +112,19 @@
     }
 }
 
+.logo-theme-fade {
+    transition:
+        opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .logo-theme-fade {
+        transition: none;
+    }
+}
+
 /* Release graph edge draw-in */
 @keyframes drawEdge {
     from { stroke-dashoffset: var(--edge-length, 300); }

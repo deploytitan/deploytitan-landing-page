@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { Section } from './shared/Section'
 import { Container } from './shared/Container'
+import { BrandLogo } from './shared/BrandLogo'
 
 export function Footer() {
   return (
@@ -15,13 +16,7 @@ export function Footer() {
         {/* Brand */}
         <div className="col-span-2 flex flex-col gap-4 md:col-span-1">
           <Link href="/" className="flex items-center">
-            <span className="font-display text-lg font-medium tracking-[-0.02em]">Deploy</span>
-            <span
-              className="font-display text-lg font-medium tracking-[-0.02em]"
-              style={{ color: 'var(--color-primary-accessible, #7a6530)' }}
-            >
-              Titan
-            </span>
+            <BrandLogo className="h-5 w-auto" />
           </Link>
           <p className="text-ink-tertiary max-w-62.5 text-xs leading-relaxed">
             Release coordination and deployment safety for distributed engineering teams.

@@ -8,6 +8,7 @@ import { SolutionsDropdown } from './SolutionsDropdown'
 import { MobileNav } from './MobileNav'
 import { ThemeToggle } from '../shared/ThemeToggle'
 import { Button } from '../shared/Button'
+import { BrandLogo } from '../shared/BrandLogo'
 import { useTheme } from '../../hooks/useTheme'
 import { CREATE_ACCOUNT_URL } from '@/lib/env'
 
@@ -189,12 +190,10 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
         <div className="max-w-page mx-auto flex h-20 items-center justify-between gap-8 px-6 md:justify-normal lg:px-12">
           {/* Logo */}
           <Link href="/" className="group flex shrink-0 items-center">
-            <span className="font-display text-2xl font-medium tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-70">
-              Deploy
-            </span>
-            <span className="font-display text-primary-dark text-2xl font-medium tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-70">
-              Titan
-            </span>
+            <BrandLogo
+              priority
+              className="h-6 w-auto transition-opacity duration-200 group-hover:opacity-70"
+            />
           </Link>
 
           {/* Desktop centre nav */}
