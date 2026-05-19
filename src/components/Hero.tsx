@@ -394,7 +394,7 @@ function FreezeWindowPanel({ visible }: { visible: boolean }) {
 
   return (
     <div
-      className="border border-line bg-surface-alt/40 p-3"
+      className="min-h-[120px] border border-line bg-surface-alt/40 p-3"
       style={{
         borderRadius: '2px',
         opacity:   visible ? 1 : 0,
@@ -468,7 +468,7 @@ function IntelligencePanel({ visible }: { visible: boolean }) {
 
   return (
     <div
-      className="border border-primary/25 bg-primary/[0.03] p-3"
+      className="min-h-[108px] border border-primary/25 bg-primary/[0.03] p-3"
       style={{
         borderRadius: '2px',
         opacity:   visible ? 1 : 0,
@@ -539,7 +539,7 @@ function LogPanel({ logs, visible }: { logs: LogEntry[]; visible: boolean }) {
       <div
         ref={scrollRef}
         className="space-y-2 overflow-hidden"
-        style={{ maxHeight: '100px' }}
+        style={{ height: '100px' }}
       >
         {logs.map((entry, i) => (
           <div
@@ -716,7 +716,10 @@ export function Hero() {
 
           {/* Right column */}
           <div data-reveal data-reveal-delay="3">
-            <div className="relative overflow-hidden border border-line bg-surface" style={{ borderRadius: '2px' }}>
+            <div
+              className="relative overflow-hidden border border-line bg-surface"
+              style={{ borderRadius: '2px' }}
+            >
 
               {/* Card header */}
               <div className="border-line bg-surface-alt/70 flex items-center justify-between border-b px-5 py-3">
@@ -751,7 +754,7 @@ export function Hero() {
                 </div>
               </div>
 
-              <div className="p-4 space-y-4">
+              <div className="space-y-4 p-4 md:p-4">
 
                 {/* Dependency tree */}
                 <div>
@@ -759,11 +762,13 @@ export function Hero() {
                     <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">Dependency graph</p>
                     <p className="font-mono text-[10px] text-ink-tertiary">5 services · 6 PRs</p>
                   </div>
-                  <DependencyTree
-                    nodeStates={nodeStates}
-                    cycleKey={cycleKey}
-                    onNormalLengths={onNormalLengths}
-                  />
+                  <div className="min-h-[184px] sm:min-h-[196px]">
+                    <DependencyTree
+                      nodeStates={nodeStates}
+                      cycleKey={cycleKey}
+                      onNormalLengths={onNormalLengths}
+                    />
+                  </div>
                 </div>
 
                 {/* Event log */}
