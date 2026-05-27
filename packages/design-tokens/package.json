@@ -5,6 +5,14 @@
   "license": "UNLICENSED",
   "private": false,
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deploytitan/deploytitan-landing-page.git",
+    "directory": "packages/design-tokens"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "exports": {
     ".": "./index.css",
     "./tokens": "./tokens.css",
@@ -21,7 +29,7 @@
   "scripts": {
     "setup-context": "node scripts/setup-context.mjs",
     "link-local": "pnpm link --global",
-    "publish-pkg": "npm publish --access public"
+    "publish-pkg": "npm publish"
   },
   "keywords": [
     "deploytitan",
