@@ -166,7 +166,7 @@ export function PlatformOverview() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="block h-1.5 w-1.5 bg-signal-warning" style={{ borderRadius: '1px' }} />
-                  <p className="font-mono text-[10px] tracking-[0.12em] text-signal-warning uppercase">
+                  <p className="font-mono text-[10px] tracking-[0.12em] text-signal-warning-text dark:text-signal-warning uppercase">
                     In coordination
                   </p>
                 </div>
@@ -178,7 +178,7 @@ export function PlatformOverview() {
                     key={item.label}
                     className="grid gap-4 px-5 py-5 transition-colors duration-300 hover:bg-surface-alt/55 sm:grid-cols-[44px_96px_minmax(0,1fr)_92px] sm:items-center"
                   >
-                    <p className="font-mono text-[10px] tracking-[0.14em] text-ink-quaternary uppercase">
+                    <p className="font-mono text-[10px] tracking-[0.14em] text-ink-tertiary uppercase">
                       {item.step}
                     </p>
                     <p className="font-mono text-[10px] tracking-[0.14em] text-ink-tertiary uppercase">

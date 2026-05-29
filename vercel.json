@@ -1,7 +1,14 @@
 {
   "redirects": [
-    { "source": "/products/titan-sentinel", "destination": "/products/titan-foresight", "permanent": true },
-    { "source": "/products/titan-pulse",    "destination": "/products/titan-ledger",    "permanent": true }
+    { "source": "/products/titan-sentinel",        "destination": "/products/titan-foresight", "permanent": true },
+    { "source": "/products/titan-pulse",           "destination": "/products/titan-rollout",   "permanent": true },
+    { "source": "/solutions",                      "destination": "/products/titan-rollout",   "permanent": true },
+    { "source": "/solutions/release-coordination", "destination": "/products/titan-rollout",   "permanent": true },
+    { "source": "/solutions/instant-rollback",     "destination": "/products/titan-rollout",   "permanent": true },
+    { "source": "/solutions/platform-engineering", "destination": "/products/titan-rollout",   "permanent": true },
+    { "source": "/solutions/freeze-windows",       "destination": "/products/titan-rollout",   "permanent": true },
+    { "source": "/solutions/risk-intelligence",    "destination": "/products/titan-foresight", "permanent": true },
+    { "source": "/solutions/progressive-delivery", "destination": "/products/titan-phoenix",   "permanent": true }
   ],
   "headers": [
     {

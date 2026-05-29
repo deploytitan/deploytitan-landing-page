@@ -150,7 +150,7 @@ export function Reframe() {
             {/* Heavy label */}
             <div className="flex items-center justify-center gap-2 mt-4">
               <div className="h-px flex-1 bg-signal-warning/20" />
-              <span className="text-[10px] font-mono text-signal-warning/90 uppercase tracking-wider px-2">
+              <span className="text-[10px] font-mono text-signal-warning-text dark:text-signal-warning uppercase tracking-wider px-2">
                 Required for every single change
               </span>
               <div className="h-px flex-1 bg-signal-warning/20" />
@@ -179,7 +179,7 @@ export function Reframe() {
                     data-reveal
                     data-reveal-delay={String(5 + i)}
                   >
-                    <div className="text-xs font-mono font-medium text-signal-danger mb-1">
+                    <div className="text-xs font-mono font-medium text-signal-danger-text dark:text-signal-danger mb-1">
                       {b.label}
                     </div>
                     <div className="text-[10px] font-mono text-ink-tertiary">{b.detail}</div>

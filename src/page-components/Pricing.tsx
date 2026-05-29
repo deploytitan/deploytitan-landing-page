@@ -10,178 +10,88 @@ import { Button } from '../components/shared/Button'
 const STARTER_URL = DEMO_URL
 const GROWTH_DEMO_URL = DEMO_URL
 const SCALE_URL = DEMO_URL
-const ENTERPRISE_URL = DEMO_URL
 
 const ANNUAL_DISCOUNT = 0.17 // ~2 months free
 
-const STARTER_MONTHLY = 49
-const GROWTH_MONTHLY = 499
-const SCALE_MONTHLY = 2499
+const STARTER_MONTHLY = 19
+const GROWTH_MONTHLY = 49
+const SCALE_MONTHLY = 149
 
 const STARTER_FEATURES = [
-  'Basic deployments and manual rollback',
-  'Canary rollout support',
-  'Deployment history and timeline',
-  'Health-based rollback',
-  'Basic alerts and deployment monitoring',
+  'Release objects — group PRs from multiple repositories into one release',
+  'Dependency ordering — set which service merges before which',
+  '1-click sequential merge — execute in dependency order',
   'GitHub integration',
-  'AWS Lambda and basic Kubernetes support',
 ]
 
 const GROWTH_FEATURES = [
-  'Automated progressive rollout',
-  'Cohort routing and promotion gates',
-  'Dependency-aware releases and DAG visualization',
-  'Coordinated multi-service releases',
-  'Automated rollback engine',
-  'SLA/SLO-aware deployment guardrails',
-  'Approvals, audit trail, tagging, and notes',
+  'Slack notifications when a merge completes or is blocked',
+  'Multiple environments (staging and production)',
 ]
 
 const SCALE_FEATURES = [
-  { label: 'Multi-region rollout coordination', detail: 'Coordinate larger deployment orgs' },
-  { label: 'Advanced policy engine', detail: 'Govern releases across teams and environments' },
-  { label: 'DR orchestration', detail: 'Recovery workflows for critical systems' },
-  { label: 'Advanced RBAC', detail: 'Control who can approve, deploy, and roll back' },
-  { label: 'Compliance reporting', detail: 'Audit exports and immutable deployment history' },
-  { label: 'Titan Foresight Lite', detail: 'Impact analysis, blast radius, risk indicators' },
-]
-
-const ENTERPRISE_FEATURES = [
-  { label: 'Self-hosted and on-prem', detail: 'Private, hybrid, or air-gapped deployment' },
-  { label: 'Custom integrations', detail: 'Connectors for internal platforms and workflows' },
-  { label: 'Custom SLAs', detail: 'Support and recovery terms matched to your risk profile' },
-  { label: 'Private networking', detail: 'Dedicated infrastructure and network controls' },
-  { label: 'White-label options', detail: 'For internal platform programs and service catalogs' },
-  { label: 'Multi-workspace governance', detail: 'Central policy across business units' },
+  { label: 'Unlimited services and members', detail: 'No caps as your release surface grows' },
+  { label: 'Priority support', detail: 'Faster response times and hands-on onboarding' },
 ]
 
 const PLAN_LIMITS = {
   starter: [
-    ['Organizations', '1'],
-    ['Projects', '3'],
-    ['Services', '10'],
-    ['Team members', '10'],
-    ['Environments', '2'],
-    ['Retention', '14 days'],
+    ['Services', '5'],
+    ['Members', '5'],
+    ['Releases', 'Unlimited'],
   ],
   growth: [
-    ['Organizations', '5'],
-    ['Projects', '25'],
-    ['Services', '100'],
-    ['Team members', '50'],
-    ['Environments', '10'],
-    ['Retention', '90 days'],
+    ['Services', '20'],
+    ['Members', '25'],
+    ['Releases', 'Unlimited'],
   ],
   scale: [
-    ['Organizations', '20'],
-    ['Projects', '100'],
-    ['Services', '500'],
-    ['Team members', '250'],
-    ['Environments', 'Unlimited'],
-    ['Retention', '1 year'],
+    ['Services', 'Unlimited'],
+    ['Members', 'Unlimited'],
+    ['Releases', 'Unlimited'],
   ],
 } satisfies Record<string, [string, string][]>
 
-const INTEGRATIONS_BY_PLAN = {
-  starter: 'GitHub, AWS Lambda, basic Kubernetes',
-  growth: 'OpenTelemetry, Datadog, Grafana, CloudWatch, Slack',
-  scale: 'Priority support, dedicated Slack channel, advanced analytics',
-} satisfies Record<string, string>
-
-const EXCLUDED_STARTER = [
-  'Advanced DAG orchestration',
-  'Sandbox environments',
-  'Advanced policies',
-  'SSO/SAML',
-  'Self-hosted deployment',
-  'Advanced analytics',
-]
-
 const INCLUDED_ALWAYS = [
-  'Release visibility and timeline history',
-  'Dependency graphing and blocked release state',
-  'Slack release updates and blocked release alerts',
-  'No per-deployment, per-event, or AI-token meters',
-]
-
-const ADD_ONS = [
-  {
-    name: 'Extra Protected Services',
-    price: '+25: $99/mo, +100: $299/mo',
-    description: 'Expand service coverage without changing the core plan or introducing meters.',
-  },
-  {
-    name: 'Titan Foresight',
-    price: '$499/mo',
-    description: 'Impact analysis, downstream dependency detection, risk scoring, and recommendations.',
-  },
-  {
-    name: 'Titan Sandbox',
-    price: '$399/mo',
-    description: 'Ephemeral environments, historical replay, and branch preview orchestration.',
-  },
-  {
-    name: 'Self-Hosted Controllers',
-    price: '$1,000/mo',
-    description: 'Controller deployment for fintech, regulated infrastructure, and private networks.',
-  },
-  {
-    name: 'Compliance Pack',
-    price: '$499/mo',
-    description: 'Audit exports, approval workflows, deployment attestations, and compliance reporting.',
-  },
-  {
-    name: 'Advanced Observability',
-    price: '$299/mo',
-    description: 'Deeper telemetry analysis for teams that want DeployTitan to enrich existing tools.',
-  },
+  'Release history and merge timeline on every plan',
+  'No per-release, per-merge, or per-event fees',
 ]
 
 const BILLING_ROWS = [
   {
     label: 'Base plans',
-    value: 'Fixed monthly pricing tied to services, environments, and release capability depth.',
+    value: 'Fixed monthly price based on service count. Starter $19, Growth $49, Scale $149.',
   },
   {
-    label: 'Expansion',
-    value: 'Optional add-ons for extra services, Foresight, Sandbox, self-hosted controllers, compliance, and observability.',
+    label: 'Extra services',
+    value: 'Add services beyond your plan limit at $10/service/month.',
   },
   {
     label: 'Never metered',
-    value: 'No credits, traces, rollout minutes, AI tokens, deployment events, or surprise incident invoices.',
+    value: 'No deployment events, per-merge fees, or overage surprises. Releases are always unlimited.',
   },
+]
+
+const SERVICE_BANDS = [
+  { label: '1 to 5 services', plan: 'starter' as const },
+  { label: '6 to 20 services', plan: 'growth' as const },
+  { label: '20+ services', plan: 'scale' as const },
 ]
 
 // Trial Q is surfaced first because it is the most common hesitation at this point in the page.
 const FAQS: { q: string; a: React.ReactNode }[] = [
   {
-    q: 'What does the 30-day trial include?',
-    a: 'Starter onboarding includes basic deployments, manual rollback, canary rollout support, deployment history, health-based rollback, and basic integrations. Teams evaluating larger rollout surfaces can request a Growth trial with advanced orchestration enabled.',
+    q: 'What does the free trial include?',
+    a: 'The trial runs on the Growth plan: release objects, dependency ordering, 1-click sequential merge, Slack notifications, and multiple environments. No credit card required.',
   },
   {
-    q: 'Why not charge with credits?',
-    a: 'Credits make teams hesitate during exactly the moments DeployTitan is supposed to protect: frequent releases, broader instrumentation, and incident response. Fixed plans keep the bill predictable while add-ons map to capabilities with clear operational value.',
+    q: 'What happens if we exceed the service limit?',
+    a: 'You can add services at $10/service/month. If you need more than 20 services, Scale removes the limit entirely.',
   },
   {
-    q: 'What changes as we move from Starter to Growth?',
-    a: 'Starter is for early teams proving the workflow. Growth adds automated progressive rollout, dependency-aware releases, coordinated multi-service releases, guardrails, approvals, audit trails, and the integrations scaling teams expect.',
+    q: 'Do we need to replace GitHub or our CI/CD pipeline?',
+    a: 'No. DeployTitan sits above those tools. GitHub handles code review; CI/CD handles pipeline execution. DeployTitan handles the multi-repo sequencing — which PR merges first, and in what order — that neither manages today.',
   },
-  {
-    q: 'Can we add capabilities without changing plans?',
-    a: 'Yes. Add-ons are designed for expansion without billing ambiguity: extra protected services, Titan Foresight, Titan Sandbox, advanced observability, self-hosting, and compliance packs can be scoped separately.',
-  },
-  {
-    q: 'Do we need to replace GitHub, CI/CD, or Datadog?',
-    a: 'No. DeployTitan sits above your existing tooling and coordinates the release lifecycle those systems do not manage well today. Observability is integration-first and optional.',
-  },
-]
-
-const SERVICE_BANDS = [
-  { label: '1 to 10 services', plan: 'starter' as const },
-  { label: '10 to 100 services', plan: 'growth' as const },
-  { label: '100 to 500 services', plan: 'scale' as const },
-  { label: 'Regulated org', plan: 'enterprise' as const },
 ]
 
 function FaqItem({ q, a }: { q: string; a: React.ReactNode }) {
@@ -244,7 +154,7 @@ function FeatureDot() {
 
 function LimitTable({ rows }: { rows: [string, string][] }) {
   return (
-    <dl className="border-line grid grid-cols-2 border-t">
+    <dl className="border-line grid grid-cols-3 border-t">
       {rows.map(([label, value]) => (
         <div key={label} className="border-line border-b py-3 pr-3">
           <dt className="text-ink-tertiary font-mono text-[8px] tracking-[0.1em] uppercase">
@@ -265,7 +175,7 @@ export default function Pricing() {
   useScrollReveal()
   const [annual, setAnnual] = useState(false)
   const [highlightedPlan, setHighlightedPlan] = useState<
-    'starter' | 'growth' | 'scale' | 'enterprise' | null
+    'starter' | 'growth' | 'scale' | null
   >(null)
 
   const starterPrice = annual ? annualPrice(STARTER_MONTHLY) : STARTER_MONTHLY
@@ -296,9 +206,7 @@ export default function Pricing() {
             data-reveal
             data-reveal-delay="2"
           >
-            Start with a predictable platform plan. Expand with protected services, foresight,
-            sandboxing, observability, self-hosting, and compliance controls when release complexity
-            actually requires them.
+            Start with a predictable plan. Add services as your release surface grows.
           </p>
 
           {/* Pricing philosophy callout */}
@@ -310,10 +218,10 @@ export default function Pricing() {
           >
             <div className="bg-surface px-6 py-5 text-left">
               <p className="text-ink-tertiary mb-1 text-xs font-medium tracking-[0.1em] uppercase">
-                Base price follows
+                Price follows
               </p>
               <p className="text-ink text-sm leading-6">
-                Services, environments, release maturity, and operational capability.
+                Services and team size.
               </p>
             </div>
             <div className="bg-surface px-6 py-5 text-left">
@@ -321,7 +229,7 @@ export default function Pricing() {
                 Never follows
               </p>
               <p className="text-ink text-sm leading-6">
-                Credits, deployment events, traces, rollout minutes, or AI-token usage.
+                Merge events, releases run, or per-PR fees.
               </p>
             </div>
           </div>
@@ -342,7 +250,7 @@ export default function Pricing() {
                 Where is your release surface today?
               </p>
               <div
-                className="border-line bg-line grid grid-cols-2 gap-px border md:grid-cols-4"
+                className="border-line bg-line grid grid-cols-3 gap-px border"
                 style={{ borderRadius: '2px' }}
                 role="group"
                 aria-label="Filter plans by service count"
@@ -412,10 +320,11 @@ export default function Pricing() {
 
           {/* Fixed plan ladder */}
           <div
-            className="border-line bg-line grid grid-cols-1 gap-px border xl:grid-cols-[0.95fr_1.2fr_1fr]"
+            className="border-line bg-line grid grid-cols-1 gap-px border xl:grid-cols-3"
             style={{ borderRadius: '2px' }}
             data-reveal
           >
+            {/* ── Starter ── */}
             <div
               className={`bg-surface flex flex-col p-8 transition-opacity duration-150 ${
                 highlightedPlan !== null && highlightedPlan !== 'starter'
@@ -439,15 +348,10 @@ export default function Pricing() {
                   )}
                 </div>
                 <p className="text-ink-tertiary mt-1 font-mono text-[10px] tracking-[0.1em] uppercase">
-                  For teams getting serious about deployments
+                  Up to 5 services, 5 members
                 </p>
                 <p className="text-ink-secondary mt-4 text-sm leading-6">
-                  For early SaaS teams with one release surface, a few services, and a healthy
-                  instinct not to build this themselves.
-                </p>
-                <p className="text-ink-tertiary mt-3 text-xs leading-5">
-                  1 organization, 3 projects, 10 services, 10 members, 2 environments, 14-day
-                  retention.
+                  For small teams coordinating releases across more than one repository.
                 </p>
               </div>
 
@@ -461,7 +365,7 @@ export default function Pricing() {
                 block
                 className="mb-8"
               >
-                Start with Starter
+                Start free trial
               </Button>
 
               <div className="border-line mt-auto border-t pt-6">
@@ -479,12 +383,10 @@ export default function Pricing() {
                 <div className="mt-6">
                   <LimitTable rows={PLAN_LIMITS.starter} />
                 </div>
-                <p className="text-ink-tertiary mt-5 text-xs leading-5">
-                  Excludes {EXCLUDED_STARTER.join(', ')}.
-                </p>
               </div>
             </div>
 
+            {/* ── Growth ── */}
             <div
               className={`bg-surface-alt/50 relative flex flex-col p-8 transition-opacity duration-150 ${
                 highlightedPlan !== null && highlightedPlan !== 'growth'
@@ -492,14 +394,7 @@ export default function Pricing() {
                   : 'opacity-100'
               }`}
             >
-              <span
-                className="text-primary-accessible absolute top-8 right-8 font-mono text-[9px] tracking-[0.18em] uppercase"
-                aria-label="Most important pricing tier"
-              >
-                Real PMF tier
-              </span>
-
-              <div className="mb-8 pr-28">
+              <div className="mb-8">
                 <p className="text-ink-tertiary font-mono text-[9px] tracking-[0.18em] uppercase">
                   Growth
                 </p>
@@ -515,11 +410,10 @@ export default function Pricing() {
                   )}
                 </div>
                 <p className="text-ink-tertiary mt-1 font-mono text-[10px] tracking-[0.1em] uppercase">
-                  For scaling engineering organizations
+                  Up to 20 services, 25 members
                 </p>
                 <p className="text-ink-secondary mt-4 text-sm leading-6">
-                  For scale-ups and fintech teams where release coordination, rollback pain, and
-                  merge freeze rituals are already slowing velocity.
+                  For growing teams with more repositories and a need for release notifications.
                 </p>
               </div>
 
@@ -533,7 +427,7 @@ export default function Pricing() {
                 block
                 className="mb-8"
               >
-                Book a release topology review
+                Start free trial
               </Button>
 
               <div className="border-line mt-auto border-t pt-6">
@@ -551,12 +445,10 @@ export default function Pricing() {
                 <div className="mt-6">
                   <LimitTable rows={PLAN_LIMITS.growth} />
                 </div>
-                <p className="text-ink-tertiary mt-5 font-mono text-[9px] leading-5 tracking-[0.08em] uppercase">
-                  Integrations: {INTEGRATIONS_BY_PLAN.growth}
-                </p>
               </div>
             </div>
 
+            {/* ── Scale ── */}
             <div
               className={`bg-surface flex flex-col p-8 transition-opacity duration-150 ${
                 highlightedPlan !== null && highlightedPlan !== 'scale'
@@ -570,7 +462,7 @@ export default function Pricing() {
                 </p>
                 <div className="mt-4 flex items-end gap-2">
                   <span className="text-ink font-mono text-4xl font-semibold tracking-[-0.03em]">
-                    ${scalePrice.toLocaleString()}
+                    ${scalePrice}
                   </span>
                   <span className="text-ink-secondary pb-1 text-sm">/mo</span>
                   {annual && (
@@ -580,11 +472,10 @@ export default function Pricing() {
                   )}
                 </div>
                 <p className="text-ink-tertiary mt-1 font-mono text-[10px] tracking-[0.1em] uppercase">
-                  For platform and infrastructure teams
+                  Unlimited services and members
                 </p>
                 <p className="text-ink-secondary mt-4 text-sm leading-6">
-                  For larger deployment organizations that need governance, policy, analytics, and
-                  risk visibility before release complexity becomes organizational drag.
+                  For platform teams managing releases across many repositories.
                 </p>
               </div>
 
@@ -598,7 +489,7 @@ export default function Pricing() {
                 block
                 className="mb-8"
               >
-                Scope a Scale plan
+                Start free trial
               </Button>
 
               <div className="border-line mt-auto border-t pt-6">
@@ -621,71 +512,6 @@ export default function Pricing() {
                 <div className="mt-6">
                   <LimitTable rows={PLAN_LIMITS.scale} />
                 </div>
-                <p className="text-ink-tertiary mt-5 font-mono text-[9px] leading-5 tracking-[0.08em] uppercase">
-                  Includes: {INTEGRATIONS_BY_PLAN.scale}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className={`border-line bg-surface mt-px border transition-opacity duration-150 ${
-              highlightedPlan !== null && highlightedPlan !== 'enterprise'
-                ? 'opacity-40'
-                : 'opacity-100'
-            }`}
-            style={{ borderRadius: '2px' }}
-            data-reveal
-            data-reveal-delay="1"
-          >
-            <div className="grid grid-cols-1 gap-8 p-8 lg:grid-cols-[280px_1fr_auto]">
-              <div>
-                <p className="text-ink-tertiary font-mono text-[9px] tracking-[0.18em] uppercase">
-                  Enterprise
-                </p>
-                <p className="text-ink mt-4 text-2xl font-semibold tracking-[-0.02em]">
-                  Custom pricing
-                </p>
-                <p className="text-ink-tertiary mt-1 font-mono text-[10px] tracking-[0.1em] uppercase">
-                  Regulated and mission-critical systems
-                </p>
-                <p className="text-ink-secondary mt-4 text-sm leading-6">
-                  For banks, insurance, hybrid-cloud enterprises, and teams that need private
-                  deployment, custom governance, and contract-level operating guarantees.
-                </p>
-              </div>
-
-              <div>
-                <p className="text-ink-tertiary mb-4 font-mono text-[9px] tracking-[0.1em] uppercase">
-                  Everything in Scale, plus:
-                </p>
-                <ul className="grid gap-3 sm:grid-cols-2">
-                  {ENTERPRISE_FEATURES.map((f) => (
-                    <li key={f.label} className="flex items-start gap-3">
-                      <FeatureDot />
-                      <div>
-                        <span className="text-ink-secondary text-sm leading-5">{f.label}</span>
-                        <span className="text-ink-tertiary mt-0.5 block font-mono text-[9px] tracking-[0.08em] uppercase">
-                          {f.detail}
-                        </span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="flex items-start lg:items-center">
-                <Button
-                  as="a"
-                  href={ENTERPRISE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="outline"
-                  size="sm"
-                  className="shrink-0"
-                >
-                  Talk to enterprise
-                </Button>
               </div>
             </div>
           </div>
@@ -700,7 +526,7 @@ export default function Pricing() {
               Always included
             </p>
             <p className="text-ink max-w-xl text-2xl leading-snug font-semibold">
-              Every plan includes the foundation. No metered safety features.
+              Every plan. No exceptions.
             </p>
           </div>
 
@@ -710,60 +536,6 @@ export default function Pricing() {
                 <FeatureDot />
                 <span className="text-ink-secondary text-sm leading-7">{item}</span>
               </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* ─── Add-ons ─────────────────────────────────────────────────────── */}
-      <section className="border-line bg-surface-alt/35 border-b py-20">
-        <Container width="page" padding="wide">
-          <div
-            className="mb-10 grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-end"
-            data-reveal
-          >
-            <div>
-              <p className="text-ink-tertiary mb-3 font-mono text-[11px] tracking-[0.22em] uppercase">
-                Add-ons
-              </p>
-              <h2
-                className="text-ink max-w-2xl text-[clamp(1.8rem,3vw,3rem)] leading-[1.08] font-medium tracking-[-0.03em]"
-                style={{ textWrap: 'balance' } as React.CSSProperties}
-              >
-                Expansion follows capability, not consumption.
-              </h2>
-            </div>
-            <p className="text-ink-secondary max-w-2xl text-sm leading-7 lg:justify-self-end">
-              Add modules when release risk, compliance pressure, or coordination overhead grows.
-              Your team can deploy more often without wondering which protection consumed the next
-              credit.
-            </p>
-          </div>
-
-          <div
-            className="border-line bg-line grid grid-cols-1 gap-px border md:grid-cols-2 xl:grid-cols-3"
-            style={{ borderRadius: '2px' }}
-            data-reveal
-            data-reveal-delay="1"
-          >
-            {ADD_ONS.map((addOn, index) => (
-              <article
-                key={addOn.name}
-                className="group bg-surface min-h-[210px] p-6 transition-colors duration-200 hover:bg-surface-alt"
-              >
-                <div className="mb-8 flex items-start justify-between gap-5">
-                  <span className="text-ink-tertiary font-mono text-[10px] tracking-[0.18em] uppercase">
-                    Module {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span className="border-line text-ink-tertiary group-hover:border-primary/30 group-hover:text-primary-accessible rounded-[1px] border px-2 py-1 font-mono text-[9px] tracking-[0.1em] uppercase transition-colors">
-                    {addOn.price}
-                  </span>
-                </div>
-                <h3 className="text-ink text-lg leading-snug font-semibold tracking-[-0.015em]">
-                  {addOn.name}
-                </h3>
-                <p className="text-ink-secondary mt-4 text-sm leading-7">{addOn.description}</p>
-              </article>
             ))}
           </div>
         </Container>
@@ -834,9 +606,20 @@ export default function Pricing() {
             data-reveal
             style={{ textWrap: 'balance' } as React.CSSProperties}
           >
-            Bring us your release topology. We will map your dependency graph and show you where the
-            coordination breaks in the first call.
+            Start a free trial. No credit card required.
           </p>
+          <div className="mt-8" data-reveal>
+            <Button
+              as="a"
+              href={DEMO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="primary"
+              size="lg"
+            >
+              Create free account
+            </Button>
+          </div>
         </Container>
       </section>
     </>

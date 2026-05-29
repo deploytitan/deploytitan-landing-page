@@ -227,7 +227,7 @@ export function Resilience() {
                       <line x1="12" y1="9" x2="12" y2="13" />
                       <line x1="12" y1="17" x2="12.01" y2="17" />
                     </svg>
-                    <span className="text-[10px] font-mono text-signal-warning">
+                    <span className="text-[10px] font-mono text-signal-warning-text dark:text-signal-warning">
                       web-storefront rollback owner unassigned. Block promotion until resolved.
                     </span>
                   </div>

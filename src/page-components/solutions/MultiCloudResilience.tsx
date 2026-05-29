@@ -125,7 +125,7 @@ export default function SolutionMultiCloudResilience() {
         <Container width="4xl" padding="default">
           <Breadcrumbs className="mb-6" data-reveal data-reveal-delay="1" />
           <div
-            className="text-primary border-primary/30 mb-6 inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px]"
+            className="text-primary-accessible dark:text-primary border-primary/30 mb-6 inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px]"
             style={{ borderRadius: '2px' }}
             data-reveal
             data-reveal-delay="1"
@@ -245,7 +245,7 @@ export default function SolutionMultiCloudResilience() {
                 data-reveal
                 data-reveal-delay={String(i)}
               >
-                <div className="text-primary mb-4 flex items-center gap-3">
+                <div className="text-primary-accessible dark:text-primary mb-4 flex items-center gap-3">
                   {s.icon}
                   <h3 className="text-ink text-sm font-semibold">{s.title}</h3>
                 </div>
@@ -279,29 +279,29 @@ export default function SolutionMultiCloudResilience() {
           <div data-reveal>
             <CodeBlock variant="code" filename="failover.hcl" copy={false}>
               <p className="text-ink-secondary">
-                <span className="text-primary">failover_policy</span>{' '}
+                <span className="text-primary-accessible dark:text-primary">failover_policy</span>{' '}
                 <span className="text-ink">"production"</span> {'{'}
               </p>
               <p className="text-ink-secondary ml-4">
-                primary_region = <span className="text-signal-success">"aws/us-east-1"</span>
+                primary_region = <span className="text-signal-success-text dark:text-signal-success">"aws/us-east-1"</span>
               </p>
               <p className="text-ink-secondary ml-4">
-                failover_regions = [<span className="text-signal-success">"gcp/us-central1"</span>,{' '}
-                <span className="text-signal-success">"aws/eu-west-1"</span>]
+                failover_regions = [<span className="text-signal-success-text dark:text-signal-success">"gcp/us-central1"</span>,{' '}
+                <span className="text-signal-success-text dark:text-signal-success">"aws/eu-west-1"</span>]
               </p>
               <p className="text-ink-secondary mt-2 ml-4">trigger {'{'}</p>
               <p className="text-ink-secondary ml-8">
-                error_rate_threshold = <span className="text-primary">0.05</span>
+                error_rate_threshold = <span className="text-primary-accessible dark:text-primary">0.05</span>
               </p>
               <p className="text-ink-secondary ml-8">
-                p99_latency_ms = <span className="text-primary">500</span>
+                p99_latency_ms = <span className="text-primary-accessible dark:text-primary">500</span>
               </p>
               <p className="text-ink-secondary ml-8">
-                consecutive_failures = <span className="text-primary">3</span>
+                consecutive_failures = <span className="text-primary-accessible dark:text-primary">3</span>
               </p>
               <p className="text-ink-secondary ml-4">{'}'}</p>
               <p className="text-ink-secondary mt-2 ml-4">
-                rto_target_seconds = <span className="text-primary">30</span>
+                rto_target_seconds = <span className="text-primary-accessible dark:text-primary">30</span>
               </p>
               <p className="text-ink-secondary">{'}'}</p>
             </CodeBlock>
@@ -410,7 +410,7 @@ export default function SolutionMultiCloudResilience() {
                 ].map(([cap, dt, cloud, manual]) => (
                   <tr key={String(cap)} className="border-line/50 border-b">
                     <td className="text-ink-secondary py-3 pr-6 text-xs">{cap}</td>
-                    <td className="text-signal-success px-4 py-3 text-center font-mono text-xs">
+                    <td className="text-signal-success-text dark:text-signal-success px-4 py-3 text-center font-mono text-xs">
                       {dt}
                     </td>
                     <td className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs">

@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ProductsDropdown } from './ProductsDropdown'
-import { SolutionsDropdown } from './SolutionsDropdown'
 import { MobileNav } from './MobileNav'
 import { ThemeToggle } from '../shared/ThemeToggle'
 import { Button } from '../shared/Button'
@@ -39,7 +38,7 @@ function trapFocus(container: HTMLElement): () => void {
   return () => container.removeEventListener('keydown', handler)
 }
 
-type DropdownKey = 'products' | 'solutions' | null
+type DropdownKey = 'products' | null
 
 /** Keeps a dropdown mounted for `exitMs` after it logically closes so CSS exit
  *  animations can complete, then fully unmounts. */
@@ -73,13 +72,11 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   const navRef = useRef<HTMLElement>(null)
   const mobileNavRef = useRef<HTMLDivElement>(null)
   const productsDropdownRef = useRef<HTMLDivElement>(null)
-  const solutionsDropdownRef = useRef<HTMLDivElement>(null)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
   const pathname = usePathname()
   const { resolved } = useTheme()
 
   const products = useAnimatedDropdown('products', activeDropdown)
-  const solutionsDropdown = useAnimatedDropdown('solutions', activeDropdown)
 
   // Close everything on route change
   useEffect(() => {
@@ -125,10 +122,6 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
       const first = productsDropdownRef.current.querySelector<HTMLElement>('a, button')
       first?.focus()
     }
-    if (activeDropdown === 'solutions' && solutionsDropdownRef.current) {
-      const first = solutionsDropdownRef.current.querySelector<HTMLElement>('a, button')
-      first?.focus()
-    }
   }, [activeDropdown])
 
   // Focus trap in mobile nav
@@ -147,7 +140,6 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   const closeDropdown = useCallback(() => setActiveDropdown(null), [])
 
   const isProductsActive = pathname.startsWith('/products')
-  const isSolutionsActive = pathname.startsWith('/solutions')
 
   const toggleMobile = () => {
     const next = !mobileOpen
@@ -237,49 +229,6 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                   }}
                 >
                   <ProductsDropdown onClose={closeDropdown} />
-                </div>
-              )}
-            </div>
-
-            {/* Solutions dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => toggleDropdown('solutions')}
-                aria-expanded={activeDropdown === 'solutions'}
-                aria-haspopup="menu"
-                className={`nav-link-underline flex items-center gap-1 text-sm transition-colors ${isSolutionsActive ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
-              >
-                Solutions
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mt-px transition-transform duration-200"
-                  style={{ transform: activeDropdown === 'solutions' ? 'rotate(180deg)' : 'none' }}
-                  aria-hidden="true"
-                >
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              </button>
-              {solutionsDropdown.mounted && (
-                <div
-                  ref={solutionsDropdownRef}
-                  className="transition-[opacity,transform] duration-[180ms] ease-out"
-                  style={{
-                    opacity: solutionsDropdown.visible ? 1 : 0,
-                    transform: solutionsDropdown.visible
-                      ? 'translateY(0) scale(1)'
-                      : 'translateY(-6px) scale(0.98)',
-                    pointerEvents: solutionsDropdown.visible ? 'auto' : 'none',
-                    transformOrigin: 'top center',
-                  }}
-                >
-                  <SolutionsDropdown onClose={closeDropdown} />
                 </div>
               )}
             </div>

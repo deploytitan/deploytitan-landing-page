@@ -52,6 +52,66 @@ This becomes the differentiated product: "What could break before you ship?" Do 
 
 Progressive delivery, smart rollback, automated traffic routing, cohort infrastructure, edge routing, and a runtime policy engine. This is the long-term technical moat. Do not reference on the homepage at all.
 
+## Pricing Strategy
+
+### Phase 1 feature tiers
+
+**Starter ($49/mo):** Teams proving the release coordination workflow. Includes release objects linking PRs across repositories, automatic dependency graph inference, basic deployment execution and manual rollback coordination, deployment history and timeline, GitHub integration, basic Kubernetes and Lambda support. Limits: 1 org, 3 projects, 10 services, 10 members.
+
+**Growth ($499/mo):** Scaling teams where multi-service coordination, freeze windows, and rollback planning are slowing velocity. Adds coordinated multi-service releases with DAG visualization, freeze window management and production window scheduling, approval workflows with deadline tracking and audit trail, rollback coordination (owners, playbooks, and revert sequencing attached to the release object before anything ships), expanded integrations (Datadog, Grafana, OpenTelemetry, Slack).
+
+**Scale ($2,499/mo):** Platform and infrastructure teams coordinating releases across multiple teams and environments. Adds release policy engine for governance across teams and promotion gates, multi-workspace governance, advanced RBAC, compliance reporting with immutable audit history, SSO/SAML.
+
+**Enterprise:** Regulated orgs requiring self-hosted deployment, custom SLAs, private networking, white-label options, and multi-org governance.
+
+### What must not appear in pricing
+
+Phase 2 capabilities must not appear as available features: blast radius analysis, migration risk detection, dependency impact scoring, rollback advisories, risk scoring.
+
+Phase 3 capabilities must not appear as available features: canary rollout, automated progressive rollout, SLO-gated promotion, cohort routing, automated rollback engine, health-based rollback, DR orchestration, traffic routing.
+
+If Titan Foresight or Titan Sandbox appear as add-ons, they must be labeled "Roadmap" or "Coming soon" with no active purchase path. Do not list a price for them.
+
+### Always included (every plan)
+
+Release visibility and timeline history, dependency graphing and blocked release state, Slack release updates, no per-deployment or event-based metering.
+
+## Site Content Strategy
+
+### Phase 1 pages (current capabilities, full content)
+
+These pages must describe only Phase 1 capabilities:
+
+- `/` — Homepage. Release coordination value proposition only.
+- `/products/titan-rollout` — Phase 1 product: release coordination, dependency ordering, freeze windows, approvals, rollout visibility, rollback coordination.
+- `/solutions/release-coordination` — Multi-repo release objects, dependency sequencing, merge ordering.
+- `/solutions/instant-rollback` — Rollback coordination: owners, playbooks, revert sequencing attached to the release before the window opens. This is planned coordination, not automated rollback execution (that is Phase 3).
+- `/solutions/platform-engineering` — Shared release record for platform teams, service owners, and leadership.
+- `/pricing` — Phase 1 tiers and Phase 1-only features.
+- `/how-it-works` — Phase 1 workflow.
+
+### Phase 2 pages (roadmap treatment required)
+
+These pages describe Phase 2 capabilities. Must either redirect to homepage or show a prominent roadmap/waitlist state. Must not present any feature as currently available:
+
+- `/products/titan-foresight` — Phase 2. Has `badge="preview"` which is acceptable, but the Quickstart section presents actionable CLI commands and GitHub Actions for a non-existent product. Operational setup instructions must be replaced with waitlist framing.
+- `/solutions/risk-intelligence` — Phase 2. No badge, no gating. Presents blast-radius analysis, PR risk scoring, and guardrails as a shipped product. Must add a coming-soon banner or redirect.
+
+### Phase 3 pages (roadmap treatment or redirect)
+
+- `/products/titan-phoenix` — Phase 3. Already has `badge="roadmap"`. Acceptable as-is.
+- `/solutions/progressive-delivery` — Phase 3. No badge anywhere. Presents canary deployments, SLO-gated traffic stepping, and auto-rollback as available today. Must redirect or replace with waitlist.
+
+### Audience pages requiring Phase 1 rewrites
+
+- `/for/sre` — References "Titan Shield" (non-existent product) and Phase 2/3 blast-radius / automated rollback. Must be rewritten around Phase 1 SRE value: rollback coordination planning, release record visibility, dependency-aware revert sequencing assigned before promotion.
+- `/for/devops` — Entire value proposition is Phase 3 canary CLI and auto-rollback. Must be rewritten around Phase 1: release coordination, dependency ordering, structured merge sequencing.
+- `/for/cto` — ROI metrics cite Phase 2/3 capabilities. Must be updated to Phase 1 metrics: fewer release incidents from structured coordination, velocity increase from removing Slack-thread coordination overhead.
+
+### Navigation consistency rule
+
+The nav dropdowns (`ProductsDropdown`, `SolutionsDropdown`) already correctly separate "Available now" from "Coming soon." No Phase 2/3 route may appear in the "Available now" zone.
+
 ## Brand Personality
 
 **Precise. Confident. Calm.**

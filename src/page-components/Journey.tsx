@@ -161,7 +161,7 @@ export default function Journey() {
                 role="listitem"
               >
                 <span
-                  className="text-primary/50 pt-0.5 font-mono text-xs tabular-nums"
+                  className="text-primary-accessible dark:text-primary pt-0.5 font-mono text-xs tabular-nums"
                   aria-hidden="true"
                 >
                   0{i + 1}
@@ -207,7 +207,7 @@ export default function Journey() {
                 data-reveal
               >
                 <div className="flex items-start gap-5">
-                  <span className="text-primary/50 shrink-0 pt-0.5 font-mono text-xs tabular-nums">
+                  <span className="text-primary-accessible dark:text-primary shrink-0 pt-0.5 font-mono text-xs tabular-nums">
                     {p.number}
                   </span>
                   <div>

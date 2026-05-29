@@ -7,7 +7,7 @@ const CONFIG = {
   available: {
     label: 'Available now',
     dot: 'bg-signal-success',
-    classes: 'border-signal-success/30 text-signal-success/80 bg-signal-success/5',
+    classes: 'border-signal-success/30 text-signal-success-text dark:text-signal-success bg-signal-success/5',
   },
   preview: {
     label: 'Design partner preview',

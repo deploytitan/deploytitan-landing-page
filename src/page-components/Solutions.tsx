@@ -81,10 +81,10 @@ const PROOF_SCENARIOS = [
     route: '/solutions/instant-rollback',
   },
   {
-    before: { value: 'discovered post-mortem', label: 'which services a release touched and what broke' },
-    after: { value: 'before promotion', label: 'blast radius, downstream impact, and migration risk surfaced early' },
-    solution: 'Release Intelligence',
-    route: '/solutions/risk-intelligence',
+    before: { value: 'DM + wait + follow up', label: 'manual approval chain: scattered across Slack, no deadline, no audit trail' },
+    after: { value: 'one approval workflow', label: 'built into the release object, with deadlines, sign-offs, and a full audit trail' },
+    solution: 'Approval Workflows',
+    route: '/solutions/release-coordination',
   },
 ]
 
@@ -109,7 +109,7 @@ const PERSONAS = [
     wins: [
       'Rollback owners and playbooks attached to the release before anything merges',
       'Dependency-aware revert sequencing computed before promotion day',
-      'Blast radius and downstream impact surfaced before you promote to production',
+      'Release record shows every service state, approval status, and blocker before the window opens',
     ],
     link: '/solutions/instant-rollback',
   },
@@ -143,10 +143,10 @@ const SOLUTION_INDEX = [
     available: true,
   },
   {
-    route: '/solutions/risk-intelligence',
-    name: 'Release Intelligence',
-    tagline: 'Blast radius, downstream service impact, and migration risk surfaced before production promotion.',
-    product: 'Rollouts Intelligence',
+    route: '/solutions/release-coordination',
+    name: 'Freeze Windows',
+    tagline: 'Schedule production windows, enforce pre-promotion checklists, and collect approval sign-offs before anyone starts merging.',
+    product: 'Titan Rollouts',
     available: true,
   },
   {
@@ -210,7 +210,7 @@ export default function Solutions() {
                     {p.num}
                   </span>
                   <div className="flex items-start gap-2.5">
-                    <span className="text-primary mt-0.5 shrink-0">{p.icon}</span>
+                    <span className="text-primary-accessible dark:text-primary mt-0.5 shrink-0">{p.icon}</span>
                     <h3 className="text-ink text-base leading-snug font-semibold">{p.heading}</h3>
                   </div>
                 </div>
@@ -245,24 +245,24 @@ export default function Solutions() {
                 data-reveal-delay={String(i + 1)}
               >
                 <div>
-                  <p className="text-signal-danger/70 mb-1 font-mono text-[10px] tracking-widest uppercase">Before</p>
+                  <p className="text-signal-danger-text dark:text-signal-danger mb-1 font-mono text-[10px] tracking-widest uppercase">Before</p>
                   <p className="text-ink-secondary text-xl font-bold line-through decoration-signal-danger/30">{s.before.value}</p>
                   <p className="text-ink-tertiary mt-1 text-xs leading-snug">{s.before.label}</p>
                 </div>
-                <div className="text-primary hidden items-center md:flex">
+                <div className="text-primary-accessible dark:text-primary hidden items-center md:flex">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
                     <line x1="5" y1="12" x2="19" y2="12"/>
                     <polyline points="12 5 19 12 12 19"/>
                   </svg>
                 </div>
                 <div>
-                  <p className="text-signal-success/80 mb-1 font-mono text-[10px] tracking-widest uppercase">After</p>
+                  <p className="text-signal-success-text dark:text-signal-success mb-1 font-mono text-[10px] tracking-widest uppercase">After</p>
                   <p className="text-ink text-xl font-bold">{s.after.value}</p>
                   <p className="text-ink-tertiary mt-1 text-xs leading-snug">{s.after.label}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <span
-                    className="text-primary border-primary/30 border px-2 py-1 font-mono text-[9px] tracking-widest whitespace-nowrap uppercase"
+                    className="text-primary-accessible dark:text-primary border-primary/30 border px-2 py-1 font-mono text-[9px] tracking-widest whitespace-nowrap uppercase"
                     style={{ borderRadius: '2px' }}
                   >
                     {s.solution}
@@ -308,12 +308,12 @@ export default function Solutions() {
                 <div>
                   <span className="text-ink-tertiary font-mono text-xs tracking-widest uppercase">{p.role}</span>
                 </div>
-                <blockquote className="text-primary/90 text-sm leading-relaxed font-medium italic">{p.frustration}</blockquote>
+                <blockquote className="text-primary-accessible dark:text-primary text-sm leading-relaxed font-medium italic">{p.frustration}</blockquote>
                 <p className="text-ink-secondary text-sm leading-relaxed">{p.body}</p>
                 <ul className="flex flex-col gap-2">
                   {p.wins.map((w) => (
                     <li key={w} className="text-ink-secondary flex items-start gap-2 text-sm">
-                      <span className="text-primary mt-1 shrink-0 text-xs">▸</span>
+                      <span className="text-primary-accessible dark:text-primary mt-1 shrink-0 text-xs">▸</span>
                       {w}
                     </li>
                   ))}

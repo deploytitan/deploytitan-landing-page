@@ -43,7 +43,7 @@ const RISK_FACTORS = [
 const GUARDRAILS = [
   {
     level: 'Advisory',
-    color: 'text-signal-warning',
+    color: 'text-signal-warning-text dark:text-signal-warning',
     border: 'border-signal-warning/30',
     bg: 'bg-signal-warning/5',
     description: 'Score 40–69. PR annotation warns the deployer. Deploy proceeds.',
@@ -59,7 +59,7 @@ const GUARDRAILS = [
   },
   {
     level: 'Hard block',
-    color: 'text-signal-danger',
+    color: 'text-signal-danger-text dark:text-signal-danger',
     border: 'border-signal-danger/30',
     bg: 'bg-signal-danger/5',
     description: 'Score 85+. Deploy is blocked until risk score drops below threshold.',
@@ -127,7 +127,7 @@ export default function SolutionRiskIntelligence() {
 
             {/* Cost of inaction */}
             <div className="sharp-card border-signal-danger/20 bg-signal-danger/[0.03] border p-6">
-              <p className="text-signal-danger/80 mb-4 font-mono text-xs tracking-widest uppercase">
+              <p className="text-signal-danger-text dark:text-signal-danger mb-4 font-mono text-xs tracking-widest uppercase">
                 Cost of staying put
               </p>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -152,7 +152,7 @@ export default function SolutionRiskIntelligence() {
                   },
                 ].map((item) => (
                   <div key={item.stat}>
-                    <p className="text-signal-danger/80 mb-1 text-2xl font-bold">{item.stat}</p>
+                    <p className="text-signal-danger-text dark:text-signal-danger mb-1 text-2xl font-bold">{item.stat}</p>
                     <p className="text-ink-tertiary mb-2 font-mono text-xs tracking-wider uppercase">
                       {item.label}
                     </p>
@@ -209,8 +209,8 @@ export default function SolutionRiskIntelligence() {
                   <span
                     className={`px-1.5 py-0.5 font-mono text-[9px] tracking-wider uppercase ${
                       f.weight === 'High'
-                        ? 'text-signal-danger/80 bg-signal-danger/8 border-signal-danger/20 border'
-                        : 'text-signal-warning/80 bg-signal-warning/8 border-signal-warning/20 border'
+                        ? 'text-signal-danger-text dark:text-signal-danger bg-signal-danger/8 border-signal-danger/20 border'
+                        : 'text-signal-warning-text dark:text-signal-warning bg-signal-warning/8 border-signal-warning/20 border'
                     }`}
                     style={{ borderRadius: '2px' }}
                   >
@@ -297,7 +297,7 @@ export default function SolutionRiskIntelligence() {
             </div>
             <div className="p-5">
               <div className="mb-3 flex items-center gap-3">
-                <div className="bg-primary/20 text-primary flex h-6 w-6 items-center justify-center rounded-[2px] text-[9px] font-bold">
+                <div className="bg-primary/20 text-primary-accessible dark:text-primary flex h-6 w-6 items-center justify-center rounded-[2px] text-[9px] font-bold">
                   DT
                 </div>
                 <span className="text-ink text-xs font-semibold">Titan Foresight</span>
@@ -306,7 +306,7 @@ export default function SolutionRiskIntelligence() {
               <div className="border-line rounded-sm border p-4 font-mono text-xs">
                 <p className="text-ink mb-2 font-semibold">
                   🛡 Risk Analysis ·{' '}
-                  <span className="text-signal-warning">Score: 62/100, Advisory</span>
+                  <span className="text-signal-warning-text dark:text-signal-warning">Score: 62/100, Advisory</span>
                 </p>
                 <p className="text-ink-secondary mb-2">
                   Analysed 847 lines changed across 3 files.
@@ -319,7 +319,7 @@ export default function SolutionRiskIntelligence() {
                     </tr>
                     <tr>
                       <td className="text-ink-tertiary py-0.5 pr-4">Error budget</td>
-                      <td className="text-signal-warning">38% remaining (caution)</td>
+                      <td className="text-signal-warning-text dark:text-signal-warning">38% remaining (caution)</td>
                     </tr>
                     <tr>
                       <td className="text-ink-tertiary py-0.5 pr-4">SLO violations (7d)</td>
@@ -438,7 +438,7 @@ export default function SolutionRiskIntelligence() {
                 ].map(([cap, dt, manual, dora]) => (
                   <tr key={String(cap)} className="border-line/50 border-b">
                     <td className="text-ink-secondary py-3 pr-6 text-xs">{cap}</td>
-                    <td className="text-signal-success px-4 py-3 text-center font-mono text-xs">
+                    <td className="text-signal-success-text dark:text-signal-success px-4 py-3 text-center font-mono text-xs">
                       {dt}
                     </td>
                     <td className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs">

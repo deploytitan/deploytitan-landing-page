@@ -211,7 +211,7 @@ export function Integrations() {
     <section className="py-20 lg:py-28 border-t border-line" ref={ref}>
       <Container>
         <div className="flex flex-col items-center text-center gap-3 mb-14">
-          <span className="font-mono text-xs text-primary uppercase tracking-widest">
+          <span className="font-mono text-xs text-primary-accessible dark:text-primary uppercase tracking-widest">
             Integrations
           </span>
           <h2 className="font-display text-2xl md:text-3xl font-medium tracking-[-0.02em] text-ink">

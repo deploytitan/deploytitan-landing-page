@@ -14,45 +14,18 @@ const productLinks = [
     route: '/products/titan-rollout',
   },
   {
-    label: 'Rollouts Intelligence',
+    label: 'Titan Foresight',
     sub: 'Blast radius and release risk insights',
     route: '/products/titan-foresight',
     preview: true,
   },
   {
-    label: 'Enterprise Recovery Suite',
-    sub: 'Coordinated rollback workflows',
+    label: 'Titan Phoenix',
+    sub: 'SLO-triggered autonomous rollback',
     route: '/products/titan-phoenix',
     preview: true,
   },
 ]
-
-const solutionLinks = [
-  {
-    label: 'Release Coordination',
-    sub: 'Orchestrate multi-service releases',
-    route: '/solutions/release-coordination',
-  },
-  {
-    label: 'Instant Rollback',
-    sub: 'Safe, sequenced rollback across services',
-    route: '/solutions/instant-rollback',
-    preview: true,
-  },
-  {
-    label: 'Risk Intelligence',
-    sub: 'Blast radius before you ship',
-    route: '/solutions/risk-intelligence',
-    preview: true,
-  },
-  {
-    label: 'Platform Engineering',
-    sub: 'Shared release record across all teams',
-    route: '/solutions/platform-engineering',
-    preview: true,
-  },
-]
-
 
 function AccordionGroup({ label, children }: { label: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
@@ -124,23 +97,6 @@ export const MobileNav = forwardRef<HTMLDivElement, Props>(function MobileNav(
     >
       <AccordionGroup label="Products">
         {productLinks.map((link) => (
-          <Link
-            key={link.route}
-            href={link.route}
-            onClick={onClose}
-            className="hover:bg-surface-alt flex items-center gap-2 px-8 py-3 transition-colors"
-          >
-            <div className="flex flex-1 flex-col gap-0.5">
-              <span className="text-ink text-sm font-medium">{link.label}</span>
-              <span className="text-ink-tertiary text-xs">{link.sub}</span>
-            </div>
-            {link.preview && <RoadmapBadge variant="roadmap" />}
-          </Link>
-        ))}
-      </AccordionGroup>
-
-      <AccordionGroup label="Solutions">
-        {solutionLinks.map((link) => (
           <Link
             key={link.route}
             href={link.route}

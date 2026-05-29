@@ -72,7 +72,7 @@ function WaitlistForm() {
         {state === 'loading' ? '…' : 'Join waitlist'}
       </Button>
       {state === 'error' && (
-        <p className="self-center text-xs text-signal-danger">Something went wrong — try again.</p>
+        <p className="self-center text-xs text-signal-danger-text dark:text-signal-danger">Something went wrong — try again.</p>
       )}
     </form>
   )

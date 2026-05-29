@@ -1,85 +1,82 @@
 'use client'
 
-import { APP_URL, CREATE_ACCOUNT_URL } from '@/lib/env'
-import { CodeBlock } from '../../components/shared/CodeBlock'
-import { InstallTabs } from '../../components/shared/InstallTabs'
+import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
-import { Card } from '../../components/shared/Card'
+import { Button } from '../../components/shared/Button'
 import { ProductPageHero } from '../../components/shared/ProductPageHero'
 
-const RELEASE_CODE = `# Create a coordinated release across services
-dt release create \\
-  --name "checkout-v3.2" \\
-  --services "payments,cart,order-api" \\
-  --env production
+const PAIN = [
+  'Release readiness assessed in a Slack thread nobody can find later',
+  'Blocking dependencies discovered at promotion time, not before',
+  'Rollback owners unknown until the window is already open',
+]
 
-# Check status across all services
-dt release status checkout-v3.2
-
-# Promote to the next stage when ready
-dt release promote checkout-v3.2 --stage production`
-
-const POLICY_CODE = `# release-policy.hcl
-release "checkout-v3.2" {
-  services = ["payments", "cart", "order-api"]
-
-  gate "pre-deploy" {
-    require = ["staging-green", "smoke-tests-pass"]
-  }
-
-  rollback {
-    trigger = "error_rate > 1% OR p99_latency > 500ms"
-    owner   = "@platform-oncall"
-  }
-}`
-
-const PRIMARY_CAPABILITIES = [
+const STEPS = [
   {
-    title: 'Dependency-aware release sequencing',
-    desc: 'Define which services must deploy before others. Titan Rollouts enforces the sequence, waits for health gates between stages, and surfaces any blocked step to the owning team.',
+    number: '01',
+    title: 'Group PRs into a release object',
+    body: 'Link pull requests from multiple repositories into one named release. Every service owner, platform engineer, and team lead sees the same record.',
   },
   {
-    title: 'Release gates and owner accountability',
-    desc: 'Each stage gate requires explicit sign-off or automated health checks. Rollouts tracks who approved, when, and what signal cleared the gate, so every release has a complete audit trail.',
+    number: '02',
+    title: 'Build the dependency graph',
+    body: 'DeployTitan infers which service must merge before another from PR metadata and explicit blocking annotations. Merge order is computed, not guessed.',
+  },
+  {
+    number: '03',
+    title: 'Schedule freeze windows and collect approvals',
+    body: 'Production windows, sign-off requirements, and pre-promotion checklists live on the release record. Not in Slack threads. Not in someone\'s head.',
+  },
+  {
+    number: '04',
+    title: 'Promote in sequence, with rollback owners assigned',
+    body: 'Merges happen in dependency order. Rollback owners, playbooks, and revert sequencing are attached to the release before the window opens.',
   },
 ]
 
-const SUPPORTING_CAPABILITIES = [
+const CAPABILITIES = [
   {
-    title: 'Multi-service release graph',
-    desc: 'Model a release as a DAG of services and stages. Rollouts resolves the order, parallelizes where safe, and holds where dependencies are not yet satisfied.',
+    title: 'Release objects across repositories',
+    desc: 'Link PRs from multiple repos into one named release. One record for all teams — service owners, platform engineers, leadership.',
   },
   {
-    title: 'Coordinated rollback',
-    desc: 'When a gate fires, Rollouts initiates rollback in reverse dependency order: no service rolls back before the services that depend on it are safe.',
+    title: 'Dependency graph and merge sequencing',
+    desc: 'Which service deploys first, which waits. Computed automatically from PR metadata and explicit blocking annotations.',
   },
   {
-    title: 'Slack and PagerDuty integration',
-    desc: 'Gate approvals, stage promotions, and rollback triggers surface in the channels your team already uses. No context switching.',
+    title: 'Freeze windows and approval workflows',
+    desc: 'Production windows that close on checklist completion. Approvals attached to the release with deadline tracking and a complete audit trail.',
   },
   {
-    title: 'Release history and audit log',
-    desc: 'Every gate, approval, promotion, and rollback is recorded. Incident postmortems have the full timeline without manual reconstruction.',
+    title: 'Rollback coordination',
+    desc: 'Owners, playbooks, and revert sequencing assigned before anything ships. Planned coordination, not improvised response.',
   },
 ]
 
-const CROSS_LINKS = [
+const TOOL_GAPS = [
   {
-    label: 'Release Coordination',
-    desc: 'Orchestrate multi-service releases end to end',
-    href: '/solutions/release-coordination',
+    tool: 'GitHub / GitLab',
+    does: 'Code review, PR status, merge checks per repository',
+    gap: 'No release object that spans multiple repos; no cross-service dependency awareness',
   },
   {
-    label: 'Instant Rollback',
-    desc: 'Safe, sequenced rollback across services',
-    href: '/solutions/instant-rollback',
+    tool: 'CI/CD systems',
+    does: 'Build pipelines, test runs, deployment execution',
+    gap: 'Executes steps but does not model release readiness or cross-service promotion sequencing',
   },
   {
-    label: 'Risk Intelligence',
-    desc: 'Visibility into every release in flight',
-    href: '/solutions/risk-intelligence',
+    tool: 'Jira / Linear',
+    does: 'Issue tracking, sprint planning, project state management',
+    gap: 'Good for ticket state; not built to coordinate PR merge order and promotion sequencing across services',
   },
+]
+
+const INTEGRATIONS = [
+  { category: 'CI / CD', tools: ['GitHub Actions', 'GitLab CI', 'CircleCI', 'Buildkite'] },
+  { category: 'Observability', tools: ['Datadog', 'Grafana', 'OpenTelemetry', 'Prometheus'] },
+  { category: 'Notifications', tools: ['Slack', 'PagerDuty', 'Opsgenie', 'Webhooks'] },
+  { category: 'Infrastructure', tools: ['Kubernetes', 'AWS ECS', 'Terraform', 'Helm'] },
 ]
 
 export default function TitanRollout() {
@@ -89,188 +86,262 @@ export default function TitanRollout() {
     <>
       <ProductPageHero
         eyebrow="Titan Rollouts"
-        heading={<>Release coordination<br className="hidden md:block" /> for distributed teams.</>}
-        description={<>Orchestrate multi-service releases with dependency sequencing, owner-gated stages, and coordinated rollback, all from a single{' '}<code className="font-mono text-sm text-ink/80 bg-ink/[0.05] px-1.5 py-0.5">dt release</code>{' '}command.</>}
+        heading={<>Multi-service releases,<br className="hidden md:block" /> structured.</>}
+        description="Teams that release across more than one service coordinate in Slack threads, shared docs, and word-of-mouth about which service blocks which. Titan Rollouts replaces that with a structured release record."
         ctas={[
-          { label: 'Create account', href: CREATE_ACCOUNT_URL, target: '_blank', rel: 'noopener noreferrer' },
-          { label: 'See use cases', href: '/solutions/release-coordination', variant: 'secondary' },
+          { label: 'Start free trial', href: CREATE_ACCOUNT_URL, target: '_blank', rel: 'noopener noreferrer' },
+          { label: 'View pricing', href: '/pricing', variant: 'secondary' },
         ]}
       />
 
-      {/* Wedge framing */}
-      <section className="py-16 border-b border-line bg-surface-alt/20">
+      {/* The coordination gap */}
+      <section className="border-line bg-surface-alt/20 border-b py-16">
         <Container width="4xl" padding="default" data-reveal>
-          <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-4">
-            Why Titan Rollouts
+          <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase">
+            The coordination gap
           </p>
-          <p className="text-2xl font-medium text-ink leading-snug mb-4">
+          <p className="text-ink mb-6 text-2xl font-medium leading-snug">
             Coordination is not a spreadsheet problem.
           </p>
-          <p className="text-ink-secondary leading-relaxed max-w-2xl">
-            Most teams coordinate releases over Slack threads, shared docs, and manual handoffs.
-            Titan Rollouts replaces that with a structured release graph: services declare their
-            dependencies, stages require explicit gates, and every promotion or rollback is
-            sequenced automatically.
-          </p>
+          <ul className="flex flex-col gap-3">
+            {PAIN.map((item) => (
+              <li key={item} className="flex items-start gap-3">
+                <span
+                  className="bg-signal-danger/60 mt-2 block h-1.5 w-1.5 shrink-0"
+                  style={{ borderRadius: '1px' }}
+                />
+                <span className="text-ink-secondary leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
+
+      {/* How it works */}
+      <section className="border-line border-b py-20">
+        <Container width="5xl" padding="default">
+          <div className="mb-12" data-reveal>
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
+              How it works
+            </p>
+            <h2 className="text-ink text-3xl font-medium tracking-tight">
+              From scattered PRs to a coordinated release.
+            </h2>
+          </div>
+
+          <div className="flex flex-col gap-0">
+            {STEPS.map((step, i) => (
+              <div
+                key={step.number}
+                className="relative flex gap-8 pb-10 last:pb-0"
+                data-reveal
+                data-reveal-delay={String(i)}
+              >
+                {i < STEPS.length - 1 && (
+                  <div
+                    className="bg-line absolute top-10 bottom-0 left-[18px] w-px"
+                    aria-hidden="true"
+                  />
+                )}
+                <div
+                  className="border-primary/30 bg-primary/5 z-10 flex h-9 w-9 shrink-0 items-center justify-center border"
+                  style={{ borderRadius: '2px' }}
+                >
+                  <span className="text-primary-accessible dark:text-primary font-mono text-[11px] font-bold">{step.number}</span>
+                </div>
+                <div className="flex-1 pt-1.5">
+                  <h3 className="text-ink mb-1.5 text-base font-semibold leading-snug">{step.title}</h3>
+                  <p className="text-ink-secondary max-w-xl text-sm leading-relaxed">{step.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </Container>
       </section>
 
       {/* Capabilities */}
-      <section className="py-24 border-b border-line">
+      <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-10" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
               Capabilities
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
+            <h2 className="text-ink text-2xl font-semibold lg:text-3xl">
               From release creation to safe completion.
             </h2>
-            <p className="text-ink-secondary max-w-2xl leading-relaxed">
-              Titan Rollouts models a release as a dependency graph of services and stages. It
-              enforces the sequence, surfaces blocked steps to the right owners, and coordinates
-              rollback when something goes wrong.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" data-reveal>
-            {PRIMARY_CAPABILITIES.map((c) => (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2" data-reveal>
+            {CAPABILITIES.map((c) => (
               <div
                 key={c.title}
-                className="border border-line p-6 bg-surface-alt/30"
+                className="border-line bg-surface-alt/30 border p-6"
                 style={{ borderRadius: '2px' }}
               >
-                <h3 className="text-base font-semibold text-ink mb-2">{c.title}</h3>
-                <p className="text-sm text-ink-secondary leading-relaxed">{c.desc}</p>
+                <h3 className="text-ink mb-2 text-base font-semibold">{c.title}</h3>
+                <p className="text-ink-secondary text-sm leading-relaxed">{c.desc}</p>
               </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" data-reveal>
-            {SUPPORTING_CAPABILITIES.map((c) => (
-              <Card key={c.title} className="flex flex-col gap-2">
-                <h3 className="text-sm font-semibold text-ink">{c.title}</h3>
-                <p className="text-sm text-ink-tertiary leading-relaxed">{c.desc}</p>
-              </Card>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* Quickstart */}
-      <section className="py-24 border-t border-line">
+      {/* Tool gaps */}
+      <section className="border-line border-b py-20">
+        <Container width="5xl" padding="default">
+          <div className="mb-10 max-w-3xl" data-reveal>
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
+              Why existing tools fall short
+            </p>
+            <h2 className="text-ink text-3xl font-medium tracking-tight">
+              Every tool coordinates its own layer. None coordinate the release.
+            </h2>
+          </div>
+
+          <div className="border-line border" style={{ borderRadius: '2px' }} data-reveal>
+            <div className="bg-surface-alt/60 border-line grid gap-4 border-b px-5 py-4 lg:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)]">
+              <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">Tool</p>
+              <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">
+                What it handles well
+              </p>
+              <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">
+                The gap DeployTitan closes
+              </p>
+            </div>
+            {TOOL_GAPS.map((row, i) => (
+              <div
+                key={row.tool}
+                className={`border-line grid gap-4 border-b px-5 py-5 last:border-b-0 lg:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)] ${i % 2 === 0 ? '' : 'bg-surface-alt/20'}`}
+              >
+                <p className="text-ink text-sm font-medium">{row.tool}</p>
+                <p className="text-ink-secondary text-sm leading-7">{row.does}</p>
+                <p className="text-ink-secondary text-sm leading-7">{row.gap}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Getting started */}
+      <section className="border-line border-b py-20">
         <Container width="6xl" padding="default">
           <div className="mb-12" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
-              Quickstart
+            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
+              Getting started
             </p>
-            <h2 className="text-2xl lg:text-3xl font-semibold text-ink mb-3">
-              A release in three commands.
+            <h2 className="text-ink mb-2 text-2xl font-semibold lg:text-3xl">
+              Up and running in an afternoon.
             </h2>
-            <p className="text-ink-secondary max-w-xl">
-              Install the CLI, create a release, and Titan Rollouts sequences the rest according to
-              your dependency graph and gate policy.
+            <p className="text-ink-secondary max-w-xl text-sm">
+              No infrastructure changes. No new tooling for engineers to learn. Connect your
+              repositories, model your first release, and go.
             </p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8" data-reveal>
-            <div className="flex flex-col gap-6">
-              <div>
-                <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">
-                  Install
-                </p>
-                <InstallTabs />
-              </div>
-              <div>
-                <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">
-                  Release
-                </p>
-                <CodeBlock code={RELEASE_CODE} lang="bash" filename="terminal" />
-              </div>
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2" data-reveal>
+            {/* Setup steps */}
+            <div className="flex flex-col gap-0">
+              {[
+                {
+                  step: '01',
+                  title: 'Connect your repositories',
+                  body: 'Authorize DeployTitan with GitHub or GitLab. Your repositories and teams are imported automatically — no manual configuration.',
+                },
+                {
+                  step: '02',
+                  title: 'Create a release in the dashboard',
+                  body: 'Name the release, add the services involved, and set their dependencies in the UI. The dependency graph is built as you work.',
+                },
+                {
+                  step: '03',
+                  title: 'Set freeze windows, approvals, and rollback owners',
+                  body: 'Everything lives on the release record. Assign approvers, schedule the production window, and attach rollback owners before the first merge.',
+                },
+                {
+                  step: '04',
+                  title: 'Track and promote from the release view',
+                  body: 'Service readiness, approval status, and blockers are visible to everyone in real time. Promote when gates clear; the dashboard surfaces anything that needs attention.',
+                },
+              ].map((item, i, arr) => (
+                <div key={item.step} className="relative flex gap-6 pb-8 last:pb-0">
+                  {i < arr.length - 1 && (
+                    <div
+                      className="bg-line absolute top-8 bottom-0 left-[13px] w-px"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <div
+                    className="border-primary/30 bg-primary/5 z-10 flex h-7 w-7 shrink-0 items-center justify-center"
+                    style={{ borderRadius: '2px' }}
+                  >
+                    <span className="text-primary-accessible dark:text-primary font-mono text-[10px] font-bold">{item.step}</span>
+                  </div>
+                  <div className="pt-0.5">
+                    <p className="text-ink mb-1 text-sm font-semibold">{item.title}</p>
+                    <p className="text-ink-secondary text-sm leading-relaxed">{item.body}</p>
+                  </div>
+                </div>
+              ))}
             </div>
+
+            {/* Integrations */}
             <div>
-              <p className="text-xs font-mono text-ink-tertiary uppercase tracking-wider mb-3">
-                Policy-as-code (optional)
+              <p className="text-ink-tertiary mb-4 font-mono text-xs tracking-wider uppercase">
+                Integrations
               </p>
-              <CodeBlock code={POLICY_CODE} lang="hcl" filename="release-policy.hcl" />
+              <div className="grid grid-cols-2 gap-3">
+                {INTEGRATIONS.map((group) => (
+                  <div
+                    key={group.category}
+                    className="border-line bg-surface-alt/20 border p-4"
+                    style={{ borderRadius: '2px' }}
+                  >
+                    <p className="text-primary-accessible mb-2.5 font-mono text-[10px] tracking-wider uppercase">
+                      {group.category}
+                    </p>
+                    <ul className="flex flex-col gap-1.5">
+                      {group.tools.map((t) => (
+                        <li key={t} className="text-ink-secondary flex items-center gap-2 text-xs">
+                          <span
+                            className="bg-primary/50 h-1 w-1 shrink-0"
+                            style={{ borderRadius: '1px' }}
+                          />
+                          {t}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* Integrations */}
-      <section className="py-20 border-t border-line">
-        <Container width="6xl" padding="default">
-          <div className="mb-10" data-reveal>
-            <p className="text-xs font-mono tracking-widest uppercase text-primary-accessible mb-3">
-              Integrations
-            </p>
-            <h2 className="text-2xl font-semibold text-ink mb-2">
-              Works with your existing stack.
-            </h2>
-            <p className="text-ink-secondary text-sm max-w-lg">
-              Titan Rollouts plugs into the tools your team already runs: no forklift migration.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-reveal>
-            {[
-              { category: 'CI / CD', tools: ['GitHub Actions', 'GitLab CI', 'CircleCI', 'Buildkite'] },
-              { category: 'Observability', tools: ['Datadog', 'Prometheus', 'Grafana', 'New Relic'] },
-              { category: 'Notifications', tools: ['Slack', 'PagerDuty', 'Opsgenie', 'Webhooks'] },
-              { category: 'Infrastructure', tools: ['Kubernetes', 'AWS ECS', 'Terraform', 'Helm'] },
-            ].map((group) => (
-              <Card key={group.category} padding="none" className="p-5">
-                <p className="font-mono text-[10px] uppercase tracking-wider text-primary-accessible mb-3">
-                  {group.category}
-                </p>
-                <ul className="flex flex-col gap-2">
-                  {group.tools.map((t) => (
-                    <li key={t} className="text-xs text-ink-secondary flex items-center gap-2">
-                      <span className="w-1 h-1 bg-primary/50 shrink-0" style={{ borderRadius: '1px' }} />
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            ))}
-          </div>
-          <div className="mt-8 flex items-center gap-6" data-reveal>
-            <a
-              href="/solutions/release-coordination"
-              className="text-sm font-medium text-primary-accessible hover:text-primary transition-colors"
-            >
-              See release coordination use cases →
-            </a>
-            <a
-              href={CREATE_ACCOUNT_URL}
-              className="text-sm text-ink-tertiary hover:text-ink-secondary transition-colors"
-            >
-              Create account
-            </a>
-          </div>
-        </Container>
-      </section>
-
-      {/* Cross-links */}
-      <section className="py-16 border-t border-line">
-        <Container width="6xl" padding="default">
+      {/* CTA */}
+      <section className="py-20">
+        <Container width="3xl" padding="default" className="text-center">
           <p
-            className="text-xs font-mono tracking-widest uppercase text-ink-secondary mb-6 font-medium"
+            className="text-ink-tertiary mb-4 font-mono text-[11px] tracking-[0.22em] uppercase"
             data-reveal
           >
-            Explore solutions
+            Get started
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {CROSS_LINKS.map((l, i) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="sharp-card border border-line p-5 flex flex-col gap-1.5 hover:border-primary/30 hover:bg-surface-alt/50 transition-colors"
-                data-reveal
-                data-reveal-delay={String(i + 1)}
-              >
-                <span className="text-sm font-semibold text-ink">{l.label}</span>
-                <span className="text-xs text-ink-tertiary">{l.desc}</span>
-              </a>
-            ))}
+          <p className="text-ink mx-auto mb-8 max-w-2xl text-xl font-semibold" data-reveal>
+            Bring us your messiest multi-service release. We will show you what coordination looks
+            like when it is not a Slack thread.
+          </p>
+          <div className="mx-auto max-w-sm" data-reveal>
+            <Button
+              as="a"
+              href={CREATE_ACCOUNT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="primary"
+              size="lg"
+              block
+            >
+              Start free trial
+            </Button>
           </div>
         </Container>
       </section>

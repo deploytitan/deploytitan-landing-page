@@ -104,7 +104,7 @@ export default function ReleaseCoordination() {
                   className="w-9 h-9 border border-primary/30 bg-primary/5 flex items-center justify-center shrink-0 z-10"
                   style={{ borderRadius: '2px' }}
                 >
-                  <span className="font-mono text-[11px] font-bold text-primary">{phase.number}</span>
+                  <span className="font-mono text-[11px] font-bold text-primary-accessible dark:text-primary">{phase.number}</span>
                 </div>
                 <div className="pt-0.5 flex-1 grid gap-6 lg:grid-cols-[1fr_200px]">
                   <div>
@@ -129,7 +129,7 @@ export default function ReleaseCoordination() {
         <Container width="5xl" padding="default">
           <div className="grid gap-12 lg:grid-cols-2">
             <div data-reveal>
-              <p className="text-signal-danger/70 mb-4 font-mono text-xs tracking-widest uppercase">Before</p>
+              <p className="text-signal-danger-text dark:text-signal-danger mb-4 font-mono text-xs tracking-widest uppercase">Before</p>
               <ul className="space-y-4">
                 {BEFORE.map((item) => (
                   <li key={item} className="flex items-start gap-3">
@@ -140,7 +140,7 @@ export default function ReleaseCoordination() {
               </ul>
             </div>
             <div data-reveal data-reveal-delay="1">
-              <p className="text-signal-success/80 mb-4 font-mono text-xs tracking-widest uppercase">After</p>
+              <p className="text-signal-success-text dark:text-signal-success mb-4 font-mono text-xs tracking-widest uppercase">After</p>
               <ul className="space-y-4">
                 {AFTER.map((item) => (
                   <li key={item} className="flex items-start gap-3">

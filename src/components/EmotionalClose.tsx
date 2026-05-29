@@ -117,7 +117,7 @@ export function EmotionalClose() {
                 className="text-center p-3 border border-line/60"
                 style={{ borderRadius: '2px', backgroundColor: 'rgba(34,197,94,0.02)' }}
               >
-                <div className="font-mono font-medium text-lg mb-0.5 text-signal-success">
+                <div className="font-mono font-medium text-lg mb-0.5 text-signal-success-text dark:text-signal-success">
                   {m.value}
                 </div>
                 <div className="text-[10px] font-mono text-ink-tertiary uppercase tracking-wider">

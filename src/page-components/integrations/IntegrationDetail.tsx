@@ -19,7 +19,7 @@ export default function IntegrationDetail() {
   if (!integration) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 py-32">
-        <p className="font-mono text-xs text-primary uppercase tracking-widest mb-4">404</p>
+        <p className="font-mono text-xs text-primary-accessible dark:text-primary uppercase tracking-widest mb-4">404</p>
         <h1 className="font-display text-3xl font-medium text-ink mb-4">Integration not found</h1>
         <Link
           href="/integrations"

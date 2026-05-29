@@ -99,7 +99,7 @@ export default function ForDevOps() {
                   className="font-mono text-xs bg-surface-alt border border-line p-4 flex items-center"
                   style={{ borderRadius: '2px' }}
                 >
-                  <span className="text-primary">$</span>
+                  <span className="text-primary-accessible dark:text-primary">$</span>
                   <span className="text-ink-secondary ml-2">{f.code.replace('$ ', '')}</span>
                 </div>
               </Card>

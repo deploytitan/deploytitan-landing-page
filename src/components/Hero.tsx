@@ -164,19 +164,19 @@ const STATUS_CONFIG: Record<
   },
   deploying: {
     label: 'Deploying',
-    textClass: 'text-signal-warning',
+    textClass: 'text-signal-warning-text dark:text-signal-warning',
     borderClass: 'border-signal-warning/50',
     bgClass: 'bg-signal-warning/[0.03]',
   },
   success: {
     label: 'Success',
-    textClass: 'text-signal-success',
+    textClass: 'text-signal-success-text dark:text-signal-success',
     borderClass: 'border-signal-success/50',
     bgClass: '',
   },
   blocked: {
     label: 'Blocked',
-    textClass: 'text-signal-danger',
+    textClass: 'text-signal-danger-text dark:text-signal-danger',
     borderClass: 'border-signal-danger/60',
     bgClass: 'bg-signal-danger/[0.04]',
   },
@@ -516,7 +516,7 @@ function FreezeWindowPanel({ visible }: { visible: boolean }) {
         <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">
           Freeze window
         </p>
-        <span className="text-signal-warning font-mono text-[9px] tracking-wider uppercase">
+        <span className="text-signal-warning-text dark:text-signal-warning font-mono text-[9px] tracking-wider uppercase">
           Active
         </span>
       </div>
@@ -565,7 +565,7 @@ function FreezeWindowPanel({ visible }: { visible: boolean }) {
               style={{ borderRadius: '1px' }}
             />
             <span
-              className={`font-mono text-[9px] ${item.done ? 'text-ink-secondary' : 'text-signal-danger'}`}
+              className={`font-mono text-[9px] ${item.done ? 'text-ink-secondary' : 'text-signal-danger-text dark:text-signal-danger'}`}
             >
               {item.label}
             </span>
@@ -609,7 +609,7 @@ function IntelligencePanel({ visible }: { visible: boolean }) {
               transition: `opacity 0.25s ease-out ${0.15 + i * 0.12}s`,
             }}
           >
-            <span className="text-primary/60 mt-px w-3 shrink-0 text-center font-mono text-[9px]">
+            <span className="text-primary-accessible dark:text-primary mt-px w-3 shrink-0 text-center font-mono text-[9px]">
               {b.icon}
             </span>
             <div>
@@ -629,8 +629,8 @@ function IntelligencePanel({ visible }: { visible: boolean }) {
 
 const KIND_CLASS: Record<LogEntry['kind'], string> = {
   info: 'text-ink-secondary',
-  warn: 'text-signal-warning',
-  error: 'text-signal-danger',
+  warn: 'text-signal-warning-text dark:text-signal-warning',
+  error: 'text-signal-danger-text dark:text-signal-danger',
 }
 const KIND_DOT: Record<LogEntry['kind'], string> = {
   info: 'bg-ink-quaternary',
@@ -865,7 +865,7 @@ export function Hero() {
             <p
               data-reveal
               data-reveal-delay="4"
-              className="border-line text-ink-quaternary mt-7 w-full border-t pt-4 font-mono text-[10px] leading-5 tracking-[0.08em]"
+              className="border-line text-ink-tertiary mt-7 w-full border-t pt-4 font-mono text-[10px] leading-5 tracking-[0.08em]"
             >
               Integrates with GitHub, GitLab, Jira, and Slack
               <br />
@@ -907,7 +907,7 @@ export function Hero() {
                           animation: 'dotBlink 1.8s ease-in-out infinite',
                         }}
                       />
-                      <p className="text-signal-danger font-mono text-[10px] tracking-[0.08em] uppercase">
+                      <p className="text-signal-danger-text dark:text-signal-danger font-mono text-[10px] tracking-[0.08em] uppercase">
                         Blocked
                       </p>
                     </>
@@ -915,7 +915,7 @@ export function Hero() {
                   {headerStatus === 'deploying' && (
                     <>
                       <DeployingSpinner />
-                      <p className="text-signal-warning font-mono text-[10px] tracking-[0.08em] uppercase">
+                      <p className="text-signal-warning-text dark:text-signal-warning font-mono text-[10px] tracking-[0.08em] uppercase">
                         Deploying
                       </p>
                     </>

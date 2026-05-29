@@ -142,7 +142,7 @@ export default function ForCTO() {
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="2.5"
-                      className="text-signal-success mt-0.5 shrink-0"
+                      className="text-signal-success-text dark:text-signal-success mt-0.5 shrink-0"
                     >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>

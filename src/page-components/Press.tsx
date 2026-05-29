@@ -72,7 +72,7 @@ export default function Press() {
                 <span className="font-mono text-[10px] text-ink-tertiary">{item.date}</span>
               </div>
               <div className="flex flex-col gap-1">
-                <span className="font-mono text-[10px] text-primary uppercase tracking-widest">
+                <span className="font-mono text-[10px] text-primary-accessible dark:text-primary uppercase tracking-widest">
                   {item.publication}
                 </span>
                 <h3 className="text-base text-ink group-hover:text-primary-dark transition-colors leading-snug">

@@ -7,11 +7,11 @@ const ACTIVE_PRODUCTS = [
   {
     route: '/products/titan-rollout',
     name: 'Titan Rollouts',
-    tagline: 'Coordinate complex releases safely across services, teams, and environments.',
+    tagline: 'Coordinate multi-service releases with dependency sequencing, freeze windows, and approval workflows.',
     bullets: [
-      'Release DAGs and merge sequencing',
-      'Freeze windows, approvals, and promotions',
-      'Rollback workflows and release visibility',
+      'Release objects linking PRs across repositories',
+      'Dependency graph and merge sequencing',
+      'Freeze windows, approvals, and rollback coordination',
     ],
     icon: (
       <svg
@@ -34,7 +34,7 @@ const ROADMAP_PRODUCTS = [
   {
     route: '/products/titan-foresight',
     name: 'Titan Foresight',
-    tagline: 'Blast radius, downstream impact, and release risk insights.',
+    tagline: 'Blast radius, downstream impact, and release risk scoring.',
     icon: (
       <svg
         width="14"
@@ -54,7 +54,7 @@ const ROADMAP_PRODUCTS = [
   {
     route: '/products/titan-phoenix',
     name: 'Titan Phoenix',
-    tagline: 'Coordinated rollback workflows and recovery orchestration.',
+    tagline: 'SLO-triggered rollback scoped to the failing slice.',
     icon: (
       <svg
         width="14"
@@ -66,8 +66,8 @@ const ROADMAP_PRODUCTS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
-        <path d="M12 8v4l3 3" />
+        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+        <path d="M3 3v5h5" />
       </svg>
     ),
   },
@@ -89,7 +89,7 @@ export function ProductsDropdown({ onClose }: Props) {
           Products
         </span>
         <span className="text-ink-tertiary text-[11px]">
-          Deployment safety, progressive delivery, and release intelligence
+          Release coordination — available now, with more on the roadmap
         </span>
       </div>
 
@@ -171,14 +171,7 @@ export function ProductsDropdown({ onClose }: Props) {
       </div>
 
       {/* Footer */}
-      <div className="border-line-subtle bg-surface-alt/40 flex items-center justify-between border-t px-6 py-3">
-        <Link
-          href="/solutions"
-          onClick={onClose}
-          className="text-ink-secondary hover:text-ink text-xs transition-colors duration-150"
-        >
-          Browse by use case →
-        </Link>
+      <div className="border-line-subtle bg-surface-alt/40 flex items-center justify-end border-t px-6 py-3">
         <Link
           href="/pricing"
           onClick={onClose}

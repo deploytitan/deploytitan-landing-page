@@ -133,7 +133,7 @@ function GroupCard({ group, nodes, query, inboundCount, outboundCount }: GroupCa
                         </span>
                         {n.weight && n.weight >= 4 && (
                           <span
-                            className="font-mono text-[8px] border border-primary/30 text-primary px-1.5 py-0.5 leading-none"
+                            className="font-mono text-[8px] border border-primary/30 text-primary-accessible dark:text-primary px-1.5 py-0.5 leading-none"
                             style={{ borderRadius: '2px' }}
                           >
                             featured
@@ -163,7 +163,7 @@ function GroupCard({ group, nodes, query, inboundCount, outboundCount }: GroupCa
                       )}
                       {ib > 0 && (
                         <span
-                          className="font-mono text-[9px] text-primary/60 border border-primary/20 px-1.5 py-0.5 leading-none"
+                          className="font-mono text-[9px] text-primary-accessible dark:text-primary border border-primary/20 px-1.5 py-0.5 leading-none"
                           style={{ borderRadius: '2px' }}
                           title={`${ib} backlinks`}
                         >
@@ -333,7 +333,7 @@ function TreeNodeRow({
             </Link>
             {(node.meta?.weight ?? 0) >= 4 && (
               <span
-                className="font-mono text-[8px] border border-primary/30 text-primary px-1.5 py-0.5 leading-none"
+                className="font-mono text-[8px] border border-primary/30 text-primary-accessible dark:text-primary px-1.5 py-0.5 leading-none"
                 style={{ borderRadius: '2px' }}
               >
                 featured
@@ -363,7 +363,7 @@ function TreeNodeRow({
           )}
           {ib > 0 && (
             <span
-              className="font-mono text-[9px] text-primary/60 border border-primary/20 px-1.5 py-0.5"
+              className="font-mono text-[9px] text-primary-accessible dark:text-primary border border-primary/20 px-1.5 py-0.5"
               style={{ borderRadius: '2px' }}
               title={`${ib} backlinks`}
             >

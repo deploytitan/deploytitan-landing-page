@@ -138,7 +138,7 @@ export default function SolutionPlatformEngineering() {
                   <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
                     Step {item.step}
                   </span>
-                  <span className="text-primary opacity-70">{item.icon}</span>
+                  <span className="text-primary-accessible dark:text-primary">{item.icon}</span>
                 </div>
                 <div>
                   <p className="text-ink-tertiary mb-1 font-mono text-[10px] tracking-wider uppercase">
@@ -183,7 +183,7 @@ export default function SolutionPlatformEngineering() {
                   key={item.label}
                   className="border-line/50 flex items-start gap-3 border-b py-3 last:border-0"
                 >
-                  <span className="border-primary/30 text-primary mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center border font-mono text-[10px]">
+                  <span className="border-primary/30 text-primary-accessible dark:text-primary mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center border font-mono text-[10px]">
                     ✓
                   </span>
                   <div>
@@ -211,29 +211,29 @@ export default function SolutionPlatformEngineering() {
           <div data-reveal>
             <CodeBlock variant="code" filename="services.tf" copy={false}>
               <p className="text-ink-secondary">
-                <span className="text-primary">resource</span>{' '}
+                <span className="text-primary-accessible dark:text-primary">resource</span>{' '}
                 <span className="text-ink">"deploytitan_service"</span>{' '}
                 <span className="text-ink">"checkout"</span> {'{'}
               </p>
               <p className="text-ink-secondary ml-4">
-                name = <span className="text-signal-success">"checkout-api"</span>
+                name = <span className="text-signal-success-text dark:text-signal-success">"checkout-api"</span>
               </p>
               <p className="text-ink-secondary ml-4">
-                environment = <span className="text-signal-success">"production"</span>
+                environment = <span className="text-signal-success-text dark:text-signal-success">"production"</span>
               </p>
               <p className="text-ink-secondary ml-4">
-                tier = <span className="text-signal-success">"critical"</span>
+                tier = <span className="text-signal-success-text dark:text-signal-success">"critical"</span>
               </p>
               <p className="text-ink-secondary mt-2 ml-4">deploy_policy {'{'}</p>
               <p className="text-ink-secondary ml-8">
-                allowed_strategies = [<span className="text-signal-success">"canary"</span>,{' '}
-                <span className="text-signal-success">"blue_green"</span>]
+                allowed_strategies = [<span className="text-signal-success-text dark:text-signal-success">"canary"</span>,{' '}
+                <span className="text-signal-success-text dark:text-signal-success">"blue_green"</span>]
               </p>
               <p className="text-ink-secondary ml-8">
-                max_risk_score = <span className="text-primary">70</span>
+                max_risk_score = <span className="text-primary-accessible dark:text-primary">70</span>
               </p>
               <p className="text-ink-secondary ml-8">
-                auto_rollback = <span className="text-primary">true</span>
+                auto_rollback = <span className="text-primary-accessible dark:text-primary">true</span>
               </p>
               <p className="text-ink-secondary ml-4">{'}'}</p>
               <p className="text-ink-secondary">{'}'}</p>
@@ -343,7 +343,7 @@ export default function SolutionPlatformEngineering() {
                 ].map(([cap, dt, backstage, diy]) => (
                   <tr key={String(cap)} className="border-line/50 border-b">
                     <td className="text-ink-secondary py-3 pr-6 text-xs">{cap}</td>
-                    <td className="text-signal-success px-4 py-3 text-center font-mono text-xs">
+                    <td className="text-signal-success-text dark:text-signal-success px-4 py-3 text-center font-mono text-xs">
                       {dt}
                     </td>
                     <td className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs">

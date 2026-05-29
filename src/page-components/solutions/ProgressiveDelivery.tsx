@@ -59,7 +59,7 @@ export default function SolutionProgressiveDelivery() {
         <Container width="4xl" padding="default">
           <Breadcrumbs className="mb-6" data-reveal data-reveal-delay="1" />
           <div
-            className="text-primary border-primary/30 mb-6 inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px]"
+            className="text-primary-accessible dark:text-primary border-primary/30 mb-6 inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px]"
             style={{ borderRadius: '2px' }}
             data-reveal
             data-reveal-delay="1"
@@ -150,7 +150,7 @@ export default function SolutionProgressiveDelivery() {
 
             {/* Cost of inaction */}
             <div className="sharp-card border-signal-danger/20 bg-signal-danger/[0.03] border p-6">
-              <p className="text-signal-danger/80 mb-4 font-mono text-xs tracking-widest uppercase">
+              <p className="text-signal-danger-text dark:text-signal-danger mb-4 font-mono text-xs tracking-widest uppercase">
                 Cost of staying put
               </p>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -175,7 +175,7 @@ export default function SolutionProgressiveDelivery() {
                   },
                 ].map((item) => (
                   <div key={item.stat}>
-                    <p className="text-signal-danger/80 mb-1 text-2xl font-bold">{item.stat}</p>
+                    <p className="text-signal-danger-text dark:text-signal-danger mb-1 text-2xl font-bold">{item.stat}</p>
                     <p className="text-ink-tertiary mb-2 font-mono text-xs tracking-wider uppercase">
                       {item.label}
                     </p>
@@ -238,7 +238,7 @@ export default function SolutionProgressiveDelivery() {
               <ul className="flex flex-col gap-4">
                 {AFTER.map((a) => (
                   <li key={a} className="text-ink-secondary flex items-start gap-3 text-sm">
-                    <span className="border-primary/30 text-primary mt-1 flex h-4 w-4 shrink-0 items-center justify-center border font-mono text-[10px]">
+                    <span className="border-primary/30 text-primary-accessible dark:text-primary mt-1 flex h-4 w-4 shrink-0 items-center justify-center border font-mono text-[10px]">
                       ✓
                     </span>
                     {a}
@@ -312,7 +312,7 @@ export default function SolutionProgressiveDelivery() {
                 # Deploy with canary strategy, auto-rollback on SLO breach
               </p>
               <p className="text-ink mt-2">
-                <span className="text-primary">$</span> dt deploy --strategy canary --canary-weight
+                <span className="text-primary-accessible dark:text-primary">$</span> dt deploy --strategy canary --canary-weight
                 5 --auto-rollback
               </p>
               <p className="text-ink-tertiary mt-3">
@@ -322,11 +322,11 @@ export default function SolutionProgressiveDelivery() {
                 ✓ Blast radius: 2 downstream services (non-critical)
               </p>
               <p className="text-ink-tertiary">→ Shifting 5% traffic to v2.4.1...</p>
-              <p className="text-signal-success mt-1">
+              <p className="text-signal-success-text dark:text-signal-success mt-1">
                 ✓ p99 stable at 43ms (+2ms). Stepping to 25%.
               </p>
-              <p className="text-signal-success">✓ p99 stable at 44ms. Stepping to 100%.</p>
-              <p className="text-primary mt-1 font-semibold">✓ Deploy complete. 8m 43s total.</p>
+              <p className="text-signal-success-text dark:text-signal-success">✓ p99 stable at 44ms. Stepping to 100%.</p>
+              <p className="text-primary-accessible dark:text-primary mt-1 font-semibold">✓ Deploy complete. 8m 43s total.</p>
             </CodeBlock>
           </div>
         </Container>
@@ -412,7 +412,7 @@ export default function SolutionProgressiveDelivery() {
                   <th className="text-ink-tertiary w-1/4 py-3 pr-6 text-left font-mono text-xs tracking-wider uppercase">
                     Capability
                   </th>
-                  <th className="text-primary bg-primary/[0.04] border-primary/10 border-x px-4 py-3 font-mono text-xs tracking-wider uppercase">
+                  <th className="text-primary-accessible dark:text-primary bg-primary/[0.04] border-primary/10 border-x px-4 py-3 font-mono text-xs tracking-wider uppercase">
                     DeployTitan
                   </th>
                   <th className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs tracking-wider uppercase">
@@ -433,7 +433,7 @@ export default function SolutionProgressiveDelivery() {
                 ].map(([cap, dt, diy, spinnaker]) => (
                   <tr key={String(cap)} className="border-line/50 border-b">
                     <td className="text-ink-secondary py-3 pr-6 text-xs">{cap}</td>
-                    <td className="text-signal-success bg-primary/[0.03] border-primary/8 border-x px-4 py-3 text-center font-mono text-xs">
+                    <td className="text-signal-success-text dark:text-signal-success bg-primary/[0.03] border-primary/8 border-x px-4 py-3 text-center font-mono text-xs">
                       {dt}
                     </td>
                     <td className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs">

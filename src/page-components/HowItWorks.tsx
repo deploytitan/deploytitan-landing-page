@@ -183,7 +183,7 @@ export default function HowItWorks() {
                   className="w-9 h-9 border border-primary/30 bg-primary/5 flex items-center justify-center shrink-0 z-10"
                   style={{ borderRadius: '2px' }}
                 >
-                  <span className="font-mono text-[11px] font-bold text-primary">{step.number}</span>
+                  <span className="font-mono text-[11px] font-bold text-primary-accessible dark:text-primary">{step.number}</span>
                 </div>
 
                 <div className="pt-0.5 flex-1">

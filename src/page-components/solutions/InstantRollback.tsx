@@ -120,7 +120,7 @@ export default function SolutionInstantRollback() {
 
             {/* Cost of inaction */}
             <div className="sharp-card border-signal-danger/20 bg-signal-danger/[0.03] border p-6">
-              <p className="text-signal-danger/80 mb-4 font-mono text-xs tracking-widest uppercase">
+              <p className="text-signal-danger-text dark:text-signal-danger mb-4 font-mono text-xs tracking-widest uppercase">
                 Cost of staying put
               </p>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -145,7 +145,7 @@ export default function SolutionInstantRollback() {
                   },
                 ].map((item) => (
                   <div key={item.stat}>
-                    <p className="text-signal-danger/80 mb-1 text-2xl font-bold">{item.stat}</p>
+                    <p className="text-signal-danger-text dark:text-signal-danger mb-1 text-2xl font-bold">{item.stat}</p>
                     <p className="text-ink-tertiary mb-2 font-mono text-xs tracking-wider uppercase">
                       {item.label}
                     </p>
@@ -235,7 +235,7 @@ export default function SolutionInstantRollback() {
               <ul className="flex flex-col gap-4">
                 {AFTER.map((a) => (
                   <li key={a} className="text-ink-secondary flex items-start gap-3 text-sm">
-                    <span className="border-primary/30 text-primary mt-1 flex h-4 w-4 shrink-0 items-center justify-center border font-mono text-[10px]">
+                    <span className="border-primary/30 text-primary-accessible dark:text-primary mt-1 flex h-4 w-4 shrink-0 items-center justify-center border font-mono text-[10px]">
                       ✓
                     </span>
                     {a}
@@ -266,7 +266,7 @@ export default function SolutionInstantRollback() {
                 {/* Step dot */}
                 <div className="flex shrink-0 flex-col items-center" style={{ width: '40px' }}>
                   <div
-                    className="bg-surface border-line text-primary z-10 flex h-10 w-10 items-center justify-center border font-mono text-[11px] font-semibold"
+                    className="bg-surface border-line text-primary-accessible dark:text-primary z-10 flex h-10 w-10 items-center justify-center border font-mono text-[11px] font-semibold"
                     style={{ borderRadius: '2px' }}
                   >
                     {phase.number}
@@ -394,7 +394,7 @@ export default function SolutionInstantRollback() {
                 ].map(([cap, dt, manual, flags]) => (
                   <tr key={String(cap)} className="border-line/50 border-b">
                     <td className="text-ink-secondary py-3 pr-6 text-xs">{cap}</td>
-                    <td className="text-signal-success px-4 py-3 text-center font-mono text-xs">
+                    <td className="text-signal-success-text dark:text-signal-success px-4 py-3 text-center font-mono text-xs">
                       {dt}
                     </td>
                     <td className="text-ink-tertiary px-4 py-3 text-center font-mono text-xs">

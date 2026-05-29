@@ -32,7 +32,7 @@ export function InstallTabs({ className }: { className?: string }) {
             className={cn(
               'max-w-32 flex-1 flex flex-col items-center py-2.5 px-2 text-center transition-colors border-r border-line last:border-r-0 text-[11px] font-medium gap-0.5',
               active === t.id
-                ? 'bg-white/[0.04] text-primary'
+                ? 'bg-white/[0.04] text-primary-accessible dark:text-primary'
                 : 'bg-transparent text-ink-tertiary hover:text-ink-secondary hover:bg-ink/[0.02]',
             )}
           >
@@ -40,7 +40,7 @@ export function InstallTabs({ className }: { className?: string }) {
             <span
               className={cn(
                 'text-[10px] font-normal',
-                active === t.id ? 'text-primary/70' : 'text-ink-tertiary',
+                active === t.id ? 'text-primary-accessible dark:text-primary' : 'text-ink-tertiary',
               )}
             >
               {t.sublabel}

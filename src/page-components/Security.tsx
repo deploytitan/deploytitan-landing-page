@@ -147,9 +147,9 @@ export default function Security() {
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-3">
                     {item.sent ? (
-                      <span className="font-mono text-primary">→</span>
+                      <span className="font-mono text-primary-accessible dark:text-primary">→</span>
                     ) : (
-                      <span className="font-mono text-signal-success">✓</span>
+                      <span className="font-mono text-signal-success-text dark:text-signal-success">✓</span>
                     )}
                     <span
                       className={
@@ -164,7 +164,7 @@ export default function Security() {
                       className={`ml-auto font-mono text-[9px] uppercase tracking-[0.08em] px-1.5 py-0.5 ${
                         item.sent
                           ? 'text-ink-tertiary border border-line'
-                          : 'text-signal-success/80 border border-signal-success/30 bg-signal-success/5'
+                          : 'text-signal-success-text dark:text-signal-success border border-signal-success/30 bg-signal-success/5'
                       }`}
                       style={{ borderRadius: '2px' }}
                     >

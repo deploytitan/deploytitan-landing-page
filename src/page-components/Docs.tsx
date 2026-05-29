@@ -266,7 +266,7 @@ export default function Docs() {
               className={`grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-6 p-7 ${i < quickstartSteps.length - 1 ? 'border-b border-line' : ''}`}
             >
               <div>
-                <span className="text-primary/60 font-mono text-xs tabular-nums">{s.step}</span>
+                <span className="text-primary-accessible dark:text-primary font-mono text-xs tabular-nums">{s.step}</span>
                 <h3 className="text-ink mt-1 text-sm font-semibold">{s.title}</h3>
                 <p className="text-ink-secondary mt-2 text-xs leading-relaxed max-w-[40ch]">{s.description}</p>
               </div>
@@ -330,7 +330,7 @@ export default function Docs() {
               </h2>
               <p className="mt-3 text-sm text-ink-secondary leading-relaxed max-w-md">
                 The{' '}
-                <code className="font-mono text-primary text-xs bg-surface-alt px-1.5 py-0.5" style={{ borderRadius: '1px' }}>
+                <code className="font-mono text-primary-accessible dark:text-primary text-xs bg-surface-alt px-1.5 py-0.5" style={{ borderRadius: '1px' }}>
                   dt
                 </code>{' '}
                 CLI connects to your AWS account via standard IAM credentials. Requires Lambda alias

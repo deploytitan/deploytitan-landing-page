@@ -15,8 +15,8 @@ const STATUS_LABELS = {
   'coming-soon': 'Soon',
 }
 const STATUS_COLORS = {
-  ga: 'text-signal-success border-signal-success/30',
-  beta: 'text-signal-warning border-signal-warning/30',
+  ga: 'text-signal-success-text dark:text-signal-success border-signal-success/30',
+  beta: 'text-signal-warning-text dark:text-signal-warning border-signal-warning/30',
   'coming-soon': 'text-ink-tertiary border-line',
 }
 

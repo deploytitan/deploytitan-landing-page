@@ -240,7 +240,7 @@ export default function TitanLedger() {
             {CAPABILITIES.map((c) => (
               <Card key={c.title} className="flex flex-col gap-3" data-reveal>
                 <div className="flex items-start justify-between">
-                  <span className="text-primary/70">{c.icon}</span>
+                  <span className="text-primary-accessible dark:text-primary">{c.icon}</span>
                   <RoadmapBadge variant={c.badge} />
                 </div>
                 <h3 className="text-sm font-semibold text-ink">{c.title}</h3>
@@ -317,7 +317,7 @@ export default function TitanLedger() {
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="1.5"
-                          className="text-primary/40"
+                          className="text-primary-accessible/60 dark:text-primary/40"
                         >
                           <line x1="6" y1="0" x2="6" y2="12" />
                           <polyline points="3 9 6 12 9 9" />
@@ -355,7 +355,7 @@ export default function TitanLedger() {
               <Card key={d.metric} data-reveal>
                 <h3 className="text-sm font-semibold text-ink mb-2">{d.metric}</h3>
                 <p className="text-xs text-ink-secondary leading-relaxed mb-3">{d.desc}</p>
-                <p className="text-xs font-mono text-primary/80">{d.benchmark}</p>
+                <p className="text-xs font-mono text-primary-accessible dark:text-primary">{d.benchmark}</p>
               </Card>
             ))}
           </div>

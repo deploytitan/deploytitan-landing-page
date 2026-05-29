@@ -60,6 +60,13 @@
     /* WCAG AA-compliant gold for small text on light surfaces (4.5:1 ratio) */
     --color-primary-accessible: #7a6530;
 
+    /* Signal text — WCAG AA on light surfaces (≥4.5:1). Use these for text;
+       use the base signal colors only for backgrounds, borders, and icons. */
+    --color-signal-success-text: #166534;
+    --color-signal-warning-text: #92400e;
+    --color-signal-danger-text:  #b91c1c;
+    --color-signal-deploy-text:  #1d4ed8;
+
     /* Layout */
     --max-width-page: 1400px;
 
@@ -101,4 +108,10 @@
     --color-primary-rgb:   212 180 84;
     /* On dark surfaces #d4b454 is already high-contrast; keep original */
     --color-primary-accessible: #d4b454;
+
+    /* Signal text — dark mode uses the bright signal colors directly (AAA on dark) */
+    --color-signal-success-text: #4ade80;
+    --color-signal-warning-text: #fbbf24;
+    --color-signal-danger-text:  #f87171;
+    --color-signal-deploy-text:  #60a5fa;
 }
