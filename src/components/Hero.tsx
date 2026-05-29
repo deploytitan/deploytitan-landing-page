@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
 import { Button } from './shared/Button'
@@ -26,13 +26,19 @@ interface LogEntry {
 // Tree: checkout-api (root) → web-storefront + pricing-migration (children)
 //       web-storefront → fulfillment-worker (grandchild)
 //       pricing-migration → payments-service (grandchild, paused on parent failure)
-const NODE_IDS = ['checkout-api', 'web-storefront', 'pricing-migration', 'fulfillment-worker', 'payments-service'] as const
+const NODE_IDS = [
+  'checkout-api',
+  'web-storefront',
+  'pricing-migration',
+  'fulfillment-worker',
+  'payments-service',
+] as const
 type NodeId = (typeof NODE_IDS)[number]
 
 const TREE_EDGES: [NodeId, NodeId][] = [
-  ['checkout-api',      'web-storefront'],
-  ['checkout-api',      'pricing-migration'],
-  ['web-storefront',    'fulfillment-worker'],
+  ['checkout-api', 'web-storefront'],
+  ['checkout-api', 'pricing-migration'],
+  ['web-storefront', 'fulfillment-worker'],
   ['pricing-migration', 'payments-service'],
 ]
 
@@ -44,43 +50,99 @@ const TREE_EDGES: [NodeId, NodeId][] = [
 
 type Event =
   | { t: number; type: 'node'; id: NodeId; status: NodeStatus }
-  | { t: number; type: 'log';  entry: LogEntry }
+  | { t: number; type: 'log'; entry: LogEntry }
   | { t: number; type: 'panel'; panel: 'freeze' | 'intelligence' }
 
 const SCRIPT: Event[] = [
   // t=0: graph appears, all nodes pending
   // t=1700: start deploying root
-  { t: 1700, type: 'node', id: 'checkout-api',      status: 'deploying' },
-  { t: 1700, type: 'log',  entry: { time: '09:10', label: 'Release object created — 6 PRs across 5 services.', kind: 'info' } },
+  { t: 1700, type: 'node', id: 'checkout-api', status: 'deploying' },
+  {
+    t: 1700,
+    type: 'log',
+    entry: {
+      time: '09:10',
+      label: 'Release object created — 6 PRs across 5 services.',
+      kind: 'info',
+    },
+  },
 
-  { t: 4500, type: 'node', id: 'checkout-api',      status: 'success' },
-  { t: 4500, type: 'log',  entry: { time: '09:18', label: 'checkout-api promoted to production.', kind: 'info' } },
+  { t: 4500, type: 'node', id: 'checkout-api', status: 'success' },
+  {
+    t: 4500,
+    type: 'log',
+    entry: { time: '09:18', label: 'checkout-api promoted to production.', kind: 'info' },
+  },
 
   // Both children start after root succeeds
-  { t: 6200, type: 'node', id: 'web-storefront',    status: 'deploying' },
-  { t: 6200, type: 'log',  entry: { time: '09:24', label: 'Freeze window confirmed. Deployment window open.', kind: 'info' } },
+  { t: 6200, type: 'node', id: 'web-storefront', status: 'deploying' },
+  {
+    t: 6200,
+    type: 'log',
+    entry: {
+      time: '09:24',
+      label: 'Freeze window confirmed. Deployment window open.',
+      kind: 'info',
+    },
+  },
 
   { t: 6800, type: 'node', id: 'pricing-migration', status: 'deploying' },
   { t: 6800, type: 'panel', panel: 'freeze' },
 
   // web-storefront succeeds
-  { t: 9400, type: 'node', id: 'web-storefront',    status: 'success' },
-  { t: 9400, type: 'log',  entry: { time: '09:29', label: 'web-storefront deployed successfully.', kind: 'info' } },
+  { t: 9400, type: 'node', id: 'web-storefront', status: 'success' },
+  {
+    t: 9400,
+    type: 'log',
+    entry: { time: '09:29', label: 'web-storefront deployed successfully.', kind: 'info' },
+  },
 
   // pricing-migration blocks
   { t: 10400, type: 'node', id: 'pricing-migration', status: 'blocked' },
-  { t: 10400, type: 'log',  entry: { time: '09:31', label: 'pricing-migration blocked — schema review required.', kind: 'error' } },
+  {
+    t: 10400,
+    type: 'log',
+    entry: {
+      time: '09:31',
+      label: 'pricing-migration blocked — schema review required.',
+      kind: 'error',
+    },
+  },
 
   // payments-service paused immediately after its parent blocks
-  { t: 11200, type: 'node', id: 'payments-service',  status: 'paused' },
-  { t: 11200, type: 'log',  entry: { time: '09:32', label: 'payments-service paused — upstream failure in pricing-migration.', kind: 'warn' } },
+  { t: 11200, type: 'node', id: 'payments-service', status: 'paused' },
+  {
+    t: 11200,
+    type: 'log',
+    entry: {
+      time: '09:32',
+      label: 'payments-service paused — upstream failure in pricing-migration.',
+      kind: 'warn',
+    },
+  },
 
   // fulfillment-worker can start (its parent web-storefront succeeded)
   { t: 11800, type: 'node', id: 'fulfillment-worker', status: 'deploying' },
-  { t: 11800, type: 'log',  entry: { time: '09:38', label: 'fulfillment-worker started. Rollback owner assigned.', kind: 'warn' } },
+  {
+    t: 11800,
+    type: 'log',
+    entry: {
+      time: '09:38',
+      label: 'fulfillment-worker started. Rollback owner assigned.',
+      kind: 'warn',
+    },
+  },
 
   { t: 14800, type: 'node', id: 'fulfillment-worker', status: 'success' },
-  { t: 14800, type: 'log',  entry: { time: '09:46', label: 'fulfillment-worker approved. Release partially halted.', kind: 'warn' } },
+  {
+    t: 14800,
+    type: 'log',
+    entry: {
+      time: '09:46',
+      label: 'fulfillment-worker approved. Release partially halted.',
+      kind: 'warn',
+    },
+  },
 
   { t: 15800, type: 'panel', panel: 'intelligence' },
   // hold until t=21000 then loop
@@ -90,23 +152,53 @@ const CYCLE_DURATION = 21000
 
 // ─── Node status config ───────────────────────────────────────────────────────
 
-const STATUS_CONFIG: Record<NodeStatus, { label: string; textClass: string; borderClass: string; bgClass: string }> = {
-  pending:   { label: 'Pending',   textClass: 'text-ink-tertiary',  borderClass: 'border-line',               bgClass: '' },
-  deploying: { label: 'Deploying', textClass: 'text-signal-warning',  borderClass: 'border-signal-warning/50',  bgClass: 'bg-signal-warning/[0.03]' },
-  success:   { label: 'Success',   textClass: 'text-signal-success',  borderClass: 'border-signal-success/50',  bgClass: '' },
-  blocked:   { label: 'Blocked',   textClass: 'text-signal-danger',   borderClass: 'border-signal-danger/60',   bgClass: 'bg-signal-danger/[0.04]' },
-  paused:    { label: 'Paused',    textClass: 'text-ink-tertiary',    borderClass: 'border-signal-warning/30',  bgClass: 'bg-surface-alt/60' },
+const STATUS_CONFIG: Record<
+  NodeStatus,
+  { label: string; textClass: string; borderClass: string; bgClass: string }
+> = {
+  pending: {
+    label: 'Pending',
+    textClass: 'text-ink-tertiary',
+    borderClass: 'border-line',
+    bgClass: '',
+  },
+  deploying: {
+    label: 'Deploying',
+    textClass: 'text-signal-warning',
+    borderClass: 'border-signal-warning/50',
+    bgClass: 'bg-signal-warning/[0.03]',
+  },
+  success: {
+    label: 'Success',
+    textClass: 'text-signal-success',
+    borderClass: 'border-signal-success/50',
+    bgClass: '',
+  },
+  blocked: {
+    label: 'Blocked',
+    textClass: 'text-signal-danger',
+    borderClass: 'border-signal-danger/60',
+    bgClass: 'bg-signal-danger/[0.04]',
+  },
+  paused: {
+    label: 'Paused',
+    textClass: 'text-ink-tertiary',
+    borderClass: 'border-signal-warning/30',
+    bgClass: 'bg-surface-alt/60',
+  },
 }
 
 // ─── Keyframes ────────────────────────────────────────────────────────────────
 
 function GraphKeyframes({ normalLengths }: { normalLengths: number[] }) {
   const css = [
-    ...normalLengths.map(len => `
+    ...normalLengths.map(
+      (len) => `
       @keyframes drawEdge${len} {
         from { stroke-dashoffset: ${len}px; }
         to   { stroke-dashoffset: 0px; }
-      }`),
+      }`,
+    ),
     `@keyframes edgeFadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
@@ -140,7 +232,7 @@ function GraphKeyframes({ normalLengths }: { normalLengths: number[] }) {
 function DeployingSpinner() {
   return (
     <span
-      className="inline-block h-2 w-2 rounded-full border border-signal-warning border-t-transparent"
+      className="border-signal-warning inline-block h-2 w-2 rounded-full border border-t-transparent"
       style={{
         borderRadius: '50%',
         animation: 'spinRing 0.9s linear infinite',
@@ -153,7 +245,14 @@ function DeployingSpinner() {
 
 // ─── Dependency tree ──────────────────────────────────────────────────────────
 
-interface EdgePath { id: string; d: string; isBlocked: boolean; isPaused: boolean; isActive: boolean; length: number }
+interface EdgePath {
+  id: string
+  d: string
+  isBlocked: boolean
+  isPaused: boolean
+  isActive: boolean
+  length: number
+}
 
 function DependencyTree({
   nodeStates,
@@ -165,11 +264,13 @@ function DependencyTree({
   onNormalLengths: (lengths: number[]) => void
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const nodeRefs     = useRef<Record<string, HTMLDivElement | null>>({})
+  const nodeRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const [edgePaths, setEdgePaths] = useState<EdgePath[]>([])
   const reported = useRef(false)
 
-  useEffect(() => { reported.current = false }, [cycleKey])
+  useEffect(() => {
+    reported.current = false
+  }, [cycleKey])
 
   useEffect(() => {
     const container = containerRef.current
@@ -186,18 +287,18 @@ function DependencyTree({
         const tr = te.getBoundingClientRect()
 
         const fx = fr.left - cr.left + fr.width / 2
-        const fy = fr.top  - cr.top  + fr.height   // bottom of parent
+        const fy = fr.top - cr.top + fr.height // bottom of parent
         const tx = tr.left - cr.left + tr.width / 2
-        const ty = tr.top  - cr.top                 // top of child
+        const ty = tr.top - cr.top // top of child
 
         const my = (fy + ty) / 2
-        const d  = `M ${fx} ${fy} L ${fx} ${my} L ${tx} ${my} L ${tx} ${ty}`
+        const d = `M ${fx} ${fy} L ${fx} ${my} L ${tx} ${my} L ${tx} ${ty}`
         const len = Math.round(Math.abs(fy - my) + Math.abs(tx - fx) + Math.abs(ty - my))
 
         const toStatus = nodeStates[toId]
         const isBlocked = toStatus === 'blocked'
-        const isPaused  = toStatus === 'paused'
-        const isActive  = toStatus !== 'pending'
+        const isPaused = toStatus === 'paused'
+        const isActive = toStatus !== 'pending'
 
         return { id: `${fromId}→${toId}`, d, isBlocked, isPaused, isActive, length: len }
       }).filter(Boolean) as EdgePath[]
@@ -205,7 +306,7 @@ function DependencyTree({
       setEdgePaths(paths)
 
       if (!reported.current && paths.length === TREE_EDGES.length) {
-        onNormalLengths(paths.filter(p => !p.isBlocked && !p.isPaused).map(p => p.length))
+        onNormalLengths(paths.filter((p) => !p.isBlocked && !p.isPaused).map((p) => p.length))
         reported.current = true
       }
     }
@@ -218,14 +319,17 @@ function DependencyTree({
 
   function renderNode(id: NodeId) {
     const status = nodeStates[id]
-    const cfg    = STATUS_CONFIG[status]
-    const visible = status !== 'pending' || cycleKey === 0
-      ? true // always shown structurally; color/opacity signals state
-      : true
+    const cfg = STATUS_CONFIG[status]
+    const visible =
+      status !== 'pending' || cycleKey === 0
+        ? true // always shown structurally; color/opacity signals state
+        : true
 
     return (
       <div
-        ref={el => { nodeRefs.current[id] = el }}
+        ref={(el) => {
+          nodeRefs.current[id] = el
+        }}
         className={`relative border px-2.5 py-2 ${cfg.borderClass} ${cfg.bgClass}`}
         style={{
           borderRadius: '2px',
@@ -234,23 +338,25 @@ function DependencyTree({
       >
         {status === 'blocked' && (
           <span
-            className="absolute -top-px -right-px h-1.5 w-1.5 bg-signal-danger"
+            className="bg-signal-danger absolute -top-px -right-px h-1.5 w-1.5"
             style={{ borderRadius: '50%', animation: 'dotBlink 1.8s ease-in-out infinite' }}
           />
         )}
         {status === 'paused' && (
           <span
-            className="absolute -top-px -right-px h-1.5 w-1.5 bg-signal-warning/50"
+            className="bg-signal-warning/50 absolute -top-px -right-px h-1.5 w-1.5"
             style={{ borderRadius: '50%' }}
           />
         )}
-        <p className="font-mono text-[9.5px] leading-tight text-ink truncate">{id}</p>
+        <p className="text-ink truncate font-mono text-[9.5px] leading-tight">{id}</p>
         <p
-          className={`mt-1 font-mono text-[8.5px] tracking-[0.1em] uppercase flex items-center gap-1 ${cfg.textClass}`}
+          className={`mt-1 flex items-center gap-1 font-mono text-[8.5px] tracking-[0.1em] uppercase ${cfg.textClass}`}
           style={{ transition: 'color 0.4s ease-out' }}
         >
           {status === 'deploying' && <DeployingSpinner />}
-          {status === 'paused' && <span style={{ marginRight: '4px', fontSize: '8px', opacity: 0.7 }}>‖</span>}
+          {status === 'paused' && (
+            <span style={{ marginRight: '4px', fontSize: '8px', opacity: 0.7 }}>‖</span>
+          )}
           {cfg.label}
         </p>
       </div>
@@ -373,12 +479,15 @@ function FreezeWindowPanel({ visible }: { visible: boolean }) {
   const [cursorPct, setCursorPct] = useState(0)
 
   useEffect(() => {
-    if (!visible) { setCursorPct(0); return }
+    if (!visible) {
+      setCursorPct(0)
+      return
+    }
     const start = performance.now()
     const duration = 1400
     const target = 40
     const frame = (now: number) => {
-      const t    = Math.min((now - start) / duration, 1)
+      const t = Math.min((now - start) / duration, 1)
       const ease = 1 - Math.pow(1 - t, 4)
       setCursorPct(ease * target)
       if (t < 1) requestAnimationFrame(frame)
@@ -388,48 +497,56 @@ function FreezeWindowPanel({ visible }: { visible: boolean }) {
 
   const checklistItems = [
     { label: 'Rollback owner assigned', done: true },
-    { label: 'Downstream notified',     done: true },
+    { label: 'Downstream notified', done: true },
     { label: 'Schema migration approved', done: false },
   ]
 
   return (
     <div
-      className="min-h-[120px] border border-line bg-surface-alt/40 p-3"
+      className="border-line bg-surface-alt/40 min-h-[120px] border p-3"
       style={{
         borderRadius: '2px',
-        opacity:   visible ? 1 : 0,
+        opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0)' : 'translateY(6px)',
-        transition: 'opacity 0.4s cubic-bezier(0.22,1,0.36,1), transform 0.4s cubic-bezier(0.22,1,0.36,1)',
+        transition:
+          'opacity 0.4s cubic-bezier(0.22,1,0.36,1), transform 0.4s cubic-bezier(0.22,1,0.36,1)',
       }}
     >
-      <div className="flex items-center justify-between mb-3">
-        <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">Freeze window</p>
-        <span className="font-mono text-[9px] text-signal-warning tracking-wider uppercase">Active</span>
+      <div className="mb-3 flex items-center justify-between">
+        <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">
+          Freeze window
+        </p>
+        <span className="text-signal-warning font-mono text-[9px] tracking-wider uppercase">
+          Active
+        </span>
       </div>
 
       {/* Window bar */}
-      <div className="relative h-5 bg-surface-alt border border-line overflow-hidden" style={{ borderRadius: '1px' }}>
+      <div
+        className="bg-surface-alt border-line relative h-5 overflow-hidden border"
+        style={{ borderRadius: '1px' }}
+      >
         {/* Shaded "elapsed" fill */}
         <div
-          className="absolute inset-y-0 left-0 bg-primary/10"
+          className="bg-primary/10 absolute inset-y-0 left-0"
           style={{ width: `${cursorPct}%`, transition: 'none' }}
         />
         {/* Time cursor line */}
         <div
-          className="absolute inset-y-0 w-px bg-primary"
+          className="bg-primary absolute inset-y-0 w-px"
           style={{ left: `${cursorPct}%`, transition: 'none' }}
         />
         {/* Labels */}
         <div className="absolute inset-0 flex items-center justify-between px-2">
-          <span className="font-mono text-[8px] text-ink-tertiary">10:00</span>
-          <span className="font-mono text-[8px] text-ink-tertiary">UTC</span>
-          <span className="font-mono text-[8px] text-ink-tertiary">12:00</span>
+          <span className="text-ink-tertiary font-mono text-[8px]">10:00</span>
+          <span className="text-ink-tertiary font-mono text-[8px]">UTC</span>
+          <span className="text-ink-tertiary font-mono text-[8px]">12:00</span>
         </div>
       </div>
 
       {/* Current time label under cursor */}
       <div className="mt-1.5 mb-3" style={{ paddingLeft: `calc(${cursorPct}% - 12px)` }}>
-        <span className="font-mono text-[8px] text-primary-accessible">10:48 now</span>
+        <span className="text-primary-accessible font-mono text-[8px]">10:48 now</span>
       </div>
 
       {/* Checklist */}
@@ -439,7 +556,7 @@ function FreezeWindowPanel({ visible }: { visible: boolean }) {
             key={item.label}
             className="flex items-center gap-2"
             style={{
-              opacity:   visible ? 1 : 0,
+              opacity: visible ? 1 : 0,
               transition: `opacity 0.2s ease-out ${0.3 + i * 0.12}s`,
             }}
           >
@@ -447,7 +564,9 @@ function FreezeWindowPanel({ visible }: { visible: boolean }) {
               className={`h-1.5 w-1.5 shrink-0 ${item.done ? 'bg-signal-success' : 'bg-signal-danger'}`}
               style={{ borderRadius: '1px' }}
             />
-            <span className={`font-mono text-[9px] ${item.done ? 'text-ink-secondary' : 'text-signal-danger'}`}>
+            <span
+              className={`font-mono text-[9px] ${item.done ? 'text-ink-secondary' : 'text-signal-danger'}`}
+            >
               {item.label}
             </span>
           </div>
@@ -468,15 +587,16 @@ function IntelligencePanel({ visible }: { visible: boolean }) {
 
   return (
     <div
-      className="min-h-[108px] border border-primary/25 bg-primary/[0.03] p-3"
+      className="border-primary/25 bg-primary/[0.03] min-h-[108px] border p-3"
       style={{
         borderRadius: '2px',
-        opacity:   visible ? 1 : 0,
+        opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0)' : 'translateY(6px)',
-        transition: 'opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.5s cubic-bezier(0.22,1,0.36,1)',
+        transition:
+          'opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.5s cubic-bezier(0.22,1,0.36,1)',
       }}
     >
-      <p className="font-mono text-[10px] tracking-[0.16em] text-primary-accessible uppercase mb-3">
+      <p className="text-primary-accessible mb-3 font-mono text-[10px] tracking-[0.16em] uppercase">
         Rollouts Intelligence
       </p>
       <div className="space-y-2">
@@ -485,14 +605,18 @@ function IntelligencePanel({ visible }: { visible: boolean }) {
             key={b.label}
             className="flex items-start gap-2.5"
             style={{
-              opacity:   visible ? 1 : 0,
+              opacity: visible ? 1 : 0,
               transition: `opacity 0.25s ease-out ${0.15 + i * 0.12}s`,
             }}
           >
-            <span className="font-mono text-[9px] text-primary/60 shrink-0 mt-px w-3 text-center">{b.icon}</span>
+            <span className="text-primary/60 mt-px w-3 shrink-0 text-center font-mono text-[9px]">
+              {b.icon}
+            </span>
             <div>
-              <p className="font-mono text-[9.5px] text-ink-secondary leading-tight">{b.label}</p>
-              <p className="font-mono text-[8.5px] text-ink-tertiary leading-tight mt-0.5">{b.detail}</p>
+              <p className="text-ink-secondary font-mono text-[9.5px] leading-tight">{b.label}</p>
+              <p className="text-ink-tertiary mt-0.5 font-mono text-[8.5px] leading-tight">
+                {b.detail}
+              </p>
             </div>
           </div>
         ))}
@@ -504,13 +628,13 @@ function IntelligencePanel({ visible }: { visible: boolean }) {
 // ─── Log panel ────────────────────────────────────────────────────────────────
 
 const KIND_CLASS: Record<LogEntry['kind'], string> = {
-  info:  'text-ink-secondary',
-  warn:  'text-signal-warning',
+  info: 'text-ink-secondary',
+  warn: 'text-signal-warning',
   error: 'text-signal-danger',
 }
 const KIND_DOT: Record<LogEntry['kind'], string> = {
-  info:  'bg-ink-quaternary',
-  warn:  'bg-signal-warning',
+  info: 'bg-ink-quaternary',
+  warn: 'bg-signal-warning',
   error: 'bg-signal-danger',
 }
 
@@ -525,34 +649,36 @@ function LogPanel({ logs, visible }: { logs: LogEntry[]; visible: boolean }) {
 
   return (
     <div
-      className="border border-line bg-surface-alt/30 p-3"
+      className="border-line bg-surface-alt/30 border p-3"
       style={{
         borderRadius: '2px',
-        opacity:   visible ? 1 : 0,
+        opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0)' : 'translateY(6px)',
-        transition: 'opacity 0.4s cubic-bezier(0.22,1,0.36,1), transform 0.4s cubic-bezier(0.22,1,0.36,1)',
+        transition:
+          'opacity 0.4s cubic-bezier(0.22,1,0.36,1), transform 0.4s cubic-bezier(0.22,1,0.36,1)',
       }}
     >
-      <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase mb-2.5">
+      <p className="text-ink-tertiary mb-2.5 font-mono text-[10px] tracking-[0.16em] uppercase">
         Event log
       </p>
-      <div
-        ref={scrollRef}
-        className="space-y-2 overflow-hidden"
-        style={{ height: '100px' }}
-      >
+      <div ref={scrollRef} className="space-y-2 overflow-hidden" style={{ height: '100px' }}>
         {logs.map((entry, i) => (
           <div
             key={i}
-            className="grid grid-cols-[36px_1fr] gap-1.5 items-start"
+            className="grid grid-cols-[36px_1fr] items-start gap-1.5"
             style={{
               animation: 'logSlideIn 0.3s cubic-bezier(0.22,1,0.36,1) both',
             }}
           >
-            <span className="font-mono text-[8.5px] text-ink-tertiary pt-px">{entry.time}</span>
+            <span className="text-ink-tertiary pt-px font-mono text-[8.5px]">{entry.time}</span>
             <div className="flex items-start gap-1.5">
-              <span className={`mt-[3px] h-1 w-1 shrink-0 ${KIND_DOT[entry.kind]}`} style={{ borderRadius: '50%' }} />
-              <p className={`font-mono text-[9.5px] leading-[1.35] ${KIND_CLASS[entry.kind]}`}>{entry.label}</p>
+              <span
+                className={`mt-[3px] h-1 w-1 shrink-0 ${KIND_DOT[entry.kind]}`}
+                style={{ borderRadius: '50%' }}
+              />
+              <p className={`font-mono text-[9.5px] leading-[1.35] ${KIND_CLASS[entry.kind]}`}>
+                {entry.label}
+              </p>
             </div>
           </div>
         ))}
@@ -564,28 +690,34 @@ function LogPanel({ logs, visible }: { logs: LogEntry[]; visible: boolean }) {
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
 const INITIAL_NODE_STATES: Record<NodeId, NodeStatus> = {
-  'checkout-api':       'pending',
-  'web-storefront':     'pending',
-  'pricing-migration':  'pending',
+  'checkout-api': 'pending',
+  'web-storefront': 'pending',
+  'pricing-migration': 'pending',
   'fulfillment-worker': 'pending',
-  'payments-service':   'pending',
+  'payments-service': 'pending',
 }
 
 export function Hero() {
   const ref = useScrollReveal()
 
-  const [nodeStates,   setNodeStates]   = useState<Record<NodeId, NodeStatus>>(INITIAL_NODE_STATES)
-  const [logs,         setLogs]         = useState<LogEntry[]>([])
-  const [showFreeze,   setShowFreeze]   = useState(false)
-  const [showIntel,    setShowIntel]    = useState(false)
-  const [cycleKey,     setCycleKey]     = useState(0)
+  const [nodeStates, setNodeStates] = useState<Record<NodeId, NodeStatus>>(INITIAL_NODE_STATES)
+  const [logs, setLogs] = useState<LogEntry[]>([])
+  const [showFreeze, setShowFreeze] = useState(false)
+  const [showIntel, setShowIntel] = useState(false)
+  const [cycleKey, setCycleKey] = useState(0)
   const [normalLengths, setNormalLengths] = useState<number[]>([])
 
   // Derive overall card status from node states
-  const hasBlocked   = Object.values(nodeStates).some(s => s === 'blocked')
-  const hasPaused    = Object.values(nodeStates).some(s => s === 'paused')
-  const hasDeploying = Object.values(nodeStates).some(s => s === 'deploying')
-  const headerStatus = hasBlocked ? 'blocked' : hasDeploying ? 'deploying' : hasPaused ? 'paused' : 'pending'
+  const hasBlocked = Object.values(nodeStates).some((s) => s === 'blocked')
+  const hasPaused = Object.values(nodeStates).some((s) => s === 'paused')
+  const hasDeploying = Object.values(nodeStates).some((s) => s === 'deploying')
+  const headerStatus = hasBlocked
+    ? 'blocked'
+    : hasDeploying
+      ? 'deploying'
+      : hasPaused
+        ? 'paused'
+        : 'pending'
 
   const onNormalLengths = useCallback((lengths: number[]) => {
     setNormalLengths(lengths)
@@ -612,13 +744,17 @@ export function Hero() {
     if (prefersReduced) {
       // Show final state immediately
       setNodeStates({
-        'checkout-api':       'success',
-        'web-storefront':     'success',
-        'pricing-migration':  'blocked',
+        'checkout-api': 'success',
+        'web-storefront': 'success',
+        'pricing-migration': 'blocked',
         'fulfillment-worker': 'success',
-        'payments-service':   'paused',
+        'payments-service': 'paused',
       })
-      setLogs(SCRIPT.filter(e => e.type === 'log').map(e => (e as { type: 'log'; entry: LogEntry }).entry))
+      setLogs(
+        SCRIPT.filter((e) => e.type === 'log').map(
+          (e) => (e as { type: 'log'; entry: LogEntry }).entry,
+        ),
+      )
       setShowFreeze(true)
       setShowIntel(true)
       return
@@ -633,11 +769,11 @@ export function Hero() {
       for (const event of SCRIPT) {
         const t = setTimeout(() => {
           if (event.type === 'node') {
-            setNodeStates(prev => ({ ...prev, [event.id]: event.status }))
+            setNodeStates((prev) => ({ ...prev, [event.id]: event.status }))
           } else if (event.type === 'log') {
-            setLogs(prev => [...prev, event.entry])
+            setLogs((prev) => [...prev, event.entry])
           } else if (event.type === 'panel') {
-            if (event.panel === 'freeze')       setShowFreeze(true)
+            if (event.panel === 'freeze') setShowFreeze(true)
             if (event.panel === 'intelligence') setShowIntel(true)
           }
         }, event.t)
@@ -661,12 +797,15 @@ export function Hero() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden border-b border-line pt-28 pb-20 lg:pt-34 lg:pb-28"
+      className="border-line relative overflow-hidden border-b pt-28 pb-20 lg:pt-34 lg:pb-28"
     >
       <GraphKeyframes normalLengths={normalLengths} />
       <style dangerouslySetInnerHTML={{ __html: extraCss }} />
 
-      <div className="blueprint-grid pointer-events-none absolute inset-0 opacity-35" aria-hidden="true" />
+      <div
+        className="blueprint-grid pointer-events-none absolute inset-0 opacity-35"
+        aria-hidden="true"
+      />
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-32"
         style={{
@@ -677,90 +816,126 @@ export function Hero() {
       />
 
       <Container width="page" padding="wide" className="relative">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:items-start">
-
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(500px,1.08fr)] lg:items-start lg:gap-10 xl:grid-cols-[minmax(0,0.88fr)_minmax(560px,1.12fr)]">
           {/* Left column */}
-          <div className="max-w-2xl">
-            <p data-reveal className="mb-5 font-mono text-[11px] tracking-[0.24em] text-ink-tertiary uppercase">
-              Release coordination infrastructure
+          <div className="flex flex-col items-start text-left lg:min-h-[620px] lg:justify-center lg:pr-4">
+            <p
+              data-reveal
+              className="text-ink-tertiary mb-5 font-mono text-[11px] tracking-[0.24em] uppercase"
+            >
+              Release coordination
             </p>
             <h1
               data-reveal
               data-reveal-delay="1"
-              className="max-w-[13ch] font-display text-[clamp(3rem,7vw,6rem)] font-medium leading-[0.96] tracking-[-0.05em] text-ink"
+              className="font-display text-ink max-w-[10.8ch] text-[clamp(3.25rem,14vw,5.2rem)] leading-[0.93] font-medium tracking-[-0.055em] lg:text-[clamp(4.2rem,6.7vw,6.65rem)]"
             >
-              Ship multi-service releases with full dependency control.
+              Ship five services
+              <br />
+              <span className="text-ink-secondary">as one.</span>
             </h1>
             <p
               data-reveal
               data-reveal-delay="2"
-              className="mt-6 max-w-[52ch] text-lg leading-8 text-ink-secondary lg:text-[1.125rem]"
+              className="text-ink-secondary mt-7 max-w-[48ch] text-[1.0625rem] leading-[1.65] lg:text-lg"
             >
-              Titan Rollouts models your release as a dependency graph: merges sequence by upstream
-              readiness, freeze windows close on checklist completion, and rollback owners are
-              assigned before the window opens.
+              Your pipeline is green. The release still needs coordination: which service merges
+              first, who owns the freeze window, who rolls back when something breaks. That&apos;s
+              what DeployTitan handles.
             </p>
             <div
               data-reveal
               data-reveal-delay="3"
-              className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
+              className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center"
             >
-              <Button as="a" href={CREATE_ACCOUNT_URL} target="_blank" rel="noopener noreferrer" variant="primary" size="lg">
-                Create account
+              <Button
+                as="a"
+                href={CREATE_ACCOUNT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="primary"
+                size="lg"
+              >
+                Start free trial
               </Button>
               <Button as="a" href="#release-workflow" variant="outline" size="lg">
-                ↓ See how it works
+                See how it works
               </Button>
             </div>
+            <p
+              data-reveal
+              data-reveal-delay="4"
+              className="border-line text-ink-quaternary mt-7 w-full border-t pt-4 font-mono text-[10px] leading-5 tracking-[0.08em]"
+            >
+              Integrates with GitHub, GitLab, Jira, and Slack
+              <br />
+              No infrastructure changes.
+            </p>
           </div>
 
           {/* Right column */}
           <div data-reveal data-reveal-delay="3">
             <div
-              className="relative overflow-hidden border border-line bg-surface"
+              className="border-line bg-surface relative overflow-hidden border"
               style={{ borderRadius: '2px' }}
             >
-
               {/* Card header */}
               <div className="border-line bg-surface-alt/70 flex items-center justify-between border-b px-5 py-3">
                 <div className="flex items-center gap-3">
-                  <span className="bg-primary/20 flex h-5 w-5 items-center justify-center" style={{ borderRadius: '1px' }}>
+                  <span
+                    className="bg-primary/20 flex h-5 w-5 items-center justify-center"
+                    style={{ borderRadius: '1px' }}
+                  >
                     <span className="bg-primary block h-2 w-2" style={{ borderRadius: '1px' }} />
                   </span>
                   <div>
-                    <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">Titan Rollouts</p>
-                    <p className="font-mono text-[11px] text-ink">release / spring-checkout / prod-window-b</p>
+                    <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">
+                      Titan Rollouts
+                    </p>
+                    <p className="text-ink font-mono text-[11px]">
+                      release / spring-checkout / prod-window-b
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   {headerStatus === 'blocked' && (
                     <>
                       <span
-                        className="h-1.5 w-1.5 bg-signal-danger"
-                        style={{ borderRadius: '50%', animation: 'dotBlink 1.8s ease-in-out infinite' }}
+                        className="bg-signal-danger h-1.5 w-1.5"
+                        style={{
+                          borderRadius: '50%',
+                          animation: 'dotBlink 1.8s ease-in-out infinite',
+                        }}
                       />
-                      <p className="font-mono text-[10px] tracking-[0.08em] text-signal-danger uppercase">Blocked</p>
+                      <p className="text-signal-danger font-mono text-[10px] tracking-[0.08em] uppercase">
+                        Blocked
+                      </p>
                     </>
                   )}
                   {headerStatus === 'deploying' && (
                     <>
                       <DeployingSpinner />
-                      <p className="font-mono text-[10px] tracking-[0.08em] text-signal-warning uppercase">Deploying</p>
+                      <p className="text-signal-warning font-mono text-[10px] tracking-[0.08em] uppercase">
+                        Deploying
+                      </p>
                     </>
                   )}
                   {headerStatus === 'pending' && (
-                    <p className="font-mono text-[10px] tracking-[0.08em] text-ink-tertiary uppercase">Pending</p>
+                    <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.08em] uppercase">
+                      Pending
+                    </p>
                   )}
                 </div>
               </div>
 
               <div className="space-y-4 p-4 md:p-4">
-
                 {/* Dependency tree */}
                 <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">Dependency graph</p>
-                    <p className="font-mono text-[10px] text-ink-tertiary">5 services · 6 PRs</p>
+                  <div className="mb-3 flex items-center justify-between">
+                    <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">
+                      Dependency graph
+                    </p>
+                    <p className="text-ink-tertiary font-mono text-[10px]">5 services · 6 PRs</p>
                   </div>
                   <div className="min-h-[184px] sm:min-h-[196px]">
                     <DependencyTree
@@ -778,12 +953,10 @@ export function Hero() {
                 <FreezeWindowPanel visible={showFreeze} />
 
                 {/* Intelligence */}
-                <IntelligencePanel visible={showIntel} />
-
+                {/*<IntelligencePanel visible={showIntel} />*/}
               </div>
             </div>
           </div>
-
         </div>
       </Container>
     </section>

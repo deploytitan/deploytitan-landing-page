@@ -6,89 +6,55 @@ import { Button } from '../shared/Button'
 import { Container } from '../shared/Container'
 
 const pains = [
-  'Manual PR coordination across repos',
-  'Freeze windows that turn into calendar theater',
-  'No shared view of release readiness or blast radius',
-  'Rollback plans that only exist after something breaks',
+  'PRs merge out of order. A downstream service ships before its dependency is ready.',
+  'Freeze windows live in someone\'s calendar. Half the team doesn\'t know the window is open.',
+  'Rollback means a Slack thread, a war room call, and no clear owner.',
+  'Leadership asks "what\'s the release status?" Nobody has the same answer.',
 ]
 
-const capabilities = [
+const releaseRecord = [
   {
-    label: 'Release DAGs',
-    title: 'Visualize release dependencies before merge time gets risky.',
-    detail:
-      'Link pull requests into one release object, track blocking services, and sequence merges with explicit dependency awareness.',
+    step: '01',
+    label: 'Order',
+    title: 'Services deploy in dependency order.',
+    meta: 'checkout-api before web-storefront',
+    status: 'Sequenced',
   },
   {
-    label: 'Release control',
-    title: 'Coordinate promotions, approvals, and freeze windows in one workflow.',
-    detail:
-      'Turn production windows into managed release plans instead of Slack threads and spreadsheet rituals.',
+    step: '02',
+    label: 'Window',
+    title: 'Freeze windows close on checklist completion.',
+    meta: '3 of 4 checks complete',
+    status: 'Open',
   },
   {
-    label: 'Release visibility',
-    title: 'See service impact, readiness, and timeline state at a glance.',
-    detail:
-      'Give platform teams, service owners, and leadership the same release record without forcing them into three different tools.',
+    step: '03',
+    label: 'Approvals',
+    title: 'Sign-offs stay attached to the release.',
+    meta: 'security pending',
+    status: 'Waiting',
   },
   {
-    label: 'Rollback coordination',
-    title: 'Prepare the recovery path before the rollout starts.',
-    detail:
-      'Attach rollback owners, playbooks, and dependency-aware recovery steps to the release itself.',
+    step: '04',
+    label: 'Status',
+    title: 'Every owner sees the same timeline.',
+    meta: '5 services, 6 PRs',
+    status: 'Live',
   },
   {
-    label: 'Integrations',
-    title: 'Work inside the systems teams already trust.',
-    detail:
-      'DeployTitan sits above GitHub, GitLab, Jira, Slack, and CI/CD systems to coordinate the release lifecycle they do not manage well today.',
+    step: '05',
+    label: 'Rollback',
+    title: 'Recovery owners are named before deploy.',
+    meta: 'payments-service assigned',
+    status: 'Ready',
   },
 ]
 
 const teamFits = [
-  'Platform teams coordinating shared services across many repos',
-  'Microservice organizations where one release can touch a chain of downstream systems',
-  'Distributed engineering teams with approval, audit, or freeze-window constraints',
-  'Serverless and event-driven architectures with high release coordination overhead',
-]
-
-const toolGaps = [
-  {
-    tool: 'GitHub and GitLab',
-    role: 'Great for code review, merge state, and pull request workflow.',
-    gap: 'They do not coordinate the release itself across multiple repositories and teams.',
-  },
-  {
-    tool: 'CI/CD systems',
-    role: 'Excellent at building and executing pipelines.',
-    gap: 'They run steps, but they do not model release readiness, freeze windows, or cross-service dependency risk.',
-  },
-  {
-    tool: 'Observability platforms',
-    role: 'Helpful once something degrades in production.',
-    gap: 'They detect incidents after the fact, not the coordination problems that caused the release to become dangerous.',
-  },
-]
-
-const roadmap = [
-  {
-    phase: 'Now',
-    title: 'Titan Rollouts',
-    detail:
-      'The core product: release objects, dependency graphing, merge sequencing, release readiness, release timeline, and Slack updates.',
-  },
-  {
-    phase: 'Next',
-    title: 'Rollouts Intelligence',
-    detail:
-      'Deployment-aware insights like blast radius, downstream service impact, migration risk, and historically fragile services.',
-  },
-  {
-    phase: 'Later',
-    title: 'Enterprise Recovery Suite',
-    detail:
-      'Coordinated rollback workflows, migration safety, and recovery orchestration once the coordination layer is trusted.',
-  },
+  'Your releases regularly touch more than two services',
+  'You coordinate shipping in Slack threads or shared spreadsheets',
+  'Freeze windows, approvals, or compliance gates are part of your process',
+  'Distributed teams own different services that depend on each other',
 ]
 
 export function PlatformOverview() {
@@ -96,6 +62,7 @@ export function PlatformOverview() {
 
   return (
     <div ref={ref}>
+      {/* Section 1: The pain */}
       <section id="release-workflow" className="border-b border-line py-20 lg:py-24">
         <Container width="page" padding="wide">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
@@ -104,7 +71,7 @@ export function PlatformOverview() {
                 data-reveal
                 className="font-mono text-[11px] tracking-[0.22em] text-ink-tertiary uppercase"
               >
-                The real problem
+                The problem
               </p>
               <h2
                 data-reveal
@@ -116,11 +83,9 @@ export function PlatformOverview() {
               <p
                 data-reveal
                 data-reveal-delay="2"
-                className="mt-5 max-w-[60ch] text-lg leading-8 text-ink-secondary"
+                className="mt-5 max-w-[52ch] text-lg leading-8 text-ink-secondary"
               >
-                Shipping twenty services across multiple teams is where releases become painful.
-                Teams end up coordinating PRs manually, waiting on freeze windows, managing risky
-                rollbacks, and chasing release visibility across Slack, Jira, and CI/CD tools.
+                Shipping five across multiple teams is where things break down.
               </p>
             </div>
 
@@ -129,9 +94,9 @@ export function PlatformOverview() {
                 {pains.map((pain, index) => (
                   <div
                     key={pain}
-                    className="grid gap-4 border-b border-line px-5 py-5 last:border-b-0 sm:grid-cols-[72px_1fr]"
+                    className="grid gap-4 border-b border-line px-5 py-5 last:border-b-0 sm:grid-cols-[48px_1fr]"
                   >
-                    <span className="font-mono text-[10px] tracking-[0.14em] text-ink-tertiary uppercase">
+                    <span className="font-mono text-[10px] tracking-[0.14em] text-ink-tertiary uppercase self-start pt-0.5">
                       0{index + 1}
                     </span>
                     <p className="text-base leading-7 text-ink-secondary">{pain}</p>
@@ -143,123 +108,112 @@ export function PlatformOverview() {
         </Container>
       </section>
 
-      <section className="border-b border-line py-20 lg:py-24">
+      {/* Section 2: What DeployTitan does */}
+      <section className="relative overflow-hidden border-b border-line py-20 lg:py-28">
+        <div className="blueprint-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden="true" />
         <Container width="page" padding="wide">
-          <div className="max-w-3xl">
-            <p
-              data-reveal
-              className="font-mono text-[11px] tracking-[0.22em] text-ink-tertiary uppercase"
-            >
-              What DeployTitan does
-            </p>
-            <h2
-              data-reveal
-              data-reveal-delay="1"
-              className="mt-4 font-display text-[clamp(2.2rem,4vw,3.8rem)] font-medium leading-[1.04] tracking-[-0.04em] text-ink"
-            >
-              Release coordination and deployment safety for distributed systems.
-            </h2>
-          </div>
-
-          <div className="mt-12 border-t border-line" data-reveal data-reveal-delay="2">
-            {capabilities.map((item) => (
-              <div
-                key={item.label}
-                className="grid gap-4 border-b border-line py-7 lg:grid-cols-[180px_minmax(0,0.95fr)_minmax(0,1.05fr)]"
-              >
-                <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">
-                  {item.label}
-                </p>
-                <p className="text-lg leading-7 text-ink">{item.title}</p>
-                <p className="max-w-[62ch] text-sm leading-7 text-ink-secondary">{item.detail}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <section className="border-b border-line py-20 lg:py-24">
-        <Container width="page" padding="wide">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-            <div>
+          <div className="relative grid gap-12 lg:grid-cols-[minmax(0,0.78fr)_minmax(520px,1.22fr)] lg:items-start">
+            <div className="lg:sticky lg:top-28">
               <p
                 data-reveal
                 className="font-mono text-[11px] tracking-[0.22em] text-ink-tertiary uppercase"
               >
-                Built for modern engineering teams
+                What DeployTitan does
               </p>
               <h2
                 data-reveal
                 data-reveal-delay="1"
-                className="mt-4 max-w-[16ch] font-display text-[clamp(2.1rem,3.8vw,3.5rem)] font-medium leading-[1.04] tracking-[-0.04em] text-ink"
+                className="mt-4 max-w-[11ch] font-display text-[clamp(3rem,5.8vw,5.6rem)] font-medium leading-[0.94] tracking-[-0.055em] text-ink"
               >
-                For teams whose release process spans more than one service.
+                One record replaces the release scramble.
               </h2>
               <p
                 data-reveal
                 data-reveal-delay="2"
-                className="mt-5 max-w-[58ch] text-base leading-8 text-ink-secondary"
+                className="mt-6 max-w-[42ch] text-lg leading-8 text-ink-secondary"
               >
-                DeployTitan is not for every company. It is for teams with coordination overhead:
-                microservices, platform engineering, distributed ownership, and releases that need
-                more than a green pipeline to feel safe.
+                DeployTitan sits above your existing tools and gives every service owner the same
+                sequence, window, approvals, status, and recovery plan.
               </p>
-            </div>
-
-            <div className="space-y-4" data-reveal data-reveal-delay="2">
-              {teamFits.map((item) => (
-                <div
-                  key={item}
-                  className="flex items-start gap-4 border border-line bg-surface-alt/35 px-5 py-4"
-                  style={{ borderRadius: '2px' }}
-                >
-                  <span className="mt-1.5 block h-2 w-2 shrink-0 bg-primary" style={{ borderRadius: '1px' }} />
-                  <p className="text-sm leading-7 text-ink-secondary">{item}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      <section className="border-b border-line py-20 lg:py-24">
-        <Container width="page" padding="wide">
-          <div className="max-w-3xl">
-            <p
-              data-reveal
-              className="font-mono text-[11px] tracking-[0.22em] text-ink-tertiary uppercase"
-            >
-              Why existing tools fall short
-            </p>
-            <h2
-              data-reveal
-              data-reveal-delay="1"
-              className="mt-4 font-display text-[clamp(2.1rem,3.7vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.04em] text-ink"
-            >
-              Plenty of tools support shipping, almost none coordinate the release lifecycle itself.
-            </h2>
-          </div>
-
-          <div className="mt-12 border border-line" style={{ borderRadius: '2px' }} data-reveal data-reveal-delay="2">
-            <div className="grid gap-4 border-b border-line bg-surface-alt/60 px-5 py-4 lg:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)]">
-              <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">System</p>
-              <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">What it handles well</p>
-              <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">What still breaks down</p>
-            </div>
-            {toolGaps.map((row) => (
               <div
-                key={row.tool}
-                className="grid gap-4 border-b border-line px-5 py-5 last:border-b-0 lg:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)]"
+                data-reveal
+                data-reveal-delay="3"
+                className="mt-8 grid max-w-[480px] grid-cols-2 border border-line bg-surface/75 sm:grid-cols-4"
+                style={{ borderRadius: '2px' }}
               >
-                <p className="text-sm font-medium text-ink">{row.tool}</p>
-                <p className="text-sm leading-7 text-ink-secondary">{row.role}</p>
-                <p className="text-sm leading-7 text-ink-secondary">{row.gap}</p>
+                {['GitHub', 'GitLab', 'Jira', 'Slack'].map((tool) => (
+                  <div key={tool} className="border-line px-4 py-3 text-center odd:border-r sm:border-r sm:last:border-r-0">
+                    <p className="font-mono text-[10px] tracking-[0.12em] text-ink-tertiary uppercase">{tool}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            <div
+              data-reveal
+              data-reveal-delay="2"
+              className="border border-line bg-surface"
+              style={{ borderRadius: '2px' }}
+            >
+              <div className="flex flex-col gap-4 border-b border-line bg-surface-alt/70 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">
+                    Release record
+                  </p>
+                  <p className="mt-1 font-mono text-[11px] text-ink">
+                    spring-checkout / prod-window-b
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="block h-1.5 w-1.5 bg-signal-warning" style={{ borderRadius: '1px' }} />
+                  <p className="font-mono text-[10px] tracking-[0.12em] text-signal-warning uppercase">
+                    In coordination
+                  </p>
+                </div>
+              </div>
+
+              <div className="divide-y divide-line">
+                {releaseRecord.map((item) => (
+                  <div
+                    key={item.label}
+                    className="grid gap-4 px-5 py-5 transition-colors duration-300 hover:bg-surface-alt/55 sm:grid-cols-[44px_96px_minmax(0,1fr)_92px] sm:items-center"
+                  >
+                    <p className="font-mono text-[10px] tracking-[0.14em] text-ink-quaternary uppercase">
+                      {item.step}
+                    </p>
+                    <p className="font-mono text-[10px] tracking-[0.14em] text-ink-tertiary uppercase">
+                      {item.label}
+                    </p>
+                    <div>
+                      <p className="text-base leading-6 text-ink">{item.title}</p>
+                      <p className="mt-1 font-mono text-[10px] leading-5 text-ink-tertiary">{item.meta}</p>
+                    </div>
+                    <p className="w-fit border border-line bg-surface-alt px-2 py-1 font-mono text-[9px] tracking-[0.12em] text-ink-secondary uppercase sm:justify-self-end">
+                      {item.status}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid border-t border-line bg-primary/[0.035] sm:grid-cols-3">
+                {[
+                  'No status meeting',
+                  'No release spreadsheet',
+                  'No infra rewrite',
+                ].map((item) => (
+                  <div key={item} className="border-line px-5 py-4 sm:border-r sm:last:border-r-0">
+                    <p className="font-mono text-[10px] tracking-[0.1em] text-primary-accessible uppercase">
+                      {item}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </Container>
       </section>
 
+      {/* Section 3: Who it's for + CTA */}
       <section className="py-20 lg:py-24">
         <Container width="page" padding="wide">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
@@ -268,27 +222,25 @@ export function PlatformOverview() {
                 data-reveal
                 className="font-mono text-[11px] tracking-[0.22em] text-ink-tertiary uppercase"
               >
-                Product structure
+                Built for
               </p>
               <h2
                 data-reveal
                 data-reveal-delay="1"
-                className="mt-4 max-w-[15ch] font-display text-[clamp(2.1rem,3.8vw,3.4rem)] font-medium leading-[1.04] tracking-[-0.04em] text-ink"
+                className="mt-4 max-w-[16ch] font-display text-[clamp(2.1rem,3.8vw,3.5rem)] font-medium leading-[1.04] tracking-[-0.04em] text-ink"
               >
-                One core product, a clear intelligence layer, and a future recovery suite.
+                Teams with coordination overhead.
               </h2>
               <p
                 data-reveal
                 data-reveal-delay="2"
-                className="mt-5 max-w-[58ch] text-base leading-8 text-ink-secondary"
+                className="mt-5 max-w-[52ch] text-base leading-8 text-ink-secondary"
               >
-                Release coordination is where the overhead is most visible and the win is fastest
-                to prove. Titan Rollouts ships first because it solves the coordination gap teams
-                feel every release cycle. Foresight and Phoenix follow once the release system
-                owns the record.
+                DeployTitan is not for every team. It is for teams where release coordination is
+                already a job that someone is doing manually.
               </p>
 
-              <div data-reveal data-reveal-delay="3" className="mt-8">
+              <div data-reveal data-reveal-delay="3" className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button
                   as="a"
                   href={CREATE_ACCOUNT_URL}
@@ -297,25 +249,23 @@ export function PlatformOverview() {
                   variant="primary"
                   size="lg"
                 >
-                  Create account
+                  Start free trial
+                </Button>
+                <Button as="a" href="/pricing" variant="outline" size="lg">
+                  View pricing
                 </Button>
               </div>
             </div>
 
-            <div className="space-y-4" data-reveal data-reveal-delay="2">
-              {roadmap.map((item) => (
+            <div className="space-y-3" data-reveal data-reveal-delay="2">
+              {teamFits.map((item) => (
                 <div
-                  key={item.phase}
-                  className="border border-line bg-surface-alt/35 px-5 py-5"
+                  key={item}
+                  className="flex items-start gap-4 border border-line bg-surface-alt/35 px-5 py-4"
                   style={{ borderRadius: '2px' }}
                 >
-                  <div className="flex items-center justify-between gap-4">
-                    <p className="text-lg font-medium text-ink">{item.title}</p>
-                    <span className="font-mono text-[10px] tracking-[0.16em] text-ink-tertiary uppercase">
-                      {item.phase}
-                    </span>
-                  </div>
-                  <p className="mt-3 text-sm leading-7 text-ink-secondary">{item.detail}</p>
+                  <span className="mt-2 block h-1.5 w-1.5 shrink-0 bg-primary" style={{ borderRadius: '1px' }} />
+                  <p className="text-sm leading-7 text-ink-secondary">{item}</p>
                 </div>
               ))}
             </div>

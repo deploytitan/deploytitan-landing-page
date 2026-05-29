@@ -7,12 +7,12 @@ import { Button } from './shared/Button'
 
 const trustSignals = [
   {
-    label: 'GitHub, GitLab, Jira, Slack, and CI/CD integrations',
-    detail: 'Fits into the release workflow teams already use',
+    label: 'No infrastructure changes required',
+    detail: 'Sits above your existing GitHub, GitLab, and CI/CD setup',
   },
   {
-    label: 'No runtime traffic proxy required',
-    detail: 'Adopt the coordination layer before touching infrastructure',
+    label: 'Works with tools your team already uses',
+    detail: 'GitHub, GitLab, Jira, Slack, and CI/CD integrations included',
   },
 ]
 
@@ -49,7 +49,7 @@ export function CTA() {
                 className="text-ink-secondary mb-5 inline-flex items-center gap-3 font-mono text-sm"
               >
                 <span className="bg-primary/40 h-px w-8" />
-                Create account
+                Free trial
               </span>
 
               <h2
@@ -57,9 +57,9 @@ export function CTA() {
                 data-reveal-delay="1"
                 className="font-display mb-4 text-3xl leading-[1.12] font-medium tracking-[-0.022em] lg:text-4xl"
               >
-                Walk through your next
+                Try it on your
                 <br />
-                complex release.
+                next release.
               </h2>
 
               <p
@@ -67,8 +67,8 @@ export function CTA() {
                 data-reveal-delay="2"
                 className="text-ink-secondary mb-8 max-w-sm text-base leading-relaxed"
               >
-                We will map your release dependencies, freeze windows, approvals, and rollback
-                process against the DeployTitan workflow.
+                Create an account and set up your first release in minutes. No infrastructure
+                changes. No sales call required.
               </p>
 
               <div data-reveal data-reveal-delay="3" className="flex max-w-sm flex-col gap-3">
@@ -82,7 +82,7 @@ export function CTA() {
                   block
                   className="group"
                 >
-                  Get started
+                  Create free account
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="14"
@@ -146,9 +146,9 @@ export function CTA() {
                 data-reveal-delay="4"
                 className="font-display mb-3 text-2xl leading-[1.2] font-medium tracking-[-0.02em] lg:text-3xl"
               >
-                Price for coordination
+                Priced by team size,
                 <br />
-                complexity, not infra usage.
+                not deployment count.
               </h3>
 
               <p
@@ -156,16 +156,15 @@ export function CTA() {
                 data-reveal-delay="5"
                 className="text-ink-secondary mb-8 max-w-sm text-sm leading-relaxed"
               >
-                Plans scale by service count and operational overhead, so teams can justify the
-                workflow without worrying about per-deployment or per-request metering.
+                Plans scale with how many services you coordinate, not how often you ship.
               </p>
 
               <div data-reveal data-reveal-delay="6" className="max-w-sm space-y-4">
                 <div className="border-line space-y-3 border-y py-5">
                   {[
-                    'Starter: up to 10 services for smaller release surfaces',
-                    'Growth: up to 50 services with rollback workflows and integrations',
-                    'Enterprise: SSO, compliance, and private deployment options',
+                    'Starter: up to 10 services, free to try',
+                    'Growth: up to 50 services, rollback workflows and integrations',
+                    'Enterprise: SSO, audit logs, and private deployment options',
                   ].map((item) => (
                     <div key={item} className="flex items-start gap-3">
                       <span
