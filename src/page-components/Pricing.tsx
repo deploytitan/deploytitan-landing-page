@@ -68,7 +68,8 @@ const BILLING_ROWS = [
   },
   {
     label: 'Never metered',
-    value: 'No deployment events, per-merge fees, or overage surprises. Releases are always unlimited.',
+    value:
+      'No deployment events, per-merge fees, or overage surprises. Releases are always unlimited.',
   },
 ]
 
@@ -174,9 +175,9 @@ function annualPrice(monthly: number) {
 export default function Pricing() {
   useScrollReveal()
   const [annual, setAnnual] = useState(false)
-  const [highlightedPlan, setHighlightedPlan] = useState<
-    'starter' | 'growth' | 'scale' | null
-  >(null)
+  const [highlightedPlan, setHighlightedPlan] = useState<'starter' | 'growth' | 'scale' | null>(
+    null,
+  )
 
   const starterPrice = annual ? annualPrice(STARTER_MONTHLY) : STARTER_MONTHLY
   const growthPrice = annual ? annualPrice(GROWTH_MONTHLY) : GROWTH_MONTHLY
@@ -220,9 +221,7 @@ export default function Pricing() {
               <p className="text-ink-tertiary mb-1 text-xs font-medium tracking-[0.1em] uppercase">
                 Price follows
               </p>
-              <p className="text-ink text-sm leading-6">
-                Services and team size.
-              </p>
+              <p className="text-ink text-sm leading-6">Services and team size.</p>
             </div>
             <div className="bg-surface px-6 py-5 text-left">
               <p className="text-ink-tertiary mb-1 text-xs font-medium tracking-[0.1em] uppercase">
@@ -311,7 +310,7 @@ export default function Pricing() {
                 }`}
               >
                 Annual
-                <span className="text-primary-accessible font-mono text-[9px] tracking-[0.1em] uppercase whitespace-nowrap">
+                <span className="text-primary-accessible font-mono text-[9px] tracking-[0.1em] whitespace-nowrap uppercase">
                   2 months free
                 </span>
               </button>
@@ -588,37 +587,6 @@ export default function Pricing() {
             {FAQS.map((faq) => (
               <FaqItem key={faq.q} {...faq} />
             ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* ─── Closing CTA ──────────────────────────────────────────────────── */}
-      <section className="py-20">
-        <Container width="3xl" padding="default" className="text-center">
-          <p
-            className="text-ink-tertiary mb-4 font-mono text-[11px] tracking-[0.22em] uppercase"
-            data-reveal
-          >
-            Next step
-          </p>
-          <p
-            className="text-ink mx-auto text-xl"
-            data-reveal
-            style={{ textWrap: 'balance' } as React.CSSProperties}
-          >
-            Start a free trial. No credit card required.
-          </p>
-          <div className="mt-8" data-reveal>
-            <Button
-              as="a"
-              href={DEMO_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="primary"
-              size="lg"
-            >
-              Create free account
-            </Button>
           </div>
         </Container>
       </section>

@@ -44,7 +44,6 @@ export function SiteLayoutClient({ children }: { children: React.ReactNode }) {
       <main id="main-content" style={{ paddingTop: barHeight + 0 }}>
         {children}
       </main>
-      {pathname !== '/' && <MidCTA variant="waitlist" />}
       <Footer />
     </div>
   )

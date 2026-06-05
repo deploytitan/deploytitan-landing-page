@@ -24,19 +24,20 @@ The product is being built in three phases. The landing page and all copy should
 
 The revenue wedge. Solves the coordination gap that GitHub, CI/CD systems, and observability tools leave open.
 
-**What it solves:**
-- Multi-service release dependency ordering (which service deploys first, which waits)
-- Freeze window management (production windows that close on checklist completion, not hope)
-- Approval workflows (approvals attached to the release, not scattered across tools)
-- Release sequencing (merges happen in dependency order, not random PR merges)
-- Rollout visibility (every service owner, platform team, and team lead sees the same release record)
-- Rollback coordination (rollback owners assigned before the window opens)
+**What it solves (Phase 1 shipped features):**
+- PR dashboard: all sprint PRs across every repo in one view, with live CI status
+- Fire and forget: automatic CI/CD or Jenkins trigger — no manual job-watching
+- Slack alerts: immediate notification with context when any job fails
+- Slack approvals: release sign-off directly from Slack — no browser required
+- Grafana health check: post-deploy metrics check, summary posted automatically to the channel
 
-**Positioning:** "Linear for deployments" or "GitHub Actions for release orchestration." This framing lands with both engineers and leaders: it implies structure, visibility, and team coordination over chaos.
+**Supported integrations (current):** GitHub, GitHub Actions, Jenkins, Grafana, Slack. GitLab and Jira are not currently supported; do not mention them in copy.
 
-**Success metric:** Teams stop coordinating releases in Slack threads. One release record replaces the spreadsheet, the Zoom call, and the post-mortem.
+**Positioning:** ICP are startups and scaleups (not enterprises). A non-technical founder should understand the product within 2 minutes of landing. No jargon. Copy speaks to the pain of someone babysitting deploys.
 
-**Primary conversion goal:** Free account signup / product trial. Self-serve trial is the funnel. Demo calls are secondary.
+**Success metric:** Teams stop watching CI tabs. One place for all sprint PRs replaces the war room.
+
+**Primary conversion goal:** "Create account" signup. Self-serve trial is the funnel. Demo calls are secondary. CTA label is "Create account" everywhere — not "Start free trial".
 
 ### Phase 2 — Intelligent Release Insights (roadmap, not yet built)
 
