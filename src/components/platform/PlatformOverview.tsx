@@ -1,8 +1,6 @@
 'use client'
 
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
-import { Button } from '../shared/Button'
 import { Container } from '../shared/Container'
 
 const pains = [
@@ -334,24 +332,6 @@ export function PlatformOverview() {
               >
                 If someone on your team regularly stays late to watch a deploy, this is for you.
               </p>
-
-              <div
-                data-reveal
-                data-reveal-delay="3"
-                className="mt-8 flex flex-col gap-3 sm:flex-row"
-              >
-                <Button
-                  as="a"
-                  href={CREATE_ACCOUNT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="primary"
-                  size="lg"
-                  className="rounded-[8px]"
-                >
-                  Create account
-                </Button>
-              </div>
             </div>
 
             <div className="space-y-3" data-reveal data-reveal-delay="2">

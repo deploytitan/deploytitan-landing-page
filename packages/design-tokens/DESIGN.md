@@ -77,6 +77,8 @@ rounded:
   sharp: "2px"
   none: "0px"
   micro: "1px"
+  button: "8px"
+  card-approachable: "12px"
 spacing:
   xs: "4px"
   sm: "8px"
@@ -85,11 +87,11 @@ spacing:
   xl: "40px"
   page: "48px"
 components:
-  # Buttons — all sizes use rounded-[2px]; sizing in prose
+  # Buttons — primary CTAs use rounded-[8px]; other variants use rounded-[2px]
   button-primary:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.surface}"
-    rounded: "{rounded.sharp}"
+    rounded: "8px"
     padding: "16px 32px"
   button-primary-xs:
     backgroundColor: "{colors.ink}"
@@ -99,12 +101,12 @@ components:
   button-primary-lg:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.surface}"
-    rounded: "{rounded.sharp}"
+    rounded: "8px"
     padding: "16px 32px"
   button-outline:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
-    rounded: "{rounded.sharp}"
+    rounded: "8px"
     padding: "14px 32px"
   button-outline-hover:
     backgroundColor: "{colors.primary}"
@@ -132,6 +134,10 @@ components:
     backgroundColor: "{colors.surface}"
     rounded: "{rounded.sharp}"
     padding: "{spacing.lg}"
+  cta-card:
+    backgroundColor: "{colors.surface}"
+    rounded: "{rounded.card-approachable}"
+    padding: "{spacing.lg}"
   # Capability row
   cap-row:
     backgroundColor: "{colors.surface-alt}"
@@ -153,19 +159,63 @@ components:
 
 DeployTitan's visual language is built on a single premise: aircraft-grade precision. Every surface reads like a cockpit display, purposeful and calibrated, nothing decorative. The color system uses two registers: a bone-warm neutral field that recedes, and one operational accent (precision amber) that appears only where it earns its place. Type is set in two voices: Inter for authority at scale, Instrument Sans for legibility at reading size, and JetBrains Mono for the machine layer that runs beneath both.
 
-The system is explicitly dark-capable. Light mode reads like a technical data sheet printed on aged cartridge paper; dark mode reads like a mission-critical terminal at 2am. Neither is an afterthought. Both are deployed via the `.dark` class toggle; every token has a matching dark override. The 2px corner radius (`--radius-sharp`) is non-negotiable: it signals precision without rigidity, and it distinguishes DeployTitan from the soft-edged SaaS world it explicitly rejects.
-
-This system does not do friendly. It does not do playful. It does not do "accessible to everyone." It does authoritative, calm, and specific. Engineers scanning for technical depth and leaders scanning for capability scope should both find exactly what they need, without the system trying to appeal to either with artificial warmth.
+The system is explicitly dark-capable. Light mode reads like a technical data sheet printed on aged cartridge paper; dark mode reads like a mission-critical terminal at 2am. Neither is an afterthought. Both are deployed via the `.dark` class toggle; every token has a matching dark override.
 
 **Key Characteristics:**
-- Single sharp radius (2px) applied universally; zero soft corners
+- Default radius is 2px (`--radius-sharp`) — applied universally to panels, cards, capability rows, status badges, and all internal UI elements
+- Primary CTAs (`button-primary`, `button-outline`) use 8px radius to signal approachability at conversion moments
+- CTA section outer card uses 12px radius — the one place on the homepage where softness signals "this is safe to click"
 - Precision amber accent used at ≤10% of any surface; its rarity is the point
 - Mono layer (JetBrains Mono) reserved strictly for machine-readable content: labels, statuses, version strings, event logs
 - Noise texture overlay (opacity 0.02) adds material depth without decoration
 - Two grid motifs: `.hero-grid` (neutral 60px squares) and `.blueprint-grid` (amber-tinted 120px major / 24px minor) signal engineered structure, not ornamentation
 - Full dark mode parity: every token has an override; behavior is identical, atmosphere differs
 
-## 2. Colors: The Instrument Palette
+## 2. Border Radius System
+
+The radius system has three tiers. Knowing which tier to use and why prevents brand drift.
+
+### Tier 1 — Sharp (2px): The default
+Everything that is structural, technical, or informational uses `border-radius: 2px`. This includes:
+- All panel and dashboard containers (hero demo panel, feature rows, capability panels)
+- Cards at rest (sharp-card, sharp-card-muted)
+- Status badges and tags
+- Input fields, code blocks, terminal elements
+- Navigation elements
+- Internal UI elements (column headers, panel footers, integration strips)
+- All decorative corner-accent marks
+
+**Rule:** If an element shows data, contains machine-readable content, or is part of the product interface vocabulary, it uses 2px.
+
+### Tier 2 — Button (8px): Conversion actions
+Primary and outline CTAs use `rounded-[8px]` (`border-radius: 8px`). This applies to:
+- Hero "Create account" button
+- PlatformOverview "Create account" button (section 4)
+- CTA section "Create account" button (primary)
+- CTA section "See pricing" button (outline)
+
+**Rule:** The 8px radius on buttons signals "click here" without abandoning the sharp product aesthetic. It creates just enough visual warmth at the moment of conversion. Nav bar CTA (xs size) retains 2px to stay within the product chrome register.
+
+### Tier 3 — Approachable card (12px): Conversion containers
+Used exclusively on outer containers that frame a conversion moment:
+- CTA section outer card (`borderRadius: '12px'`)
+
+**Rule:** 12px is a single-use signal. It tells the reader: "this is a different kind of surface — this one is for you." Do not migrate general cards, panels, or feature sections to 12px. Sharp remains the default everywhere else.
+
+### Tier 4 — Micro (1px): Status indicators
+Status badges, dots, and inline tags that need to be readable but stay below the visual weight of even 2px. Used on status dots (`border-radius: 1px`) and platform badge labels.
+
+**Summary table:**
+
+| Context | Radius | Token |
+|---|---|---|
+| All panels, cards, data containers | 2px | `rounded-[2px]` |
+| Primary and outline CTA buttons | 8px | `rounded-[8px]` |
+| CTA section outer card | 12px | `rounded-[12px]` |
+| Status badges, dots, micro tags | 1px | `rounded-[1px]` |
+| Nav bar CTA button (xs) | 2px | `rounded-[2px]` |
+
+## 3. Colors: The Instrument Palette
 
 Restrained strategy: ink-tinted neutrals carry the surface; one precision amber accent appears where operational attention is required.
 
@@ -195,7 +245,7 @@ All four signal colors lift one step in dark mode to maintain contrast against n
 
 **The No-Pure-Extremes Rule.** `#000000` and `#ffffff` never appear. Every neutral is tinted toward the amber hue (chroma 0.005–0.01 minimum). This prevents the system from reading as generic-tech monochrome.
 
-## 3. Typography
+## 4. Typography
 
 **Display Font:** Inter (400, 500, 600, 700; with system-ui, sans-serif fallback)
 **Body Font:** Instrument Sans (400, 500, 600, 700; with system-ui, sans-serif fallback)
@@ -210,12 +260,16 @@ All four signal colors lift one step in dark mode to maintain contrast against n
 - **Body** (400, `1rem`, lh 1.65): Primary reading copy. Max line length 65–75ch. Instrument Sans.
 - **Label** (400, `0.6875rem`, lh 1.4, tracking 0.08em): JetBrains Mono exclusively. Version strings, event log entries, status badges, CLI copy, timestamp metadata, table column headers. All-caps where the label is categorical (section labels, tag names); sentence case where the label contains variable data.
 
+### Hero headline sizing
+
+The hero headline uses a larger scale than the display token: `clamp(3.25rem, 14vw, 5.2rem)` on mobile/tablet, `clamp(4.2rem, 6.7vw, 6.65rem)` on desktop. This is intentional — the hero is the only place where type can be this large. Section headlines cap at `clamp(2.3rem, 4.2vw, 4rem)`.
+
 ### Named Rules
 **The Mono Boundary Rule.** JetBrains Mono is used only when the content originated from a machine or system: version numbers, deployment statuses, command-line strings, log lines, timestamps. Human-authored labels, section headers, and navigation use Instrument Sans. Mixing registers violates the system's information hierarchy.
 
 **The Tracking Inversion Rule.** Display and headline type uses negative tracking (tightened). Label mono type uses positive tracking (widened). Body is set at normal. Never apply positive tracking to large type.
 
-## 4. Elevation
+## 5. Elevation
 
 DeployTitan is flat by default. Surfaces do not float. Depth is not conveyed through ambient shadows on resting states; it is conveyed through surface color steps (surface → surface-alt), hairline borders (1px at `var(--color-line)`), and the grid/blueprint motifs that separate regions by structure rather than lift.
 
@@ -231,12 +285,14 @@ Shadows appear only as a response to state: hover on interactive containers, act
 
 **The Single-Blur Rule.** `backdrop-filter: blur()` is used only on `.cap-modal-backdrop`. It is not a glass card treatment; it is a focus-lock mechanism. Do not apply blur to resting cards, nav, or banners.
 
-## 5. Components
+## 6. Components
 
 ### Buttons
-Sharp, dense, authoritative. Padding is generous at large sizes; the lg variant (`px-8 py-4`) has room to breathe without feeling approachable.
+Sharp at the product layer, approachable at the conversion layer.
 
-- **Shape:** 2px radius (`rounded-[2px]`). Non-negotiable. Applies to all variants.
+- **Shape:** 
+  - Nav bar CTA (xs): `rounded-[2px]` — stays within the product chrome register
+  - All other primary and outline CTAs: `rounded-[8px]` — conversion signal
 - **Primary:** Deep charcoal background (`bg-ink`), bone surface text (`text-surface`). On hover: a compound ring shadow appears: `0 0 0 1px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.08)`. The gold ring at 15% opacity is the hover tell; the button does not change color.
 - **Outline:** No fill, `border border-ink/15`. On hover: border shifts to `border-primary/40`, fill becomes `bg-primary-muted`. The button becomes amber-tinged without becoming solid.
 - **Ghost:** No border, no fill. Text shifts from `text-ink-secondary` to `text-ink` on hover. Used for tertiary actions and nav triggers.
@@ -245,7 +301,8 @@ Sharp, dense, authoritative. Padding is generous at large sizes; the lg variant 
 - **Sizes:** `xs` (nav bar, compact contexts; `px-5 py-2.5`), `sm` (secondary inline CTAs; `px-5 py-3`), `md` (default; `px-6 py-3.5`), `lg` (hero and section-level primaries; `px-8 py-4`).
 
 ### Cards / Containers
-- **Corner Style:** 2px radius (`border-radius: 2px`).
+- **Default corner style:** 2px radius (`border-radius: 2px`) — all panels, data containers, feature rows.
+- **CTA outer card:** 12px radius (`border-radius: 12px`) — used once on the final CTA section.
 - **Background:** `var(--color-surface)` at rest (`tone="default"`); `var(--color-surface-alt)` for elevated or nested containers (`tone="muted"`).
 - **Shadow Strategy:** None at rest. Hover applies the amber reveal compound shadow (see Elevation).
 - **Border:** `1px solid var(--color-line)` at rest; on hover shifts toward `rgba(201,168,76,0.3)`.
@@ -258,8 +315,19 @@ Sharp, dense, authoritative. Padding is generous at large sizes; the lg variant 
 - **Dark mode:** Transitions to `rgba(13,12,10,0.92)` on scroll.
 - **Links:** Instrument Sans, text-sm, `text-ink-secondary` by default. On hover: `text-ink`. Active state: `text-primary`.
 - **Underline treatment:** `.nav-link-underline` — a 1px amber underline grows from `width: 0` to `width: 100%` on hover via `cubic-bezier(0.22, 1, 0.36, 1)`. No thick stripe; hairline only.
-- **Primary CTA button:** `xs` size, primary variant. Always visible. Right-aligned in the nav bar.
+- **Primary CTA button:** `xs` size, primary variant, `rounded-[2px]`. Always visible. Right-aligned in the nav bar.
 - **Mobile:** Slide-in drawer, full-height.
+
+### Hero Demo Panel
+
+The hero right column contains an animated sprint PR dashboard panel. Key styling rules:
+- Outer panel: `border-radius: 2px`, `border: 1px solid var(--color-line)`, `bg-surface`
+- Panel header: `bg-surface-alt/70`, `border-bottom`
+- PR rows: slide in with `rowSlideIn` keyframe (translateX -8px → 0, opacity 0 → 1)
+- Status states: queued (muted), running (warning amber + spinner), deployed (success green)
+- Slack panel: slides in from below via `max-height` animation (0 → 420px); styled to match Slack's channel/message layout in miniature
+- All animations respect `prefers-reduced-motion: reduce` — reduced motion immediately shows the final "all deployed" state
+- Loop cycle: ~20 seconds (reset at 19665ms)
 
 ### Code Blocks / Terminal Elements
 - **Font:** JetBrains Mono.
@@ -271,6 +339,7 @@ Sharp, dense, authoritative. Padding is generous at large sizes; the lg variant 
 - **Shape:** 1px radius (`border-radius: 1px`). Even sharper than card corners.
 - **Style:** Background is the signal color at 7–12% opacity; border is the signal color at 15–25% opacity; text is the signal color at 70–100% opacity.
 - **Font:** JetBrains Mono, `text-[8px]` to `text-[10px]`, tracking `wider`, uppercase.
+- **"Coming soon" badges:** amber border at 25% opacity, amber text, 4px radius — slightly softer to signal roadmap rather than live status.
 
 ### Spotlight Card
 The `.spotlight-card` variant tracks the cursor: a 300×300px radial gradient (amber at 8% → 3% → transparent) follows `--spotlight-x` / `--spotlight-y` custom properties set by JS on `mousemove`. In dark mode the glow lifts to 12% → 5%. The effect is subtle: it adds life without competing with the content. It is used on high-signal feature cards where engagement matters.
@@ -280,6 +349,11 @@ List rows used in feature/product capability sections. At rest: no shadow, `bord
 
 ### Motion Vocabulary
 All keyframes respect `prefers-reduced-motion: reduce` (transitions and animations collapsed to `0.01ms`). Easing is `cubic-bezier(0.22, 1, 0.36, 1)` throughout. Named animations:
+- `spinRing`: 360° rotation on the PR row spinner (`0.9s linear infinite`). Running state indicator.
+- `cursorBlink`: opacity 1 → 0 → 1 (`0.7s step-end infinite`). Text cursor in hero release name input.
+- `rowSlideIn`: translateX -8px → 0, opacity 0 → 1 (`0.32s`). PR rows appearing in the hero demo panel.
+- `btnPress`: scale 1 → 0.93 → 1 (`0.35s`). Simulated button click on the "Looks good →" button in the demo.
+- `msgFadeUp`: translateY 10px → 0, opacity 0 → 1 (`0.45s`). Slack message appearance in the hero demo.
 - `slideInLog`: log entries slide up 8px and fade in (`0.3s`). Used in event log rows.
 - `scan-line`: horizontal scan from `-100%` to `100%` (`translateX`). Used on instrument panel gold overlay.
 - `gold-shimmer`: background-position sweep `-200% → 200%`. Used on `.gold-shimmer` hero motif only.
@@ -287,30 +361,36 @@ All keyframes respect `prefers-reduced-motion: reduce` (transitions and animatio
 - `mobile-nav-in`: translateY `-8px → 0` + opacity `0 → 1` (`0.25s`). Mobile nav panel entrance.
 - `success-reveal`: translateY `10px → 0` + opacity (`0.5s`). CTA success state.
 - `drawEdge`: SVG stroke-dashoffset release. Release graph edge animation.
-The `.TrafficSplitVisual` pattern is the system's signature: a terminal-style panel with a header bar, mono labels, animated progress bars, real-time event log, and gold scan-line overlay. It demonstrates the product by being an instance of the product's vocabulary. Key rules: header bar uses `bg-surface-alt/60`; all labels are JetBrains Mono; signal colors are used directly as `color` and `backgroundColor` at low opacity; the corner radius is `2px` on the outer panel, `1px` on internal elements, `0.5px` on micro-indicators.
 
-## 6. Do's and Don'ts
+The `.TrafficSplitVisual` pattern is the system's signature: a terminal-style panel with a header bar, mono labels, animated progress bars, real-time event log, and gold scan-line overlay. Key rules: header bar uses `bg-surface-alt/60`; all labels are JetBrains Mono; signal colors are used directly as `color` and `backgroundColor` at low opacity; the corner radius is `2px` on the outer panel, `1px` on internal elements, `0.5px` on micro-indicators.
+
+## 7. Do's and Don'ts
 
 ### Do:
-- **Do** use `border-radius: 2px` on every interactive surface. No exceptions. A soft corner is a brand violation.
+- **Do** use `border-radius: 2px` on all panels, data containers, capability rows, and product-layer UI. This is the default.
+- **Do** use `border-radius: 8px` (`rounded-[8px]`) on primary and outline CTA buttons. This is the conversion signal.
+- **Do** use `border-radius: 12px` exclusively on the CTA section outer card. Nowhere else.
 - **Do** set amber (`var(--color-primary)`) only for operationally significant UI: the primary CTA, active states, hover rings, status highlights, and blueprint motifs. Never as fill color on a card at rest.
 - **Do** use JetBrains Mono strictly for machine-originated content: version strings, deployment statuses, event log lines, CLI commands, timestamps. Human-authored prose and labels use Instrument Sans.
 - **Do** keep body copy to 65–75ch max line length. Dense content at wide line lengths is an SRE's enemy.
 - **Do** apply `prefers-reduced-motion` media query to every animation. All keyframes must respect it.
 - **Do** use the surface color step (surface → surface-alt) to create depth. Elevation is tonal, not shadowed, at rest.
-- **Do** write copy in the voice of the best engineer in the room: specific, direct, no superlatives. "Instant rollback in under 30 seconds" beats "ship with confidence."
+- **Do** write copy in the voice of the best engineer in the room: specific, direct, no superlatives. Name the real friction: the GitHub tabs, the Jenkins job, the Slack approval chain.
 - **Do** keep the amber scan-line, blueprint grid, and corner-accent motifs as sparse structural signals. One per section maximum.
 
 ### Don't:
-- **Don't** use soft corners (≥4px radius). The system is `border-radius: 2px` everywhere. Rounded cards, pill badges, and soft inputs are prohibited.
+- **Don't** use `rounded-[12px]` on anything other than the CTA section outer card. It breaks the technical precision register.
+- **Don't** use soft corners (≥4px radius) on panels, data containers, or product-layer cards. Sharp is the default; softness is a purposeful conversion signal, not a general aesthetic choice.
+- **Don't** apply `rounded-[8px]` to the nav bar CTA — that stays at `rounded-[2px]` to remain within the product chrome register.
 - **Don't** use `#000` or `#fff`. Every extreme neutral must be tinted. Pure black on pure white reads as generic; it erases the system's material character.
 - **Don't** use amber as a decorative color: no amber card fills, no amber section backgrounds, no amber heading text (outside the single `.gold-shimmer` hero motif). Its rarity is the point.
 - **Don't** use glassmorphism. The `.cap-modal-backdrop` uses `backdrop-filter: blur(4px)` as a focus-lock, not a glass aesthetic. No other element uses blur. This is not a glass-card system.
-- **Don't** replicate the SaaS cream + purple aesthetic (Notion/Linear/Loom). No soft pastels, no friendly rounded corners, no "everyone-welcome" copy. DeployTitan is infrastructure, not a productivity tool.
+- **Don't** replicate the SaaS cream + purple aesthetic (Notion/Linear/Loom). No soft pastels, no friendly rounded corners everywhere, no "everyone-welcome" copy. DeployTitan is infrastructure, not a productivity tool.
 - **Don't** replicate the dark neon DevOps aesthetic: terminal-green on black, aggressive gradients, glow effects. DeployTitan is enterprise-capable, not scrappy.
 - **Don't** replicate enterprise boring: navy blue dashboards, bullet-list feature pages, stock photo heroes, corporate sans-serif in grey.
 - **Don't** use gradient text (`background-clip: text` with a multi-color gradient) on any element except the designated `.gold-shimmer` hero motif, and use that motif once per page maximum.
-- **Don't** use `border-left` or `border-right` wider than 1px as a colored stripe on cards, list items, or alerts. Use full borders, background tints, or signal colors on the status dot instead.
+- **Don't** use `border-left` or `border-right` wider than 1px as a colored stripe on cards, list items, or alerts. Use full borders, background tints, or signal colors on the status dot instead. (Exception: Slack-style message attachment blocks use a 2px `border-left` — this is intentional to match the Slack visual pattern.)
 - **Don't** build identical card grids (same-sized cards, icon + heading + text, repeated). Use row-based layouts, data tables, or varied hierarchy within sections.
-- **Don't** animate layout properties (height, width, padding, margin). Animate opacity and transform only.
+- **Don't** animate layout properties (height, width, padding, margin). Animate opacity and transform only. (Exception: `max-height` is used for the Slack panel slide-in in the hero — this is a deliberate affordance for the panel reveal animation.)
 - **Don't** use bounce or elastic easing. All easing is `cubic-bezier(0.22, 1, 0.36, 1)` (ease-out-quart equivalent) or `ease-out`. Nothing overshoots.
+- **Don't** write copy that abstracts the pain. "Release coordination is hard" is not copy. "Eight PRs across four repos and one engineer has a dozen GitHub tabs open" is copy.

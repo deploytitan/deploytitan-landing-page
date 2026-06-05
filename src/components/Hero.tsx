@@ -8,7 +8,7 @@ import { Container } from './shared/Container'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type PRStatus = 'pending' | 'running' | 'deployed' | 'failed'
+type PRStatus = 'queued' | 'running' | 'deployed'
 
 interface PRDef {
   id: string
@@ -17,157 +17,213 @@ interface PRDef {
   trigger: 'ci' | 'jenkins'
 }
 
-// ─── Static PR data ───────────────────────────────────────────────────────────
+// ─── Static data ──────────────────────────────────────────────────────────────
 
 const PRS: PRDef[] = [
   { id: 'auth', service: 'auth-service', prTitle: 'fix: session timeout', trigger: 'ci' },
   { id: 'api', service: 'api-gateway', prTitle: 'feat: rate limits', trigger: 'ci' },
   { id: 'web', service: 'web-app', prTitle: 'chore: bump deps', trigger: 'ci' },
-  {
-    id: 'payments',
-    service: 'payments-svc',
-    prTitle: 'fix: checkout edge case',
-    trigger: 'jenkins',
-  },
+  { id: 'payments', service: 'payments-svc', prTitle: 'fix: checkout', trigger: 'jenkins' },
   { id: 'analytics', service: 'analytics', prTitle: 'feat: event tracking', trigger: 'ci' },
   { id: 'notifs', service: 'notifications', prTitle: 'fix: email template', trigger: 'ci' },
 ]
 
-// ─── Animation script ─────────────────────────────────────────────────────────
+const RELEASE_NAME = 'sprint-22'
+const CYCLE_MS = 24000
 
-type ScriptEvent = { t: number; id: string; status: PRStatus }
+// ─── Timing ───────────────────────────────────────────────────────────────────
+//
+// 500ms   → start typing (85ms/char × 9 chars = 765ms total)
+// 1765ms  → PRs appear staggered (220ms apart)
+// 3365ms  → "ready" state — button becomes active
+// 4865ms  → button click animation
+// 5365ms  → Slack panel slides in
+// 7165ms  → Slack approved
+// 7865ms  → deployments begin
+// 15165ms → last PR deployed
+// 15665ms → release note appears
+// 19665ms → reset and loop
 
-const SCRIPT: ScriptEvent[] = [
-  // Deployments start after stakeholder approves from Slack (~t=4600)
-  // Gap of 2800ms between Slack appearing (t=1800) and first PR running (t=4600)
-  // gives viewers time to read the approval request before things start moving
-  { t: 4600, id: 'auth', status: 'running' },
-  { t: 6100, id: 'auth', status: 'deployed' },
-  { t: 6400, id: 'api', status: 'running' },
-  { t: 7700, id: 'api', status: 'deployed' },
-  { t: 8000, id: 'web', status: 'running' },
-  { t: 9000, id: 'web', status: 'deployed' },
-  { t: 9300, id: 'payments', status: 'running' },
-  { t: 9600, id: 'analytics', status: 'running' },
-  { t: 11100, id: 'payments', status: 'deployed' },
-  { t: 11900, id: 'analytics', status: 'deployed' },
-  { t: 12300, id: 'notifs', status: 'running' },
-  { t: 14000, id: 'notifs', status: 'deployed' },
+const TYPING_START = 500
+const CHAR_MS = 85
+const TYPING_END = TYPING_START + RELEASE_NAME.length * CHAR_MS // 1265
+const PR_BASE = TYPING_END + 500 // 1765
+const PR_STAGGER = 220
+const READY_AT = PR_BASE + 5 * PR_STAGGER + 500 // 3365
+const CLICK_AT = READY_AT + 1500 // 4865
+const SLACK_AT = CLICK_AT + 500 // 5365
+const APPROVE_AT = SLACK_AT + 1800 // 7165
+const DEPLOY_AT = APPROVE_AT + 700 // 7865
+
+const DEPLOY_SEQ = [
+  { id: 'auth', runAt: 200, doneAt: 1600 },
+  { id: 'api', runAt: 1700, doneAt: 3000 },
+  { id: 'web', runAt: 3100, doneAt: 4100 },
+  { id: 'payments', runAt: 4200, doneAt: 5700 },
+  { id: 'analytics', runAt: 4300, doneAt: 5800 },
+  { id: 'notifs', runAt: 5900, doneAt: 7300 },
 ]
 
-const CYCLE_DURATION = 20000
+const ALL_DONE_AT = DEPLOY_AT + 7300 + 500 // 15665
+const RESET_AT = ALL_DONE_AT + 4000 // 19665
 
-// ─── Status config ────────────────────────────────────────────────────────────
+// ─── Initial state ────────────────────────────────────────────────────────────
 
-const STATUS_CONFIG: Record<
-  PRStatus,
-  {
-    label: string
-    textClass: string
-    bgClass: string
-  }
-> = {
-  pending: {
-    label: 'Pending',
-    textClass: 'text-ink-tertiary',
-    bgClass: '',
-  },
-  running: {
-    label: 'Running',
-    textClass: 'text-signal-warning-text dark:text-signal-warning',
-    bgClass: 'bg-signal-warning/[0.025]',
-  },
-  deployed: {
-    label: 'Deployed',
-    textClass: 'text-signal-success-text dark:text-signal-success',
-    bgClass: '',
-  },
-  failed: {
-    label: 'Failed',
-    textClass: 'text-signal-danger-text dark:text-signal-danger',
-    bgClass: 'bg-signal-danger/[0.03]',
-  },
-}
+const INIT_STATUSES: Record<string, PRStatus> = Object.fromEntries(
+  PRS.map((p) => [p.id, 'queued' as PRStatus]),
+)
 
-// ─── Inline CSS ───────────────────────────────────────────────────────────────
+// ─── CSS ──────────────────────────────────────────────────────────────────────
 
 const EXTRA_CSS = `
-  @keyframes dotBlink {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%       { opacity: 0.25; transform: scale(1.8); }
-  }
   @keyframes spinRing {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
   }
-  @keyframes rowReveal {
-    from { opacity: 0; transform: translateY(4px); }
+  @keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+  @keyframes rowSlideIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes btnPress {
+    0%, 100% { transform: scale(1); }
+    45%      { transform: scale(0.93); }
+  }
+  @keyframes msgFadeUp {
+    from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
   @media (prefers-reduced-motion: reduce) {
-    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   }
 `
 
-// ─── Spinning indicator ───────────────────────────────────────────────────────
+// ─── Spinner ──────────────────────────────────────────────────────────────────
 
-function DeployingSpinner() {
+function Spinner() {
   return (
     <span
-      className="border-signal-warning inline-block h-2 w-2 border border-t-transparent"
       style={{
-        borderRadius: '50%',
-        animation: 'spinRing 0.9s linear infinite',
-        verticalAlign: 'middle',
+        display: 'inline-block',
         flexShrink: 0,
+        width: 8,
+        height: 8,
+        borderRadius: '50%',
+        border: '1px solid var(--color-signal-warning)',
+        borderTopColor: 'transparent',
+        animation: 'spinRing 0.9s linear infinite',
       }}
     />
   )
 }
 
-// ─── Single PR row ────────────────────────────────────────────────────────────
+// ─── PR row ───────────────────────────────────────────────────────────────────
 
-function PRRow({ pr, status, index }: { pr: PRDef; status: PRStatus; index: number }) {
-  const cfg = STATUS_CONFIG[status]
-  const isFirst = index === 0
+const PR_CFG: Record<PRStatus, { label: string; text: string; dot: string; bg: string }> = {
+  queued: {
+    label: 'Queued',
+    text: 'var(--color-ink-tertiary)',
+    dot: 'var(--color-ink-quaternary)',
+    bg: 'transparent',
+  },
+  running: {
+    label: 'Running',
+    text: 'var(--color-signal-warning-text)',
+    dot: 'var(--color-signal-warning)',
+    bg: 'rgba(234,179,8,0.025)',
+  },
+  deployed: {
+    label: 'Live',
+    text: 'var(--color-signal-success-text)',
+    dot: 'var(--color-signal-success)',
+    bg: 'transparent',
+  },
+}
 
+function PRRow({ pr, status, visible }: { pr: PRDef; status: PRStatus; visible: boolean }) {
+  const c = PR_CFG[status]
   return (
     <div
-      className={`border-line grid items-center gap-3 border-b px-4 py-3 transition-colors duration-500 last:border-b-0 ${cfg.bgClass}`}
+      className="border-line border-b last:border-b-0"
       style={{
+        display: 'grid',
         gridTemplateColumns: '1fr auto',
-        opacity: status !== 'pending' || isFirst ? 1 : 0.55,
+        alignItems: 'center',
+        gap: 12,
+        padding: '9px 16px',
+        backgroundColor: c.bg,
+        transition: 'background-color 0.4s',
+        opacity: visible ? 1 : 0,
+        animation: visible ? 'rowSlideIn 0.32s cubic-bezier(0.22,1,0.36,1) forwards' : 'none',
       }}
     >
-      {/* Service + PR title */}
-      <div className="min-w-0">
-        <p className="text-ink-tertiary truncate font-mono text-[9px] tracking-[0.1em] uppercase">
+      <div style={{ minWidth: 0 }}>
+        <p
+          style={{
+            fontFamily: 'monospace',
+            fontSize: 9,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: 'var(--color-ink-quaternary)',
+            marginBottom: 2,
+          }}
+        >
           {pr.service}
         </p>
-        <p className="text-ink-secondary mt-0.5 truncate text-[11px] leading-tight">{pr.prTitle}</p>
+        <p
+          style={{
+            fontSize: 11,
+            lineHeight: 1.3,
+            color: 'var(--color-ink-secondary)',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {pr.prTitle}
+        </p>
       </div>
-
-      {/* Trigger label + status */}
-      <div className="flex shrink-0 items-center gap-2.5">
-        <span className="text-ink-quaternary font-mono text-[8px] tracking-[0.08em]">
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+        <span
+          style={{
+            fontFamily: 'monospace',
+            fontSize: 8,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            color: 'var(--color-ink-quaternary)',
+          }}
+        >
           {pr.trigger === 'jenkins' ? 'Jenkins' : 'CI'}
         </span>
-        <div className={`flex items-center gap-1.5`}>
-          {status === 'running' && <DeployingSpinner />}
-          {status === 'deployed' && (
-            <span className="bg-signal-success h-1.5 w-1.5" style={{ borderRadius: '50%' }} />
-          )}
-          {status === 'failed' && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          {status === 'running' ? (
+            <Spinner />
+          ) : (
             <span
-              className="bg-signal-danger h-1.5 w-1.5"
-              style={{ borderRadius: '50%', animation: 'dotBlink 1.8s ease-in-out infinite' }}
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                backgroundColor: c.dot,
+                flexShrink: 0,
+                transition: 'background-color 0.4s',
+              }}
             />
           )}
-          {status === 'pending' && (
-            <span className="bg-ink-quaternary/30 h-1.5 w-1.5" style={{ borderRadius: '50%' }} />
-          )}
-          <span className={`font-mono text-[8.5px] tracking-[0.08em] uppercase ${cfg.textClass}`}>
-            {cfg.label}
+          <span
+            style={{
+              fontFamily: 'monospace',
+              fontSize: 8,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: c.text,
+              transition: 'color 0.4s',
+            }}
+          >
+            {c.label}
           </span>
         </div>
       </div>
@@ -175,155 +231,442 @@ function PRRow({ pr, status, index }: { pr: PRDef; status: PRStatus; index: numb
   )
 }
 
-// ─── Slack notification ───────────────────────────────────────────────────────
+// ─── Slack panel ──────────────────────────────────────────────────────────────
 
-function SlackNotification({ visible, approved }: { visible: boolean; approved: boolean }) {
+function SlackPanel({
+  visible,
+  approved,
+  releaseNote,
+}: {
+  visible: boolean
+  approved: boolean
+  releaseNote: boolean
+}) {
   return (
     <div
-      className="border-primary/20 bg-primary/[0.025] border p-3.5"
       style={{
-        borderRadius: '12px',
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(8px)',
-        transition:
-          'opacity 0.45s cubic-bezier(0.22,1,0.36,1), transform 0.45s cubic-bezier(0.22,1,0.36,1)',
-        pointerEvents: visible ? 'auto' : 'none',
+        overflow: 'hidden',
+        maxHeight: visible ? '420px' : '0px',
+        transition: 'max-height 0.55s cubic-bezier(0.22,1,0.36,1)',
       }}
-      aria-hidden={!visible}
     >
-      <div className="flex items-start gap-3">
+      {/* Channel strip */}
+      <div
+        className="border-line bg-surface-alt/50"
+        style={{
+          borderTop: '1px solid var(--color-line)',
+          padding: '6px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: 'monospace',
+            fontSize: 10,
+            color: 'var(--color-ink-quaternary)',
+            fontWeight: 600,
+          }}
+        >
+          #
+        </span>
+        <span
+          style={{
+            fontFamily: 'monospace',
+            fontSize: 9,
+            color: 'var(--color-ink-tertiary)',
+            letterSpacing: '0.06em',
+          }}
+        >
+          releases
+        </span>
+        <span
+          style={{
+            marginLeft: 'auto',
+            fontFamily: 'monospace',
+            fontSize: 8,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'var(--color-ink-quaternary)',
+          }}
+        >
+          Slack
+        </span>
+      </div>
+
+      {/* Approval request */}
+      {visible && (
         <div
-          className={`mt-0.5 w-0.5 shrink-0 self-stretch transition-colors duration-500 ${approved ? 'bg-signal-success' : 'bg-primary'}`}
-          style={{ borderRadius: '2px', minHeight: '56px' }}
-        />
-        <div className="min-w-0 flex-1">
-          <div className="mb-1.5 flex items-center gap-2">
+          style={{
+            padding: '10px 14px 12px',
+            display: 'flex',
+            gap: 10,
+            alignItems: 'flex-start',
+            animation: 'msgFadeUp 0.45s cubic-bezier(0.22,1,0.36,1) forwards',
+          }}
+        >
+          {/* Bot avatar */}
+          <div
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: 4,
+              flexShrink: 0,
+              backgroundColor: 'rgba(201,168,76,0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <span
-              className="bg-primary/15 text-primary-accessible px-1.5 py-0.5 font-mono text-[9px] tracking-[0.1em]"
-              style={{ borderRadius: '4px' }}
+              style={{
+                fontFamily: 'monospace',
+                fontSize: 8.5,
+                fontWeight: 700,
+                color: 'var(--color-primary-accessible)',
+              }}
             >
-              DeployTitan
+              DT
             </span>
-            <span className="text-ink-quaternary font-mono text-[8px]">just now</span>
           </div>
-          <p className="text-ink font-mono text-[10.5px] leading-snug font-medium">
-            {approved
-              ? 'Sprint 22 approved — deploying now'
-              : 'Sprint 22 is ready for your approval'}
-          </p>
-          <p className="text-ink-tertiary mt-0.5 font-mono text-[9px] transition-all duration-500">
-            {approved
-              ? '6 PRs deploying · triggered by Slack approval'
-              : '6 PRs queued · 3 services · 1-click to deploy'}
-          </p>
-          <div className="mt-2.5 flex items-center gap-2">
-            {approved ? (
+
+          {/* Message body */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
               <span
-                className="cursor-default border px-2 py-1 font-mono text-[9px]"
                 style={{
-                  borderRadius: '4px',
-                  borderColor: 'var(--color-signal-success)',
-                  backgroundColor: 'rgba(34,197,94,0.08)',
-                  color: 'var(--color-signal-success-text, #16a34a)',
+                  fontFamily: 'monospace',
+                  fontSize: 10,
+                  fontWeight: 600,
+                  color: 'var(--color-ink)',
                 }}
               >
-                ✓ Approved
+                DeployTitan
               </span>
-            ) : (
-              <>
-                <span
-                  className="border-primary/30 bg-primary/10 text-primary-accessible cursor-default border px-2 py-1 font-mono text-[9px]"
-                  style={{ borderRadius: '4px' }}
+              <span
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 7,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: 'var(--color-ink-quaternary)',
+                  border: '1px solid var(--color-line)',
+                  padding: '1px 4px',
+                  borderRadius: 2,
+                }}
+              >
+                APP
+              </span>
+              <span
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 8,
+                  color: 'var(--color-ink-quaternary)',
+                }}
+              >
+                just now
+              </span>
+            </div>
+
+            {/* Attachment block */}
+            <div
+              style={{
+                borderLeft: `2px solid ${approved ? 'var(--color-signal-success)' : 'var(--color-primary)'}`,
+                paddingLeft: 10,
+                transition: 'border-color 0.5s',
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 10.5,
+                  fontWeight: 500,
+                  color: 'var(--color-ink)',
+                  lineHeight: 1.4,
+                  marginBottom: 3,
+                }}
+              >
+                sprint-22 is ready for your approval
+              </p>
+              <p
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 9,
+                  color: 'var(--color-ink-tertiary)',
+                  marginBottom: 8,
+                }}
+              >
+                6 PRs queued · auth · api · web · payments · analytics · notifs
+              </p>
+
+              {/* Action buttons */}
+              <div style={{ display: 'flex', gap: 6 }}>
+                {approved ? (
+                  <span
+                    style={{
+                      fontFamily: 'monospace',
+                      fontSize: 8.5,
+                      padding: '3px 9px',
+                      borderRadius: 3,
+                      border: '1px solid var(--color-signal-success)',
+                      backgroundColor: 'rgba(34,197,94,0.1)',
+                      color: 'var(--color-signal-success-text)',
+                    }}
+                  >
+                    ✓ Approved
+                  </span>
+                ) : (
+                  <>
+                    <span
+                      style={{
+                        fontFamily: 'monospace',
+                        fontSize: 8.5,
+                        padding: '3px 9px',
+                        borderRadius: 3,
+                        border: '1px solid rgba(201,168,76,0.35)',
+                        backgroundColor: 'rgba(201,168,76,0.1)',
+                        color: 'var(--color-primary-accessible)',
+                        cursor: 'default',
+                      }}
+                    >
+                      ✓ Approve release
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'monospace',
+                        fontSize: 8.5,
+                        padding: '3px 9px',
+                        borderRadius: 3,
+                        border: '1px solid var(--color-line)',
+                        color: 'var(--color-ink-tertiary)',
+                        cursor: 'default',
+                      }}
+                    >
+                      Hold
+                    </span>
+                  </>
+                )}
+              </div>
+
+              {approved && (
+                <p
+                  style={{
+                    fontFamily: 'monospace',
+                    fontSize: 8,
+                    color: 'var(--color-ink-quaternary)',
+                    marginTop: 5,
+                  }}
                 >
-                  ✓ Approve release
-                </span>
-                <span
-                  className="border-line bg-surface text-ink-tertiary cursor-default border px-2 py-1 font-mono text-[9px]"
-                  style={{ borderRadius: '4px' }}
-                >
-                  View details →
-                </span>
-              </>
-            )}
+                  Approved via Slack · deployments triggered
+                </p>
+              )}
+            </div>
           </div>
-          <p className="text-ink-quaternary mt-2 font-mono text-[8px]">
-            {approved
-              ? 'Impact report posts in ~15 min'
-              : 'Stakeholders notified · approve without leaving Slack'}
-          </p>
         </div>
-      </div>
+      )}
+
+      {/* Release note */}
+      {releaseNote && (
+        <div
+          style={{
+            padding: '10px 14px 12px',
+            borderTop: '1px solid var(--color-line)',
+            display: 'flex',
+            gap: 10,
+            alignItems: 'flex-start',
+            animation: 'msgFadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards',
+          }}
+        >
+          <div
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: 4,
+              flexShrink: 0,
+              backgroundColor: 'rgba(34,197,94,0.13)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <span style={{ fontSize: 13, color: 'var(--color-signal-success)' }}>✓</span>
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
+              <span
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 10,
+                  fontWeight: 600,
+                  color: 'var(--color-ink)',
+                }}
+              >
+                DeployTitan
+              </span>
+              <span
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 7,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: 'var(--color-ink-quaternary)',
+                  border: '1px solid var(--color-line)',
+                  padding: '1px 4px',
+                  borderRadius: 2,
+                }}
+              >
+                APP
+              </span>
+            </div>
+            <div
+              style={{
+                borderLeft: '2px solid var(--color-signal-success)',
+                paddingLeft: 10,
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 10.5,
+                  fontWeight: 500,
+                  lineHeight: 1.4,
+                  marginBottom: 3,
+                  color: 'var(--color-signal-success-text)',
+                }}
+              >
+                sprint-22 shipped successfully
+              </p>
+              <p
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 9,
+                  color: 'var(--color-ink-tertiary)',
+                  marginBottom: 3,
+                }}
+              >
+                6/6 services live · all health checks passing
+              </p>
+              <p
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 8,
+                  color: 'var(--color-ink-quaternary)',
+                }}
+              >
+                auth · api · web · payments · analytics · notifs
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
-const INITIAL_STATES: Record<string, PRStatus> = Object.fromEntries(
-  PRS.map((pr) => [pr.id, 'pending' as PRStatus]),
-)
-
 export function Hero() {
   const ref = useScrollReveal()
 
-  const [prStates, setPRStates] = useState<Record<string, PRStatus>>(INITIAL_STATES)
+  const [typedChars, setTypedChars] = useState(0)
+  const [visibleCount, setVisibleCount] = useState(0)
+  const [isReady, setIsReady] = useState(false)
+  const [isClicking, setIsClicking] = useState(false)
   const [showSlack, setShowSlack] = useState(false)
+  const [slackApproved, setSlackApproved] = useState(false)
+  const [prStates, setPRStates] = useState<Record<string, PRStatus>>({ ...INIT_STATUSES })
+  const [showReleaseNote, setShowReleaseNote] = useState(false)
 
-  // Derive overall panel status
-  const hasFailed = Object.values(prStates).some((s) => s === 'failed')
   const hasRunning = Object.values(prStates).some((s) => s === 'running')
   const allDeployed = PRS.every((p) => prStates[p.id] === 'deployed')
-  const awaitingApproval = showSlack && !hasRunning && !allDeployed
-  const headerStatus = hasFailed
-    ? 'failed'
-    : allDeployed
-      ? 'deployed'
-      : hasRunning
-        ? 'deploying'
-        : awaitingApproval
+
+  const headerStatus = allDeployed
+    ? 'deployed'
+    : hasRunning
+      ? 'deploying'
+      : slackApproved
+        ? 'approved'
+        : showSlack
           ? 'awaiting'
-          : 'pending'
+          : isReady
+            ? 'ready'
+            : 'pending'
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (prefersReduced) {
-      // Show approval request first, all PRs deployed
+      setTypedChars(RELEASE_NAME.length)
+      setVisibleCount(PRS.length)
+      setIsReady(true)
       setShowSlack(true)
-      setPRStates(Object.fromEntries(PRS.map((pr) => [pr.id, 'deployed' as PRStatus])))
+      setSlackApproved(true)
+      setPRStates(Object.fromEntries(PRS.map((p) => [p.id, 'deployed' as PRStatus])))
+      setShowReleaseNote(true)
       return
     }
 
     const timers: ReturnType<typeof setTimeout>[] = []
 
     const reset = () => {
-      setPRStates({ ...INITIAL_STATES })
+      setTypedChars(0)
+      setVisibleCount(0)
+      setIsReady(false)
+      setIsClicking(false)
       setShowSlack(false)
+      setSlackApproved(false)
+      setPRStates({ ...INIT_STATUSES })
+      setShowReleaseNote(false)
     }
 
-    const runCycle = () => {
+    const run = () => {
       reset()
 
-      for (const event of SCRIPT) {
-        const t = setTimeout(() => {
-          setPRStates((prev) => ({ ...prev, [event.id]: event.status }))
-        }, event.t)
-        timers.push(t)
+      // Typing animation
+      for (let i = 1; i <= RELEASE_NAME.length; i++) {
+        timers.push(setTimeout(() => setTypedChars(i), TYPING_START + i * CHAR_MS))
       }
 
-      // Show Slack approval request before deployments start
-      const slackT = setTimeout(() => setShowSlack(true), 1800)
-      timers.push(slackT)
+      // PRs appear staggered
+      for (let i = 0; i < PRS.length; i++) {
+        timers.push(setTimeout(() => setVisibleCount(i + 1), PR_BASE + i * PR_STAGGER))
+      }
 
-      const loopT = setTimeout(runCycle, CYCLE_DURATION)
-      timers.push(loopT)
+      timers.push(setTimeout(() => setIsReady(true), READY_AT))
+
+      // Button click
+      timers.push(setTimeout(() => setIsClicking(true), CLICK_AT))
+      timers.push(setTimeout(() => setIsClicking(false), CLICK_AT + 350))
+
+      // Slack flow
+      timers.push(setTimeout(() => setShowSlack(true), SLACK_AT))
+      timers.push(setTimeout(() => setSlackApproved(true), APPROVE_AT))
+
+      // Deploy sequence
+      for (const { id, runAt, doneAt } of DEPLOY_SEQ) {
+        timers.push(
+          setTimeout(() => setPRStates((prev) => ({ ...prev, [id]: 'running' })), DEPLOY_AT + runAt),
+        )
+        timers.push(
+          setTimeout(
+            () => setPRStates((prev) => ({ ...prev, [id]: 'deployed' })),
+            DEPLOY_AT + doneAt,
+          ),
+        )
+      }
+
+      timers.push(setTimeout(() => setShowReleaseNote(true), ALL_DONE_AT))
+      timers.push(setTimeout(run, RESET_AT))
     }
 
-    const init = setTimeout(runCycle, 600)
-    timers.push(init)
+    timers.push(setTimeout(run, 400))
 
     return () => timers.forEach(clearTimeout)
   }, [])
+
+  const displayName = RELEASE_NAME.slice(0, typedChars)
+  const showCursor = typedChars < RELEASE_NAME.length
 
   return (
     <section
@@ -347,7 +690,7 @@ export function Hero() {
 
       <Container width="page" padding="wide" className="relative">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(480px,1.08fr)] lg:items-start lg:gap-10 xl:grid-cols-[minmax(0,0.88fr)_minmax(540px,1.12fr)]">
-          {/* Left column */}
+          {/* Left: copy */}
           <div className="flex flex-col items-start text-left lg:min-h-[580px] lg:justify-center lg:pr-4">
             <p
               data-reveal
@@ -399,7 +742,7 @@ export function Hero() {
             </p>
           </div>
 
-          {/* Right column — PR list panel */}
+          {/* Right: demo panel */}
           <div data-reveal data-reveal-delay="3">
             <div
               className="border-line bg-surface relative overflow-hidden border"
@@ -407,7 +750,7 @@ export function Hero() {
             >
               {/* Panel header */}
               <div className="border-line bg-surface-alt/70 flex items-center justify-between border-b px-5 py-3">
-                <div className="flex items-center gap-3">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <span
                     className="bg-primary/20 flex h-5 w-5 items-center justify-center"
                     style={{ borderRadius: '1px' }}
@@ -418,38 +761,39 @@ export function Hero() {
                     <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">
                       Titan Rollouts
                     </p>
-                    <p className="text-ink font-mono text-[11px]">sprint-22 / prod-window</p>
+                    {/* Release name with typing cursor */}
+                    <p
+                      className="text-ink font-mono text-[11px]"
+                      style={{ display: 'flex', alignItems: 'center', minHeight: 16 }}
+                    >
+                      {displayName || (
+                        <span style={{ color: 'var(--color-ink-quaternary)' }}>new-release</span>
+                      )}
+                      {showCursor && (
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            width: 1.5,
+                            height: 12,
+                            backgroundColor: 'var(--color-ink)',
+                            marginLeft: displayName ? 1 : 0,
+                            verticalAlign: 'middle',
+                            animation: 'cursorBlink 0.7s step-end infinite',
+                          }}
+                        />
+                      )}
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  {headerStatus === 'failed' && (
-                    <>
-                      <span
-                        className="bg-signal-danger h-1.5 w-1.5"
-                        style={{
-                          borderRadius: '50%',
-                          animation: 'dotBlink 1.8s ease-in-out infinite',
-                        }}
-                      />
-                      <p className="text-signal-danger-text dark:text-signal-danger font-mono text-[10px] tracking-[0.08em] uppercase">
-                        Failed
-                      </p>
-                    </>
-                  )}
+
+                {/* Status badge */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   {headerStatus === 'deploying' && (
                     <>
-                      <DeployingSpinner />
-                      <p className="text-signal-warning-text dark:text-signal-warning font-mono text-[10px] tracking-[0.08em] uppercase">
+                      <Spinner />
+                      <span className="text-signal-warning-text dark:text-signal-warning font-mono text-[10px] tracking-[0.08em] uppercase">
                         Deploying
-                      </p>
-                    </>
-                  )}
-                  {headerStatus === 'awaiting' && (
-                    <>
-                      <span className="bg-primary h-1.5 w-1.5" style={{ borderRadius: '50%' }} />
-                      <p className="text-primary-accessible font-mono text-[10px] tracking-[0.08em] uppercase">
-                        Awaiting approval
-                      </p>
+                      </span>
                     </>
                   )}
                   {headerStatus === 'deployed' && (
@@ -458,15 +802,37 @@ export function Hero() {
                         className="bg-signal-success h-1.5 w-1.5"
                         style={{ borderRadius: '50%' }}
                       />
-                      <p className="text-signal-success-text dark:text-signal-success font-mono text-[10px] tracking-[0.08em] uppercase">
+                      <span className="text-signal-success-text dark:text-signal-success font-mono text-[10px] tracking-[0.08em] uppercase">
                         Deployed
-                      </p>
+                      </span>
                     </>
                   )}
-                  {headerStatus === 'pending' && (
-                    <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.08em] uppercase">
-                      Pending
-                    </p>
+                  {headerStatus === 'awaiting' && (
+                    <>
+                      <span
+                        className="bg-primary h-1.5 w-1.5"
+                        style={{ borderRadius: '50%' }}
+                      />
+                      <span className="text-primary-accessible font-mono text-[10px] tracking-[0.08em] uppercase">
+                        Awaiting approval
+                      </span>
+                    </>
+                  )}
+                  {headerStatus === 'approved' && (
+                    <>
+                      <span
+                        className="bg-signal-success h-1.5 w-1.5"
+                        style={{ borderRadius: '50%' }}
+                      />
+                      <span className="text-signal-success-text dark:text-signal-success font-mono text-[10px] tracking-[0.08em] uppercase">
+                        Approved
+                      </span>
+                    </>
+                  )}
+                  {(headerStatus === 'pending' || headerStatus === 'ready') && (
+                    <span className="text-ink-tertiary font-mono text-[10px] tracking-[0.08em] uppercase">
+                      {headerStatus === 'ready' ? 'Ready' : 'Pending'}
+                    </span>
                   )}
                 </div>
               </div>
@@ -487,37 +853,65 @@ export function Hero() {
               {/* PR rows */}
               <div>
                 {PRS.map((pr, i) => (
-                  <PRRow key={pr.id} pr={pr} status={prStates[pr.id] ?? 'pending'} index={i} />
+                  <PRRow
+                    key={pr.id}
+                    pr={pr}
+                    status={prStates[pr.id] ?? 'queued'}
+                    visible={i < visibleCount}
+                  />
                 ))}
               </div>
 
-              {/* Slack notification */}
+              {/* Footer with action button */}
               <div
-                className="p-4 transition-all duration-500"
+                className="border-line bg-surface-alt/40 border-t"
                 style={{
-                  maxHeight: showSlack ? '160px' : '0px',
-                  overflow: 'hidden',
-                  padding: showSlack ? '16px' : '0px',
+                  padding: '10px 16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
                 }}
               >
-                <SlackNotification visible={showSlack} approved={hasRunning || allDeployed} />
+                <p className="text-ink-quaternary font-mono text-[9px] tracking-[0.1em] uppercase">
+                  {visibleCount} PR{visibleCount !== 1 ? 's' : ''} · 4 services
+                </p>
+
+                {/* Action button */}
+                <button
+                  disabled
+                  style={{
+                    fontFamily: 'monospace',
+                    fontSize: 9,
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    padding: '4px 10px',
+                    borderRadius: 4,
+                    border:
+                      isReady && !showSlack
+                        ? '1px solid rgba(201,168,76,0.5)'
+                        : '1px solid var(--color-line)',
+                    backgroundColor:
+                      isReady && !showSlack ? 'rgba(201,168,76,0.12)' : 'transparent',
+                    color:
+                      isReady && !showSlack
+                        ? 'var(--color-primary-accessible)'
+                        : 'var(--color-ink-quaternary)',
+                    cursor: 'default',
+                    opacity: visibleCount >= PRS.length ? 1 : 0,
+                    transition: 'opacity 0.3s, background-color 0.3s, border-color 0.3s, color 0.3s',
+                    animation: isClicking ? 'btnPress 0.35s cubic-bezier(0.22,1,0.36,1)' : 'none',
+                  }}
+                >
+                  {showSlack ? '✓ Sent to Slack' : 'Looks good →'}
+                </button>
               </div>
 
-              {/* Footer strip */}
-              <div className="border-line bg-surface-alt/40 flex items-center justify-between border-t px-4 py-2.5">
-                <p className="text-ink-quaternary font-mono text-[9px] tracking-[0.1em] uppercase">
-                  6 PRs · 3 services
-                </p>
-                <p className="text-primary-accessible font-mono text-[9px] tracking-[0.1em] uppercase">
-                  {allDeployed
-                    ? '6 deployed'
-                    : hasRunning
-                      ? 'Running...'
-                      : hasFailed
-                        ? '1 failed'
-                        : 'Queued'}
-                </p>
-              </div>
+              {/* Slack section */}
+              <SlackPanel
+                visible={showSlack}
+                approved={slackApproved}
+                releaseNote={showReleaseNote}
+              />
             </div>
           </div>
         </div>
