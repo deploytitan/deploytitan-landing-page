@@ -2,19 +2,19 @@
 
 import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
-import { Container } from './shared/Container'
 import { Button } from './shared/Button'
 
 const trustSignals = [
   {
-    label: 'No infrastructure changes required',
-    detail: 'Sits above your existing GitHub, GitLab, and CI/CD setup',
+    label: 'Works with tools you already have',
+    detail: 'GitHub, GitHub Actions, Jenkins, Grafana, Slack',
   },
   {
-    label: 'Works with tools your team already uses',
-    detail: 'GitHub, GitLab, Jira, Slack, and CI/CD integrations included',
+    label: 'No infrastructure changes',
+    detail: 'Connect in minutes, not days',
   },
 ]
+
 
 export function CTA() {
   const ref = useScrollReveal()
@@ -26,19 +26,19 @@ export function CTA() {
         aria-hidden="true"
       />
 
-      <Container className="relative">
+      <div className="relative mx-auto w-full max-w-[1560px] px-6 lg:px-10">
         <div
           className="border-line bg-surface corner-accent relative overflow-hidden border"
-          style={{ borderRadius: '2px' }}
+          style={{ borderRadius: '12px' }}
         >
           <div
             className="absolute top-0 right-0 h-3 w-3 border-t border-r opacity-30"
-            style={{ borderColor: 'var(--color-primary)' }}
+            style={{ borderColor: 'var(--color-primary)', borderRadius: '0 12px 0 0' }}
             aria-hidden="true"
           />
           <div
             className="absolute bottom-0 left-0 h-3 w-3 border-b border-l opacity-30"
-            style={{ borderColor: 'var(--color-primary)' }}
+            style={{ borderColor: 'var(--color-primary)', borderRadius: '0 0 0 12px' }}
             aria-hidden="true"
           />
 
@@ -49,7 +49,7 @@ export function CTA() {
                 className="text-ink-secondary mb-5 inline-flex items-center gap-3 font-mono text-sm"
               >
                 <span className="bg-primary/40 h-px w-8" />
-                Free trial
+                Free to start
               </span>
 
               <h2
@@ -59,7 +59,7 @@ export function CTA() {
               >
                 Try it on your
                 <br />
-                next release.
+                next sprint.
               </h2>
 
               <p
@@ -67,8 +67,7 @@ export function CTA() {
                 data-reveal-delay="2"
                 className="text-ink-secondary mb-8 max-w-sm text-base leading-relaxed"
               >
-                Create an account and set up your first release in minutes. No infrastructure
-                changes. No sales call required.
+                Create an account, connect GitHub and Slack, add your sprint PRs. You&apos;ll know if it&apos;s for you in one release.
               </p>
 
               <div data-reveal data-reveal-delay="3" className="flex max-w-sm flex-col gap-3">
@@ -80,9 +79,9 @@ export function CTA() {
                   variant="primary"
                   size="lg"
                   block
-                  className="group"
+                  className="group rounded-[8px]"
                 >
-                  Create free account
+                  Create account
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="14"
@@ -146,44 +145,34 @@ export function CTA() {
                 data-reveal-delay="4"
                 className="font-display mb-3 text-2xl leading-[1.2] font-medium tracking-[-0.02em] lg:text-3xl"
               >
-                Priced by team size,
+                Priced for teams,
                 <br />
-                not deployment count.
+                not deployments.
               </h3>
 
               <p
                 data-reveal
                 data-reveal-delay="5"
-                className="text-ink-secondary mb-8 max-w-sm text-sm leading-relaxed"
+                className="text-ink-secondary mb-8 max-w-sm text-base leading-relaxed"
               >
-                Plans scale with how many services you coordinate, not how often you ship.
+                Flat monthly rate. No per-deploy billing. No surprise charges at sprint end. Plans scale with your team size.
               </p>
 
-              <div data-reveal data-reveal-delay="6" className="max-w-sm space-y-4">
-                <div className="border-line space-y-3 border-y py-5">
-                  {[
-                    'Starter: up to 10 services, free to try',
-                    'Growth: up to 50 services, rollback workflows and integrations',
-                    'Enterprise: SSO, audit logs, and private deployment options',
-                  ].map((item) => (
-                    <div key={item} className="flex items-start gap-3">
-                      <span
-                        className="bg-primary mt-1.5 block h-2 w-2 shrink-0"
-                        style={{ borderRadius: '1px' }}
-                      />
-                      <p className="text-ink-secondary text-sm leading-6">{item}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <Button as="a" href="/pricing" variant="outline" size="lg" block>
-                  View pricing
+              <div data-reveal data-reveal-delay="6">
+                <Button
+                  as="a"
+                  href="/pricing"
+                  variant="outline"
+                  size="lg"
+                  className="rounded-[8px]"
+                >
+                  See pricing
                 </Button>
               </div>
             </div>
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   )
 }

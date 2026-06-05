@@ -1,0 +1,23 @@
+{
+  "id": "d6491a19",
+  "phase": "discard_requested",
+  "pageUrl": "/products/titan-rollout",
+  "sourceFile": null,
+  "expectedVariants": 3,
+  "arrivedVariants": 3,
+  "visibleVariant": 1,
+  "paramValues": {},
+  "pendingEventSeq": 8,
+  "pendingEvent": {
+    "type": "discard",
+    "id": "d6491a19"
+  },
+  "deliveryLease": null,
+  "checkpointRevision": 6,
+  "activeOwner": "9bef9db8",
+  "sourceMarkers": {},
+  "fallbackMode": null,
+  "annotationArtifacts": [],
+  "diagnostics": [],
+  "updatedAt": "2026-06-05T17:42:38.397Z"
+}

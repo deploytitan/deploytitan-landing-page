@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import { Inter, Instrument_Sans, JetBrains_Mono } from 'next/font/google'
+import { Instrument_Sans, Inter, JetBrains_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { SiteLayoutClient } from '@/layouts/SiteLayoutClient'
 import './globals.css'
@@ -52,7 +52,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={`${inter.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className={`${inter.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
         {/* Apply stored theme before first paint and on bfcache restore to avoid flash */}
         <script

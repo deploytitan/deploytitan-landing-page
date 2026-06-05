@@ -269,40 +269,6 @@ export default function Journey() {
         </Container>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────────────────────────────── */}
-      <section className="border-line border-b py-20">
-        <Container width="3xl" padding="default">
-          <div data-reveal className="space-y-6 text-center">
-            <h2 className="text-ink text-3xl leading-snug font-semibold">
-              Ready to deploy without the dread?
-            </h2>
-            <p className="text-ink-secondary mx-auto max-w-xl text-lg leading-relaxed">
-              Early access is open. 14-day free trial, no credit card required. Run your first
-              Lambda canary in under 5 minutes.
-            </p>
-            <div className="flex flex-col justify-center gap-4 pt-2 sm:flex-row">
-              <Button
-                as="a"
-                href="https://console.deploytitan.com/login"
-                variant="primary"
-                size="sm"
-                aria-label="Start your free trial of DeployTitan"
-              >
-                Start free trial
-              </Button>
-              <Button
-                as="a"
-                href="mailto:justine@deploytitan.com"
-                variant="outline"
-                size="sm"
-                aria-label="Email Justine, founder of DeployTitan"
-              >
-                Talk to the founder
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </section>
     </>
   )
 }

@@ -2,349 +2,357 @@
 
 import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
-import { Container } from '../../components/shared/Container'
-import { Button } from '../../components/shared/Button'
-import { ProductPageHero } from '../../components/shared/ProductPageHero'
 
-const PAIN = [
-  'Release readiness assessed in a Slack thread nobody can find later',
-  'Blocking dependencies discovered at promotion time, not before',
-  'Rollback owners unknown until the window is already open',
-]
-
-const STEPS = [
+const STORY_BEATS = [
   {
-    number: '01',
-    title: 'Group PRs into a release object',
-    body: 'Link pull requests from multiple repositories into one named release. Every service owner, platform engineer, and team lead sees the same record.',
+    time: '6:14 PM',
+    title: 'The sprint ends, then the real work starts',
+    body: 'Five PRs are ready, two more are waiting on review, and somebody opens a spreadsheet because the release still has no home.',
   },
   {
-    number: '02',
-    title: 'Build the dependency graph',
-    body: 'DeployTitan infers which service must merge before another from PR metadata and explicit blocking annotations. Merge order is computed, not guessed.',
+    time: '7:02 PM',
+    title: 'One engineer becomes the coordination layer',
+    body: 'GitHub, Jenkins, Slack, dashboards, ticket comments. The team keeps asking the same question: what is blocked now?',
   },
   {
-    number: '03',
-    title: 'Schedule freeze windows and collect approvals',
-    body: 'Production windows, sign-off requirements, and pre-promotion checklists live on the release record. Not in Slack threads. Not in someone\'s head.',
+    time: '8:19 PM',
+    title: 'A last-minute failure resets the room',
+    body: 'A workflow fails, a security update lands, and a branch needs one more push. Fifteen tabs appear because nobody trusts a single source of truth.',
   },
   {
-    number: '04',
-    title: 'Promote in sequence, with rollback owners assigned',
-    body: 'Merges happen in dependency order. Rollback owners, playbooks, and revert sequencing are attached to the release before the window opens.',
+    time: '10:47 PM',
+    title: 'Approvals happen in chat, merges happen by memory',
+    body: 'Stakeholders approve in Slack, owners merge one at a time, and someone says a deployment failed. A second huddle starts before the first one ended.',
+  },
+  {
+    time: '1:56 AM',
+    title: 'Even success comes with cleanup work',
+    body: 'QA is done, metrics look healthy, and now someone still has to write the release update, summarize what shipped, and capture follow-ups while everyone is exhausted.',
   },
 ]
 
-const CAPABILITIES = [
+const TITAN_FLOW = [
   {
-    title: 'Release objects across repositories',
-    desc: 'Link PRs from multiple repos into one named release. One record for all teams — service owners, platform engineers, leadership.',
+    title: 'Add the sprint PRs once',
+    body: 'Pull every release PR into one release object instead of copying links into chat or a spreadsheet.',
   },
   {
-    title: 'Dependency graph and merge sequencing',
-    desc: 'Which service deploys first, which waits. Computed automatically from PR metadata and explicit blocking annotations.',
+    title: 'Let Titan watch the moving parts',
+    body: 'GitHub Actions and Jenkins run, statuses update, and failures surface the moment something needs attention.',
   },
   {
-    title: 'Freeze windows and approval workflows',
-    desc: 'Production windows that close on checklist completion. Approvals attached to the release with deadline tracking and a complete audit trail.',
+    title: 'Send approvals to Slack',
+    body: 'The right people get the prompt in Slack, with enough context to approve without opening a browser.',
   },
   {
-    title: 'Rollback coordination',
-    desc: 'Owners, playbooks, and revert sequencing assigned before anything ships. Planned coordination, not improvised response.',
-  },
-]
-
-const TOOL_GAPS = [
-  {
-    tool: 'GitHub / GitLab',
-    does: 'Code review, PR status, merge checks per repository',
-    gap: 'No release object that spans multiple repos; no cross-service dependency awareness',
-  },
-  {
-    tool: 'CI/CD systems',
-    does: 'Build pipelines, test runs, deployment execution',
-    gap: 'Executes steps but does not model release readiness or cross-service promotion sequencing',
-  },
-  {
-    tool: 'Jira / Linear',
-    does: 'Issue tracking, sprint planning, project state management',
-    gap: 'Good for ticket state; not built to coordinate PR merge order and promotion sequencing across services',
+    title: 'Close with health checks and a release summary',
+    body: 'Titan checks post-deploy health in Grafana and posts the release summary back to the channel when the rollout is stable.',
   },
 ]
 
-const INTEGRATIONS = [
-  { category: 'CI / CD', tools: ['GitHub Actions', 'GitLab CI', 'CircleCI', 'Buildkite'] },
-  { category: 'Observability', tools: ['Datadog', 'Grafana', 'OpenTelemetry', 'Prometheus'] },
-  { category: 'Notifications', tools: ['Slack', 'PagerDuty', 'Opsgenie', 'Webhooks'] },
-  { category: 'Infrastructure', tools: ['Kubernetes', 'AWS ECS', 'Terraform', 'Helm'] },
+const BUY_SIGNALS = [
+  'Your release touches multiple repos or services, and someone still coordinates the whole thing by memory.',
+  'Senior engineers spend real time on status chasing, approval follow-up, and post-release admin instead of product work.',
+  'You want release coordination to fit the stack you already run, not replace it.',
 ]
+
+const CTA_CLASSES =
+  'inline-flex items-center justify-center rounded-[8px] px-5 py-3 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
 
 export default function TitanRollout() {
-  useScrollReveal()
+  const ref = useScrollReveal()
 
   return (
-    <>
-      <ProductPageHero
-        eyebrow="Titan Rollouts"
-        heading={<>Multi-service releases,<br className="hidden md:block" /> structured.</>}
-        description="Teams that release across more than one service coordinate in Slack threads, shared docs, and word-of-mouth about which service blocks which. Titan Rollouts replaces that with a structured release record."
-        ctas={[
-          { label: 'Start free trial', href: CREATE_ACCOUNT_URL, target: '_blank', rel: 'noopener noreferrer' },
-          { label: 'View pricing', href: '/pricing', variant: 'secondary' },
-        ]}
-      />
+    <div ref={ref} className="bg-surface text-ink">
+      <section className="border-line relative overflow-hidden border-b">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(212,180,84,0.1),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(96,165,250,0.06),transparent_24%)]" />
 
-      {/* The coordination gap */}
-      <section className="border-line bg-surface-alt/20 border-b py-16">
-        <Container width="4xl" padding="default" data-reveal>
-          <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase">
-            The coordination gap
-          </p>
-          <p className="text-ink mb-6 text-2xl font-medium leading-snug">
-            Coordination is not a spreadsheet problem.
-          </p>
-          <ul className="flex flex-col gap-3">
-            {PAIN.map((item) => (
-              <li key={item} className="flex items-start gap-3">
-                <span
-                  className="bg-signal-danger/60 mt-2 block h-1.5 w-1.5 shrink-0"
-                  style={{ borderRadius: '1px' }}
-                />
-                <span className="text-ink-secondary leading-relaxed">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
+        <div className="relative mx-auto grid min-h-[86vh] w-full max-w-[1560px] items-center gap-16 px-6 pt-28 pb-18 lg:grid-cols-[minmax(0,1.08fr)_minmax(420px,0.92fr)] lg:px-10 lg:pt-32 lg:pb-24">
+          <div className="flex flex-col justify-center" data-reveal>
+            <div className="text-ink-tertiary mb-8 flex items-center gap-4 font-mono text-[11px] tracking-[0.18em] uppercase">
+              <span>Titan Rollout</span>
+              <span className="bg-line block h-px w-12" />
+              <span>Release coordination</span>
+            </div>
 
-      {/* How it works */}
-      <section className="border-line border-b py-20">
-        <Container width="5xl" padding="default">
-          <div className="mb-12" data-reveal>
-            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
-              How it works
+            <h1 className="font-display text-[clamp(3.5rem,8vw,7.1rem)] leading-[0.9] font-medium tracking-[-0.065em]">
+              One place for all sprint PRs.
+            </h1>
+
+            <p className="text-ink-secondary mt-8 max-w-[39rem] text-[1.08rem] leading-8 lg:text-[1.16rem]">
+              Titan Rollout is sprint release coordination software for teams shipping across
+              multiple repos. Track every PR in one view, trigger CI and Jenkins automatically, get
+              Slack alerts and approvals, then post a Grafana-backed health summary after deploy.
             </p>
-            <h2 className="text-ink text-3xl font-medium tracking-tight">
-              From scattered PRs to a coordinated release.
-            </h2>
+
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <a
+                href={CREATE_ACCOUNT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${CTA_CLASSES} bg-ink text-surface hover:shadow-[0_0_0_1px_var(--color-primary-muted),0_2px_8px_rgba(0,0,0,0.08)]`}
+              >
+                Create account
+              </a>
+              <a
+                href="/pricing"
+                className={`${CTA_CLASSES} border-line text-ink-secondary hover:border-primary/40 hover:text-ink bg-surface border`}
+              >
+                See pricing
+              </a>
+            </div>
+
+            <p className="border-line text-ink-tertiary mt-7 max-w-[44rem] border-t pt-4 font-mono text-[10px] leading-5 tracking-[0.08em]">
+              GitHub · GitHub Actions · Jenkins · Grafana · Slack
+            </p>
+
+            <p className="text-ink-secondary mt-4 max-w-[40rem] text-sm leading-7">
+              Best for teams where release day means watching CI, chasing approvals in Slack, and
+              checking metrics by hand across multiple services.
+            </p>
           </div>
 
-          <div className="flex flex-col gap-0">
-            {STEPS.map((step, i) => (
-              <div
-                key={step.number}
-                className="relative flex gap-8 pb-10 last:pb-0"
-                data-reveal
-                data-reveal-delay={String(i)}
-              >
-                {i < STEPS.length - 1 && (
+          <div data-reveal data-reveal-delay="2" className="flex items-end">
+            <div
+              className="border-line bg-surface-alt/72 w-full border"
+              style={{ borderRadius: '12px' }}
+            >
+              <div className="border-line flex items-center justify-between border-b px-5 py-4">
+                <div>
+                  <p className="text-ink text-sm font-semibold">Friday rollout</p>
+                  <p className="text-ink-tertiary mt-1 font-mono text-[10px] tracking-[0.16em] uppercase">
+                    8 prs · 4 services · 1 release owner
+                  </p>
+                </div>
+                <p className="text-primary-accessible font-mono text-[10px] tracking-[0.18em] uppercase">
+                  Active release
+                </p>
+              </div>
+
+              <div className="px-5 py-4">
+                {[
+                  ['PR-1842', 'Payments API', 'CI running'],
+                  ['PR-1847', 'Billing UI', 'Waiting for approval'],
+                  ['PR-1851', 'Auth service', 'Security fix required'],
+                  ['PR-1855', 'Worker queue', 'Deploy blocked'],
+                ].map(([id, name, state], index) => (
                   <div
-                    className="bg-line absolute top-10 bottom-0 left-[18px] w-px"
-                    aria-hidden="true"
-                  />
-                )}
-                <div
-                  className="border-primary/30 bg-primary/5 z-10 flex h-9 w-9 shrink-0 items-center justify-center border"
-                  style={{ borderRadius: '2px' }}
-                >
-                  <span className="text-primary-accessible dark:text-primary font-mono text-[11px] font-bold">{step.number}</span>
-                </div>
-                <div className="flex-1 pt-1.5">
-                  <h3 className="text-ink mb-1.5 text-base font-semibold leading-snug">{step.title}</h3>
-                  <p className="text-ink-secondary max-w-xl text-sm leading-relaxed">{step.body}</p>
-                </div>
+                    key={id}
+                    className="border-line grid gap-3 border-b py-4 last:border-b-0 sm:grid-cols-[90px_minmax(0,1fr)_150px]"
+                  >
+                    <span className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">
+                      {id}
+                    </span>
+                    <span className="text-ink text-sm">{name}</span>
+                    <span
+                      className={[
+                        'font-mono text-[10px] tracking-[0.16em] uppercase',
+                        index === 0 && 'text-signal-warning-text',
+                        index === 1 && 'text-signal-deploy-text',
+                        index === 2 && 'text-signal-danger-text',
+                        index === 3 && 'text-primary-accessible',
+                      ]
+                        .filter(Boolean)
+                        .join(' ')}
+                    >
+                      {state}
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
+
+              <div className="border-line border-t px-5 py-4">
+                <p className="text-ink-secondary max-w-[30rem] text-sm leading-7">
+                  One release, one owner view, one history. Not fifteen tabs and a tired memory.
+                </p>
+              </div>
+            </div>
           </div>
-        </Container>
+        </div>
       </section>
 
-      {/* Capabilities */}
-      <section className="border-line border-b py-20">
-        <Container width="6xl" padding="default">
-          <div className="mb-10" data-reveal>
-            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
-              Capabilities
+      <section className="border-line border-b py-18 lg:py-24">
+        <div className="mx-auto grid w-full max-w-[1560px] gap-12 px-6 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:gap-16 lg:px-10">
+          <div data-reveal>
+            <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
+              What it replaces
             </p>
-            <h2 className="text-ink text-2xl font-semibold lg:text-3xl">
-              From release creation to safe completion.
+            <h2 className="font-display mt-4 max-w-[11ch] text-[clamp(2.3rem,4vw,4.2rem)] leading-[0.95] font-medium tracking-[-0.05em]">
+              The last two hours of the sprint should not become a second job.
             </h2>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2" data-reveal>
-            {CAPABILITIES.map((c) => (
-              <div
-                key={c.title}
-                className="border-line bg-surface-alt/30 border p-6"
-                style={{ borderRadius: '2px' }}
-              >
-                <h3 className="text-ink mb-2 text-base font-semibold">{c.title}</h3>
-                <p className="text-ink-secondary text-sm leading-relaxed">{c.desc}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Tool gaps */}
-      <section className="border-line border-b py-20">
-        <Container width="5xl" padding="default">
-          <div className="mb-10 max-w-3xl" data-reveal>
-            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
-              Why existing tools fall short
+            <p className="text-ink-secondary mt-6 max-w-[33rem] text-lg leading-8">
+              Without a release owner view, the sprint turns into handoffs, checking, waiting, and
+              one person translating the whole room for everybody else.
             </p>
-            <h2 className="text-ink text-3xl font-medium tracking-tight">
-              Every tool coordinates its own layer. None coordinate the release.
-            </h2>
           </div>
 
-          <div className="border-line border" style={{ borderRadius: '2px' }} data-reveal>
-            <div className="bg-surface-alt/60 border-line grid gap-4 border-b px-5 py-4 lg:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)]">
-              <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">Tool</p>
-              <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">
-                What it handles well
-              </p>
-              <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.16em] uppercase">
-                The gap DeployTitan closes
+          <div
+            className="bg-surface-alt/38 px-6 py-6 sm:px-8 sm:py-8"
+            style={{ borderRadius: '12px' }}
+            data-reveal
+            data-reveal-delay="1"
+          >
+            <div className="border-line mb-8 flex items-center justify-between gap-6 border-b pb-5">
+              <p className="text-ink text-sm font-semibold">Release-night timeline</p>
+              <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.18em] uppercase">
+                5 moments every team recognizes
               </p>
             </div>
-            {TOOL_GAPS.map((row, i) => (
-              <div
-                key={row.tool}
-                className={`border-line grid gap-4 border-b px-5 py-5 last:border-b-0 lg:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)] ${i % 2 === 0 ? '' : 'bg-surface-alt/20'}`}
-              >
-                <p className="text-ink text-sm font-medium">{row.tool}</p>
-                <p className="text-ink-secondary text-sm leading-7">{row.does}</p>
-                <p className="text-ink-secondary text-sm leading-7">{row.gap}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
 
-      {/* Getting started */}
-      <section className="border-line border-b py-20">
-        <Container width="6xl" padding="default">
-          <div className="mb-12" data-reveal>
-            <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">
-              Getting started
-            </p>
-            <h2 className="text-ink mb-2 text-2xl font-semibold lg:text-3xl">
-              Up and running in an afternoon.
-            </h2>
-            <p className="text-ink-secondary max-w-xl text-sm">
-              No infrastructure changes. No new tooling for engineers to learn. Connect your
-              repositories, model your first release, and go.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2" data-reveal>
-            {/* Setup steps */}
-            <div className="flex flex-col gap-0">
-              {[
-                {
-                  step: '01',
-                  title: 'Connect your repositories',
-                  body: 'Authorize DeployTitan with GitHub or GitLab. Your repositories and teams are imported automatically — no manual configuration.',
-                },
-                {
-                  step: '02',
-                  title: 'Create a release in the dashboard',
-                  body: 'Name the release, add the services involved, and set their dependencies in the UI. The dependency graph is built as you work.',
-                },
-                {
-                  step: '03',
-                  title: 'Set freeze windows, approvals, and rollback owners',
-                  body: 'Everything lives on the release record. Assign approvers, schedule the production window, and attach rollback owners before the first merge.',
-                },
-                {
-                  step: '04',
-                  title: 'Track and promote from the release view',
-                  body: 'Service readiness, approval status, and blockers are visible to everyone in real time. Promote when gates clear; the dashboard surfaces anything that needs attention.',
-                },
-              ].map((item, i, arr) => (
-                <div key={item.step} className="relative flex gap-6 pb-8 last:pb-0">
-                  {i < arr.length - 1 && (
-                    <div
-                      className="bg-line absolute top-8 bottom-0 left-[13px] w-px"
-                      aria-hidden="true"
-                    />
-                  )}
-                  <div
-                    className="border-primary/30 bg-primary/5 z-10 flex h-7 w-7 shrink-0 items-center justify-center"
-                    style={{ borderRadius: '2px' }}
-                  >
-                    <span className="text-primary-accessible dark:text-primary font-mono text-[10px] font-bold">{item.step}</span>
-                  </div>
-                  <div className="pt-0.5">
-                    <p className="text-ink mb-1 text-sm font-semibold">{item.title}</p>
-                    <p className="text-ink-secondary text-sm leading-relaxed">{item.body}</p>
+            <div className="grid gap-8 lg:grid-cols-[96px_minmax(0,1fr)]">
+              {STORY_BEATS.map((beat) => (
+                <div
+                  key={beat.time}
+                  className="border-line grid gap-3 border-t pt-5 first:border-t-0 first:pt-0 lg:col-span-2 lg:grid-cols-subgrid"
+                >
+                  <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.18em] uppercase">
+                    {beat.time}
+                  </p>
+                  <div className="max-w-[38rem]">
+                    <p className="text-ink text-base leading-7 font-semibold">{beat.title}</p>
+                    <p className="text-ink-secondary mt-2 text-sm leading-7">{beat.body}</p>
                   </div>
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Integrations */}
-            <div>
-              <p className="text-ink-tertiary mb-4 font-mono text-xs tracking-wider uppercase">
-                Integrations
+      <section className="border-line bg-surface-alt/45 border-b py-18 lg:py-24">
+        <div className="mx-auto w-full max-w-[1560px] px-6 lg:px-10">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(320px,0.52fr)] lg:items-end">
+            <div data-reveal>
+              <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
+                What Titan Rollout does
               </p>
-              <div className="grid grid-cols-2 gap-3">
-                {INTEGRATIONS.map((group) => (
-                  <div
-                    key={group.category}
-                    className="border-line bg-surface-alt/20 border p-4"
-                    style={{ borderRadius: '2px' }}
+              <h2 className="font-display mt-4 text-[clamp(2.3rem,4vw,4.15rem)] leading-[0.95] font-medium tracking-[-0.05em]">
+                Track the release, trigger the jobs, route the approvals, then close with proof.
+              </h2>
+              <p className="text-ink-secondary mt-6 max-w-[35rem] text-lg leading-8">
+                Titan does not replace the stack. It gives the release one coordinated workflow,
+                from the first sprint PR to the final health check in Slack.
+              </p>
+            </div>
+
+            <div
+              className="border-line bg-surface border px-6 py-6"
+              style={{ borderRadius: '12px' }}
+              data-reveal
+              data-reveal-delay="1"
+            >
+              <p className="text-primary-accessible font-mono text-[10px] tracking-[0.18em] uppercase">
+                Outcome
+              </p>
+              <p className="text-ink mt-3 max-w-[26rem] text-lg leading-8 font-medium">
+                The release ends with a clear summary in Slack, not the team rebuilding context at
+                2am.
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="border-line mt-12 grid gap-y-0 border-t"
+            data-reveal
+            data-reveal-delay="2"
+          >
+            {TITAN_FLOW.map((item, index) => (
+              <div
+                key={item.title}
+                className={[
+                  'grid items-center gap-4 py-6 lg:grid-cols-[minmax(0,0.52fr)_minmax(0,1fr)] lg:gap-8',
+                  index !== TITAN_FLOW.length - 1 ? 'border-line border-b' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
+                <p className="text-ink text-xl leading-8 font-semibold">{item.title}</p>
+                <p className="text-ink-secondary text-sm leading-7">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-line border-b py-18 lg:py-24">
+        <div className="mx-auto grid w-full max-w-[1560px] gap-12 px-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16 lg:px-10">
+          <div data-reveal>
+            <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
+              Who it is for
+            </p>
+            <h2 className="font-display mt-4 text-[clamp(2.3rem,4vw,4rem)] leading-[0.95] font-medium tracking-[-0.05em]">
+              Built for multi-repo sprint releases.
+            </h2>
+            <p className="text-ink-secondary mt-6 max-w-[31rem] text-lg leading-8">
+              Founders see fewer late nights. CTOs see less release drag. Release owners get one
+              controlled record instead of a ritual rebuilt from memory every sprint.
+            </p>
+          </div>
+
+          <div className="border-line grid gap-y-0 border-t" data-reveal data-reveal-delay="1">
+            {BUY_SIGNALS.map((item, index) => (
+              <div
+                key={item}
+                className={[
+                  'grid gap-4 py-6 lg:grid-cols-[44px_minmax(0,1fr)] lg:gap-6',
+                  index !== BUY_SIGNALS.length - 1 ? 'border-line border-b' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
+                <span className="text-primary-accessible font-mono text-[10px] tracking-[0.18em] uppercase">
+                  0{index + 1}
+                </span>
+                <p className="text-ink-secondary text-base leading-8">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="mx-auto w-full max-w-[1560px] px-6 py-20 lg:px-10 lg:py-28">
+          <div className="border-line bg-surface-alt/45 rounded-[12px] border p-6 sm:p-8 lg:p-10">
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.72fr)] lg:gap-12">
+              <div data-reveal>
+                <p className="text-ink-tertiary mb-4 font-mono text-[11px] tracking-[0.18em] uppercase">
+                  Available now
+                </p>
+                <h2 className="font-display max-w-[12ch] text-[clamp(2.45rem,4.4vw,4.9rem)] leading-[0.94] font-medium tracking-[-0.055em]">
+                  Try it on the sprint your team already worries about.
+                </h2>
+                <p className="text-ink-secondary mt-6 max-w-[38rem] text-lg leading-8">
+                  Create an account, connect GitHub and Slack, add the sprint PRs that need to ship,
+                  and let Titan handle the coordination your team is tired of doing by hand.
+                </p>
+              </div>
+
+              <div className="flex flex-col justify-center" data-reveal data-reveal-delay="1">
+                <div className="flex flex-col gap-4">
+                  <a
+                    href={CREATE_ACCOUNT_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${CTA_CLASSES} bg-ink text-surface w-full hover:shadow-[0_0_0_1px_var(--color-primary-muted),0_2px_8px_rgba(0,0,0,0.08)]`}
                   >
-                    <p className="text-primary-accessible mb-2.5 font-mono text-[10px] tracking-wider uppercase">
-                      {group.category}
-                    </p>
-                    <ul className="flex flex-col gap-1.5">
-                      {group.tools.map((t) => (
-                        <li key={t} className="text-ink-secondary flex items-center gap-2 text-xs">
-                          <span
-                            className="bg-primary/50 h-1 w-1 shrink-0"
-                            style={{ borderRadius: '1px' }}
-                          />
-                          {t}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                    Create account
+                  </a>
+                  <a
+                    href="/pricing"
+                    className={`${CTA_CLASSES} border-line text-ink-secondary hover:border-primary/40 hover:text-ink bg-surface w-full border`}
+                  >
+                    See pricing
+                  </a>
+                </div>
+                <p className="text-ink-secondary mt-5 text-sm leading-7">
+                  Flat monthly pricing, no per-deploy billing, no surprise charges at sprint end,
+                  and no infrastructure change required.
+                </p>
               </div>
             </div>
           </div>
-        </Container>
+        </div>
       </section>
-
-      {/* CTA */}
-      <section className="py-20">
-        <Container width="3xl" padding="default" className="text-center">
-          <p
-            className="text-ink-tertiary mb-4 font-mono text-[11px] tracking-[0.22em] uppercase"
-            data-reveal
-          >
-            Get started
-          </p>
-          <p className="text-ink mx-auto mb-8 max-w-2xl text-xl font-semibold" data-reveal>
-            Bring us your messiest multi-service release. We will show you what coordination looks
-            like when it is not a Slack thread.
-          </p>
-          <div className="mx-auto max-w-sm" data-reveal>
-            <Button
-              as="a"
-              href={CREATE_ACCOUNT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="primary"
-              size="lg"
-              block
-            >
-              Start free trial
-            </Button>
-          </div>
-        </Container>
-      </section>
-    </>
+    </div>
   )
 }

@@ -68,16 +68,6 @@ export function Footer() {
             {(
               [
                 { label: 'Titan Rollouts', to: '/products/titan-rollout' },
-                {
-                  label: 'Rollouts Intelligence',
-                  to: '/products/titan-foresight',
-                  status: 'roadmap' as const,
-                },
-                {
-                  label: 'Enterprise Recovery Suite',
-                  to: '/products/titan-phoenix',
-                  status: 'roadmap' as const,
-                },
                 { label: 'Pricing', to: '/pricing' },
               ] as { label: string; to: string; status?: 'roadmap' }[]
             ).map((l) => (
@@ -103,15 +93,8 @@ export function Footer() {
           </p>
           <ul className="flex flex-col gap-3">
             {[
-              { label: 'Documentation', to: '/docs' },
-              { label: 'CLI Reference', to: '/cli' },
-              { label: 'API Reference', to: '/api-reference' },
-              // { label: 'Integrations', to: '/integrations' },
-              // { label: 'Roadmap', to: '/roadmap' },
               { label: 'Blog', to: '/blog' },
-              { label: 'How it works', to: '/how-it-works' },
-              // { label: 'Security', to: '/security' },
-              // { label: 'System status', to: '/status' },
+              { label: 'Changelog', to: '/changelog' },
             ].map((l) => (
               <li key={l.label}>
                 <Link
