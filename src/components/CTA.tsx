@@ -2,7 +2,6 @@
 
 import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
-import { Container } from './shared/Container'
 import { Button } from './shared/Button'
 
 const trustSignals = [
@@ -27,7 +26,7 @@ export function CTA() {
         aria-hidden="true"
       />
 
-      <Container className="relative">
+      <div className="relative mx-auto w-full max-w-[1560px] px-6 lg:px-10">
         <div
           className="border-line bg-surface corner-accent relative overflow-hidden border"
           style={{ borderRadius: '12px' }}
@@ -173,7 +172,7 @@ export function CTA() {
             </div>
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   )
 }

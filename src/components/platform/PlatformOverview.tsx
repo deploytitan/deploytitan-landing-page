@@ -1,7 +1,6 @@
 'use client'
 
 import { useScrollReveal } from '../../utils'
-import { Container } from '../shared/Container'
 
 const pains = [
   'Sprint ends Friday. Eight PRs across four repos. One engineer has a dozen GitHub tabs open watching CI.',
@@ -29,7 +28,7 @@ const features = [
     step: '03',
     label: 'Alert',
     title: 'Job fails? Slack ping, immediately.',
-    meta: 'with context — no tab-checking',
+    meta: 'with context, no tab-checking',
     status: 'Instant',
   },
   {
@@ -42,9 +41,9 @@ const features = [
   {
     step: '05',
     label: 'Impact',
-    title: 'AI release impact report in 15 minutes.',
-    meta: 'before vs after metrics · stable or degraded',
-    status: 'AI',
+    title: 'Post-deploy health summary in Slack.',
+    meta: 'Grafana metrics · stable or degraded',
+    status: 'Health',
   },
 ]
 
@@ -52,8 +51,8 @@ const integrations = ['GitHub', 'Jenkins', 'Grafana', 'Slack']
 
 const teamFits = [
   'Your sprint touches more than two repos and someone has to watch CI, track metrics, and verify stability before and after every release',
-  "Release day means someone's on standby — monitoring dashboards, logs, and Jenkins — waiting for something to go wrong",
-  'Approvals are slow because context switching is painful — opening GitHub mid-task kills flow',
+  "Release day means someone's on standby, monitoring dashboards, logs, and Jenkins, waiting for something to go wrong",
+  'Approvals are slow because context switching is painful. Opening GitHub mid-task kills flow.',
   'Post-mortems keep listing "release coordination" as a recurring problem',
 ]
 
@@ -89,7 +88,7 @@ export function PlatformOverview() {
     <div ref={ref}>
       {/* Section 1: The pain */}
       <section id="release-workflow" className="border-line border-b py-20 lg:py-24">
-        <Container width="page" padding="wide">
+        <div className="mx-auto w-full max-w-[1560px] px-6 lg:px-10">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
             <div>
               <p
@@ -110,13 +109,12 @@ export function PlatformOverview() {
                 data-reveal-delay="2"
                 className="text-ink-secondary mt-5 max-w-[46ch] text-lg leading-8"
               >
-                Multiple engineers stuck babysitting CI, logs, and metrics — while the product
-                waits.
+                Multiple engineers stuck babysitting CI, logs, and metrics, while the product waits.
               </p>
             </div>
 
             <div data-reveal data-reveal-delay="2">
-              <div className="border-line border" style={{ borderRadius: '2px' }}>
+              <div className="border-line border" style={{ borderRadius: '12px' }}>
                 {pains.map((pain, index) => (
                   <div
                     key={pain}
@@ -131,7 +129,7 @@ export function PlatformOverview() {
               </div>
             </div>
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* Section 2: What DeployTitan does */}
@@ -140,7 +138,7 @@ export function PlatformOverview() {
           className="blueprint-grid pointer-events-none absolute inset-0 opacity-20"
           aria-hidden="true"
         />
-        <Container width="page" padding="wide">
+        <div className="mx-auto w-full max-w-[1560px] px-6 lg:px-10">
           <div className="relative grid gap-12 lg:grid-cols-[minmax(0,0.78fr)_minmax(520px,1.22fr)] lg:items-start">
             <div className="lg:sticky lg:top-28">
               <p
@@ -168,7 +166,7 @@ export function PlatformOverview() {
                 data-reveal-delay="3"
                 className="border-line bg-surface/75 mt-8 grid max-w-[520px] border"
                 style={{
-                  borderRadius: '2px',
+                  borderRadius: '12px',
                   gridTemplateColumns: `repeat(${integrations.length}, 1fr)`,
                 }}
               >
@@ -193,7 +191,7 @@ export function PlatformOverview() {
               data-reveal
               data-reveal-delay="2"
               className="border-line bg-surface border"
-              style={{ borderRadius: '2px' }}
+              style={{ borderRadius: '12px' }}
             >
               <div className="border-line bg-surface-alt/70 flex flex-col gap-4 border-b px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
@@ -249,12 +247,12 @@ export function PlatformOverview() {
               </div>
             </div>
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* Section 3: How we're different */}
       <section className="border-line border-b py-20 lg:py-24">
-        <Container width="page" padding="wide">
+        <div className="mx-auto w-full max-w-[1560px] px-6 lg:px-10">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
             <div>
               <p
@@ -276,7 +274,7 @@ export function PlatformOverview() {
                 className="text-ink-secondary mt-5 max-w-[48ch] text-lg leading-8"
               >
                 Other tools ask you to adopt their platform, their CI, their workflows. DeployTitan
-                plugs into what you already run. Your team never opens a new dashboard — everything
+                plugs into what you already run. Your team never opens a new dashboard, everything
                 comes to them.
               </p>
             </div>
@@ -286,7 +284,7 @@ export function PlatformOverview() {
                 <div
                   key={d.label}
                   className="border-line bg-surface-alt/35 border px-5 py-5"
-                  style={{ borderRadius: '2px' }}
+                  style={{ borderRadius: '12px' }}
                 >
                   <div className="flex items-center gap-3">
                     <p className="text-ink text-base font-medium">{d.label}</p>
@@ -304,12 +302,12 @@ export function PlatformOverview() {
               ))}
             </div>
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* Section 4: Who it's for + CTA */}
       <section className="py-20 lg:py-24">
-        <Container width="page" padding="wide">
+        <div className="mx-auto w-full max-w-[1560px] px-6 lg:px-10">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
             <div>
               <p
@@ -339,7 +337,7 @@ export function PlatformOverview() {
                 <div
                   key={item}
                   className="border-line bg-surface-alt/35 flex items-start gap-4 border px-5 py-4"
-                  style={{ borderRadius: '2px' }}
+                  style={{ borderRadius: '12px' }}
                 >
                   <span
                     className="bg-primary mt-2 block h-1.5 w-1.5 shrink-0"
@@ -350,7 +348,7 @@ export function PlatformOverview() {
               ))}
             </div>
           </div>
-        </Container>
+        </div>
       </section>
     </div>
   )

@@ -4,7 +4,7 @@ import Pricing from '@/page-components/Pricing'
 export const metadata: Metadata = {
   title: 'Pricing | DeployTitan',
   description:
-    'DeployTitan uses predictable fixed platform plans with add-ons for protected services, risk intelligence, sandboxing, observability, and compliance.',
+    'Flat monthly pricing for sprint release coordination. No per-deploy billing, no surprise charges, and Phase 1 integrations with GitHub, Jenkins, Grafana, and Slack.',
 }
 
 export default function Page() {

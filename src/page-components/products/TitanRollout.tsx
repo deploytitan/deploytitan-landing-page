@@ -60,10 +60,10 @@ const CTA_CLASSES =
   'inline-flex items-center justify-center rounded-[8px] px-5 py-3 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
 
 export default function TitanRollout() {
-  useScrollReveal()
+  const ref = useScrollReveal()
 
   return (
-    <div className="bg-surface text-ink">
+    <div ref={ref} className="bg-surface text-ink">
       <section className="border-line relative overflow-hidden border-b">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(212,180,84,0.1),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(96,165,250,0.06),transparent_24%)]" />
 
@@ -76,13 +76,13 @@ export default function TitanRollout() {
             </div>
 
             <h1 className="font-display text-[clamp(3.5rem,8vw,7.1rem)] leading-[0.9] font-medium tracking-[-0.065em]">
-              The sprint should end before dinner.
+              One place for all sprint PRs.
             </h1>
 
             <p className="text-ink-secondary mt-8 max-w-[39rem] text-[1.08rem] leading-8 lg:text-[1.16rem]">
-              Release night should not depend on whoever can keep GitHub, Jenkins, Slack, and
-              dashboards stitched together the longest. Titan Rollout gives the sprint one calm,
-              controlled path to production.
+              Titan Rollout is sprint release coordination software for teams shipping across
+              multiple repos. Track every PR in one view, trigger CI and Jenkins automatically, get
+              Slack alerts and approvals, then post a Grafana-backed health summary after deploy.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
@@ -90,7 +90,7 @@ export default function TitanRollout() {
                 href={CREATE_ACCOUNT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${CTA_CLASSES} bg-primary text-surface hover:bg-primary-light hover:text-ink`}
+                className={`${CTA_CLASSES} bg-ink text-surface hover:shadow-[0_0_0_1px_var(--color-primary-muted),0_2px_8px_rgba(0,0,0,0.08)]`}
               >
                 Create account
               </a>
@@ -101,10 +101,22 @@ export default function TitanRollout() {
                 See pricing
               </a>
             </div>
+
+            <p className="border-line text-ink-tertiary mt-7 max-w-[44rem] border-t pt-4 font-mono text-[10px] leading-5 tracking-[0.08em]">
+              GitHub · GitHub Actions · Jenkins · Grafana · Slack
+            </p>
+
+            <p className="text-ink-secondary mt-4 max-w-[40rem] text-sm leading-7">
+              Best for teams where release day means watching CI, chasing approvals in Slack, and
+              checking metrics by hand across multiple services.
+            </p>
           </div>
 
           <div data-reveal data-reveal-delay="2" className="flex items-end">
-            <div className="border-line bg-surface-alt/72 w-full rounded-[12px] border">
+            <div
+              className="border-line bg-surface-alt/72 w-full border"
+              style={{ borderRadius: '12px' }}
+            >
               <div className="border-line flex items-center justify-between border-b px-5 py-4">
                 <div>
                   <p className="text-ink text-sm font-semibold">Friday rollout</p>
@@ -163,19 +175,20 @@ export default function TitanRollout() {
         <div className="mx-auto grid w-full max-w-[1560px] gap-12 px-6 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:gap-16 lg:px-10">
           <div data-reveal>
             <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
-              The last two hours of the sprint
+              What it replaces
             </p>
             <h2 className="font-display mt-4 max-w-[11ch] text-[clamp(2.3rem,4vw,4.2rem)] leading-[0.95] font-medium tracking-[-0.05em]">
-              The release becomes a job nobody actually owns.
+              The last two hours of the sprint should not become a second job.
             </h2>
             <p className="text-ink-secondary mt-6 max-w-[33rem] text-lg leading-8">
-              It starts as excitement, then turns into handoffs, checking, waiting, and one person
-              translating the whole room for everybody else.
+              Without a release owner view, the sprint turns into handoffs, checking, waiting, and
+              one person translating the whole room for everybody else.
             </p>
           </div>
 
           <div
-            className="bg-surface-alt/38 rounded-[12px] px-6 py-6 sm:px-8 sm:py-8"
+            className="bg-surface-alt/38 px-6 py-6 sm:px-8 sm:py-8"
+            style={{ borderRadius: '12px' }}
             data-reveal
             data-reveal-delay="1"
           >
@@ -211,27 +224,29 @@ export default function TitanRollout() {
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(320px,0.52fr)] lg:items-end">
             <div data-reveal>
               <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
-                Titan Rollout
+                What Titan Rollout does
               </p>
               <h2 className="font-display mt-4 text-[clamp(2.3rem,4vw,4.15rem)] leading-[0.95] font-medium tracking-[-0.05em]">
-                One place for the PRs, approvals, checks, and summary.
+                Track the release, trigger the jobs, route the approvals, then close with proof.
               </h2>
               <p className="text-ink-secondary mt-6 max-w-[35rem] text-lg leading-8">
-                Titan does not replace the stack. It gives the release one calm path, from the first
-                PR to the final update.
+                Titan does not replace the stack. It gives the release one coordinated workflow,
+                from the first sprint PR to the final health check in Slack.
               </p>
             </div>
 
             <div
-              className="border-line bg-surface rounded-[12px] border px-6 py-6"
+              className="border-line bg-surface border px-6 py-6"
+              style={{ borderRadius: '12px' }}
               data-reveal
               data-reveal-delay="1"
             >
               <p className="text-primary-accessible font-mono text-[10px] tracking-[0.18em] uppercase">
-                Result
+                Outcome
               </p>
               <p className="text-ink mt-3 max-w-[26rem] text-lg leading-8 font-medium">
-                The release ends with Slack getting the summary, not the team writing it at 2am.
+                The release ends with a clear summary in Slack, not the team rebuilding context at
+                2am.
               </p>
             </div>
           </div>
@@ -263,14 +278,14 @@ export default function TitanRollout() {
         <div className="mx-auto grid w-full max-w-[1560px] gap-12 px-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16 lg:px-10">
           <div data-reveal>
             <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
-              Why it gets bought
+              Who it is for
             </p>
             <h2 className="font-display mt-4 text-[clamp(2.3rem,4vw,4rem)] leading-[0.95] font-medium tracking-[-0.05em]">
-              Senior engineers get their time back.
+              Built for multi-repo sprint releases.
             </h2>
             <p className="text-ink-secondary mt-6 max-w-[31rem] text-lg leading-8">
               Founders see fewer late nights. CTOs see less release drag. Release owners get one
-              controlled record instead of a chain of rituals repeated every sprint.
+              controlled record instead of a ritual rebuilt from memory every sprint.
             </p>
           </div>
 
@@ -307,7 +322,7 @@ export default function TitanRollout() {
                   Try it on the sprint your team already worries about.
                 </h2>
                 <p className="text-ink-secondary mt-6 max-w-[38rem] text-lg leading-8">
-                  Create an account, connect the release workflow, add the PRs that need to ship,
+                  Create an account, connect GitHub and Slack, add the sprint PRs that need to ship,
                   and let Titan handle the coordination your team is tired of doing by hand.
                 </p>
               </div>
@@ -318,7 +333,7 @@ export default function TitanRollout() {
                     href={CREATE_ACCOUNT_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${CTA_CLASSES} bg-primary text-surface hover:bg-primary-light hover:text-ink w-full`}
+                    className={`${CTA_CLASSES} bg-ink text-surface w-full hover:shadow-[0_0_0_1px_var(--color-primary-muted),0_2px_8px_rgba(0,0,0,0.08)]`}
                   >
                     Create account
                   </a>

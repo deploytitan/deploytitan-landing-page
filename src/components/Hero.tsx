@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
 import { Button } from './shared/Button'
-import { Container } from './shared/Container'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -688,8 +687,8 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <Container width="page" padding="wide" className="relative">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(480px,1.08fr)] lg:items-start lg:gap-10 xl:grid-cols-[minmax(0,0.88fr)_minmax(540px,1.12fr)]">
+      <div className="relative mx-auto w-full max-w-[1560px] px-6 lg:px-10">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.02fr)_minmax(520px,0.98fr)] lg:items-start lg:gap-12">
           {/* Left: copy */}
           <div className="flex flex-col items-start text-left lg:min-h-[580px] lg:justify-center lg:pr-4">
             <p
@@ -703,16 +702,16 @@ export function Hero() {
               data-reveal-delay="1"
               className="font-display text-ink max-w-[13ch] text-[clamp(3.25rem,14vw,5.2rem)] leading-[0.93] font-medium tracking-[-0.055em] lg:text-[clamp(4.2rem,6.7vw,6.65rem)]"
             >
-              Ship the sprint.
+              The sprint should
               <br />
-              <span className="text-ink-secondary">Not the war room.</span>
+              <span className="text-ink-secondary">end before dinner.</span>
             </h1>
             <p
               data-reveal
               data-reveal-delay="2"
               className="text-ink-secondary mt-7 max-w-[48ch] text-[1.0625rem] leading-[1.65] lg:text-lg"
             >
-              Add your sprint PRs, click on start, and walk away. DeployTitan watches every job,
+              Add your sprint PRs, click start, and walk away. DeployTitan watches every job,
               alerts you when something needs attention, and lets your team approve without opening
               a browser.
             </p>
@@ -842,10 +841,10 @@ export function Hero() {
                 className="border-line bg-surface-alt/40 grid border-b px-4 py-2"
                 style={{ gridTemplateColumns: '1fr auto' }}
               >
-                <p className="text-ink-quaternary font-mono text-[9px] tracking-[0.14em] uppercase">
+                <p className="text-ink-tertiary font-mono text-[9px] tracking-[0.14em] uppercase">
                   Service · PR
                 </p>
-                <p className="text-ink-quaternary font-mono text-[9px] tracking-[0.14em] uppercase">
+                <p className="text-ink-tertiary font-mono text-[9px] tracking-[0.14em] uppercase">
                   Status
                 </p>
               </div>
@@ -915,7 +914,7 @@ export function Hero() {
             </div>
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   )
 }
