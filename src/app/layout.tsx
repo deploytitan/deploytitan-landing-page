@@ -1,18 +1,18 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import { Instrument_Sans, Inter, JetBrains_Mono } from 'next/font/google'
+import { Barlow, JetBrains_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { SiteLayoutClient } from '@/layouts/SiteLayoutClient'
 import './globals.css'
 
-const inter = Inter({
+const barlowDisplay = Barlow({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-display',
   display: 'swap',
 })
 
-const instrumentSans = Instrument_Sans({
+const barlowSans = Barlow({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-sans',
@@ -56,7 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}
+      className={`${barlowDisplay.variable} ${barlowSans.variable} ${jetbrainsMono.variable}`}
     >
       <head>
         {/* Apply stored theme before first paint and on bfcache restore to avoid flash */}

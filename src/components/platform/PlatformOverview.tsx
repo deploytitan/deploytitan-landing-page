@@ -279,12 +279,16 @@ export function PlatformOverview() {
               </p>
             </div>
 
-            <div data-reveal data-reveal-delay="2" className="space-y-3">
+            <div
+              data-reveal
+              data-reveal-delay="2"
+              className="border-line divide-line divide-y border"
+              style={{ borderRadius: '2px' }}
+            >
               {differentiators.map((d) => (
                 <div
                   key={d.label}
-                  className="border-line bg-surface-alt/35 border px-5 py-5"
-                  style={{ borderRadius: '12px' }}
+                  className="cap-row grid gap-y-2 px-5 py-5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-start sm:gap-6"
                 >
                   <div className="flex items-center gap-3">
                     <p className="text-ink text-base font-medium">{d.label}</p>
@@ -297,7 +301,7 @@ export function PlatformOverview() {
                       </span>
                     )}
                   </div>
-                  <p className="text-ink-secondary mt-1.5 text-sm leading-6">{d.detail}</p>
+                  <p className="text-ink-secondary text-sm leading-6">{d.detail}</p>
                 </div>
               ))}
             </div>
@@ -332,15 +336,16 @@ export function PlatformOverview() {
               </p>
             </div>
 
-            <div className="space-y-3" data-reveal data-reveal-delay="2">
+            <div
+              className="border-line divide-line divide-y border"
+              style={{ borderRadius: '2px' }}
+              data-reveal
+              data-reveal-delay="2"
+            >
               {teamFits.map((item) => (
-                <div
-                  key={item}
-                  className="border-line bg-surface-alt/35 flex items-start gap-4 border px-5 py-4"
-                  style={{ borderRadius: '12px' }}
-                >
+                <div key={item} className="flex items-start gap-4 px-5 py-5">
                   <span
-                    className="bg-primary mt-2 block h-1.5 w-1.5 shrink-0"
+                    className="bg-primary mt-[0.45em] block h-1.5 w-1.5 shrink-0"
                     style={{ borderRadius: '1px' }}
                   />
                   <p className="text-ink-secondary text-sm leading-7">{item}</p>

@@ -244,11 +244,12 @@ function SlackPanel({
   return (
     <div
       style={{
-        overflow: 'hidden',
-        maxHeight: visible ? '420px' : '0px',
-        transition: 'max-height 0.55s cubic-bezier(0.22,1,0.36,1)',
+        display: 'grid',
+        gridTemplateRows: visible ? '1fr' : '0fr',
+        transition: 'grid-template-rows 0.55s cubic-bezier(0.22,1,0.36,1)',
       }}
     >
+      <div style={{ overflow: 'hidden' }}>
       {/* Channel strip */}
       <div
         className="border-line bg-surface-alt/50"
@@ -559,6 +560,7 @@ function SlackPanel({
           </div>
         </div>
       )}
+      </div>
     </div>
   )
 }

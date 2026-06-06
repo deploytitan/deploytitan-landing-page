@@ -20,8 +20,8 @@
    ---------------------------------------------------------------------- */
 @theme {
     /* Fonts */
-    --font-sans:    'Instrument Sans', system-ui, sans-serif;
-    --font-display: 'Inter', system-ui, sans-serif;
+    --font-sans:    'Barlow', system-ui, sans-serif;
+    --font-display: 'Barlow', system-ui, sans-serif;
     --font-mono:    'JetBrains Mono', monospace;
 
     /* Surfaces */
