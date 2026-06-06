@@ -25,6 +25,33 @@
   }
 }
 
+/* ===== Hero animation keyframes ===== */
+
+@keyframes spinRing {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+@keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+
+@keyframes rowSlideIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes btnPress {
+    0%, 100% { transform: scale(1); }
+    45%       { transform: scale(0.93); }
+}
+
+@keyframes msgFadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ===== Landing-page-specific styles ===== */
 
 /* Feature row hover — translates title 4px on row hover */
