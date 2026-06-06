@@ -218,17 +218,21 @@ function SlackPanel({
   return (
     <div
       style={{
-        display: 'grid',
-        gridTemplateRows: visible ? '1fr' : '0fr',
-        transition: 'grid-template-rows 0.55s cubic-bezier(0.22,1,0.36,1)',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'var(--color-surface)',
+        borderTop: '1px solid var(--color-line)',
+        transform: visible ? 'translateY(0)' : 'translateY(100%)',
+        transition: 'transform 0.55s cubic-bezier(0.22,1,0.36,1)',
       }}
     >
-      <div style={{ overflow: 'hidden' }}>
       {/* Channel strip */}
       <div
-        className="border-line bg-surface-alt/50"
+        className="bg-surface-alt/50"
         style={{
-          borderTop: '1px solid var(--color-line)',
+          borderBottom: '1px solid var(--color-line)',
           padding: '6px 16px',
           display: 'flex',
           alignItems: 'center',
@@ -269,15 +273,13 @@ function SlackPanel({
         </span>
       </div>
 
-      {/* Approval request */}
-      {visible && (
-        <div
+      {/* Approval request - always rendered; panel slide-in is the entrance animation */}
+      <div
           style={{
             padding: '10px 14px 12px',
             display: 'flex',
             gap: 10,
             alignItems: 'flex-start',
-            animation: 'msgFadeUp 0.45s cubic-bezier(0.22,1,0.36,1) forwards',
           }}
         >
           {/* Bot avatar */}
@@ -438,7 +440,6 @@ function SlackPanel({
             </div>
           </div>
         </div>
-      )}
 
       {/* Release note */}
       {releaseNote && (
@@ -534,7 +535,6 @@ function SlackPanel({
           </div>
         </div>
       )}
-      </div>
     </div>
   )
 }
@@ -582,7 +582,12 @@ export function Hero() {
       return
     }
 
+    const el = ref.current
+    if (!el) return
+
     const timers: ReturnType<typeof setTimeout>[] = []
+    const clearTimers = () => { timers.forEach(clearTimeout); timers.length = 0 }
+    const push = (fn: () => void, delay: number) => { timers.push(setTimeout(fn, delay)) }
 
     const reset = () => {
       setTypedChars(0)
@@ -596,48 +601,46 @@ export function Hero() {
     }
 
     const run = () => {
+      clearTimers()
       reset()
 
-      // Typing animation
       for (let i = 1; i <= RELEASE_NAME.length; i++) {
-        timers.push(setTimeout(() => setTypedChars(i), TYPING_START + i * CHAR_MS))
+        push(() => setTypedChars(i), TYPING_START + i * CHAR_MS)
       }
-
-      // PRs appear staggered
       for (let i = 0; i < PRS.length; i++) {
-        timers.push(setTimeout(() => setVisibleCount(i + 1), PR_BASE + i * PR_STAGGER))
+        push(() => setVisibleCount(i + 1), PR_BASE + i * PR_STAGGER)
       }
-
-      timers.push(setTimeout(() => setIsReady(true), READY_AT))
-
-      // Button click
-      timers.push(setTimeout(() => setIsClicking(true), CLICK_AT))
-      timers.push(setTimeout(() => setIsClicking(false), CLICK_AT + 350))
-
-      // Slack flow
-      timers.push(setTimeout(() => setShowSlack(true), SLACK_AT))
-      timers.push(setTimeout(() => setSlackApproved(true), APPROVE_AT))
-
-      // Deploy sequence
+      push(() => setIsReady(true), READY_AT)
+      push(() => setIsClicking(true), CLICK_AT)
+      push(() => setIsClicking(false), CLICK_AT + 350)
+      push(() => setShowSlack(true), SLACK_AT)
+      push(() => setSlackApproved(true), APPROVE_AT)
       for (const { id, runAt, doneAt } of DEPLOY_SEQ) {
-        timers.push(
-          setTimeout(() => setPRStates((prev) => ({ ...prev, [id]: 'running' })), DEPLOY_AT + runAt),
-        )
-        timers.push(
-          setTimeout(
-            () => setPRStates((prev) => ({ ...prev, [id]: 'deployed' })),
-            DEPLOY_AT + doneAt,
-          ),
-        )
+        push(() => setPRStates((prev) => ({ ...prev, [id]: 'running' })), DEPLOY_AT + runAt)
+        push(() => setPRStates((prev) => ({ ...prev, [id]: 'deployed' })), DEPLOY_AT + doneAt)
       }
-
-      timers.push(setTimeout(() => setShowReleaseNote(true), ALL_DONE_AT))
-      timers.push(setTimeout(run, RESET_AT))
+      push(() => setShowReleaseNote(true), ALL_DONE_AT)
+      push(run, RESET_AT)
     }
 
-    timers.push(setTimeout(run, 400))
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          run()
+        } else {
+          clearTimers()
+          reset()
+        }
+      },
+      { threshold: 0.1 },
+    )
 
-    return () => timers.forEach(clearTimeout)
+    observer.observe(el)
+
+    return () => {
+      observer.disconnect()
+      clearTimers()
+    }
   }, [])
 
   const displayName = RELEASE_NAME.slice(0, typedChars)
