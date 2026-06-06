@@ -7,7 +7,8 @@ const ACTIVE_PRODUCTS = [
   {
     route: '/products/titan-rollout',
     name: 'Titan Rollouts',
-    tagline: 'Coordinate multi-service releases with dependency sequencing, freeze windows, and approval workflows.',
+    tagline:
+      'Coordinate multi-service releases with dependency sequencing, freeze windows, and approval workflows.',
     bullets: [
       'Release objects linking PRs across repositories',
       'Dependency graph and merge sequencing',
@@ -117,9 +118,7 @@ export function ProductsDropdown({ onClose }: Props) {
                   {product.name}
                 </span>
               </div>
-              <p className="text-ink-tertiary max-w-[38ch] text-[13px] leading-relaxed">
-                {product.tagline}
-              </p>
+              <p className="text-ink-tertiary text-[13px] leading-relaxed">{product.tagline}</p>
               <ul className="border-line-subtle mt-1 flex flex-col gap-1.5 border-t pt-3">
                 {product.bullets.map((bullet) => (
                   <li key={bullet} className="text-ink-secondary flex items-center gap-2 text-xs">
@@ -148,7 +147,7 @@ export function ProductsDropdown({ onClose }: Props) {
                 key={product.route}
                 href={product.route}
                 onClick={onClose}
-                className="group flex flex-col gap-1.5 px-5 py-4 transition-colors duration-150 hover:bg-surface-alt/60"
+                className="group hover:bg-surface-alt/60 flex flex-col gap-1.5 px-5 py-4 transition-colors duration-150"
               >
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">

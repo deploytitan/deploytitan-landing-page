@@ -10,19 +10,19 @@ const companyPattern = [
     number: '01',
     title: 'The tools existed, the release record did not.',
     description:
-      'Teams already had GitHub, CI/CD, Grafana, and Slack. What they did not have was one place that made the sprint release itself visible, ordered, and accountable.',
+      'What teams lacked was one place that made the sprint release itself visible, ordered, and accountable.',
   },
   {
     number: '02',
     title: 'The coordination still lived in people.',
     description:
-      'Approvals sat in chat, rollback context lived in memory, and release status depended on whoever happened to be closest to the window that day.',
+      'Approvals sat in chat, rollback context lived in memory, and release status depended on whoever happened to be watching.',
   },
   {
     number: '03',
     title: 'The same anxiety kept repeating.',
     description:
-      'Different companies, different stacks, same end-of-sprint behavior: too many tabs open, too much checking, and nobody fully sure what would happen next.',
+      'Different companies, different stacks, same end-of-sprint: too many tabs open, nobody fully sure what would happen next.',
   },
 ]
 
@@ -30,17 +30,15 @@ const values = [
   {
     title: 'Specificity before slogans',
     description:
-      'We earn trust by naming the actual release moment: the blocked dependency, the missing rollback owner, the approval still stuck in Slack.',
+      'We earn trust by naming the actual moment: the blocked dependency, the approval still stuck in Slack.',
   },
   {
     title: 'Coordination before execution',
-    description:
-      'The release happens in your head before it happens in production. DeployTitan makes that coordination work structural, visible, and shared.',
+    description: 'The release happens in your head before it happens in production. We make that structural.',
   },
   {
     title: 'Respect engineer time',
-    description:
-      'Every hour spent chasing release state across four tools is an hour not spent building. We remove babysitting work so teams can keep shipping.',
+    description: 'Every hour chasing release state across four tools is an hour not spent building.',
   },
 ]
 
@@ -64,14 +62,14 @@ export default function About({ teamMembers = [] }: AboutProps) {
     <div className="min-h-screen bg-surface">
       {/* Hero */}
       <Section padding="none">
-        <Container className="py-24 lg:py-32">
-          <span className="text-ink-tertiary font-mono text-[11px] tracking-widest uppercase">
+        <Container className="pb-24 pt-20 lg:pb-32 lg:pt-28">
+          <span className="hero-label text-ink-tertiary font-mono text-[11px] tracking-widest uppercase">
             About
           </span>
-          <h1 className="font-display text-ink mt-5 max-w-[18ch] text-[clamp(2.4rem,4.8vw,4.8rem)] leading-[1.0] font-medium tracking-[-0.04em]">
+          <h1 className="hero-heading font-display text-ink mt-5 max-w-[22ch] text-[clamp(2.8rem,6.5vw,7.2rem)] leading-[0.95] font-medium tracking-[-0.06em]">
             We build the missing layer between the sprint and the deploy.
           </h1>
-          <p className="text-ink-secondary mt-6 max-w-[52ch] text-lg leading-relaxed">
+          <p className="hero-body text-ink-secondary mt-8 max-w-[52ch] text-lg leading-relaxed">
             DeployTitan gives distributed engineering teams one shared release record across
             GitHub, CI/CD, observability, and Slack so the end of the sprint stops depending on
             memory, tab-checking, and heroic coordination.
@@ -81,26 +79,26 @@ export default function About({ teamMembers = [] }: AboutProps) {
 
       {/* Company overview */}
       <Section border="top" padding="none">
-        <Container className="py-20 lg:py-24">
+        <Container className="py-20 lg:py-28">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
             <div>
+              <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
               <h2 className="font-display text-ink text-2xl leading-[1.1] font-medium tracking-[-0.025em] sm:text-3xl">
                 Built for teams whose releases already span more than one repo.
               </h2>
-              <p className="text-ink-secondary mt-5 text-base leading-relaxed">
-                DeployTitan sits above the tools teams already run and makes the release itself
-                legible: what is shipping, what is blocked, who needs to approve, and what happens
-                if something goes wrong.
-              </p>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-10">
               {companyPattern.map((item) => (
-                <div key={item.number} className="flex gap-6">
-                  <span className="text-ink-tertiary mt-0.5 shrink-0 font-mono text-[10px] tracking-[0.14em] uppercase">
+                <div key={item.number} className="pattern-item flex gap-6">
+                  <span
+                    className="pattern-number font-display shrink-0 select-none font-medium leading-none"
+                    style={{ fontSize: '4.5rem', color: 'var(--color-ink)', opacity: 0.07 }}
+                    aria-hidden="true"
+                  >
                     {item.number}
                   </span>
-                  <div>
+                  <div className="pt-3">
                     <h3 className="text-ink text-base font-medium">{item.title}</h3>
                     <p className="text-ink-secondary mt-2 text-sm leading-relaxed">
                       {item.description}
@@ -115,47 +113,34 @@ export default function About({ teamMembers = [] }: AboutProps) {
 
       {/* Why */}
       <Section border="top" padding="none">
-        <Container className="py-20 lg:py-24">
-          <div className="grid grid-cols-1 gap-16 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
-            <div>
-              <h2 className="font-display text-ink text-2xl leading-[1.1] font-medium tracking-[-0.025em] sm:text-3xl">
-                Make every multi-service release feel ordinary again.
-              </h2>
-            </div>
-
-            <div className="space-y-5 text-base leading-relaxed">
-              <p className="text-ink-secondary">
-                Multi-service releases break down in the seams between systems. GitHub can show
-                the pull requests, Jenkins can run the jobs, and Grafana can show the graphs.
-                None of them own the release moment itself.
-              </p>
-              <p className="text-ink-secondary">
-                DeployTitan closes that gap. Teams define the release, track dependencies, collect
-                approvals, and attach rollback plans before anything ships. The work that used to
-                live in Slack threads and human memory becomes structural and visible.
-              </p>
-              <p className="text-ink font-medium">
-                Teams should not need a spreadsheet, a war room, or one heroic engineer to get a
-                release out safely.
-              </p>
-            </div>
-          </div>
+        <Container className="py-20 lg:py-28">
+          <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
+          <h2 className="font-display text-ink text-2xl leading-[1.1] font-medium tracking-[-0.025em] sm:text-3xl">
+            Make every multi-service release feel ordinary again.
+          </h2>
+          {/* Belief statement — standalone typographic moment */}
+          <p className="text-ink mt-12 max-w-[38ch] text-2xl leading-[1.2] font-medium tracking-[-0.02em] lg:mt-16 lg:text-3xl lg:leading-[1.15]">
+            Teams should not need a spreadsheet, a war room, or one heroic engineer to get a
+            release out safely.
+          </p>
         </Container>
       </Section>
 
       {/* Values */}
       <Section border="top" padding="none">
-        <Container className="py-20 lg:py-24">
+        <Container className="py-20 lg:py-28">
+          <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
           <h2 className="font-display text-ink text-2xl font-medium tracking-[-0.025em]">
             How we work
           </h2>
-          <div className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-3">
+          <div className="mt-12 space-y-10">
             {values.map((value) => (
-              <div key={value.title}>
-                <h3 className="text-ink text-sm font-semibold">{value.title}</h3>
-                <p className="text-ink-secondary mt-3 text-sm leading-relaxed">
-                  {value.description}
-                </p>
+              <div
+                key={value.title}
+                className="value-row grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] sm:gap-10"
+              >
+                <h3 className="value-title text-ink text-base font-semibold">{value.title}</h3>
+                <p className="text-ink-secondary text-sm leading-relaxed">{value.description}</p>
               </div>
             ))}
           </div>
@@ -164,15 +149,15 @@ export default function About({ teamMembers = [] }: AboutProps) {
 
       {/* Team */}
       <Section border="top" padding="none">
-        <Container className="py-20 lg:py-24">
+        <Container className="py-20 lg:py-28">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
             <div>
+              <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
               <h2 className="font-display text-ink text-2xl leading-[1.1] font-medium tracking-[-0.025em] sm:text-3xl">
                 The people turning release anxiety into product.
               </h2>
               <p className="text-ink-secondary mt-5 text-base leading-relaxed">
-                Small by design, direct by default. We stay close to the engineers feeling the
-                pain so the product keeps its edge.
+                Small by design. We stay close to the engineers living through the problem.
               </p>
             </div>
 
@@ -271,7 +256,8 @@ export default function About({ teamMembers = [] }: AboutProps) {
 
       {/* CTA */}
       <Section border="top" padding="none">
-        <Container className="py-20 lg:py-24">
+        <Container className="py-20 lg:py-28">
+          <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
           <h2 className="text-ink text-2xl font-medium tracking-[-0.02em]">
             The best way to understand DeployTitan is to try it on a real sprint.
           </h2>

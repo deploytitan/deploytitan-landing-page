@@ -45,18 +45,19 @@ export default function Contact() {
     <div className="min-h-screen bg-surface">
       {/* Hero */}
       <Section padding="none">
-        <Container className="py-24 lg:py-32">
-          <span className="text-ink-tertiary font-mono text-[11px] tracking-widest uppercase">
+        <Container className="pb-24 pt-20 lg:pb-32 lg:pt-28">
+          <span className="hero-label text-ink-tertiary font-mono text-[11px] tracking-widest uppercase">
             Contact
           </span>
-          <h1 className="font-display text-ink mt-5 max-w-[16ch] text-[clamp(2.4rem,4.8vw,4.8rem)] leading-[1.0] font-medium tracking-[-0.04em]">
-            Put your next release on firmer ground.
+          <h1 className="hero-heading font-display text-ink mt-5 max-w-[18ch] text-[clamp(2.8rem,6.5vw,7.2rem)] leading-[0.95] font-medium tracking-[-0.06em]">
+            Put your next release on{' '}
+            <span className="word-underline text-primary-accessible">firmer</span> ground.
           </h1>
-          <p className="text-ink-secondary mt-6 max-w-[44ch] text-lg leading-relaxed">
+          <p className="hero-body text-ink-secondary mt-8 max-w-[44ch] text-lg leading-relaxed">
             If release day still means watching CI tabs, waiting on approvals, or chasing somebody
             in Slack, start here. The fastest path is to try DeployTitan on a real sprint.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="hero-actions mt-8 flex flex-col gap-3 sm:flex-row">
             <Button
               as="a"
               href={CREATE_ACCOUNT_URL}
@@ -93,11 +94,12 @@ export default function Contact() {
         </Container>
       </Section>
 
-      {/* Sales detail */}
+      {/* Sales + signup detail */}
       <Section border="top" padding="none">
-        <Container className="py-20 lg:py-24">
+        <Container className="py-20 lg:py-28">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
             <div>
+              <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
               <h2 className="font-display text-ink text-2xl leading-[1.1] font-medium tracking-[-0.025em]">
                 Planning rollout, pricing, or integration questions?
               </h2>
@@ -120,6 +122,7 @@ export default function Contact() {
             </div>
 
             <div>
+              <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
               <h2 className="font-display text-ink text-2xl leading-[1.1] font-medium tracking-[-0.025em]">
                 Already decided?
               </h2>
@@ -154,7 +157,8 @@ export default function Contact() {
 
       {/* Other routes */}
       <Section border="top" padding="none">
-        <Container className="py-20 lg:py-24">
+        <Container className="py-20 lg:py-28">
+          <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
           <h2 className="text-ink text-xl font-medium tracking-[-0.02em]">Other inboxes</h2>
           <p className="text-ink-secondary mt-3 max-w-[44ch] text-sm leading-relaxed">
             Route your message directly if you already know where it belongs.
@@ -164,7 +168,7 @@ export default function Contact() {
             {supportRoutes.map((route) => (
               <div
                 key={route.label}
-                className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-8"
+                className="contact-route-row grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-8"
               >
                 <div>
                   <p className="text-ink text-sm font-medium">{route.label}</p>
@@ -189,7 +193,16 @@ export default function Contact() {
                   onClick={() => copyEmail(route.email)}
                   className="text-ink-tertiary hover:text-ink inline-flex min-h-[44px] items-center font-mono text-[10px] tracking-[0.12em] uppercase transition-colors"
                 >
-                  {copiedEmail === route.email ? 'Copied' : 'Copy'}
+                  {copiedEmail === route.email ? (
+                    <span key="copied" className="copy-check inline-flex items-center gap-1.5 text-signal-success">
+                      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+                        <path d="M1.5 5.5l2.5 2.5 5.5-5.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      Copied
+                    </span>
+                  ) : (
+                    <span key="copy">Copy</span>
+                  )}
                 </button>
               </div>
             ))}
