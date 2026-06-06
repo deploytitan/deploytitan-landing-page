@@ -253,6 +253,20 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
             >
               Pricing
             </Link>
+
+            <Link
+              href="/about"
+              className={`nav-link-underline text-sm transition-colors ${pathname === '/about' ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
+            >
+              About
+            </Link>
+
+            <Link
+              href="/contact"
+              className={`nav-link-underline text-sm transition-colors ${pathname === '/contact' ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
+            >
+              Contact
+            </Link>
           </div>
 
           {/* Desktop auth */}

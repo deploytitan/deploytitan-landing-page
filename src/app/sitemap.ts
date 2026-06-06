@@ -1,74 +1,54 @@
 import type { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
 import { postSlugsQuery } from '@/sanity/lib/queries'
+import { generatedNodes } from '@/data/siteGraph.generated'
 
 const BASE_URL = 'https://deploytitan.com'
 
-const staticRoutes: Array<{
-  url: string
-  changeFrequency?: MetadataRoute.Sitemap[number]['changeFrequency']
-  priority?: number
-}> = [
-  // Home
-  { url: '/',              changeFrequency: 'weekly',  priority: 1.0 },
+type SitemapEntryDefaults = Pick<MetadataRoute.Sitemap[number], 'changeFrequency' | 'priority'>
 
-  // Products
-  { url: '/products/titan-rollout',   changeFrequency: 'monthly', priority: 0.9 },
-  { url: '/products/titan-shield',    changeFrequency: 'monthly', priority: 0.9 },
-  { url: '/products/titan-foresight', changeFrequency: 'monthly', priority: 0.9 },
-  { url: '/products/titan-ledger',    changeFrequency: 'monthly', priority: 0.9 },
-  { url: '/products/titan-phoenix',   changeFrequency: 'monthly', priority: 0.9 },
-  { url: '/products/titan-insight',   changeFrequency: 'monthly', priority: 0.7 },
-  { url: '/products/titan-sandbox',   changeFrequency: 'monthly', priority: 0.7 },
+const routeOverrides = new Map<string, SitemapEntryDefaults>([
+  ['/', { changeFrequency: 'weekly', priority: 1.0 }],
+  ['/products/titan-rollout', { changeFrequency: 'monthly', priority: 0.9 }],
+  ['/products/titan-foresight', { changeFrequency: 'monthly', priority: 0.9 }],
+  ['/products/titan-phoenix', { changeFrequency: 'monthly', priority: 0.9 }],
+  ['/solutions/release-coordination', { changeFrequency: 'monthly', priority: 0.9 }],
 
-  // Solutions
-  { url: '/solutions',                        changeFrequency: 'monthly', priority: 0.8 },
-  { url: '/solutions/release-coordination',   changeFrequency: 'monthly', priority: 0.9 },
-  { url: '/solutions/rollback-coordination',  changeFrequency: 'monthly', priority: 0.8 },
-  { url: '/solutions/release-intelligence',   changeFrequency: 'monthly', priority: 0.8 },
-  { url: '/solutions/platform-engineering',   changeFrequency: 'monthly', priority: 0.7 },
+  ['/docs', { changeFrequency: 'weekly', priority: 0.8 }],
+  ['/blog', { changeFrequency: 'weekly', priority: 0.8 }],
+  ['/pricing', { changeFrequency: 'monthly', priority: 0.8 }],
+  ['/status', { changeFrequency: 'always', priority: 0.5 }],
+  ['/sitemap', { changeFrequency: 'monthly', priority: 0.3 }],
+  ['/terms', { changeFrequency: 'yearly', priority: 0.3 }],
+  ['/privacy', { changeFrequency: 'yearly', priority: 0.3 }],
+])
 
-  // Personas
-  { url: '/for/sre',    changeFrequency: 'monthly', priority: 0.7 },
-  { url: '/for/devops', changeFrequency: 'monthly', priority: 0.7 },
-  { url: '/for/cto',    changeFrequency: 'monthly', priority: 0.7 },
+function getRouteDefaults(route: string): SitemapEntryDefaults {
+  const override = routeOverrides.get(route)
+  if (override) return override
 
-  // Developer
-  { url: '/docs',          changeFrequency: 'weekly',  priority: 0.8 },
-  { url: '/api-reference', changeFrequency: 'monthly', priority: 0.7 },
-  { url: '/cli',           changeFrequency: 'monthly', priority: 0.7 },
-  { url: '/integrations',  changeFrequency: 'weekly',  priority: 0.7 },
-  { url: '/roadmap',       changeFrequency: 'weekly',  priority: 0.7 },
-  { url: '/changelog',     changeFrequency: 'weekly',  priority: 0.6 },
-  { url: '/how-it-works',  changeFrequency: 'monthly', priority: 0.6 },
+  if (route.startsWith('/products/')) return { changeFrequency: 'monthly', priority: 0.8 }
+  if (route === '/solutions') return { changeFrequency: 'monthly', priority: 0.8 }
+  if (route.startsWith('/solutions/')) return { changeFrequency: 'monthly', priority: 0.7 }
+  if (route.startsWith('/for/')) return { changeFrequency: 'monthly', priority: 0.7 }
+  if (route === '/api-reference' || route === '/cli') return { changeFrequency: 'monthly', priority: 0.7 }
+  if (route === '/how-it-works') return { changeFrequency: 'monthly', priority: 0.6 }
+  if (route === '/about') return { changeFrequency: 'monthly', priority: 0.6 }
+  if (route === '/journey') return { changeFrequency: 'monthly', priority: 0.5 }
+  if (route === '/contact') return { changeFrequency: 'monthly', priority: 0.6 }
+  if (route === '/security') return { changeFrequency: 'monthly', priority: 0.6 }
+  if (route.startsWith('/blog/')) return { changeFrequency: 'weekly', priority: 0.7 }
 
-  // Resources
-  { url: '/blog',          changeFrequency: 'weekly',  priority: 0.8 },
-  { url: '/customers',     changeFrequency: 'monthly', priority: 0.7 },
-  { url: '/pricing',       changeFrequency: 'monthly', priority: 0.8 },
-  { url: '/early-access',  changeFrequency: 'monthly', priority: 0.8 },
-  { url: '/status',        changeFrequency: 'always',  priority: 0.5 },
-  { url: '/sitemap',       changeFrequency: 'monthly', priority: 0.3 },
-
-  // Company
-  { url: '/about',    changeFrequency: 'monthly', priority: 0.6 },
-  { url: '/journey',  changeFrequency: 'monthly', priority: 0.5 },
-  { url: '/careers',  changeFrequency: 'weekly',  priority: 0.6 },
-  { url: '/contact',  changeFrequency: 'monthly', priority: 0.6 },
-  { url: '/partners', changeFrequency: 'monthly', priority: 0.5 },
-  { url: '/press',    changeFrequency: 'monthly', priority: 0.5 },
-  { url: '/brand',    changeFrequency: 'yearly',  priority: 0.3 },
-
-  // Trust & Compliance
-  { url: '/security', changeFrequency: 'monthly', priority: 0.6 },
-
-  // Legal
-  { url: '/terms',   changeFrequency: 'yearly', priority: 0.3 },
-  { url: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
-]
+  return { changeFrequency: 'monthly', priority: 0.5 }
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
+  const staticRoutes = generatedNodes.map(({ id }) => ({
+    url: `${BASE_URL}${id}`,
+    lastModified: now,
+    ...getRouteDefaults(id),
+  }))
 
   // Fetch published blog post slugs from Sanity
   let blogRoutes: MetadataRoute.Sitemap = []
@@ -77,19 +57,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     blogRoutes = (slugs ?? []).map(({ slug }) => ({
       url: `${BASE_URL}/blog/${slug}`,
       lastModified: now,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
+      ...getRouteDefaults(`/blog/${slug}`),
     }))
   } catch {
     // Sanity unreachable at build time — skip blog post URLs gracefully
   }
 
   return [
-    ...staticRoutes.map(({ url, ...rest }) => ({
-      url: `${BASE_URL}${url}`,
-      lastModified: now,
-      ...rest,
-    })),
+    ...staticRoutes,
     ...blogRoutes,
   ]
 }

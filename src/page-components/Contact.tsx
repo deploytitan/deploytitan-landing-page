@@ -1,182 +1,216 @@
 'use client'
 
+import { useState } from 'react'
 import posthog from 'posthog-js'
+import { CREATE_ACCOUNT_URL } from '@/lib/env'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
-import { Card } from '../components/shared/Card'
+import { Button } from '../components/shared/Button'
 
-const contactOptions = [
+const supportRoutes = [
   {
-    label: 'Sales',
-    description: 'Talk to us about pricing, enterprise contracts, or custom integrations.',
-    email: 'sales@deploytitan.com',
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Support',
-    description: 'Having trouble with an integration or deployment? We respond fast.',
+    label: 'Integration help',
+    description: 'Questions about GitHub, Jenkins, Grafana, or Slack setup.',
     email: 'support@deploytitan.com',
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-        <line x1="12" y1="17" x2="12.01" y2="17" />
-      </svg>
-    ),
   },
   {
-    label: 'Press',
-    description: 'Media inquiries, press kit requests, and analyst briefings.',
+    label: 'Press and analyst briefings',
+    description: 'Media requests, product background, and company context.',
     email: 'press@deploytitan.com',
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
-        <path d="M18 14h-8" />
-        <path d="M15 18h-5" />
-        <path d="M10 6h8v4h-8V6z" />
-      </svg>
-    ),
   },
   {
-    label: 'General',
-    description: 'Everything else — feedback, partnerships, ideas.',
+    label: 'Everything else',
+    description: 'Partnerships, feedback, hiring interest, or a note you want us to read.',
     email: 'hello@deploytitan.com',
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-        <polyline points="22,6 12,13 2,6" />
-      </svg>
-    ),
   },
 ]
 
 export default function Contact() {
+  const [copiedEmail, setCopiedEmail] = useState<string | null>(null)
+
+  async function copyEmail(email: string) {
+    try {
+      await navigator.clipboard.writeText(email)
+      setCopiedEmail(email)
+      posthog.capture('contact_email_copied', { email })
+      window.setTimeout(() => {
+        setCopiedEmail((current) => (current === email ? null : current))
+      }, 2000)
+    } catch {
+      setCopiedEmail(null)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-surface">
       {/* Hero */}
-      <Section border="bottom" padding="none" className="blueprint-grid">
-        <Container className="py-16 lg:py-20">
-          <div className="max-w-2xl">
-            <span className="font-mono text-[11px] text-ink-tertiary uppercase tracking-widest">
-              Contact
-            </span>
-            <h1 className="mt-3 text-4xl sm:text-5xl font-display font-medium tracking-tight text-ink leading-[1.1]">
-              Let's talk.
-            </h1>
-            <p className="mt-5 text-lg text-ink-secondary leading-relaxed max-w-lg">
-              We're a small team and we read every email. Choose the right inbox below and we'll get
-              back to you quickly.
-            </p>
-          </div>
-        </Container>
-      </Section>
-
-      {/* Contact options */}
-      <Container as="section" className="py-14">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {contactOptions.map((opt) => (
-            <Card
-              key={opt.label}
-              variant="spotlight"
-              tone="muted"
-              href={`mailto:${opt.email}`}
-              interactive
-              className="group block"
-              onClick={() => posthog.capture('contact_email_clicked', { contact_type: opt.label, email: opt.email })}
+      <Section padding="none">
+        <Container className="py-24 lg:py-32">
+          <span className="text-ink-tertiary font-mono text-[11px] tracking-widest uppercase">
+            Contact
+          </span>
+          <h1 className="font-display text-ink mt-5 max-w-[16ch] text-[clamp(2.4rem,4.8vw,4.8rem)] leading-[1.0] font-medium tracking-[-0.04em]">
+            Put your next release on firmer ground.
+          </h1>
+          <p className="text-ink-secondary mt-6 max-w-[44ch] text-lg leading-relaxed">
+            If release day still means watching CI tabs, waiting on approvals, or chasing somebody
+            in Slack, start here. The fastest path is to try DeployTitan on a real sprint.
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button
+              as="a"
+              href={CREATE_ACCOUNT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="primary"
+              size="lg"
+              className="rounded-[8px]"
+              onClick={() =>
+                posthog.capture('contact_route_clicked', {
+                  contact_type: 'signup',
+                  href: CREATE_ACCOUNT_URL,
+                })
+              }
             >
-              <div
-                className="w-10 h-10 flex items-center justify-center border border-line text-ink-tertiary group-hover:text-primary group-hover:border-primary/30 transition-all mb-4"
-                style={{ borderRadius: '2px' }}
-              >
-                {opt.icon}
-              </div>
-              <h3 className="text-base font-medium text-ink group-hover:text-primary transition-colors">
-                {opt.label}
-              </h3>
-              <p className="mt-1.5 text-sm text-ink-secondary leading-relaxed">{opt.description}</p>
-              <p className="mt-3 font-mono text-xs text-ink-tertiary group-hover:text-primary transition-colors">
-                {opt.email}
-              </p>
-            </Card>
-          ))}
-        </div>
-      </Container>
+              Create account
+            </Button>
+            <Button
+              as="a"
+              href="mailto:sales@deploytitan.com?subject=DeployTitan%20fit%20for%20our%20team"
+              variant="outline"
+              size="lg"
+              className="rounded-[8px]"
+              onClick={() =>
+                posthog.capture('contact_route_clicked', {
+                  contact_type: 'sales',
+                  href: 'mailto:sales@deploytitan.com',
+                })
+              }
+            >
+              Talk through fit
+            </Button>
+          </div>
+        </Container>
+      </Section>
 
-      {/* Office info */}
-      <Section border="top" tone="muted" padding="none">
-        <Container className="py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+      {/* Sales detail */}
+      <Section border="top" padding="none">
+        <Container className="py-20 lg:py-24">
+          <div className="grid grid-cols-1 gap-16 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
             <div>
-              <p className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
-                Headquarters
+              <h2 className="font-display text-ink text-2xl leading-[1.1] font-medium tracking-[-0.025em]">
+                Planning rollout, pricing, or integration questions?
+              </h2>
+              <p className="text-ink-secondary mt-5 text-base leading-relaxed">
+                Send the shape of your release process, the tools you already run, and what keeps
+                slowing teams down. We respond within 24 hours.
               </p>
-              <p className="mt-2 text-sm text-ink">Pune, India</p>
+              <a
+                href="mailto:sales@deploytitan.com?subject=DeployTitan%20fit%20for%20our%20team"
+                className="text-primary-accessible mt-5 inline-block font-mono text-[11px] tracking-[0.12em] transition-opacity hover:opacity-70"
+                onClick={() =>
+                  posthog.capture('contact_route_clicked', {
+                    contact_type: 'sales',
+                    href: 'mailto:sales@deploytitan.com',
+                  })
+                }
+              >
+                sales@deploytitan.com
+              </a>
             </div>
+
             <div>
-              <p className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
-                Response time
+              <h2 className="font-display text-ink text-2xl leading-[1.1] font-medium tracking-[-0.025em]">
+                Already decided?
+              </h2>
+              <p className="text-ink-secondary mt-5 text-base leading-relaxed">
+                Connect GitHub and Slack, add the PRs on your next release, and watch the
+                coordination work happen without you. Set up takes minutes. Most teams see the
+                difference in one sprint.
               </p>
-              <p className="mt-2 text-sm text-ink">Within 24 hours</p>
-            </div>
-            <div>
-              <p className="font-mono text-[10px] text-ink-tertiary uppercase tracking-widest">
-                Urgent support
-              </p>
-              <p className="mt-2 text-sm text-ink">
-                <a
-                  href="mailto:support@deploytitan.com"
-                  className="text-primary-accessible hover:text-primary transition-colors"
+              <div className="mt-6">
+                <Button
+                  as="a"
+                  href={CREATE_ACCOUNT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="primary"
+                  size="sm"
+                  className="rounded-[8px]"
+                  onClick={() =>
+                    posthog.capture('contact_route_clicked', {
+                      contact_type: 'signup',
+                      href: CREATE_ACCOUNT_URL,
+                    })
+                  }
                 >
-                  support@deploytitan.com
-                </a>
-              </p>
-              <p className="text-sm text-ink-secondary">For active production incidents</p>
+                  Create account
+                </Button>
+              </div>
             </div>
           </div>
         </Container>
       </Section>
 
-      
+      {/* Other routes */}
+      <Section border="top" padding="none">
+        <Container className="py-20 lg:py-24">
+          <h2 className="text-ink text-xl font-medium tracking-[-0.02em]">Other inboxes</h2>
+          <p className="text-ink-secondary mt-3 max-w-[44ch] text-sm leading-relaxed">
+            Route your message directly if you already know where it belongs.
+          </p>
+
+          <div className="mt-10 space-y-8">
+            {supportRoutes.map((route) => (
+              <div
+                key={route.label}
+                className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-8"
+              >
+                <div>
+                  <p className="text-ink text-sm font-medium">{route.label}</p>
+                  <p className="text-ink-secondary mt-1 text-sm leading-relaxed">
+                    {route.description}
+                  </p>
+                </div>
+                <a
+                  href={`mailto:${route.email}`}
+                  className="text-ink-secondary hover:text-ink font-mono text-[11px] tracking-[0.08em] transition-colors"
+                  onClick={() =>
+                    posthog.capture('contact_support_route_clicked', {
+                      contact_type: route.label,
+                      email: route.email,
+                    })
+                  }
+                >
+                  {route.email}
+                </a>
+                <button
+                  type="button"
+                  onClick={() => copyEmail(route.email)}
+                  className="text-ink-tertiary hover:text-ink inline-flex min-h-[44px] items-center font-mono text-[10px] tracking-[0.12em] uppercase transition-colors"
+                >
+                  {copiedEmail === route.email ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-16 flex flex-col gap-1 sm:flex-row sm:gap-10">
+            {[
+              { label: 'Headquarters', detail: 'Pune, India' },
+              { label: 'General response', detail: 'Within 24 hours' },
+              { label: 'Production incidents', detail: 'Same-day · support@deploytitan.com' },
+            ].map((item) => (
+              <div key={item.label} className="flex flex-col gap-0.5 py-3">
+                <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.14em] uppercase">
+                  {item.label}
+                </p>
+                <p className="text-ink-secondary text-sm">{item.detail}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
     </div>
   )
 }

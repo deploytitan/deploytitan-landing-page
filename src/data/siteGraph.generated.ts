@@ -158,6 +158,11 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
+    "source": "/about",
+    "target": "/contact",
+    "kind": "link"
+  },
+  {
     "source": "/c-l-i",
     "target": "/api-reference",
     "kind": "link"
@@ -238,18 +243,23 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
+    "source": "/products/-titan-rollout",
+    "target": "/pricing",
+    "kind": "link"
+  },
+  {
     "source": "__nav__",
     "target": "/blog",
     "kind": "nav"
   },
   {
     "source": "__nav__",
-    "target": "/pricing",
+    "target": "/journey",
     "kind": "nav"
   },
   {
     "source": "__nav__",
-    "target": "/journey",
+    "target": "/pricing",
     "kind": "nav"
   },
   {
