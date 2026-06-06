@@ -20,8 +20,8 @@
    ---------------------------------------------------------------------- */
 @theme {
     /* Fonts */
-    --font-sans:    'Instrument Sans', system-ui, sans-serif;
-    --font-display: 'Inter', system-ui, sans-serif;
+    --font-sans:    'Barlow', system-ui, sans-serif;
+    --font-display: 'Barlow', system-ui, sans-serif;
     --font-mono:    'JetBrains Mono', monospace;
 
     /* Surfaces */
@@ -32,17 +32,18 @@
     --color-ink:            #1a1512;
     --color-ink-secondary:  #3d3530;
     --color-ink-tertiary:   #6b6059;
-    --color-ink-quaternary: #9e9189;
+    --color-ink-quaternary: #726a64;
 
     /* Lines */
     --color-line:        #e5e2dc;
     --color-line-subtle: #eeece8;
 
     /* Signal colors */
-    --color-signal-success: #22c55e;
-    --color-signal-warning: #f59e0b;
-    --color-signal-danger:  #ef4444;
-    --color-signal-deploy:  #3b82f6;
+    --color-signal-success:     #16a34a;
+    --color-signal-success-rgb: 22 163 74;
+    --color-signal-warning:     #b45309;
+    --color-signal-danger:      #ef4444;
+    --color-signal-deploy:      #3b82f6;
 
     /* Precision amber (primary accent) */
     --color-gold:         #c9a84c;
@@ -90,8 +91,9 @@
     --color-line-subtle: #1e1c19;
 
     /* Signal colors lift one step for contrast against dark surfaces */
-    --color-signal-success: #4ade80;
-    --color-signal-warning: #fbbf24;
+    --color-signal-success:     #4ade80;
+    --color-signal-success-rgb: 74 222 128;
+    --color-signal-warning:     #fbbf24;
     --color-signal-danger:  #f87171;
     --color-signal-deploy:  #60a5fa;
 

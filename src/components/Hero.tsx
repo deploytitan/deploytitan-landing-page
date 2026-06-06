@@ -74,32 +74,6 @@ const INIT_STATUSES: Record<string, PRStatus> = Object.fromEntries(
 
 // ─── CSS ──────────────────────────────────────────────────────────────────────
 
-const EXTRA_CSS = `
-  @keyframes spinRing {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-  @keyframes cursorBlink {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0; }
-  }
-  @keyframes rowSlideIn {
-    from { opacity: 0; transform: translateX(-8px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes btnPress {
-    0%, 100% { transform: scale(1); }
-    45%      { transform: scale(0.93); }
-  }
-  @keyframes msgFadeUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  }
-`
-
 // ─── Spinner ──────────────────────────────────────────────────────────────────
 
 function Spinner() {
@@ -244,11 +218,12 @@ function SlackPanel({
   return (
     <div
       style={{
-        overflow: 'hidden',
-        maxHeight: visible ? '420px' : '0px',
-        transition: 'max-height 0.55s cubic-bezier(0.22,1,0.36,1)',
+        display: 'grid',
+        gridTemplateRows: visible ? '1fr' : '0fr',
+        transition: 'grid-template-rows 0.55s cubic-bezier(0.22,1,0.36,1)',
       }}
     >
+      <div style={{ overflow: 'hidden' }}>
       {/* Channel strip */}
       <div
         className="border-line bg-surface-alt/50"
@@ -312,7 +287,7 @@ function SlackPanel({
               height: 28,
               borderRadius: 4,
               flexShrink: 0,
-              backgroundColor: 'rgba(201,168,76,0.15)',
+              backgroundColor: 'rgb(var(--color-primary-rgb) / 0.15)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -409,7 +384,7 @@ function SlackPanel({
                       padding: '3px 9px',
                       borderRadius: 3,
                       border: '1px solid var(--color-signal-success)',
-                      backgroundColor: 'rgba(34,197,94,0.1)',
+                      backgroundColor: 'rgb(var(--color-signal-success-rgb) / 0.1)',
                       color: 'var(--color-signal-success-text)',
                     }}
                   >
@@ -423,8 +398,8 @@ function SlackPanel({
                         fontSize: 8.5,
                         padding: '3px 9px',
                         borderRadius: 3,
-                        border: '1px solid rgba(201,168,76,0.35)',
-                        backgroundColor: 'rgba(201,168,76,0.1)',
+                        border: '1px solid rgb(var(--color-primary-rgb) / 0.35)',
+                        backgroundColor: 'rgb(var(--color-primary-rgb) / 0.1)',
                         color: 'var(--color-primary-accessible)',
                         cursor: 'default',
                       }}
@@ -483,7 +458,7 @@ function SlackPanel({
               height: 28,
               borderRadius: 4,
               flexShrink: 0,
-              backgroundColor: 'rgba(34,197,94,0.13)',
+              backgroundColor: 'rgb(var(--color-signal-success-rgb) / 0.13)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -559,6 +534,7 @@ function SlackPanel({
           </div>
         </div>
       )}
+      </div>
     </div>
   )
 }
@@ -672,8 +648,6 @@ export function Hero() {
       ref={ref}
       className="border-line relative overflow-hidden border-b pt-28 pb-20 lg:pt-34 lg:pb-28"
     >
-      <style dangerouslySetInnerHTML={{ __html: EXTRA_CSS }} />
-
       <div
         className="blueprint-grid pointer-events-none absolute inset-0 opacity-35"
         aria-hidden="true"
@@ -682,7 +656,7 @@ export function Hero() {
         className="pointer-events-none absolute inset-x-0 top-0 h-32"
         style={{
           background:
-            'linear-gradient(180deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.02) 42%, rgba(201,168,76,0) 100%)',
+            'linear-gradient(180deg, rgb(var(--color-primary-rgb) / 0.08) 0%, rgb(var(--color-primary-rgb) / 0.02) 42%, transparent 100%)',
         }}
         aria-hidden="true"
       />
@@ -887,10 +861,10 @@ export function Hero() {
                     borderRadius: 4,
                     border:
                       isReady && !showSlack
-                        ? '1px solid rgba(201,168,76,0.5)'
+                        ? '1px solid rgb(var(--color-primary-rgb) / 0.5)'
                         : '1px solid var(--color-line)',
                     backgroundColor:
-                      isReady && !showSlack ? 'rgba(201,168,76,0.12)' : 'transparent',
+                      isReady && !showSlack ? 'rgb(var(--color-primary-rgb) / 0.12)' : 'transparent',
                     color:
                       isReady && !showSlack
                         ? 'var(--color-primary-accessible)'

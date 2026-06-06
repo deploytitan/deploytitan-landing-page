@@ -61,8 +61,14 @@ body {
     background: var(--color-surface);
     color: var(--color-ink);
     font-family: var(--font-sans);
+    font-optical-sizing: auto;
+    font-kerning: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 {
+    text-wrap: balance;
 }
 
 /* Noise texture overlay — material depth at 2% opacity */

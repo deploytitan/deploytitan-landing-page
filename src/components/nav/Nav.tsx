@@ -264,7 +264,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
               target="_blank"
               rel="noopener noreferrer"
               variant="primary"
-              size="xs"
+              size="sm"
             >
               Create account
               <svg

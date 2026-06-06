@@ -4,29 +4,30 @@ import { useScrollReveal } from '../utils'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
 import { Button } from '../components/shared/Button'
+import { CREATE_ACCOUNT_URL } from '@/lib/env'
 
 const PRIMARY = 'var(--color-primary)'
 
 const OUTCOMES = [
   {
     number: '01',
-    title: 'Reduce deployment risk',
-    body: 'Progressive rollouts, automated risk scoring, and real-time traffic control, catching problems before they reach all your users.',
+    title: 'Every sprint PR in one view',
+    body: 'Add every release PR across all repos to one release object. No links in chat, no spreadsheet, no guessing what is actually in the sprint.',
   },
   {
     number: '02',
-    title: 'Recover in seconds, not minutes',
-    body: `Instant rollback without coordination. The system recovered from a failure without your users being any wiser, and that's confidence.`,
+    title: 'CI and Jenkins run without babysitting',
+    body: 'Titan triggers your jobs automatically when the release starts. No one has to watch a terminal, refresh a dashboard, or remember to kick off the pipeline.',
   },
   {
     number: '03',
-    title: 'Protect your SLOs and SLAs',
-    body: 'Full visibility into blast radius before you ship. Stop discovering compliance breaches in a post-incident review.',
+    title: 'Failures surface in Slack immediately',
+    body: 'When a job fails, the right people get a Slack alert with the context they need to act. No tab-checking, no refresh loops, no delay.',
   },
   {
     number: '04',
-    title: 'Deploy whenever you want',
-    body: 'Friday afternoons. Multiple times a day. Whatever works for your team, because you have the confidence to back it up.',
+    title: 'Approvals happen without leaving Slack',
+    body: 'Stakeholders get a Slack message with the full release context. One click to approve. No browser, no GitHub, no friction at the moment that matters most.',
   },
 ]
 
@@ -59,7 +60,7 @@ export default function Journey() {
           <p className="text-primary-accessible mb-4 font-mono text-xs tracking-widest uppercase">
             My journey
           </p>
-          <h1 className="text-ink mb-7 text-4xl leading-tight font-semibold lg:text-5xl">
+          <h1 className="text-ink mb-7 text-[clamp(2.25rem,5vw,4rem)] leading-[0.96] font-semibold tracking-[-0.03em]">
             I built DeployTitan
             <br className="hidden md:block" /> because I lived the problem.
           </h1>
@@ -133,7 +134,7 @@ export default function Journey() {
             The real problem
           </span>
 
-          <h2 data-reveal className="text-ink mb-3 text-3xl leading-snug font-semibold">
+          <h2 data-reveal className="text-ink mb-3 text-[clamp(1.75rem,3.5vw,2.8rem)] leading-[1.04] font-semibold tracking-[-0.025em]">
             It was never a people problem.
             <br />
             It was always a tooling problem.
@@ -157,11 +158,11 @@ export default function Journey() {
             {BAD_PATTERNS.map((item, i) => (
               <div
                 key={item.label}
-                className="grid grid-cols-[2rem_1fr_1fr] items-start gap-6 px-6 py-5 sm:gap-8"
+                className="grid grid-cols-1 items-start gap-3 px-6 py-5 sm:grid-cols-[2rem_1fr_1fr] sm:gap-8"
                 role="listitem"
               >
                 <span
-                  className="text-primary-accessible dark:text-primary pt-0.5 font-mono text-xs tabular-nums"
+                  className="text-primary-accessible dark:text-primary hidden pt-0.5 font-mono text-xs tabular-nums sm:block"
                   aria-hidden="true"
                 >
                   0{i + 1}
@@ -191,7 +192,7 @@ export default function Journey() {
             What I&apos;m building
           </span>
 
-          <h2 data-reveal className="text-ink mb-3 text-3xl leading-snug font-semibold">
+          <h2 data-reveal className="text-ink mb-3 text-[clamp(1.75rem,3.5vw,2.8rem)] leading-[1.04] font-semibold tracking-[-0.025em]">
             Deployments should feel boring.
           </h2>
           <p data-reveal className="text-ink-secondary mb-14 max-w-lg text-lg leading-relaxed">
@@ -211,7 +212,7 @@ export default function Journey() {
                     {p.number}
                   </span>
                   <div>
-                    <h3 className="text-ink mb-2 text-sm font-semibold">{p.title}</h3>
+                    <h3 className="text-ink mb-2 text-base font-semibold">{p.title}</h3>
                     <p className="text-ink-secondary text-sm leading-relaxed">{p.body}</p>
                   </div>
                 </div>
@@ -222,7 +223,7 @@ export default function Journey() {
       </section>
 
       {/* ── Founder note ──────────────────────────────────────────────────────── */}
-      <section className="border-line border-b pt-16 pb-20">
+      <section className="border-line border-b pt-16 pb-20" id="founder-note">
         <Container width="3xl" padding="default">
           <Card padding="none" className="relative overflow-hidden p-8 lg:p-12" data-reveal>
             <div
@@ -266,6 +267,32 @@ export default function Journey() {
               </div>
             </div>
           </Card>
+        </Container>
+      </section>
+
+      {/* ── CTA ──────────────────────────────────────────────────────────────── */}
+      <section className="border-line border-b py-20">
+        <Container width="3xl" padding="default" data-reveal>
+          <p className="text-ink-tertiary mb-4 font-mono text-[11px] tracking-[0.22em] uppercase">
+            Available now
+          </p>
+          <h2 className="text-ink mb-6 text-[clamp(2rem,4vw,3.4rem)] leading-[1.0] font-medium tracking-[-0.04em]">
+            Try it on your next sprint.
+          </h2>
+          <p className="text-ink-secondary mb-8 max-w-[42ch] text-lg leading-8">
+            Create an account, connect GitHub and Slack, and add the PRs that need to ship. You will know if it works in one release.
+          </p>
+          <Button
+            as="a"
+            href={CREATE_ACCOUNT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="primary"
+            size="lg"
+            className="rounded-[8px]"
+          >
+            Create account
+          </Button>
         </Container>
       </section>
 
