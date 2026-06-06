@@ -116,6 +116,8 @@ export const MobileNav = forwardRef<HTMLDivElement, Props>(function MobileNav(
         { label: 'Blog', route: '/blog' },
         { label: 'My Journey', route: '/journey' },
         { label: 'Pricing', route: '/pricing' },
+        { label: 'About', route: '/about' },
+        { label: 'Contact', route: '/contact' },
       ].map((link) => (
         <Link
           key={link.route}

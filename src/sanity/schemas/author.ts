@@ -34,6 +34,21 @@ export const authorType = defineType({
       title: 'Role / Title',
       type: 'string',
     }),
+    defineField({
+      name: 'showOnAboutPage',
+      title: 'Show on About page',
+      type: 'boolean',
+      initialValue: false,
+      description: 'Enable this to include the author in the About page Team section.',
+    }),
+    defineField({
+      name: 'teamOrder',
+      title: 'Team order',
+      type: 'number',
+      description:
+        'Lower numbers appear first in the About page Team section, for example Founder/CEO before CTO.',
+      validation: (Rule) => Rule.integer().min(0),
+    }),
   ],
   preview: {
     select: { title: 'name', media: 'image' },

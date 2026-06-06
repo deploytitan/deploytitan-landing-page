@@ -69,3 +69,16 @@ export const postsByCategoryQuery = defineQuery(`
     "categories": categories[]->{ title, slug },
   }
 `)
+
+// ─── About page team members ──────────────────────────────────────────────────
+export const aboutTeamQuery = defineQuery(`
+  *[_type == "author" && showOnAboutPage == true]
+  | order(teamOrder asc, name asc) {
+    _id,
+    name,
+    role,
+    bio,
+    image,
+    teamOrder,
+  }
+`)

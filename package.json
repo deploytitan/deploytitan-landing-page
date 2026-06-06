@@ -5,6 +5,7 @@
   "packageManager": "pnpm@10.33.1",
   "type": "module",
   "scripts": {
+    "predev": "tsx scripts/build-link-graph.ts",
     "dev": "next dev --turbopack",
     "prebuild": "tsx scripts/build-link-graph.ts",
     "build": "next build",

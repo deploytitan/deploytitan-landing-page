@@ -22,6 +22,11 @@ export async function POST(req: NextRequest) {
       revalidatePath('/blog')
     }
 
+    if (body._type === 'author') {
+      revalidatePath('/about')
+      revalidatePath('/blog')
+    }
+
     return NextResponse.json({ revalidated: true, now: Date.now() })
   } catch (err) {
     console.error(err)
