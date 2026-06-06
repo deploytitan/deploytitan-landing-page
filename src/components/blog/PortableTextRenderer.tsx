@@ -80,12 +80,13 @@ const components: PortableTextComponents = {
       if (!value?.asset) return null
       return (
         <figure className="my-8">
-          <div className="relative w-full aspect-[16/9] overflow-hidden sharp-card border border-line">
+          <div className="sharp-card border border-line overflow-hidden">
             <Image
-              src={urlFor(value).width(1200).height(675).url()}
+              src={urlFor(value).width(1200).url()}
               alt={value.alt ?? ''}
-              fill
-              className="object-cover"
+              width={1200}
+              height={0}
+              style={{ width: '100%', height: 'auto' }}
               sizes="(min-width: 1024px) 720px, 100vw"
             />
           </div>

@@ -26,11 +26,8 @@ export function PostCard({ post }: PostCardProps) {
     : null
 
   return (
-    <Link
-      href={href}
-      className="group flex flex-col sharp-card border border-line hover:border-primary/20 transition-all duration-200 overflow-hidden"
-    >
-      {/* Cover */}
+    <article className="group relative flex flex-col sharp-card border border-line hover:border-primary/20 transition-all duration-200 overflow-hidden">
+      {/* Cover image */}
       {post.coverImage?.asset && (
         <div className="relative aspect-[16/9] bg-surface-alt overflow-hidden">
           <Image
@@ -44,27 +41,37 @@ export function PostCard({ post }: PostCardProps) {
       )}
 
       <div className="flex flex-col flex-1 p-6 gap-3">
-        {/* Categories */}
+        {/* Category chips — sit above the title's cover pseudo-link via z-10 */}
         {post.categories && post.categories.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
+          <div className="relative z-10 flex flex-wrap gap-1.5">
             {post.categories.map((cat) => (
-              <span
+              <Link
                 key={cat.slug.current}
-                className="font-mono text-[10px] tracking-widest uppercase text-primary-accessible border border-primary/25 px-2 py-0.5"
+                href={`/blog?category=${cat.slug.current}`}
+                scroll={false}
+                className="font-mono text-[10px] tracking-widest uppercase text-primary-accessible border border-primary/25 px-2 py-0.5 hover:border-primary/50 hover:text-primary transition-colors"
                 style={{ borderRadius: '2px' }}
               >
                 {cat.title}
-              </span>
+              </Link>
             ))}
           </div>
         )}
 
+        {/* Title — after:absolute makes the whole card clickable */}
         <h2 className="text-base font-semibold text-ink leading-snug group-hover:text-primary transition-colors">
-          {post.title}
+          <Link
+            href={href}
+            className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline focus-visible:after:outline-2 focus-visible:after:outline-primary/30"
+          >
+            {post.title}
+          </Link>
         </h2>
 
         {post.excerpt && (
-          <p className="text-sm text-ink-secondary leading-relaxed line-clamp-3">{post.excerpt}</p>
+          <p className="text-sm text-ink-secondary leading-relaxed line-clamp-3">
+            {post.excerpt}
+          </p>
         )}
 
         <div className="flex items-center gap-2 mt-auto pt-3 border-t border-line-subtle">
@@ -77,6 +84,6 @@ export function PostCard({ post }: PostCardProps) {
           {date && <span className="text-xs text-ink-tertiary font-mono">{date}</span>}
         </div>
       </div>
-    </Link>
+    </article>
   )
 }

@@ -84,7 +84,7 @@ interface Props {
 
 export const MobileNav = forwardRef<HTMLDivElement, Props>(function MobileNav(
   { onClose, barHeight = 0, id },
-  ref
+  ref,
 ) {
   const topOffset = barHeight + 80
 
@@ -113,9 +113,9 @@ export const MobileNav = forwardRef<HTMLDivElement, Props>(function MobileNav(
       </AccordionGroup>
 
       {[
-        { label: 'Pricing', route: '/pricing' },
         { label: 'Blog', route: '/blog' },
         { label: 'My Journey', route: '/journey' },
+        { label: 'Pricing', route: '/pricing' },
       ].map((link) => (
         <Link
           key={link.route}
