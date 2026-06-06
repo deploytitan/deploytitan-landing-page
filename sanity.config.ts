@@ -34,7 +34,7 @@ export default defineConfig({
     presentationTool({
       resolve,
       previewUrl: {
-        initial: process.env.NEXT_PUBLIC_SANITY_PREVIEW_URL ?? 'http://localhost:3000',
+        initial: process.env.NEXT_PUBLIC_SANITY_PREVIEW_URL ?? '/',
         previewMode: {
           enable: '/api/draft-mode/enable',
         },

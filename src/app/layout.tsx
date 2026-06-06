@@ -1,8 +1,12 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Barlow, JetBrains_Mono } from 'next/font/google'
+import { draftMode } from 'next/headers'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { SiteLayoutClient } from '@/layouts/SiteLayoutClient'
+import { SanityLive } from '@/sanity/lib/live'
+import { VisualEditing } from 'next-sanity/visual-editing'
+import { DisableDraftMode } from '@/components/blog/DisableDraftMode'
 import './globals.css'
 
 const barlowDisplay = Barlow({
@@ -50,7 +54,8 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const { isEnabled: isDraft } = await draftMode()
   return (
     <html
       lang="en"
@@ -86,6 +91,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <SiteLayoutClient>{children}</SiteLayoutClient>
         </ThemeProvider>
+        <SanityLive />
+        {isDraft && (
+          <>
+            <VisualEditing />
+            <DisableDraftMode />
+          </>
+        )}
       </body>
     </html>
   )
