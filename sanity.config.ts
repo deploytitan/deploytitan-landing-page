@@ -7,6 +7,7 @@ import {
   type PresentationPluginOptions,
   presentationTool,
 } from 'sanity/presentation'
+import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import { apiVersion, dataset, projectId } from './src/sanity/env'
 import { schemaTypes } from './src/sanity/schemas'
 import { structure } from './src/sanity/structure'
@@ -42,6 +43,7 @@ export default defineConfig({
     }),
     structureTool({ structure }),
     codeInput(),
+    unsplashImageAsset(),
     visionTool({ defaultApiVersion: apiVersion }),
   ],
 })

@@ -1,7 +1,8 @@
+import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { sanityFetch } from '@/sanity/lib/live'
-import { postsQuery } from '@/sanity/lib/queries'
-import { PostCard } from '@/components/blog/PostCard'
+import { postsQuery, categoriesQuery } from '@/sanity/lib/queries'
+import { BlogClientIndex } from '@/components/blog/BlogClientIndex'
 import { Container } from '@/components/shared/Container'
 
 type PostListItem = {
@@ -15,6 +16,12 @@ type PostListItem = {
   categories?: { title: string; slug: { current: string } }[]
 }
 
+type CategoryListItem = {
+  _id: string
+  title: string
+  slug: { current: string }
+}
+
 export const metadata: Metadata = {
   title: 'Blog | DeployTitan',
   description:
@@ -22,42 +29,46 @@ export const metadata: Metadata = {
 }
 
 export default async function BlogPage() {
-  const { data: postsRaw } = await sanityFetch({ query: postsQuery })
-  const posts = postsRaw as PostListItem[] | null
+  const [{ data: postsRaw }, { data: catsRaw }] = await Promise.all([
+    sanityFetch({ query: postsQuery }),
+    sanityFetch({ query: categoriesQuery }),
+  ])
+
+  const posts = (postsRaw as PostListItem[] | null) ?? []
+  const categories = (catsRaw as CategoryListItem[] | null) ?? []
 
   return (
     <>
       {/* Hero */}
-      <section className="blueprint-grid border-line border-b pt-28 pb-16">
+      <section className="blueprint-grid border-b border-line pt-28 pb-16">
         <Container width="4xl" padding="default">
-          <p className="text-primary-accessible mb-3 font-mono text-xs tracking-widest uppercase">Blog</p>
-          <h1 className="text-ink mb-4 text-4xl leading-tight font-semibold lg:text-5xl">
+          <p className="mb-3 font-mono text-[10px] tracking-widest uppercase text-primary-accessible">
+            Blog
+          </p>
+          <h1 className="mb-4 text-4xl font-semibold leading-tight text-ink lg:text-5xl">
             Engineering insights.
           </h1>
-          <p className="text-ink-secondary max-w-xl text-lg leading-relaxed">
+          <p className="max-w-xl text-lg leading-relaxed text-ink-secondary">
             Progressive delivery, release safety, and deployment best practices from the DeployTitan
             team.
           </p>
         </Container>
       </section>
 
-      {/* Post grid */}
-      <section className="py-20">
-        <Container width="6xl" padding="default">
-          {posts && posts.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {posts.map((post) => (
-                <PostCard key={post._id} post={post} />
-              ))}
-            </div>
-          ) : (
-            <div className="py-24 text-center">
-              <p className="text-ink-tertiary font-mono text-sm">No posts published yet.</p>
-              <p className="text-ink-tertiary mt-1 text-sm">Check back soon.</p>
-            </div>
-          )}
-        </Container>
-      </section>
+      {/* Client-side filter + posts — Suspense required for useSearchParams */}
+      <Suspense
+        fallback={
+          <div className="py-20">
+            <Container width="6xl" padding="default">
+              <p className="font-mono text-[10px] tracking-widest uppercase text-ink-quaternary">
+                Loading…
+              </p>
+            </Container>
+          </div>
+        }
+      >
+        <BlogClientIndex posts={posts} categories={categories} />
+      </Suspense>
     </>
   )
 }

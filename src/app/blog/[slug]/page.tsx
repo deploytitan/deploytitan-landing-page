@@ -89,13 +89,14 @@ export default async function BlogPostPage({ params }: Props) {
           {post.categories && post.categories.length > 0 && (
             <div className="mb-4 flex flex-wrap gap-2">
               {post.categories.map((cat: { title: string; slug: { current: string } }) => (
-                <span
+                <Link
                   key={cat.slug.current}
+                  href={`/blog?category=${cat.slug.current}`}
                   className="text-primary-accessible border-primary/25 border px-2 py-0.5 font-mono text-[10px] tracking-widest uppercase"
                   style={{ borderRadius: '2px' }}
                 >
                   {cat.title}
-                </span>
+                </Link>
               ))}
             </div>
           )}
@@ -114,16 +115,17 @@ export default async function BlogPostPage({ params }: Props) {
       {post.coverImage?.asset && (
         <div className="border-line border-b">
           <Container width="4xl" padding="default">
-            <div className="sharp-card border-line relative -mt-1 aspect-[16/9] overflow-hidden border">
+            <div className="sharp-card border-line -mt-1 border overflow-hidden">
               <Image
                 src={urlFor(post.coverImage as object)
                   .width(1400)
-                  .height(788)
                   .url()}
                 alt={post.coverImage.alt ?? post.title}
-                fill
+                width={1400}
+                height={0}
+                style={{ width: '100%', height: 'auto' }}
                 priority
-                className="object-cover"
+                className=""
                 sizes="(min-width: 1024px) 896px, 100vw"
               />
             </div>

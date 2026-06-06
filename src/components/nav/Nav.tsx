@@ -241,17 +241,17 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
             </Link>
 
             <Link
-              href="/pricing"
-              className={`nav-link-underline text-sm transition-colors ${pathname === '/pricing' ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
-            >
-              Pricing
-            </Link>
-
-            <Link
               href="/journey"
               className={`nav-link-underline text-sm transition-colors ${pathname.startsWith('/journey') ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
             >
               My Journey
+            </Link>
+
+            <Link
+              href="/pricing"
+              className={`nav-link-underline text-sm transition-colors ${pathname === '/pricing' ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
+            >
+              Pricing
             </Link>
           </div>
 

@@ -94,7 +94,7 @@ export function Footer() {
           <ul className="flex flex-col gap-3">
             {[
               { label: 'Blog', to: '/blog' },
-              { label: 'Changelog', to: '/changelog' },
+              { label: 'My journey', to: '/journey' },
             ].map((l) => (
               <li key={l.label}>
                 <Link
@@ -116,12 +116,7 @@ export function Footer() {
           <ul className="flex flex-col gap-3">
             {[
               { label: 'About', to: '/about' },
-              { label: 'My journey', to: '/journey' },
-              // { label: 'Careers', to: '/careers' },
               { label: 'Contact', to: '/contact' },
-              // { label: 'Press', to: '/press' },
-              // { label: 'Brand', to: '/brand' },
-              // { label: 'Partners', to: '/partners' },
             ].map((l) => (
               <li key={l.label}>
                 <Link
@@ -155,12 +150,6 @@ export function Footer() {
             >
               Privacy
             </Link>
-            {/*<Link*/}
-            {/*  href="/security"*/}
-            {/*  className="text-xs text-ink-tertiary hover:text-ink-secondary transition-colors"*/}
-            {/*>*/}
-            {/*  Security*/}
-            {/*</Link>*/}
             <Link
               href="/sitemap"
               className="text-ink-tertiary hover:text-ink-secondary text-xs transition-colors"
