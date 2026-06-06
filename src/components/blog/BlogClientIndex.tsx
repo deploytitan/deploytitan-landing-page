@@ -71,14 +71,14 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
     <>
       {/* Category nav strip */}
       {categories.length > 0 && (
-        <div className="border-b border-line overflow-x-auto">
+        <div className="border-line overflow-x-auto border-b">
           <Container width="6xl" padding="default">
-            <div className="flex items-stretch divide-x divide-line">
+            <div className="divide-line flex items-stretch divide-x">
               <button
                 type="button"
                 onClick={() => updateCategoryFilter()}
                 className={[
-                  'px-4 py-3 font-mono text-[10px] tracking-widest uppercase whitespace-nowrap transition-colors',
+                  'px-4 py-3 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors',
                   !selectedCategory
                     ? 'bg-surface-alt text-primary-accessible'
                     : 'text-ink-tertiary hover:text-ink hover:bg-surface-alt',
@@ -95,7 +95,7 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
                     type="button"
                     onClick={() => updateCategoryFilter(cat.slug.current)}
                     className={[
-                      'px-4 py-3 font-mono text-[10px] tracking-widest uppercase whitespace-nowrap transition-colors',
+                      'px-4 py-3 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors',
                       isActive
                         ? 'bg-surface-alt text-primary-accessible'
                         : 'text-ink-tertiary hover:text-ink hover:bg-surface-alt',
@@ -118,10 +118,10 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
             <div className="flex flex-col gap-12">
               {/* Featured */}
               {featured && (
-                <article className="group relative border border-line sharp-card hover:border-primary/20 transition-all duration-200 overflow-hidden">
+                <article className="group border-line sharp-card hover:border-primary/20 relative overflow-hidden border transition-all duration-200">
                   <div className="flex flex-col lg:flex-row">
                     {featured.coverImage?.asset && (
-                      <div className="relative aspect-[16/9] lg:aspect-auto lg:w-1/2 lg:min-h-[360px] bg-surface-alt overflow-hidden shrink-0">
+                      <div className="bg-surface-alt relative aspect-[16/9] shrink-0 overflow-hidden lg:aspect-auto lg:min-h-[360px] lg:w-1/2">
                         <Image
                           src={urlFor(featured.coverImage).width(1200).height(680).url()}
                           alt={featured.coverImage.alt ?? featured.title}
@@ -132,7 +132,7 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
                         />
                       </div>
                     )}
-                    <div className="flex flex-col justify-between p-8 lg:p-10 gap-4">
+                    <div className="flex flex-col justify-between gap-4 p-8 lg:p-10">
                       <div className="flex flex-col gap-3">
                         {featured.categories && featured.categories.length > 0 && (
                           <div className="relative z-10 flex flex-wrap gap-1.5">
@@ -141,7 +141,7 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
                                 key={cat.slug.current}
                                 href={`/blog?category=${cat.slug.current}`}
                                 scroll={false}
-                                className="font-mono text-[10px] tracking-widest uppercase text-primary-accessible border border-primary/25 px-2 py-0.5 hover:border-primary/50 hover:text-primary transition-colors"
+                                className="text-primary-accessible border-primary/25 hover:border-primary/50 hover:text-primary border px-2 py-0.5 font-mono text-[10px] tracking-widest uppercase transition-colors"
                                 style={{ borderRadius: '2px' }}
                               >
                                 {cat.title}
@@ -150,7 +150,7 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
                           </div>
                         )}
 
-                        <h2 className="text-2xl font-semibold leading-snug text-ink group-hover:text-primary transition-colors lg:text-3xl">
+                        <h2 className="text-ink group-hover:text-primary text-2xl leading-snug font-semibold transition-colors lg:text-3xl">
                           <Link
                             href={`/blog/${featured.slug.current}`}
                             className="after:absolute after:inset-0 focus-visible:outline-none"
@@ -160,23 +160,25 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
                         </h2>
 
                         {featured.excerpt && (
-                          <p className="text-base text-ink-secondary leading-relaxed line-clamp-3 max-w-lg">
+                          <p className="text-ink-secondary line-clamp-3 max-w-lg text-base leading-relaxed">
                             {featured.excerpt}
                           </p>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-2 pt-4 border-t border-line-subtle">
+                      <div className="border-line-subtle flex items-center gap-2 border-t pt-4">
                         {featured.author?.name && (
-                          <span className="text-xs text-ink-tertiary">{featured.author.name}</span>
+                          <span className="text-ink-tertiary text-xs">{featured.author.name}</span>
                         )}
                         {featured.author?.name && featuredDate && (
                           <span className="text-ink-tertiary text-xs">·</span>
                         )}
                         {featuredDate && (
-                          <span className="text-xs text-ink-tertiary font-mono">{featuredDate}</span>
+                          <span className="text-ink-tertiary font-mono text-xs">
+                            {featuredDate}
+                          </span>
                         )}
-                        <span className="ml-auto font-mono text-[10px] tracking-widest uppercase text-ink-quaternary">
+                        <span className="text-ink-quaternary ml-auto font-mono text-[10px] tracking-widest uppercase">
                           Latest
                         </span>
                       </div>
@@ -196,8 +198,8 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
             </div>
           ) : (
             <div className="py-24 text-center">
-              <p className="font-mono text-sm text-ink-tertiary">No posts in this category yet.</p>
-              <p className="mt-1 text-sm text-ink-tertiary">Check back soon.</p>
+              <p className="text-ink-tertiary font-mono text-sm">No posts in this category yet.</p>
+              <p className="text-ink-tertiary mt-1 text-sm">Check back soon.</p>
             </div>
           )}
         </Container>

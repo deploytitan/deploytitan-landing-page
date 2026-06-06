@@ -50,10 +50,10 @@ const BAD_PATTERNS = [
 ]
 
 export default function Journey() {
-  useScrollReveal()
+  const ref = useScrollReveal()
 
   return (
-    <>
+    <div ref={ref}>
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section className="blueprint-grid border-line border-b pt-28 pb-20">
         <Container width="3xl" padding="default" data-reveal>
@@ -99,25 +99,25 @@ export default function Journey() {
               didn&apos;t build the thing they were now responsible for keeping alive at 2am.
             </p>
 
-            <figure
-              data-reveal
-              className="border-line my-8 border-t border-b py-7"
-            >
+            <figure data-reveal className="border-line my-8 border-t border-b py-7">
               <blockquote>
                 <p className="text-ink text-xl leading-relaxed font-medium">
                   I watched smart, capable people slow themselves down, not because they lacked
                   discipline, but because their tooling made every release feel dangerous.
                 </p>
               </blockquote>
-              <figcaption className="mt-3 font-mono text-[10px] tracking-widest uppercase" style={{ color: PRIMARY }}>
+              <figcaption
+                className="mt-3 font-mono text-[10px] tracking-widest uppercase"
+                style={{ color: PRIMARY }}
+              >
                 — Justine, founder
               </figcaption>
             </figure>
 
             <p data-reveal className="text-ink-secondary text-lg leading-relaxed">
               And honestly? I hated it. I hated the anxiety. I hated the 11pm deploys. I hated
-              watching teams hold back features because nobody wanted to be the one who broke prod on
-              a Friday.
+              watching teams hold back features because nobody wanted to be the one who broke prod
+              on a Friday.
             </p>
           </div>
         </Container>
@@ -134,7 +134,10 @@ export default function Journey() {
             The real problem
           </span>
 
-          <h2 data-reveal className="text-ink mb-3 text-[clamp(1.75rem,3.5vw,2.8rem)] leading-[1.04] font-semibold tracking-[-0.025em]">
+          <h2
+            data-reveal
+            className="text-ink mb-3 text-[clamp(1.75rem,3.5vw,2.8rem)] leading-[1.04] font-semibold tracking-[-0.025em]"
+          >
             It was never a people problem.
             <br />
             It was always a tooling problem.
@@ -192,7 +195,10 @@ export default function Journey() {
             What I&apos;m building
           </span>
 
-          <h2 data-reveal className="text-ink mb-3 text-[clamp(1.75rem,3.5vw,2.8rem)] leading-[1.04] font-semibold tracking-[-0.025em]">
+          <h2
+            data-reveal
+            className="text-ink mb-3 text-[clamp(1.75rem,3.5vw,2.8rem)] leading-[1.04] font-semibold tracking-[-0.025em]"
+          >
             Deployments should feel boring.
           </h2>
           <p data-reveal className="text-ink-secondary mb-14 max-w-lg text-lg leading-relaxed">
@@ -280,7 +286,8 @@ export default function Journey() {
             Try it on your next sprint.
           </h2>
           <p className="text-ink-secondary mb-8 max-w-[42ch] text-lg leading-8">
-            Create an account, connect GitHub and Slack, and add the PRs that need to ship. You will know if it works in one release.
+            Create an account, connect GitHub and Slack, and add the PRs that need to ship. You will
+            know if it works in one release.
           </p>
           <Button
             as="a"
@@ -295,7 +302,6 @@ export default function Journey() {
           </Button>
         </Container>
       </section>
-
-    </>
+    </div>
   )
 }
