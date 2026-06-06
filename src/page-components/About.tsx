@@ -1,6 +1,8 @@
+import Image from 'next/image'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
+import { urlFor } from '@/sanity/lib/image'
 
 const PRIMARY = 'var(--color-primary)'
 
@@ -27,21 +29,22 @@ const values = [
   },
 ]
 
-const team = [
-  {
-    name: 'Justine Kizhakkinedath',
-    role: 'Founder',
-    bio: 'Spent years across engineering organizations watching the same release coordination pain repeat: manual Slack threads for every multi-service release, rollback incidents caused by missing ownership, and no shared view of release state across teams. Built DeployTitan to make that a solved problem.',
-  },
-]
+interface TeamMember {
+  _id: string
+  name: string
+  role?: string | null
+  bio?: string | null
+  image?: object | null
+  teamOrder?: number | null
+}
 
-const investors = [
-  { name: 'Horizon Ventures', stage: 'Seed' },
-  { name: 'Arc Capital', stage: 'Seed' },
-  { name: 'Forge Syndicate', stage: 'Seed' },
-]
+interface AboutProps {
+  teamMembers?: TeamMember[]
+}
 
-export default function About() {
+export default function About({ teamMembers = [] }: AboutProps) {
+  const [featuredMember, ...supportingTeamMembers] = teamMembers
+
   return (
     <div className="bg-surface min-h-screen">
       {/* ── Hero ──────────────────────────────────────────────────────────────── */}
@@ -207,38 +210,140 @@ export default function About() {
       </Section>
 
       {/* ── Team ──────────────────────────────────────────────────────────────── */}
-      <Section border="bottom" padding="none">
-        <Container className="py-16">
-          <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
-            Team
-          </span>
-          <h2 className="font-display text-ink mt-3 text-2xl font-medium tracking-[-0.02em]">
-            The people building it
-          </h2>
-          <p className="text-ink-secondary mt-2 text-sm max-w-lg leading-relaxed">
-            Small and focused. We talk to engineers every day and ship fast because there are no
-            layers between the people building the product and the people using it.
-          </p>
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((person) => (
-              <Card key={person.name} tone="muted">
-                {/* Avatar placeholder */}
-                <div
-                  className="bg-primary-muted border-primary/20 text-primary-dark mb-4 flex h-12 w-12 items-center justify-center border text-lg font-medium"
-                  style={{ borderRadius: '2px' }}
-                >
-                  {person.name.charAt(0)}
-                </div>
-                <h3 className="text-ink text-sm font-medium">{person.name}</h3>
-                <p className="text-ink-tertiary mt-0.5 font-mono text-[10px] tracking-widest uppercase">
-                  {person.role}
-                </p>
-                <p className="text-ink-secondary mt-3 text-xs leading-relaxed">{person.bio}</p>
-              </Card>
-            ))}
+      {teamMembers.length > 0 && (
+        <Section border="bottom" tone="muted" padding="none" className="blueprint-grid relative overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 opacity-30" aria-hidden="true">
+            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-primary/[0.08] to-transparent" />
           </div>
-        </Container>
-      </Section>
+          <Container className="py-16 lg:py-20">
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.6fr)] lg:gap-16">
+              <div className="lg:pt-3">
+                <span className="text-primary-accessible font-mono text-[10px] tracking-widest uppercase">
+                  Team
+                </span>
+                <h2 className="font-display text-ink mt-3 max-w-sm text-3xl leading-[1.05] font-medium tracking-[-0.03em] sm:text-4xl">
+                  The people turning release anxiety into product.
+                </h2>
+                <p className="text-ink-secondary mt-4 max-w-md text-sm leading-relaxed sm:text-[15px]">
+                  Small by design, direct by default. The people building DeployTitan stay close to
+                  the engineers feeling the pain, so the product keeps its edge.
+                </p>
+                <div className="gold-line mt-8 max-w-[13rem]" />
+              </div>
+
+              <div className="flex flex-col gap-5">
+                {featuredMember && (
+                  <Card
+                    key={featuredMember._id}
+                    variant="spotlight"
+                    tone="default"
+                    padding="none"
+                    className="group overflow-hidden border border-line transition-all duration-300 hover:border-primary/30 hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+                  >
+                    <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+                      <div className="relative min-h-[22rem] overflow-hidden border-b border-line bg-surface-alt lg:min-h-[29rem] lg:border-r lg:border-b-0">
+                        {featuredMember.image ? (
+                          <Image
+                            src={urlFor(featuredMember.image).width(1200).height(1400).url()}
+                            alt={featuredMember.name}
+                            fill
+                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                            sizes="(min-width: 1024px) 46vw, 100vw"
+                          />
+                        ) : (
+                          <div className="bg-primary-muted text-primary-dark flex h-full items-end justify-start p-6 sm:p-8">
+                            <span className="font-display text-6xl leading-none font-medium sm:text-7xl">
+                              {featuredMember.name.charAt(0)}
+                            </span>
+                          </div>
+                        )}
+                        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-ink/20 to-transparent" />
+                      </div>
+
+                      <div className="flex flex-col justify-between p-6 sm:p-8">
+                        <div>
+                          <div className="flex items-center gap-3">
+                            {featuredMember.role && (
+                              <p className="text-primary-accessible border-primary/20 bg-primary-muted inline-flex items-center border px-2.5 py-1 font-mono text-[10px] tracking-[0.16em] uppercase">
+                                {featuredMember.role}
+                              </p>
+                            )}
+                            <span className="text-ink-quaternary font-mono text-[10px] tracking-widest uppercase">
+                              Lead profile
+                            </span>
+                          </div>
+                          <h3 className="text-ink mt-5 text-2xl leading-tight font-medium sm:text-[2rem]">
+                            {featuredMember.name}
+                          </h3>
+                          {featuredMember.bio && (
+                            <p className="text-ink-secondary mt-4 max-w-[38ch] text-sm leading-relaxed sm:text-[15px]">
+                              {featuredMember.bio}
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="mt-8 flex items-center gap-3">
+                          <span className="bg-primary/70 h-px w-10" />
+                          <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.14em] uppercase">
+                            Close to the release window, close to the product
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                )}
+
+                {supportingTeamMembers.length > 0 && (
+                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                    {supportingTeamMembers.map((person) => (
+                      <Card
+                        key={person._id}
+                        variant="spotlight"
+                        tone="default"
+                        padding="none"
+                        className="group overflow-hidden border border-line transition-all duration-300 hover:border-primary/30 hover:shadow-[0_10px_24px_rgba(0,0,0,0.05)]"
+                      >
+                        <div className="relative overflow-hidden border-b border-line bg-surface-alt">
+                          {person.image ? (
+                            <Image
+                              src={urlFor(person.image).width(900).height(900).url()}
+                              alt={person.name}
+                              width={900}
+                              height={900}
+                              className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                              sizes="(min-width: 768px) 40vw, 100vw"
+                            />
+                          ) : (
+                            <div className="bg-primary-muted text-primary-dark flex aspect-[4/3] w-full items-end justify-start p-5">
+                              <span className="font-display text-5xl leading-none font-medium">
+                                {person.name.charAt(0)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex flex-col gap-3 p-5">
+                          {person.role && (
+                            <p className="text-primary-accessible font-mono text-[10px] tracking-[0.16em] uppercase">
+                              {person.role}
+                            </p>
+                          )}
+                          <h3 className="text-ink text-lg leading-tight font-medium">{person.name}</h3>
+                          {person.bio && (
+                            <p className="text-ink-secondary max-w-[34ch] text-sm leading-relaxed">
+                              {person.bio}
+                            </p>
+                          )}
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </Container>
+        </Section>
+      )}
     </div>
   )
 }
