@@ -264,6 +264,16 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "__nav__",
+    "target": "/about",
+    "kind": "nav"
+  },
+  {
+    "source": "__nav__",
+    "target": "/contact",
+    "kind": "nav"
+  },
+  {
+    "source": "__nav__",
     "target": "/pricing",
     "kind": "nav"
   },
