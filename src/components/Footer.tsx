@@ -135,7 +135,7 @@ export function Footer() {
       <div className="border-line border-t">
         <Container className="flex flex-col items-center justify-between gap-3 py-5 sm:flex-row">
           <span className="text-ink-tertiary font-mono text-xs">
-            &copy; 2026 DeployTitan Inc. All rights reserved.
+            &copy; 2026 ASTRALFORGE LABS LLP. All rights reserved.
           </span>
           <div className="flex items-center gap-6">
             <Link
