@@ -4,7 +4,7 @@ import { useScrollReveal } from '../utils'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
 import { Button } from '../components/shared/Button'
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 
 const PRIMARY = 'var(--color-primary)'
 
@@ -286,19 +286,17 @@ export default function Journey() {
             Try it on your next sprint.
           </h2>
           <p className="text-ink-secondary mb-8 max-w-[42ch] text-lg leading-8">
-            Create an account, connect GitHub and Slack, and add the PRs that need to ship. You will
-            know if it works in one release.
+            Join the waitlist, share how your team ships today, and we&apos;ll bring you in as soon as
+            early access opens for your workflow.
           </p>
           <Button
             as="a"
-            href={CREATE_ACCOUNT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={WAITLIST_URL}
             variant="primary"
             size="lg"
             className="rounded-[8px]"
           >
-            Create account
+            Join waitlist
           </Button>
         </Container>
       </section>

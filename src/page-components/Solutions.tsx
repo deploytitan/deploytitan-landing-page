@@ -1,6 +1,6 @@
 'use client'
 
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
 import { Container } from '../components/shared/Container'
 import { Card } from '../components/shared/Card'
@@ -370,13 +370,11 @@ export default function Solutions() {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Button
               as="a"
-              href={CREATE_ACCOUNT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={WAITLIST_URL}
               variant="primary"
               size="lg"
             >
-              Create account
+              Join waitlist
             </Button>
           </div>
         </Container>

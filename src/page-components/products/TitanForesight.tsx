@@ -1,5 +1,6 @@
 'use client'
 
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Button } from '../../components/shared/Button'
@@ -35,7 +36,7 @@ export default function TitanForesight() {
         heading={<>Know the blast radius<br className="hidden md:block" /> before you ship.</>}
         description="Foresight reads each PR against your live dependency graph and surfaces what downstream services are at risk — before the branch merges. This is Phase 2 of the DeployTitan platform, in active design."
         ctas={[
-          { label: 'Join the waitlist', href: '/pricing' },
+          { label: 'Join the waitlist', href: WAITLIST_URL },
           { label: 'See what is available now', href: '/products/titan-rollout', variant: 'secondary' },
         ]}
       />
@@ -92,7 +93,7 @@ export default function TitanForesight() {
             when it is ready.
           </p>
           <div className="mx-auto max-w-sm" data-reveal>
-            <Button as="a" href="/pricing" variant="primary" size="lg" block>
+            <Button as="a" href={WAITLIST_URL} variant="primary" size="lg" block>
               Join the waitlist
             </Button>
           </div>

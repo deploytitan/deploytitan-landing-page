@@ -9,7 +9,7 @@ import { ThemeToggle } from '../shared/ThemeToggle'
 import { Button } from '../shared/Button'
 import { BrandLogo } from '../shared/BrandLogo'
 import { useTheme } from '../../hooks/useTheme'
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 
 /** Trap Tab/Shift-Tab within `container`. Call the returned cleanup when done. */
 function trapFocus(container: HTMLElement): () => void {
@@ -75,6 +75,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
   const hamburgerRef = useRef<HTMLButtonElement>(null)
   const pathname = usePathname()
   const { resolved } = useTheme()
+  const isWaitlistPage = pathname === '/waitlist'
 
   const products = useAnimatedDropdown('products', activeDropdown)
 
@@ -248,13 +249,6 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
             </Link>
 
             <Link
-              href="/pricing"
-              className={`nav-link-underline text-sm transition-colors ${pathname === '/pricing' ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
-            >
-              Pricing
-            </Link>
-
-            <Link
               href="/about"
               className={`nav-link-underline text-sm transition-colors ${pathname === '/about' ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
             >
@@ -272,31 +266,31 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
           {/* Desktop auth */}
           <div className="ml-auto hidden items-center gap-2 lg:flex">
             <ThemeToggle className="mr-1" />
-            <Button
-              as="a"
-              href={CREATE_ACCOUNT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="primary"
-              size="sm"
-            >
-              Create account
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="opacity-70"
-                aria-hidden="true"
+            {!isWaitlistPage && (
+              <Button
+                as="a"
+                href={WAITLIST_URL}
+                variant="primary"
+                size="sm"
               >
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </Button>
+                Join waitlist
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="opacity-70"
+                  aria-hidden="true"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </Button>
+            )}
           </div>
 
           {/* Mobile hamburger — p-3 for 44px touch target */}

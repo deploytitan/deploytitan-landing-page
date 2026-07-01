@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
 import { Button } from './shared/Button'
 
@@ -699,14 +699,12 @@ export function Hero() {
             >
               <Button
                 as="a"
-                href={CREATE_ACCOUNT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={WAITLIST_URL}
                 variant="primary"
                 size="lg"
                 className="rounded-[8px]"
               >
-                Create account
+                Join waitlist
               </Button>
             </div>
             <p

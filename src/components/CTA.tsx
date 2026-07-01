@@ -1,6 +1,6 @@
 'use client'
 
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
 import { Button } from './shared/Button'
 
@@ -67,21 +67,19 @@ export function CTA() {
                 data-reveal-delay="2"
                 className="text-ink-secondary mb-8 max-w-sm text-base leading-relaxed"
               >
-                Create an account, connect GitHub and Slack, add your sprint PRs. You&apos;ll know if it&apos;s for you in one release.
+                Join the waitlist, tell us a bit about your team, and we&apos;ll reach out as soon as early access opens.
               </p>
 
               <div data-reveal data-reveal-delay="3" className="flex max-w-sm flex-col gap-3">
                 <Button
                   as="a"
-                  href={CREATE_ACCOUNT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={WAITLIST_URL}
                   variant="primary"
                   size="lg"
                   block
                   className="group rounded-[8px]"
                 >
-                  Create account
+                  Join waitlist
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="14"
@@ -137,7 +135,7 @@ export function CTA() {
                 className="text-ink-secondary mb-5 inline-flex items-center gap-3 font-mono text-sm"
               >
                 <span className="bg-primary/40 h-px w-8" />
-                Pricing
+                Learn more
               </span>
 
               <h3
@@ -145,9 +143,9 @@ export function CTA() {
                 data-reveal-delay="4"
                 className="font-display mb-3 text-2xl leading-[1.2] font-medium tracking-[-0.02em] lg:text-3xl"
               >
-                Priced for teams,
+                See how the release
                 <br />
-                not deployments.
+                model works.
               </h3>
 
               <p
@@ -155,18 +153,18 @@ export function CTA() {
                 data-reveal-delay="5"
                 className="text-ink-secondary mb-8 max-w-sm text-base leading-relaxed"
               >
-                Flat monthly rate. No per-deploy billing. No surprise charges at sprint end. Plans scale with your team size.
+                Explore the workflow, the rollout model, and the release problems DeployTitan is designed to remove.
               </p>
 
               <div data-reveal data-reveal-delay="6">
                 <Button
                   as="a"
-                  href="/pricing"
+                  href="/how-it-works"
                   variant="outline"
                   size="lg"
                   className="rounded-[8px]"
                 >
-                  See pricing
+                  How it works
                 </Button>
               </div>
             </div>

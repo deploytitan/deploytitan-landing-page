@@ -68,7 +68,7 @@ export function Footer() {
             {(
               [
                 { label: 'Titan Rollouts', to: '/products/titan-rollout' },
-                { label: 'Pricing', to: '/pricing' },
+                { label: 'Join waitlist', to: '/waitlist' },
               ] as { label: string; to: string; status?: 'roadmap' }[]
             ).map((l) => (
               <li key={l.label}>
@@ -135,7 +135,16 @@ export function Footer() {
       <div className="border-line border-t">
         <Container className="flex flex-col items-center justify-between gap-3 py-5 sm:flex-row">
           <span className="text-ink-tertiary font-mono text-xs">
-            &copy; 2026 ASTRALFORGE LABS LLP. All rights reserved.
+            &copy; 2026{" "}
+            <Link
+              href="https://astralforgelabs.com"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-ink-secondary transition-colors"
+            >
+              ASTRALFORGE LABS LLP
+            </Link>
+            . All rights reserved.
           </span>
           <div className="flex items-center gap-6">
             <Link

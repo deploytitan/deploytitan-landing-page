@@ -1,5 +1,6 @@
 'use client'
 
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Button } from '../../components/shared/Button'
@@ -35,7 +36,7 @@ export default function TitanPhoenix() {
         heading={<>Rollback the failure,<br className="hidden md:block" /> not the service.</>}
         description="When a release breaks, Phoenix identifies the exact slice that is failing and reverts only that — triggered by your SLOs in seconds. This is Phase 3 of the DeployTitan platform, the autonomous rollout layer."
         ctas={[
-          { label: 'Join the waitlist', href: '/pricing' },
+          { label: 'Join the waitlist', href: WAITLIST_URL },
           { label: 'See what is available now', href: '/products/titan-rollout', variant: 'secondary' },
         ]}
       />
@@ -92,7 +93,7 @@ export default function TitanPhoenix() {
             it is ready.
           </p>
           <div className="mx-auto max-w-sm" data-reveal>
-            <Button as="a" href="/pricing" variant="primary" size="lg" block>
+            <Button as="a" href={WAITLIST_URL} variant="primary" size="lg" block>
               Join the waitlist
             </Button>
           </div>

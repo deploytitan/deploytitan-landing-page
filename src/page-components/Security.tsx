@@ -199,11 +199,11 @@ export default function Security() {
             </div>
             <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3">
               <a
-                href="/pricing"
+                href="/waitlist"
                 className="inline-flex items-center justify-center gap-2 bg-ink text-surface px-6 py-3 text-sm font-medium hover:opacity-90 transition-opacity"
                 style={{ borderRadius: '2px' }}
               >
-                Start free trial
+                Join waitlist
               </a>
               <a
                 href="mailto:security@deploytitan.com"

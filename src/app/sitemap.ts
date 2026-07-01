@@ -16,7 +16,6 @@ const routeOverrides = new Map<string, SitemapEntryDefaults>([
 
   ['/docs', { changeFrequency: 'weekly', priority: 0.8 }],
   ['/blog', { changeFrequency: 'weekly', priority: 0.8 }],
-  ['/pricing', { changeFrequency: 'monthly', priority: 0.8 }],
   ['/status', { changeFrequency: 'always', priority: 0.5 }],
   ['/sitemap', { changeFrequency: 'monthly', priority: 0.3 }],
   ['/terms', { changeFrequency: 'yearly', priority: 0.3 }],

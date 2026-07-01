@@ -1,6 +1,6 @@
 'use client'
 
-import { APP_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
@@ -98,10 +98,10 @@ export default function SolutionProgressiveDelivery() {
               </svg>
             </a>
             <a
-              href={`${APP_URL}/signup`}
+              href={WAITLIST_URL}
               className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
             >
-              Start free trial →
+              Join waitlist →
             </a>
           </div>
         </Container>
@@ -483,10 +483,10 @@ export default function SolutionProgressiveDelivery() {
                 </svg>
               </a>
               <a
-                href={`${APP_URL}/signup`}
+                href={WAITLIST_URL}
                 className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
               >
-                Start free trial →
+                Join waitlist →
               </a>
             </div>
           </div>

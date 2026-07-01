@@ -6,7 +6,7 @@ import { useScrollReveal } from '../utils'
 import { Container } from './shared/Container'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useTheme } from '../hooks/useTheme'
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { Button } from './shared/Button'
 
 const RELEASE_SNIPPET = `# 1. Authenticate
@@ -191,13 +191,11 @@ export function Quickstart() {
             <div>
               <Button
                 as="a"
-                href={CREATE_ACCOUNT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={WAITLIST_URL}
                 variant="primary"
                 size="md"
               >
-                Create account
+                Join waitlist
               </Button>
             </div>
           </div>

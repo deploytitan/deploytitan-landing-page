@@ -1,5 +1,6 @@
 'use client'
 
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
@@ -35,7 +36,7 @@ export default function TitanSandbox() {
         heading={<>A production-shaped environment<br className="hidden md:block" /> for every branch.</>}
         description="Sandbox spins up an isolated, prod-shaped environment per branch or PR, wired to real data shapes, torn down when you're done."
         ctas={[
-          { label: 'Join the waitlist', href: '/pricing' },
+          { label: 'Join the waitlist', href: WAITLIST_URL },
         ]}
       />
 

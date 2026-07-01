@@ -7,6 +7,7 @@ import { SiteLayoutClient } from '@/layouts/SiteLayoutClient'
 import { SanityLive } from '@/sanity/lib/live'
 import { VisualEditing } from 'next-sanity/visual-editing'
 import { DisableDraftMode } from '@/components/blog/DisableDraftMode'
+import { GaPageViewTracker } from '@/components/analytics/GaPageViewTracker'
 import './globals.css'
 
 const barlowDisplay = Barlow({
@@ -56,6 +57,8 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled: isDraft } = await draftMode()
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
+
   return (
     <html
       lang="en"
@@ -72,14 +75,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body suppressHydrationWarning>
-        {/* Google Analytics — lazyOnload fires after page load + browser idle */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-Q1CZ6Q7DVD"
-          strategy="lazyOnload"
-        />
-        <Script id="gtag-init" strategy="lazyOnload">
-          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-Q1CZ6Q7DVD');`}
-        </Script>
+        {gaMeasurementId && (
+          <>
+            {/* Google Analytics — lazyOnload fires after page load + browser idle */}
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+              strategy="lazyOnload"
+            />
+            <Script id="gtag-init" strategy="lazyOnload">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config','${gaMeasurementId}',{send_page_view:false});`}
+            </Script>
+            <GaPageViewTracker measurementId={gaMeasurementId} />
+          </>
+        )}
         {/* Faurya analytics — lazyOnload, does not block TTI */}
         <Script
           src="https://www.faurya.com/js/script.js"

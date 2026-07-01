@@ -1,3 +1,4 @@
+import posthog from 'posthog-js'
 import { PortableText, type PortableTextComponents } from 'next-sanity'
 import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
@@ -6,6 +7,12 @@ import { CodeBlock, InlineCode } from '@/components/shared/CodeBlock'
 type Lang = 'bash' | 'yaml' | 'powershell' | 'dockerfile' | 'tsx' | 'hcl' | 'diff' | 'json'
 
 const KNOWN_LANGS: Lang[] = ['bash', 'yaml', 'powershell', 'dockerfile', 'tsx', 'hcl', 'diff', 'json']
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+  }
+}
 
 function toKnownLang(lang?: string): Lang {
   if (lang && KNOWN_LANGS.includes(lang as Lang)) return lang as Lang
@@ -68,6 +75,14 @@ const components: PortableTextComponents = {
           target={target}
           rel={target === '_blank' ? 'noopener noreferrer' : undefined}
           className="text-primary underline underline-offset-2 hover:text-primary-dark transition-colors"
+          onClick={() => {
+            const payload = {
+              href: value?.href ?? '',
+              external: target === '_blank',
+            }
+            posthog.capture('blog_content_link_clicked', payload)
+            window.gtag?.('event', 'blog_content_link_clicked', payload)
+          }}
         >
           {children}
         </a>

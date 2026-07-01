@@ -1,6 +1,6 @@
 'use client'
 
-import { APP_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
@@ -78,7 +78,7 @@ export default function SolutionRiskIntelligence() {
         description="A PR ships. Something breaks. Three services you didn't know depended on this one start erroring. The post-mortem question, &ldquo;did anyone check the dependency graph?&rdquo;, has no good answer, because there was no tool that did it automatically before the deploy."
         ctas={[
           { label: 'Book a 20-min walkthrough', href: 'https://cal.com/justine-deploytitan/demo', variant: 'book', target: '_blank', rel: 'noopener noreferrer' },
-          { label: 'Start free trial →', href: `${APP_URL}/signup`, variant: 'secondary' },
+          { label: 'Join waitlist →', href: WAITLIST_URL, variant: 'secondary' },
         ]}
       />
 
@@ -488,10 +488,10 @@ export default function SolutionRiskIntelligence() {
                 </svg>
               </a>
               <a
-                href={`${APP_URL}/signup`}
+                href={WAITLIST_URL}
                 className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
               >
-                Start free trial →
+                Join waitlist →
               </a>
             </div>
           </div>

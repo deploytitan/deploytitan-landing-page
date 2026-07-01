@@ -1,6 +1,6 @@
 'use client'
 
-import { APP_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { Resilience } from '../../components/Resilience'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { InstallTabs } from '../../components/shared/InstallTabs'
@@ -63,7 +63,7 @@ export default function TitanShield() {
         heading={<>Multi-cloud resilience.<br className="hidden md:block" /> Failover in milliseconds.</>}
         description="Titan Shield watches every region continuously and shifts traffic before your on-call wakes up. Declare your failover policy once: never touch it again."
         ctas={[
-          { label: 'Join the waitlist', href: '/pricing' },
+          { label: 'Join the waitlist', href: WAITLIST_URL },
           { label: 'See use cases', href: '/solutions/release-coordination', variant: 'secondary' },
         ]}
       />

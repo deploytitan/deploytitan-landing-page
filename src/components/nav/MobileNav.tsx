@@ -4,7 +4,7 @@ import { forwardRef, useId, useRef, useState } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '../shared/ThemeToggle'
 import { Button } from '../shared/Button'
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { RoadmapBadge } from '../shared/RoadmapBadge'
 
 const productLinks = [
@@ -115,7 +115,6 @@ export const MobileNav = forwardRef<HTMLDivElement, Props>(function MobileNav(
       {[
         { label: 'Blog', route: '/blog' },
         { label: 'My Journey', route: '/journey' },
-        { label: 'Pricing', route: '/pricing' },
         { label: 'About', route: '/about' },
         { label: 'Contact', route: '/contact' },
       ].map((link) => (
@@ -138,15 +137,13 @@ export const MobileNav = forwardRef<HTMLDivElement, Props>(function MobileNav(
         </div>
         <Button
           as="a"
-          href={CREATE_ACCOUNT_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={WAITLIST_URL}
           variant="primary"
           size="sm"
           block
           onClick={onClose}
         >
-          Create account
+          Join waitlist
         </Button>
       </div>
     </div>

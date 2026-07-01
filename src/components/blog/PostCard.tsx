@@ -1,6 +1,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import posthog from 'posthog-js'
 import { urlFor } from '@/sanity/lib/image'
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+  }
+}
 
 interface PostCardProps {
   post: {
@@ -63,6 +70,16 @@ export function PostCard({ post }: PostCardProps) {
           <Link
             href={href}
             className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline focus-visible:after:outline-2 focus-visible:after:outline-primary/30"
+            onClick={() => {
+              const payload = {
+                post_slug: post.slug.current,
+                post_title: post.title,
+                click_source: 'grid',
+                categories: post.categories?.map((cat) => cat.slug.current) ?? [],
+              }
+              posthog.capture('blog_post_clicked', payload)
+              window.gtag?.('event', 'blog_post_clicked', payload)
+            }}
           >
             {post.title}
           </Link>

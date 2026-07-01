@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import posthog from 'posthog-js'
-import { APP_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { CodeBlock } from '../../components/shared/CodeBlock'
 import { CATEGORY_LABELS, integrations } from '../../data/integrations'
 import { Section } from '../../components/shared/Section'
@@ -166,12 +166,12 @@ export default function IntegrationDetail() {
             {/* CTA */}
             <Card tone="muted" padding="sm" className="flex flex-col gap-3">
               <Link
-                href={`${APP_URL}/signup`}
+                href={WAITLIST_URL}
                 className="w-full inline-flex items-center justify-center bg-ink text-surface dark:text-surface px-4 py-2.5 text-sm font-medium hover:shadow-[0_0_0_1px_rgba(201,168,76,0.3)] transition-all"
                 style={{ borderRadius: '2px' }}
                 onClick={() => posthog.capture('integration_trial_cta_clicked', { integration_name: integration.name, integration_slug: integration.slug })}
               >
-                Start free trial
+                Join waitlist
               </Link>
               <Link
                 href="/docs"

@@ -1,6 +1,6 @@
 'use client'
 
-import { APP_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
@@ -19,7 +19,7 @@ export default function SolutionPlatformEngineering() {
         description="Platform teams shouldn't be the deployment bottleneck. DeployTitan gives you a single control plane to define deployment policies, enforce SLO guardrails, and let product teams self-serve safely across every cloud and cluster."
         ctas={[
           { label: 'Book a 20-min walkthrough', href: 'https://cal.com/justine-deploytitan/demo', variant: 'book', target: '_blank', rel: 'noopener noreferrer' },
-          { label: 'Start free trial →', href: `${APP_URL}/signup`, variant: 'secondary' },
+          { label: 'Join waitlist →', href: WAITLIST_URL, variant: 'secondary' },
         ]}
       />
 
@@ -393,10 +393,10 @@ export default function SolutionPlatformEngineering() {
                 </svg>
               </a>
               <a
-                href={`${APP_URL}/signup`}
+                href={WAITLIST_URL}
                 className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
               >
-                Start free trial →
+                Join waitlist →
               </a>
             </div>
           </div>

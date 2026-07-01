@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import posthog from 'posthog-js'
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Button } from '../components/shared/Button'
@@ -60,20 +60,18 @@ export default function Contact() {
           <div className="hero-actions mt-8 flex flex-col gap-3 sm:flex-row">
             <Button
               as="a"
-              href={CREATE_ACCOUNT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={WAITLIST_URL}
               variant="primary"
               size="lg"
               className="rounded-[8px]"
               onClick={() =>
                 posthog.capture('contact_route_clicked', {
                   contact_type: 'signup',
-                  href: CREATE_ACCOUNT_URL,
+                  href: WAITLIST_URL,
                 })
               }
             >
-              Create account
+              Join waitlist
             </Button>
             <Button
               as="a"
@@ -134,20 +132,18 @@ export default function Contact() {
               <div className="mt-6">
                 <Button
                   as="a"
-                  href={CREATE_ACCOUNT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={WAITLIST_URL}
                   variant="primary"
                   size="sm"
                   className="rounded-[8px]"
                   onClick={() =>
                     posthog.capture('contact_route_clicked', {
                       contact_type: 'signup',
-                      href: CREATE_ACCOUNT_URL,
+                      href: WAITLIST_URL,
                     })
                   }
                 >
-                  Create account
+                  Join waitlist
                 </Button>
               </div>
             </div>

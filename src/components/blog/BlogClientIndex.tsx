@@ -3,9 +3,16 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import posthog from 'posthog-js'
 import { urlFor } from '@/sanity/lib/image'
 import { PostCard } from './PostCard'
 import { Container } from '@/components/shared/Container'
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+  }
+}
 
 type PostListItem = {
   _id: string
@@ -55,6 +62,14 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
     : null
 
   const updateCategoryFilter = (categorySlug?: string) => {
+    const payload = {
+      selected_category: categorySlug ?? 'all',
+      current_category: selectedCategory ?? 'all',
+      page_path: pathname,
+    }
+    posthog.capture('blog_category_filter_selected', payload)
+    window.gtag?.('event', 'blog_category_filter_selected', payload)
+
     const nextParams = new URLSearchParams(searchParams.toString())
 
     if (categorySlug) {
@@ -154,6 +169,16 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
                           <Link
                             href={`/blog/${featured.slug.current}`}
                             className="after:absolute after:inset-0 focus-visible:outline-none"
+                            onClick={() => {
+                              const payload = {
+                                post_slug: featured.slug.current,
+                                post_title: featured.title,
+                                click_source: 'featured',
+                                active_category: selectedCategory ?? 'all',
+                              }
+                              posthog.capture('blog_post_clicked', payload)
+                              window.gtag?.('event', 'blog_post_clicked', payload)
+                            }}
                           >
                             {featured.title}
                           </Link>

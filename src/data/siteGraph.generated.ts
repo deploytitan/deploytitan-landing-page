@@ -75,11 +75,6 @@ export const generatedNodes: GraphNode[] = [
     "file": "src/app/page.tsx"
   },
   {
-    "id": "/pricing",
-    "label": "Pricing",
-    "file": "src/app/pricing/page.tsx"
-  },
-  {
     "id": "/privacy",
     "label": "Privacy",
     "file": "src/app/privacy/page.tsx"
@@ -148,6 +143,11 @@ export const generatedNodes: GraphNode[] = [
     "id": "/terms",
     "label": "Terms",
     "file": "src/app/terms/page.tsx"
+  },
+  {
+    "id": "/waitlist",
+    "label": "Waitlist",
+    "file": "src/app/waitlist/page.tsx"
   }
 ]
 
@@ -194,7 +194,7 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "/security",
-    "target": "/pricing",
+    "target": "/waitlist",
     "kind": "link"
   },
   {
@@ -224,17 +224,7 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "/products/-titan-foresight",
-    "target": "/pricing",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-foresight",
     "target": "/products/titan-rollout",
-    "kind": "link"
-  },
-  {
-    "source": "/products/-titan-phoenix",
-    "target": "/pricing",
     "kind": "link"
   },
   {
@@ -244,7 +234,7 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "/products/-titan-rollout",
-    "target": "/pricing",
+    "target": "/how-it-works",
     "kind": "link"
   },
   {
@@ -259,12 +249,17 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "__nav__",
-    "target": "/pricing",
+    "target": "/about",
     "kind": "nav"
   },
   {
     "source": "__nav__",
-    "target": "/pricing",
+    "target": "/contact",
+    "kind": "nav"
+  },
+  {
+    "source": "__nav__",
+    "target": "/waitlist",
     "kind": "nav"
   },
   {
@@ -279,7 +274,7 @@ export const generatedLinks: GraphLink[] = [
   },
   {
     "source": "__nav__",
-    "target": "/pricing",
+    "target": "/waitlist",
     "kind": "nav"
   }
 ]

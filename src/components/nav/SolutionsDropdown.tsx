@@ -197,11 +197,11 @@ export function SolutionsDropdown({ onClose }: Props) {
           View all solutions →
         </Link>
         <Link
-          href="/pricing"
+          href="/waitlist"
           onClick={onClose}
           className="text-ink-secondary hover:text-ink text-xs font-medium transition-colors duration-150"
         >
-          View pricing →
+          Join waitlist →
         </Link>
       </div>
     </div>

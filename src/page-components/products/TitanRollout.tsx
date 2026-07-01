@@ -1,6 +1,6 @@
 'use client'
 
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 
 const STORY_BEATS = [
@@ -87,18 +87,16 @@ export default function TitanRollout() {
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <a
-                href={CREATE_ACCOUNT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={WAITLIST_URL}
                 className={`${CTA_CLASSES} bg-ink text-surface hover:shadow-[0_0_0_1px_var(--color-primary-muted),0_2px_8px_rgba(0,0,0,0.08)]`}
               >
-                Create account
+                Join waitlist
               </a>
               <a
-                href="/pricing"
+                href="/how-it-works"
                 className={`${CTA_CLASSES} border-line text-ink-secondary hover:border-primary/40 hover:text-ink bg-surface border`}
               >
-                See pricing
+                How it works
               </a>
             </div>
 
@@ -322,26 +320,24 @@ export default function TitanRollout() {
                   Try it on the sprint your team already worries about.
                 </h2>
                 <p className="text-ink-secondary mt-6 max-w-[38rem] text-lg leading-8">
-                  Create an account, connect GitHub and Slack, add the sprint PRs that need to ship,
-                  and let Titan handle the coordination your team is tired of doing by hand.
+                  Join the waitlist, share how your team coordinates releases today, and we&apos;ll
+                  bring you in when early access opens.
                 </p>
               </div>
 
               <div className="flex flex-col justify-center" data-reveal data-reveal-delay="1">
                 <div className="flex flex-col gap-4">
                   <a
-                    href={CREATE_ACCOUNT_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={WAITLIST_URL}
                     className={`${CTA_CLASSES} bg-ink text-surface w-full hover:shadow-[0_0_0_1px_var(--color-primary-muted),0_2px_8px_rgba(0,0,0,0.08)]`}
                   >
-                    Create account
+                    Join waitlist
                   </a>
                   <a
-                    href="/pricing"
+                    href="/how-it-works"
                     className={`${CTA_CLASSES} border-line text-ink-secondary hover:border-primary/40 hover:text-ink bg-surface w-full border`}
                   >
-                    See pricing
+                    How it works
                   </a>
                 </div>
                 <p className="text-ink-secondary mt-5 text-sm leading-7">

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../utils'
 import { Button } from '../components/shared/Button'
 
@@ -224,15 +224,13 @@ export default function Pricing() {
 
                 <Button
                   as="a"
-                  href={CREATE_ACCOUNT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={WAITLIST_URL}
                   variant={plan.accent}
                   size="sm"
                   block
                   className="mb-8"
                 >
-                  Create account
+                  Join waitlist
                 </Button>
 
                 <div className="border-line mt-auto border-t pt-6">
@@ -318,7 +316,7 @@ export default function Pricing() {
               FAQ
             </p>
             <h2 className="text-ink text-2xl font-semibold">
-              Questions teams ask before they create an account
+              Questions teams ask before they join the waitlist
             </h2>
           </div>
           <div data-reveal data-reveal-delay="1">

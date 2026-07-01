@@ -1,5 +1,6 @@
 'use client'
 
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { RoadmapBadge } from '../../components/shared/RoadmapBadge'
 import { Container } from '../../components/shared/Container'
@@ -186,7 +187,7 @@ export default function TitanLedger() {
         heading={<>Every deploy,<br className="hidden md:block" /> measured automatically.</>}
         description="Ledger turns the events your deploys already produce into history you can act on. DORA, trends, and team scorecards: no agents, no tagging."
         ctas={[
-          { label: 'Join early access', href: '/pricing' },
+          { label: 'Join early access', href: WAITLIST_URL },
           { label: 'How it works', href: '/how-it-works', variant: 'secondary' },
         ]}
       />

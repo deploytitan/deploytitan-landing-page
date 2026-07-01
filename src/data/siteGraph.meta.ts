@@ -69,7 +69,6 @@ const manualNodeMeta: NodeMeta[] = [
 
   // Resources
   { id: '/blog',          group: 'resource', weight: 2, label: 'Blog' },
-  { id: '/pricing',       group: 'resource', weight: 3, label: 'Pricing' },
   { id: '/status',        group: 'resource', weight: 2, label: 'System Status' },
 
   // Company
@@ -155,7 +154,6 @@ export const extraLinks: ExtraLink[] = [
   // Persona ↔ Product
   { source: '/for/sre',    target: '/products/titan-rollout',   kind: 'related' },
   { source: '/for/devops', target: '/products/titan-rollout',   kind: 'related' },
-  { source: '/for/cto',    target: '/pricing',                  kind: 'related' },
   { source: '/for/cto',    target: '/security',                 kind: 'related' },
 
   // Developer ↔ Product
@@ -167,7 +165,6 @@ export const extraLinks: ExtraLink[] = [
   { source: '/about',    target: '/contact',  kind: 'cta' },
 
   // Home → key CTAs
-  { source: '/', target: '/pricing',      kind: 'cta' },
   { source: '/', target: '/docs',         kind: 'cta' },
   { source: '/', target: '/products/titan-rollout', kind: 'cta' },
 ]

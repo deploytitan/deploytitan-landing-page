@@ -1,6 +1,6 @@
 'use client'
 
-import { APP_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
@@ -73,7 +73,7 @@ export default function SolutionInstantRollback() {
         description="A bad deploy fires PagerDuty. Someone wakes up. They read through Grafana, confirm the problem is real, find the right kubectl command, and watch dashboards for another 20 minutes to verify recovery. By then, thousands of users have already hit the bug."
         ctas={[
           { label: 'Book a 20-min walkthrough', href: 'https://cal.com/justine-deploytitan/demo', variant: 'book', target: '_blank', rel: 'noopener noreferrer' },
-          { label: 'Start free trial →', href: `${APP_URL}/signup`, variant: 'secondary' },
+          { label: 'Join waitlist →', href: WAITLIST_URL, variant: 'secondary' },
         ]}
       />
 
@@ -444,10 +444,10 @@ export default function SolutionInstantRollback() {
                 </svg>
               </a>
               <a
-                href={`${APP_URL}/signup`}
+                href={WAITLIST_URL}
                 className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
               >
-                Start free trial →
+                Join waitlist →
               </a>
             </div>
           </div>

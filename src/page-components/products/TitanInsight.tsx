@@ -1,5 +1,6 @@
 'use client'
 
+import { WAITLIST_URL } from '@/lib/env'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
 import { Card } from '../../components/shared/Card'
@@ -35,7 +36,7 @@ export default function TitanInsight() {
         heading={<>Did this release<br className="hidden md:block" /> actually improve anything?</>}
         description="Insight correlates every deploy to the metrics that matter: latency, conversion, revenue, error budget, and tells you which releases moved the needle and which just shipped."
         ctas={[
-          { label: 'Join the waitlist', href: '/pricing' },
+          { label: 'Join the waitlist', href: WAITLIST_URL },
         ]}
       />
 

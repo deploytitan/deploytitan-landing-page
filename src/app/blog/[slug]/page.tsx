@@ -5,6 +5,7 @@ import { sanityFetch } from '@/sanity/lib/live'
 import { postBySlugQuery, postSlugsQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import { PortableTextRenderer } from '@/components/blog/PortableTextRenderer'
+import { BlogPostAnalytics } from '@/components/blog/BlogPostAnalytics'
 import { AuthorBadge } from '@/components/blog/AuthorBadge'
 import { Container } from '@/components/shared/Container'
 import { Breadcrumbs } from '@/components/shared/Breadcrumbs'
@@ -136,6 +137,11 @@ export default async function BlogPostPage({ params }: Props) {
       {/* Body */}
       <section className="py-16">
         <Container width="2xl" padding="default">
+          <BlogPostAnalytics
+            slug={post.slug.current}
+            title={post.title}
+            categories={post.categories?.map((category) => category.slug.current) ?? []}
+          />
           {post.body && <PortableTextRenderer value={post.body} />}
 
           {/* Author bio footer */}

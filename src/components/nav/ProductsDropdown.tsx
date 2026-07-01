@@ -172,11 +172,11 @@ export function ProductsDropdown({ onClose }: Props) {
       {/* Footer */}
       <div className="border-line-subtle bg-surface-alt/40 flex items-center justify-end border-t px-6 py-3">
         <Link
-          href="/pricing"
+          href="/waitlist"
           onClick={onClose}
           className="text-ink-secondary hover:text-ink text-xs font-medium transition-colors duration-150"
         >
-          View pricing →
+          Join waitlist →
         </Link>
       </div>
     </div>

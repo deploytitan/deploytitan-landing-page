@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Button } from '../components/shared/Button'
@@ -268,14 +268,12 @@ export default function About({ teamMembers = [] }: AboutProps) {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button
               as="a"
-              href={CREATE_ACCOUNT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={WAITLIST_URL}
               variant="primary"
               size="lg"
               className="rounded-[8px]"
             >
-              Create account
+              Join waitlist
             </Button>
             <Button as="a" href="/contact" variant="outline" size="lg" className="rounded-[8px]">
               Contact us

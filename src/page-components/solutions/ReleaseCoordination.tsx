@@ -1,6 +1,6 @@
 'use client'
 
-import { CREATE_ACCOUNT_URL } from '@/lib/env'
+import { WAITLIST_URL } from '@/lib/env'
 import { Button } from '../../components/shared/Button'
 import { useScrollReveal } from '../../utils'
 import { Container } from '../../components/shared/Container'
@@ -76,7 +76,7 @@ export default function ReleaseCoordination() {
         heading={<>The release exists before<br className="hidden md:block" /> anyone starts merging.</>}
         description="Most multi-service releases are coordinated through a combination of Slack messages, Jira tickets, and institutional knowledge about which service blocks which. That knowledge lives in people, not systems. DeployTitan makes it structural."
         ctas={[
-          { label: 'Create account', href: CREATE_ACCOUNT_URL, target: '_blank', rel: 'noopener noreferrer' },
+          { label: 'Join waitlist', href: WAITLIST_URL },
         ]}
       />
 
@@ -198,14 +198,12 @@ export default function ReleaseCoordination() {
           <div className="mx-auto max-w-sm" data-reveal>
             <Button
               as="a"
-              href={CREATE_ACCOUNT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={WAITLIST_URL}
               variant="primary"
               size="lg"
               block
             >
-              Create account
+              Join waitlist
             </Button>
           </div>
         </Container>
