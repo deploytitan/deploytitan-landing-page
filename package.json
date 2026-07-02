@@ -10,7 +10,9 @@
     "prebuild": "tsx scripts/build-link-graph.ts",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "migrate:posts-to-articles": "tsx scripts/migrate-posts-to-articles.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",

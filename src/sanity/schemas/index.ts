@@ -1,5 +1,49 @@
 import { authorType } from './author'
+import { articlePerformanceSnapshotType } from './articlePerformanceSnapshot'
+import { articleType } from './article'
 import { categoryType } from './category'
-import { postType } from './post'
+import { contentBriefType } from './contentBrief'
+import { contentInsightType } from './contentInsight'
+import { distributionAssetType } from './distributionAsset'
+import { marketQuestionType } from './marketQuestion'
+import {
+  analyticsMetricSetType,
+  articleOutlineSectionType,
+  calloutBlockType,
+  customerDiscoveryCtaType,
+  diagramBlockType,
+  faqItemType,
+  productHypothesisConfidenceType,
+  seoMetadataType,
+  sourceCitationType,
+  tableBlockType,
+  targetPersonaType,
+  topicClusterType,
+  utmParametersType,
+} from './objects'
+import { researchEvidenceType } from './researchEvidence'
 
-export const schemaTypes = [postType, authorType, categoryType]
+export const schemaTypes = [
+  articleType,
+  marketQuestionType,
+  researchEvidenceType,
+  contentBriefType,
+  distributionAssetType,
+  articlePerformanceSnapshotType,
+  contentInsightType,
+  authorType,
+  categoryType,
+  seoMetadataType,
+  faqItemType,
+  utmParametersType,
+  analyticsMetricSetType,
+  customerDiscoveryCtaType,
+  targetPersonaType,
+  topicClusterType,
+  sourceCitationType,
+  articleOutlineSectionType,
+  productHypothesisConfidenceType,
+  calloutBlockType,
+  diagramBlockType,
+  tableBlockType,
+]

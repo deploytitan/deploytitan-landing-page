@@ -1,15 +1,250 @@
-import type {StructureResolver} from 'sanity/structure'
+import type { StructureResolver } from 'sanity/structure'
 
-// https://www.sanity.io/docs/structure-builder-cheat-sheet
+const hiddenTypes = [
+  'article',
+  'marketQuestion',
+  'researchEvidence',
+  'contentBrief',
+  'distributionAsset',
+  'articlePerformanceSnapshot',
+  'contentInsight',
+  'author',
+  'category',
+]
+
+function filteredListItem(
+  S: Parameters<StructureResolver>[0],
+  {
+    id,
+    title,
+    schemaType,
+    filter,
+    params,
+    defaultOrdering,
+  }: {
+    id: string
+    title: string
+    schemaType: string
+    filter: string
+    params?: Record<string, unknown>
+    defaultOrdering?: Array<{ field: string; direction: 'asc' | 'desc' }>
+  },
+) {
+  let list = S.documentList().title(title).schemaType(schemaType).filter(filter)
+
+  if (params) {
+    list = list.params(params)
+  }
+
+  if (defaultOrdering) {
+    list = list.defaultOrdering(defaultOrdering)
+  }
+
+  return S.listItem().id(id).title(title).child(list)
+}
+
+const articleViews = (S: Parameters<StructureResolver>[0]) => [
+  S.documentTypeListItem('article').title('All Articles'),
+  filteredListItem(S, {
+    id: 'this-week',
+    title: 'This Week',
+    schemaType: 'article',
+    filter: '_type == "article" && _updatedAt >= $weekAgo',
+    params: { weekAgo: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() },
+  }),
+  filteredListItem(S, {
+    id: 'awaiting-research',
+    title: 'Awaiting Research',
+    schemaType: 'article',
+    filter: '_type == "article" && status == "awaitingResearch"',
+  }),
+  filteredListItem(S, {
+    id: 'brief-ready',
+    title: 'Brief Ready',
+    schemaType: 'article',
+    filter: '_type == "article" && status == "briefReady"',
+  }),
+  filteredListItem(S, {
+    id: 'drafting',
+    title: 'Drafting',
+    schemaType: 'article',
+    filter: '_type == "article" && status == "drafting"',
+  }),
+  filteredListItem(S, {
+    id: 'technical-review',
+    title: 'Technical Review',
+    schemaType: 'article',
+    filter: '_type == "article" && status == "technicalReview"',
+  }),
+  filteredListItem(S, {
+    id: 'scheduled',
+    title: 'Scheduled',
+    schemaType: 'article',
+    filter: '_type == "article" && status == "scheduled"',
+  }),
+  filteredListItem(S, {
+    id: 'published',
+    title: 'Published',
+    schemaType: 'article',
+    filter: '_type == "article" && status == "published"',
+  }),
+  filteredListItem(S, {
+    id: 'needs-refresh',
+    title: 'Needs Refresh',
+    schemaType: 'article',
+    filter: '_type == "article" && status == "needsRefresh"',
+  }),
+]
+
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('Blog')
+    .title('DeployTitan Content OS')
     .items([
-      S.documentTypeListItem('post').title('Posts'),
-      S.documentTypeListItem('category').title('Categories'),
-      S.documentTypeListItem('author').title('Authors'),
+      S.listItem()
+        .title('Content Operations')
+        .child(S.list().title('Content Operations').items(articleViews(S))),
+      S.listItem()
+        .title('Customer Discovery')
+        .child(
+          S.list()
+            .title('Customer Discovery')
+            .items([
+              filteredListItem(S, {
+                id: 'unvalidated-questions',
+                title: 'Unvalidated Questions',
+                schemaType: 'marketQuestion',
+                filter: '_type == "marketQuestion" && status == "unvalidated"',
+              }),
+              filteredListItem(S, {
+                id: 'validated-questions',
+                title: 'Validated Questions',
+                schemaType: 'marketQuestion',
+                filter: '_type == "marketQuestion" && status == "validated"',
+              }),
+              filteredListItem(S, {
+                id: 'recent-evidence',
+                title: 'Recent Evidence',
+                schemaType: 'researchEvidence',
+                filter: '_type == "researchEvidence"',
+                defaultOrdering: [{ field: '_updatedAt', direction: 'desc' }],
+              }),
+              filteredListItem(S, {
+                id: 'customer-interviews',
+                title: 'Customer Interviews',
+                schemaType: 'researchEvidence',
+                filter: '_type == "researchEvidence" && evidenceType == "customerInterview"',
+              }),
+              filteredListItem(S, {
+                id: 'existing-workarounds',
+                title: 'Existing Workarounds',
+                schemaType: 'researchEvidence',
+                filter: '_type == "researchEvidence" && defined(existingWorkaround)',
+              }),
+              filteredListItem(S, {
+                id: 'product-signals',
+                title: 'Product Signals',
+                schemaType: 'contentInsight',
+                filter: '_type == "contentInsight" && signalType == "product"',
+              }),
+            ]),
+        ),
+      S.listItem()
+        .title('Distribution')
+        .child(
+          S.list()
+            .title('Distribution')
+            .items([
+              filteredListItem(S, {
+                id: 'ready-to-publish',
+                title: 'Ready to Publish',
+                schemaType: 'distributionAsset',
+                filter: '_type == "distributionAsset" && status == "ready"',
+              }),
+              filteredListItem(S, {
+                id: 'distribution-x',
+                title: 'X',
+                schemaType: 'distributionAsset',
+                filter: '_type == "distributionAsset" && channel in ["xThread", "xPost"]',
+              }),
+              filteredListItem(S, {
+                id: 'distribution-linkedin',
+                title: 'LinkedIn',
+                schemaType: 'distributionAsset',
+                filter: '_type == "distributionAsset" && channel == "linkedin"',
+              }),
+              filteredListItem(S, {
+                id: 'distribution-dev',
+                title: 'DEV',
+                schemaType: 'distributionAsset',
+                filter: '_type == "distributionAsset" && channel == "dev"',
+              }),
+              filteredListItem(S, {
+                id: 'distribution-newsletter',
+                title: 'Newsletter',
+                schemaType: 'distributionAsset',
+                filter: '_type == "distributionAsset" && channel == "newsletter"',
+              }),
+              filteredListItem(S, {
+                id: 'missing-distribution',
+                title: 'Missing Distribution',
+                schemaType: 'article',
+                filter: '_type == "article" && status == "published" && count(*[_type == "distributionAsset" && references(^._id)]) == 0',
+              }),
+            ]),
+        ),
+      S.listItem()
+        .title('Performance')
+        .child(
+          S.list()
+            .title('Performance')
+            .items([
+              filteredListItem(S, {
+                id: 'awaiting-seven-day-review',
+                title: 'Awaiting Seven-Day Review',
+                schemaType: 'article',
+                filter: '_type == "article" && status == "published" && defined(sevenDayReviewAt) && dateTime(sevenDayReviewAt) <= dateTime(now())',
+              }),
+              filteredListItem(S, {
+                id: 'awaiting-thirty-day-review',
+                title: 'Awaiting Thirty-Day Review',
+                schemaType: 'article',
+                filter: '_type == "article" && status == "published" && defined(thirtyDayReviewAt) && dateTime(thirtyDayReviewAt) <= dateTime(now())',
+              }),
+              filteredListItem(S, {
+                id: 'strong-search-signal',
+                title: 'Strong Search Signal',
+                schemaType: 'contentInsight',
+                filter: '_type == "contentInsight" && signalType == "search"',
+              }),
+              filteredListItem(S, {
+                id: 'low-search-ctr',
+                title: 'Low Search CTR',
+                schemaType: 'articlePerformanceSnapshot',
+                filter: '_type == "articlePerformanceSnapshot" && metrics.searchImpressions > 100 && metrics.searchCtr < 0.02',
+              }),
+              filteredListItem(S, {
+                id: 'strong-product-signal',
+                title: 'Strong Product Signal',
+                schemaType: 'contentInsight',
+                filter: '_type == "contentInsight" && signalType == "product"',
+              }),
+              filteredListItem(S, {
+                id: 'declining-content',
+                title: 'Declining Content',
+                schemaType: 'contentInsight',
+                filter: '_type == "contentInsight" && signalType == "refresh"',
+              }),
+            ]),
+        ),
       S.divider(),
-      ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['post', 'category', 'author'].includes(item.getId()!),
-      ),
+      S.documentTypeListItem('marketQuestion').title('Market Questions'),
+      S.documentTypeListItem('researchEvidence').title('Research Evidence'),
+      S.documentTypeListItem('contentBrief').title('Content Briefs'),
+      S.documentTypeListItem('distributionAsset').title('Distribution Assets'),
+      S.documentTypeListItem('articlePerformanceSnapshot').title('Performance Snapshots'),
+      S.documentTypeListItem('contentInsight').title('Content Insights'),
+      S.documentTypeListItem('author').title('Authors'),
+      S.documentTypeListItem('category').title('Categories'),
+      S.divider(),
+      ...S.documentTypeListItems().filter((item) => item.getId() && !hiddenTypes.includes(item.getId()!)),
     ])

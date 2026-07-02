@@ -1,40 +1,63 @@
 import { defineQuery } from 'next-sanity'
 
-// ─── Post list (listing page) ─────────────────────────────────────────────────
-export const postsQuery = defineQuery(`
-  *[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
+const ARTICLE_WHERE = '_type == "article"'
+const ARTICLE_LIST_PROJECTION = `
+  _id,
+  title,
+  slug,
+  excerpt,
+  directAnswer,
+  primaryQuestion,
+  publishedAt,
+  _updatedAt,
+  status,
+  cardLayout,
+  topicCluster,
+  seo,
+  coverImage { asset, alt, hotspot, crop },
+  "author": author->{ name, slug, image, role, bio },
+  "categories": categories[]->{ title, slug },
+  "faq": faq[]{
+    question,
+    answer
+  },
+  "relatedArticles": relatedArticles[]->{
     _id,
     title,
     slug,
-    excerpt,
-    publishedAt,
-    coverImage { asset, alt, hotspot, crop },
-    "author": author->{ name, image, role },
-    "categories": categories[]->{ title, slug },
+    excerpt
+  }
+`
+
+export const articlesQuery = defineQuery(`
+  *[${ARTICLE_WHERE} && defined(slug.current) && status == "published"]
+  | order(coalesce(publishedAt, _createdAt) desc) {
+    ${ARTICLE_LIST_PROJECTION}
   }
 `)
 
-// ─── Single post (detail page) ────────────────────────────────────────────────
-export const postBySlugQuery = defineQuery(`
-  *[_type == "post" && slug.current == $slug][0] {
-    _id,
-    title,
-    slug,
-    excerpt,
-    publishedAt,
-    coverImage { asset, alt, hotspot, crop },
-    "author": author->{ name, image, role, bio },
-    "categories": categories[]->{ title, slug },
+export const articleBySlugQuery = defineQuery(`
+  *[${ARTICLE_WHERE} && slug.current == $slug][0] {
+    ${ARTICLE_LIST_PROJECTION},
     body,
+    citations,
+    customerDiscoveryCta,
+    contentBrief->{
+      _id,
+      title,
+      "marketQuestion": marketQuestion->{
+        _id,
+        question,
+        status
+      }
+    }
   }
 `)
 
-// ─── All slugs (for generateStaticParams) ────────────────────────────────────
-export const postSlugsQuery = defineQuery(`
-  *[_type == "post" && defined(slug.current)] { "slug": slug.current }
+export const articleSlugsQuery = defineQuery(`
+  *[${ARTICLE_WHERE} && defined(slug.current)] { "slug": slug.current }
 `)
 
-// ─── All categories (for nav strip + generateStaticParams) ───────────────────
 export const categoriesQuery = defineQuery(`
   *[_type == "category"] | order(title asc) {
     _id,
@@ -44,33 +67,23 @@ export const categoriesQuery = defineQuery(`
   }
 `)
 
-// ─── Single category by slug ──────────────────────────────────────────────────
 export const categoryBySlugQuery = defineQuery(`
   *[_type == "category" && slug.current == $slug][0] {
     _id,
     title,
     slug,
     description,
-    "postCount": count(*[_type == "post" && defined(slug.current) && references(^._id)]),
+    "articleCount": count(*[${ARTICLE_WHERE} && defined(slug.current) && references(^._id)]),
   }
 `)
 
-// ─── Posts filtered by category slug ─────────────────────────────────────────
-export const postsByCategoryQuery = defineQuery(`
-  *[_type == "post" && defined(slug.current) && $categorySlug in categories[]->slug.current]
-  | order(publishedAt desc) {
-    _id,
-    title,
-    slug,
-    excerpt,
-    publishedAt,
-    coverImage { asset, alt, hotspot, crop },
-    "author": author->{ name, image, role },
-    "categories": categories[]->{ title, slug },
+export const articlesByCategoryQuery = defineQuery(`
+  *[${ARTICLE_WHERE} && defined(slug.current) && $categorySlug in categories[]->slug.current]
+  | order(coalesce(publishedAt, _createdAt) desc) {
+    ${ARTICLE_LIST_PROJECTION}
   }
 `)
 
-// ─── About page team members ──────────────────────────────────────────────────
 export const aboutTeamQuery = defineQuery(`
   *[_type == "author" && showOnAboutPage == true]
   | order(teamOrder asc, name asc) {
@@ -80,5 +93,19 @@ export const aboutTeamQuery = defineQuery(`
     bio,
     image,
     teamOrder,
+  }
+`)
+
+export const articleByCanonicalOrSlugQuery = defineQuery(`
+  *[_type == "article" && (
+      slug.current == $slug ||
+      seo.canonicalUrl == $canonicalUrl ||
+      "https://deploytitan.com/blog/" + slug.current == $canonicalUrl ||
+      "https://deploytitan.com/blog/" + slug.current + "/" == $canonicalUrl
+    )
+  ][0]{
+    _id,
+    slug,
+    title
   }
 `)

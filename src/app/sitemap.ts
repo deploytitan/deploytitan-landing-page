@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
-import { postSlugsQuery } from '@/sanity/lib/queries'
+import { articleSlugsQuery } from '@/sanity/lib/queries'
 import { generatedNodes } from '@/data/siteGraph.generated'
 
 const BASE_URL = 'https://deploytitan.com'
@@ -49,17 +49,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...getRouteDefaults(id),
   }))
 
-  // Fetch published blog post slugs from Sanity
+  // Fetch published blog article slugs from Sanity
   let blogRoutes: MetadataRoute.Sitemap = []
   try {
-    const slugs = await client.fetch<{ slug: string }[]>(postSlugsQuery)
+    const slugs = await client.fetch<{ slug: string }[]>(articleSlugsQuery)
     blogRoutes = (slugs ?? []).map(({ slug }) => ({
       url: `${BASE_URL}/blog/${slug}`,
       lastModified: now,
       ...getRouteDefaults(`/blog/${slug}`),
     }))
   } catch {
-    // Sanity unreachable at build time — skip blog post URLs gracefully
+    // Sanity unreachable at build time — skip blog article URLs gracefully
   }
 
   return [

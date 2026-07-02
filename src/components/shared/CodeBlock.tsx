@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { cn } from '../../utils'
 import { useTheme } from '../../hooks/useTheme'
+import { trackEvent } from '@/lib/analytics'
 
 // Re-export InlineCode from its own module so importers that only need
 // InlineCode don't pull in this file (and the Shiki dynamic import chain).
@@ -118,6 +119,11 @@ export function CodeBlock({
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(trimmed)
+    trackEvent('codeCopied', {
+      filename: filename ?? null,
+      language: lang,
+      characters: trimmed.length,
+    })
     setCopied(true)
     setTimeout(() => setCopied(false), 1800)
   }

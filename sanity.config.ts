@@ -14,11 +14,20 @@ import { structure } from './src/sanity/structure'
 
 const resolve: PresentationPluginOptions['resolve'] = {
   locations: {
-    post: defineLocations({
+    article: defineLocations({
       select: { title: 'title', slug: 'slug.current' },
       resolve: (doc) => ({
         locations: [
           { title: doc?.title ?? 'Untitled', href: `/blog/${doc?.slug}` },
+          { title: 'All posts', href: '/blog' },
+        ],
+      }),
+    }),
+    post: defineLocations({
+      select: { title: 'title', slug: 'slug.current' },
+      resolve: (doc) => ({
+        locations: [
+          { title: `${doc?.title ?? 'Untitled'} (Legacy Post)`, href: `/blog/${doc?.slug}` },
           { title: 'All posts', href: '/blog' },
         ],
       }),

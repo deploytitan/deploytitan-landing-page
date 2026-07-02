@@ -1,17 +1,70 @@
 # DeployTitan Landing Page
 
-## Waitlist Form
+## Content Operating System
 
-The waitlist UI posts to the internal API route at `/api/waitlist`.
-Configure the upstream provider with the server-side env var:
+The blog now runs on a Sanity-first content operating system centered on the `article` document type and its linked research/distribution/performance records:
+
+- `marketQuestion`
+- `researchEvidence`
+- `contentBrief`
+- `article`
+- `distributionAsset`
+- `articlePerformanceSnapshot`
+- `contentInsight`
+
+Reusable Sanity objects power SEO metadata, FAQ blocks, UTM parameters, analytics metric sets, customer-discovery CTAs, personas, topic clusters, citations, outlines, and hypothesis confidence.
+
+### Key routes
+
+- `/blog/[slug]`: SSR article page with canonical metadata, JSON-LD, FAQ rendering, citations, and related articles
+- `/api/content/articles/[slug]`: machine-readable published article JSON
+- `/api/content/performance-snapshots`: authenticated ingestion endpoint for aggregated article metrics
+- `/feed.xml`: RSS feed
+- `/sitemap.xml`: sitemap including Sanity articles
+- `/api/revalidate`: Sanity webhook entrypoint for Next.js revalidation and publication automation
+
+### Publication automation
+
+When an `article` publish webhook hits `/api/revalidate`, the app:
+
+- revalidates the article page and blog index
+- refreshes feed and sitemap routes
+- backfills seven-day and thirty-day review dates
+- creates draft `distributionAsset` records for `xThread`, `linkedin`, `dev`, and `newsletter`
+- optionally pings `CONTENT_OPS_WEBHOOK_URL`
+- optionally posts to `CONTENT_OPS_SLACK_WEBHOOK_URL`
+
+Required env vars for the full flow:
 
 ```bash
-WAITLIST_WEBHOOK_URL=https://formspree.io/f/mojokkwl
+SANITY_REVALIDATE_SECRET=
+SANITY_API_READ_TOKEN=
+SANITY_API_WRITE_TOKEN=
+CONTENT_PERFORMANCE_API_KEY=
+CONTENT_OPS_WEBHOOK_URL=
+CONTENT_OPS_SLACK_WEBHOOK_URL=
 ```
 
-`NEXT_PUBLIC_FORM_ENDPOINT` is still supported as a temporary fallback for the
-legacy Google Apps Script setup, but new deployments should use
-`WAITLIST_WEBHOOK_URL`.
+### Legacy post migration
+
+There is a one-off migration script for moving the legacy `post` document(s) into `article`:
+
+```bash
+pnpm migrate:posts-to-articles
+```
+
+The app still has temporary read compatibility for the old `post` type, but `article` is the canonical model going forward.
+
+## Waitlist Form
+
+The waitlist UI posts directly to Formspree from the browser.
+Configure the public env var:
+
+```bash
+NEXT_PUBLIC_FORM_ENDPOINT=https://formspree.io/f/mojokkwl
+```
+
+This direct-submit setup keeps the real browser context attached to the request.
 
 ### Formspree setup
 
@@ -29,12 +82,13 @@ Setup flow:
 1. Open the claim URL above.
 2. Sign in to Formspree and confirm the form creation.
 3. Copy the generated endpoint URL, which looks like `https://formspree.io/f/...`.
-4. Set that value as `WAITLIST_WEBHOOK_URL` in local env and Vercel env.
+4. Set that value as `NEXT_PUBLIC_FORM_ENDPOINT` in local env and Vercel env.
 5. Submit the `/waitlist` form once and confirm the submission appears in Formspree.
 
 ## Notes
 
-- The frontend does not need to change when the provider changes.
+- The current setup submits directly to Formspree so it carries browser context
+  like the real client IP, referrer, and user agent.
 - If you add or rename fields later, update the claim URL in this README only if
   you want Formspree's dashboard schema to stay aligned with the UI.
 

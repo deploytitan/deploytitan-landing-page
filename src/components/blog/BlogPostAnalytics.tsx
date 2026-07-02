@@ -1,13 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import posthog from 'posthog-js'
-
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void
-  }
-}
+import { trackEvent } from '@/lib/analytics'
 
 type BlogPostAnalyticsProps = {
   slug: string
@@ -30,8 +24,7 @@ export function BlogPostAnalytics({ slug, title, categories }: BlogPostAnalytics
       page_path: typeof window !== 'undefined' ? window.location.pathname : `/blog/${slug}`,
     }
 
-    posthog.capture('blog_post_viewed', payload)
-    window.gtag?.('event', 'blog_post_viewed', payload)
+    trackEvent('articleViewed', payload)
   }, [categories, slug, title])
 
   useEffect(() => {
@@ -56,8 +49,7 @@ export function BlogPostAnalytics({ slug, title, categories }: BlogPostAnalytics
             read_percent: milestone,
           }
 
-          posthog.capture('blog_post_read_progress', payload)
-          window.gtag?.('event', 'blog_post_read_progress', payload)
+          trackEvent(milestone === 50 ? 'article50PercentRead' : 'article90PercentRead', payload)
         }
       })
     }

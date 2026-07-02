@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import posthog from 'posthog-js'
 import { useState } from 'react'
+import { FORM_ENDPOINT } from '@/lib/env'
 import { Button } from './shared/Button'
 
 declare global {
@@ -37,6 +38,7 @@ export function WaitlistForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!FORM_ENDPOINT) return
 
     setState('loading')
 
@@ -87,10 +89,11 @@ export function WaitlistForm({
         budget_range: budgetRange,
       })
 
-      const response = await fetch('/api/waitlist', {
+      const response = await fetch(FORM_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
         body: JSON.stringify(payload),
       })
@@ -105,6 +108,24 @@ export function WaitlistForm({
     }
   }
 
+  if (!FORM_ENDPOINT) {
+    return (
+      <div className="border-line bg-surface-alt/50 rounded-[2px] border px-4 py-4">
+        <p className="text-ink text-sm font-medium">Waitlist intake is not wired up yet.</p>
+        <p className="text-ink-secondary mt-2 text-sm leading-relaxed">
+          Email{' '}
+          <a
+            className="text-primary-accessible hover:underline"
+            href="mailto:hello@deploytitan.com"
+          >
+            hello@deploytitan.com
+          </a>{' '}
+          and we&apos;ll add you manually.
+        </p>
+      </div>
+    )
+  }
+
   if (state === 'success') {
     return (
       <div className="success-reveal border-line bg-surface-alt/60 rounded-[2px] border px-5 py-5">
@@ -116,6 +137,16 @@ export function WaitlistForm({
 
   return (
     <form onSubmit={handleSubmit} className={className ?? 'flex w-full flex-col gap-4'}>
+      <input
+        type="text"
+        name="_gotcha"
+        tabIndex={-1}
+        autoComplete="off"
+        className="sr-only"
+        aria-hidden="true"
+        value=""
+        onChange={() => {}}
+      />
       <div className="grid gap-3 md:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <label

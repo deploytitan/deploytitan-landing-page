@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { sanityFetch } from '@/sanity/lib/live'
-import { postsQuery, categoriesQuery } from '@/sanity/lib/queries'
+import { articlesQuery, categoriesQuery } from '@/sanity/lib/queries'
 import { BlogClientIndex } from '@/components/blog/BlogClientIndex'
 import { Container } from '@/components/shared/Container'
 
@@ -11,6 +11,7 @@ type PostListItem = {
   slug: { current: string }
   excerpt?: string
   publishedAt?: string
+  cardLayout?: 'standard' | 'featured'
   coverImage?: { asset: object; alt?: string; hotspot?: object; crop?: object }
   author?: { name: string; image?: object; role?: string }
   categories?: { title: string; slug: { current: string } }[]
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
 
 export default async function BlogPage() {
   const [{ data: postsRaw }, { data: catsRaw }] = await Promise.all([
-    sanityFetch({ query: postsQuery }),
+    sanityFetch({ query: articlesQuery }),
     sanityFetch({ query: categoriesQuery }),
   ])
 
