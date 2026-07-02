@@ -14,6 +14,7 @@ import {
   type ArticleRecord,
   extractArticleHeadings,
   getArticleCanonicalUrl,
+  getArticleLlmTextUrl,
   getArticleSeoDescription,
   getArticleSeoTitle,
   normalizeAuthor,
@@ -63,6 +64,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: {
       canonical,
+      types: {
+        'text/plain': getArticleLlmTextUrl(article),
+      },
     },
     robots: article.seo?.noIndex ? { index: false, follow: true } : undefined,
     openGraph: {
@@ -138,6 +142,15 @@ export default async function BlogArticlePage({ params }: Props) {
             </p>
           )}
 
+          <p className="mb-6">
+            <Link
+              href={getArticleLlmTextUrl(article)}
+              className="text-primary-accessible hover:text-primary font-mono text-xs tracking-widest uppercase transition-colors"
+            >
+              Plain text / LLM version
+            </Link>
+          </p>
+
           {author && <AuthorBadge author={author} publishedAt={article.publishedAt ?? undefined} />}
         </div>
       </section>
@@ -164,150 +177,209 @@ export default async function BlogArticlePage({ params }: Props) {
 
       <section className="py-16">
         <div className="mx-auto max-w-5xl">
-          <div className="xl:grid">
-            <article className="min-w-0 px-4 lg:pr-4 lg:pl-0 xl:col-start-2">
-              <BlogPostAnalytics
-                slug={article.slug.current}
-                title={article.title}
-                categories={article.categories?.map((category) => category.slug.current) ?? []}
-              />
+          <div className="">
+            <div className="xl:grid">
+              <article className="min-w-0 px-4 lg:pr-4 lg:pl-0 xl:col-start-2">
+                <BlogPostAnalytics
+                  slug={article.slug.current}
+                  title={article.title}
+                  categories={article.categories?.map((category) => category.slug.current) ?? []}
+                />
 
-              {publishedLabel && (
-                <p className="text-ink-tertiary mb-6 font-mono text-xs tracking-widest uppercase">
-                  Published {publishedLabel}
-                </p>
-              )}
+                {publishedLabel && (
+                  <p className="text-ink-tertiary mb-6 font-mono text-xs tracking-widest uppercase">
+                    Published {publishedLabel}
+                  </p>
+                )}
 
-              {headings.length > 0 && (
-                <aside className="mb-8 xl:hidden">
-                  <section
-                    aria-labelledby="on-this-page-mobile-heading"
-                    className="border-line bg-surface-alt/50 rounded-[2px] border px-4 py-4"
-                  >
-                    <h2
-                      id="on-this-page-mobile-heading"
-                      className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase"
+                {headings.length > 0 && (
+                  <aside className="mb-8 xl:hidden">
+                    <section
+                      aria-labelledby="on-this-page-mobile-heading"
+                      className="border-line bg-surface-alt/50 rounded-[2px] border px-4 py-4"
                     >
-                      On this page
-                    </h2>
-                    <ol className="space-y-2 text-sm">
-                      {headings.map((heading) => (
-                        <li
-                          key={`mobile-${heading.level}-${heading.text}`}
-                          className={heading.level > 2 ? 'pl-3' : ''}
-                        >
-                          <a
-                            href={`#${heading.id}`}
-                            className="text-ink-secondary hover:text-primary transition-colors"
+                      <h2
+                        id="on-this-page-mobile-heading"
+                        className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase"
+                      >
+                        On this page
+                      </h2>
+                      <ol className="space-y-2 text-sm">
+                        {headings.map((heading) => (
+                          <li
+                            key={`mobile-${heading.level}-${heading.text}`}
+                            className={heading.level > 2 ? 'pl-3' : ''}
                           >
-                            {heading.text}
-                          </a>
+                            <a
+                              href={`#${heading.id}`}
+                              className="text-ink-secondary hover:text-primary transition-colors"
+                            >
+                              {heading.text}
+                            </a>
+                          </li>
+                        ))}
+                      </ol>
+                    </section>
+                  </aside>
+                )}
+
+                <ArticleReaderExperience
+                  articleTitle={article.title}
+                  articleSlug={article.slug.current}
+                >
+                  {article.body && <PortableTextRenderer value={article.body} />}
+                </ArticleReaderExperience>
+
+                {faq.length > 0 && (
+                  <section
+                    className="border-line mt-14 border-t pt-8"
+                    aria-labelledby="faq-heading"
+                  >
+                    <h2 id="faq-heading" className="text-ink mb-5 text-2xl font-semibold">
+                      Frequently Asked Questions
+                    </h2>
+                    <div className="space-y-5">
+                      {faq.map((item) => (
+                        <div key={item.question}>
+                          <h3 className="text-ink text-base font-semibold">{item.question}</h3>
+                          <p className="text-ink-secondary mt-2 text-base leading-relaxed">
+                            {item.answer}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {article.customerDiscoveryCta?.question && (
+                  <section
+                    className="border-primary/20 bg-primary/5 mt-14 rounded-[2px] border px-6 py-6"
+                    aria-labelledby="discovery-heading"
+                  >
+                    <h2 id="discovery-heading" className="text-ink text-lg font-semibold">
+                      Customer-Discovery Question
+                    </h2>
+                    <p className="text-ink-secondary mt-3 text-base leading-relaxed">
+                      {article.customerDiscoveryCta.question}
+                    </p>
+                    {article.customerDiscoveryCta.supportingText && (
+                      <p className="text-ink-tertiary mt-2 text-sm leading-relaxed">
+                        {article.customerDiscoveryCta.supportingText}
+                      </p>
+                    )}
+                    {article.customerDiscoveryCta.href && article.customerDiscoveryCta.label && (
+                      <div className="mt-4">
+                        <TrackedArticleLink
+                          href={article.customerDiscoveryCta.href}
+                          className="border-primary/30 text-primary-accessible hover:border-primary/50 hover:text-primary inline-flex items-center rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors"
+                          eventName={
+                            /interview|demo|call/i.test(article.customerDiscoveryCta.label)
+                              ? 'interviewRequested'
+                              : /newsletter/i.test(article.customerDiscoveryCta.label)
+                                ? 'newsletterSignup'
+                                : 'researchCtaClicked'
+                          }
+                          eventPayload={{
+                            slug: article.slug.current,
+                            title: article.title,
+                            href: article.customerDiscoveryCta.href,
+                          }}
+                        >
+                          {article.customerDiscoveryCta.label}
+                        </TrackedArticleLink>
+                      </div>
+                    )}
+                  </section>
+                )}
+
+                {article.citations && article.citations.length > 0 && (
+                  <section
+                    className="border-line mt-14 border-t pt-8"
+                    aria-labelledby="citations-heading"
+                  >
+                    <h2 id="citations-heading" className="text-ink mb-5 text-2xl font-semibold">
+                      Citations
+                    </h2>
+                    <ol className="text-ink-secondary space-y-3 text-sm leading-relaxed">
+                      {article.citations.map((citation, index) => (
+                        <li key={`${citation.label}-${index}`}>
+                          <span className="text-ink font-medium">{citation.label}</span>
+                          {citation.publisher ? `, ${citation.publisher}` : ''}
+                          {citation.url && (
+                            <>
+                              {' '}
+                              <a
+                                href={citation.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-primary underline underline-offset-2"
+                              >
+                                Source
+                              </a>
+                            </>
+                          )}
+                          {citation.notes ? ` — ${citation.notes}` : ''}
                         </li>
                       ))}
                     </ol>
                   </section>
-                </aside>
-              )}
+                )}
+              </article>
 
-              <ArticleReaderExperience
-                articleTitle={article.title}
-                articleSlug={article.slug.current}
-              >
-                {article.body && <PortableTextRenderer value={article.body} />}
-              </ArticleReaderExperience>
-
-              {faq.length > 0 && (
-                <section className="border-line mt-14 border-t pt-8" aria-labelledby="faq-heading">
-                  <h2 id="faq-heading" className="text-ink mb-5 text-2xl font-semibold">
-                    Frequently Asked Questions
-                  </h2>
-                  <div className="space-y-5">
-                    {faq.map((item) => (
-                      <div key={item.question}>
-                        <h3 className="text-ink text-base font-semibold">{item.question}</h3>
-                        <p className="text-ink-secondary mt-2 text-base leading-relaxed">
-                          {item.answer}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {article.customerDiscoveryCta?.question && (
-                <section
-                  className="border-primary/20 bg-primary/5 mt-14 rounded-[2px] border px-6 py-6"
-                  aria-labelledby="discovery-heading"
-                >
-                  <h2 id="discovery-heading" className="text-ink text-lg font-semibold">
-                    Customer-Discovery Question
-                  </h2>
-                  <p className="text-ink-secondary mt-3 text-base leading-relaxed">
-                    {article.customerDiscoveryCta.question}
-                  </p>
-                  {article.customerDiscoveryCta.supportingText && (
-                    <p className="text-ink-tertiary mt-2 text-sm leading-relaxed">
-                      {article.customerDiscoveryCta.supportingText}
-                    </p>
-                  )}
-                  {article.customerDiscoveryCta.href && article.customerDiscoveryCta.label && (
-                    <div className="mt-4">
-                      <TrackedArticleLink
-                        href={article.customerDiscoveryCta.href}
-                        className="border-primary/30 text-primary-accessible hover:border-primary/50 hover:text-primary inline-flex items-center rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors"
-                        eventName={
-                          /interview|demo|call/i.test(article.customerDiscoveryCta.label)
-                            ? 'interviewRequested'
-                            : /newsletter/i.test(article.customerDiscoveryCta.label)
-                              ? 'newsletterSignup'
-                              : 'researchCtaClicked'
-                        }
-                        eventPayload={{
-                          slug: article.slug.current,
-                          title: article.title,
-                          href: article.customerDiscoveryCta.href,
-                        }}
+              <aside className="hidden max-w-64 xl:col-start-3 xl:block xl:min-w-0">
+                <div className="sticky top-28 space-y-8">
+                  {headings.length > 0 && (
+                    <section aria-labelledby="on-this-page-heading">
+                      <h2
+                        id="on-this-page-heading"
+                        className="text-ink-tertiary mb-4 font-mono text-xs tracking-widest uppercase"
                       >
-                        {article.customerDiscoveryCta.label}
-                      </TrackedArticleLink>
-                    </div>
-                  )}
-                </section>
-              )}
-
-              {article.citations && article.citations.length > 0 && (
-                <section
-                  className="border-line mt-14 border-t pt-8"
-                  aria-labelledby="citations-heading"
-                >
-                  <h2 id="citations-heading" className="text-ink mb-5 text-2xl font-semibold">
-                    Citations
-                  </h2>
-                  <ol className="text-ink-secondary space-y-3 text-sm leading-relaxed">
-                    {article.citations.map((citation, index) => (
-                      <li key={`${citation.label}-${index}`}>
-                        <span className="text-ink font-medium">{citation.label}</span>
-                        {citation.publisher ? `, ${citation.publisher}` : ''}
-                        {citation.url && (
-                          <>
-                            {' '}
+                        On this page
+                      </h2>
+                      <ol className="space-y-3 text-sm">
+                        {headings.map((heading) => (
+                          <li
+                            key={`${heading.level}-${heading.text}`}
+                            className={heading.level > 2 ? 'pl-3' : ''}
+                          >
                             <a
-                              href={citation.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-primary underline underline-offset-2"
+                              href={`#${heading.id}`}
+                              className="text-ink-secondary hover:text-primary transition-colors"
                             >
-                              Source
+                              {heading.text}
                             </a>
-                          </>
-                        )}
-                        {citation.notes ? ` — ${citation.notes}` : ''}
-                      </li>
-                    ))}
-                  </ol>
-                </section>
-              )}
+                          </li>
+                        ))}
+                      </ol>
+                    </section>
+                  )}
 
+                  {article.primaryQuestion && (
+                    <section className="border-line border-t pt-6">
+                      <h2 className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
+                        Primary question
+                      </h2>
+                      <p className="text-ink-secondary text-sm leading-relaxed">
+                        {article.primaryQuestion}
+                      </p>
+                    </section>
+                  )}
+
+                  {article.topicCluster?.name && (
+                    <section className="border-line border-t pt-6">
+                      <h2 className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
+                        Topic cluster
+                      </h2>
+                      <p className="text-ink-secondary text-sm leading-relaxed">
+                        {article.topicCluster.name}
+                      </p>
+                    </section>
+                  )}
+                </div>
+              </aside>
+            </div>
+
+            <div className="px-4 lg:px-0">
               {author && (
                 <div className="border-line mt-16 border-t pt-8">
                   <AuthorBadge
@@ -359,59 +431,7 @@ export default async function BlogArticlePage({ params }: Props) {
                   ← Back to blog
                 </Link>
               </div>
-            </article>
-
-            <aside className="hidden max-w-64 xl:col-start-3 xl:block xl:min-w-0">
-              <div className="sticky top-28 space-y-8">
-                {headings.length > 0 && (
-                  <section aria-labelledby="on-this-page-heading">
-                    <h2
-                      id="on-this-page-heading"
-                      className="text-ink-tertiary mb-4 font-mono text-xs tracking-widest uppercase"
-                    >
-                      On this page
-                    </h2>
-                    <ol className="space-y-3 text-sm">
-                      {headings.map((heading) => (
-                        <li
-                          key={`${heading.level}-${heading.text}`}
-                          className={heading.level > 2 ? 'pl-3' : ''}
-                        >
-                          <a
-                            href={`#${heading.id}`}
-                            className="text-ink-secondary hover:text-primary transition-colors"
-                          >
-                            {heading.text}
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
-                  </section>
-                )}
-
-                {article.primaryQuestion && (
-                  <section className="border-line border-t pt-6">
-                    <h2 className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
-                      Primary question
-                    </h2>
-                    <p className="text-ink-secondary text-sm leading-relaxed">
-                      {article.primaryQuestion}
-                    </p>
-                  </section>
-                )}
-
-                {article.topicCluster?.name && (
-                  <section className="border-line border-t pt-6">
-                    <h2 className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
-                      Topic cluster
-                    </h2>
-                    <p className="text-ink-secondary text-sm leading-relaxed">
-                      {article.topicCluster.name}
-                    </p>
-                  </section>
-                )}
-              </div>
-            </aside>
+            </div>
           </div>
         </div>
       </section>

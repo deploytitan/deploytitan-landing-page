@@ -136,7 +136,12 @@ export function WaitlistForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className={className ?? 'flex w-full flex-col gap-4'}>
+    <form
+      action={FORM_ENDPOINT}
+      method="POST"
+      onSubmit={handleSubmit}
+      className={className ?? 'flex w-full flex-col gap-4'}
+    >
       <input
         type="text"
         name="_gotcha"
@@ -157,6 +162,7 @@ export function WaitlistForm({
           </label>
           <input
             id={`waitlist-name-${source}`}
+            name="name"
             type="text"
             placeholder="Your name"
             required
@@ -175,6 +181,7 @@ export function WaitlistForm({
           </label>
           <input
             id={`waitlist-email-${source}`}
+            name="email"
             type="email"
             placeholder="name@company.com"
             required
@@ -220,6 +227,7 @@ export function WaitlistForm({
               </label>
               <input
                 id={`waitlist-company-${source}`}
+                name="company"
                 type="text"
                 placeholder="Company"
                 value={company}
@@ -237,6 +245,7 @@ export function WaitlistForm({
               </label>
               <input
                 id={`waitlist-role-${source}`}
+                name="role"
                 type="text"
                 placeholder="CTO, Platform Engineer, SRE"
                 value={role}
@@ -254,6 +263,7 @@ export function WaitlistForm({
               </label>
               <select
                 id={`waitlist-team-size-${source}`}
+                name="team_size"
                 value={teamSize}
                 onChange={(e) => setTeamSize(e.target.value)}
                 className="border-line bg-surface text-ink focus:border-primary/40 min-w-0 flex-1 border px-3 py-2.5 text-sm transition-colors focus:outline-none"
@@ -276,6 +286,7 @@ export function WaitlistForm({
               </label>
               <select
                 id={`waitlist-pain-level-${source}`}
+                name="pain_level"
                 value={painLevel}
                 onChange={(e) => setPainLevel(e.target.value)}
                 className="border-line bg-surface text-ink focus:border-primary/40 min-w-0 flex-1 border px-3 py-2.5 text-sm transition-colors focus:outline-none"
@@ -298,6 +309,7 @@ export function WaitlistForm({
               </label>
               <select
                 id={`waitlist-budget-range-${source}`}
+                name="budget_range"
                 value={budgetRange}
                 onChange={(e) => setBudgetRange(e.target.value)}
                 className="border-line bg-surface text-ink focus:border-primary/40 min-w-0 flex-1 border px-3 py-2.5 text-sm transition-colors focus:outline-none"
@@ -320,6 +332,7 @@ export function WaitlistForm({
               </label>
               <textarea
                 id={`waitlist-process-${source}`}
+                name="current_process"
                 placeholder="What slows release day down?"
                 value={currentProcess}
                 onChange={(e) => setCurrentProcess(e.target.value)}
@@ -337,6 +350,7 @@ export function WaitlistForm({
               </label>
               <textarea
                 id={`waitlist-notes-${source}`}
+                name="notes"
                 placeholder="Stack, deployment frequency, buying timeline, or any constraints."
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
