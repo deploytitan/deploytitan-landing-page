@@ -7,6 +7,7 @@ export const contentInsightType = defineType({
   fields: [
     defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
     defineField({ name: 'article', title: 'Article', type: 'reference', to: [{ type: 'article' }] }),
+    defineField({ name: 'contentOpportunity', title: 'Content opportunity', type: 'reference', to: [{ type: 'contentOpportunity' }] }),
     defineField({ name: 'marketQuestion', title: 'Market question', type: 'reference', to: [{ type: 'marketQuestion' }] }),
     defineField({ name: 'snapshot', title: 'Performance snapshot', type: 'reference', to: [{ type: 'articlePerformanceSnapshot' }] }),
     defineField({ name: 'signalType', title: 'Signal type', type: 'string', options: { list: ['search', 'product', 'distribution', 'refresh'] }, validation: (Rule) => Rule.required() }),

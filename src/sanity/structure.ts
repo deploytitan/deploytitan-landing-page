@@ -2,6 +2,7 @@ import type { StructureResolver } from 'sanity/structure'
 
 const hiddenTypes = [
   'article',
+  'contentOpportunity',
   'marketQuestion',
   'researchEvidence',
   'contentBrief',
@@ -96,13 +97,58 @@ const articleViews = (S: Parameters<StructureResolver>[0]) => [
   }),
 ]
 
+const contentOpportunityViews = (S: Parameters<StructureResolver>[0]) => [
+  S.documentTypeListItem('contentOpportunity').title('All Opportunities'),
+  filteredListItem(S, {
+    id: 'opportunities-discovered',
+    title: 'Discovered',
+    schemaType: 'contentOpportunity',
+    filter: '_type == "contentOpportunity" && status == "discovered"',
+  }),
+  filteredListItem(S, {
+    id: 'opportunities-reviewing',
+    title: 'Reviewing',
+    schemaType: 'contentOpportunity',
+    filter: '_type == "contentOpportunity" && status == "reviewing"',
+  }),
+  filteredListItem(S, {
+    id: 'opportunities-accepted',
+    title: 'Accepted',
+    schemaType: 'contentOpportunity',
+    filter: '_type == "contentOpportunity" && status == "accepted"',
+  }),
+  filteredListItem(S, {
+    id: 'opportunities-brief-created',
+    title: 'Brief Created',
+    schemaType: 'contentOpportunity',
+    filter: '_type == "contentOpportunity" && status == "briefCreated"',
+  }),
+  filteredListItem(S, {
+    id: 'opportunities-rejected',
+    title: 'Rejected',
+    schemaType: 'contentOpportunity',
+    filter: '_type == "contentOpportunity" && status == "rejected"',
+  }),
+]
+
 export const structure: StructureResolver = (S) =>
   S.list()
     .title('DeployTitan Content OS')
     .items([
       S.listItem()
         .title('Content Operations')
-        .child(S.list().title('Content Operations').items(articleViews(S))),
+        .child(
+          S.list()
+            .title('Content Operations')
+            .items([
+              S.listItem()
+                .title('Opportunities')
+                .child(S.list().title('Content Opportunities').items(contentOpportunityViews(S))),
+              S.listItem()
+                .title('Articles')
+                .child(S.list().title('Articles').items(articleViews(S))),
+            ]),
+        ),
       S.listItem()
         .title('Customer Discovery')
         .child(

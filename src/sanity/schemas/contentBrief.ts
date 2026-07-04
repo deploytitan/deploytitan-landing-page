@@ -27,6 +27,8 @@ export const contentBriefType = defineType({
     defineField({ name: 'articles', title: 'Articles', type: 'array', of: [defineArrayMember({ type: 'reference', to: [{ type: 'article' }] })] }),
     defineField({ name: 'distributionNotes', title: 'Distribution notes', type: 'text', rows: 3 }),
     defineField({ name: 'productHypothesis', title: 'Product hypothesis', type: 'text', rows: 3 }),
+    defineField({ name: 'contentOpportunity', title: 'Content opportunity', type: 'reference', to: [{ type: 'contentOpportunity' }] }),
+    defineField({ name: 'kpiTarget', title: 'KPI target', type: 'contentKpiTarget' }),
   ],
   validation: (Rule) =>
     Rule.custom((value) => {

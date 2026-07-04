@@ -11,6 +11,7 @@ import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import { apiVersion, dataset, projectId } from './src/sanity/env'
 import { schemaTypes } from './src/sanity/schemas'
 import { structure } from './src/sanity/structure'
+import { createOpportunityPipelineAction } from './src/sanity/actions/createOpportunityPipelineAction'
 
 const resolve: PresentationPluginOptions['resolve'] = {
   locations: {
@@ -40,6 +41,12 @@ export default defineConfig({
   projectId,
   dataset,
   schema: { types: schemaTypes },
+  document: {
+    actions: (previousActions, context) =>
+      context.schemaType === 'contentOpportunity'
+        ? [createOpportunityPipelineAction, ...previousActions]
+        : previousActions,
+  },
   plugins: [
     presentationTool({
       resolve,

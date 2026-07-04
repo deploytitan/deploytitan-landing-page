@@ -221,6 +221,48 @@ export const productHypothesisConfidenceType = defineType({
   ],
 })
 
+export const contentKpiTargetType = defineType({
+  name: 'contentKpiTarget',
+  title: 'Content KPI Target',
+  type: 'object',
+  fields: [
+    defineField({
+      name: 'primaryMetric',
+      title: 'Primary metric',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Search impressions', value: 'searchImpressions' },
+          { title: 'Search clicks', value: 'searchClicks' },
+          { title: 'Search CTR', value: 'searchCtr' },
+          { title: 'Newsletter signups', value: 'newsletterSignups' },
+          { title: 'Research CTA clicks', value: 'researchCtaClicks' },
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'targetValue',
+      title: 'Target value',
+      type: 'number',
+      validation: (Rule) => Rule.required().min(0),
+    }),
+    defineField({
+      name: 'reviewWindowDays',
+      title: 'Review window (days)',
+      type: 'number',
+      initialValue: 30,
+      validation: (Rule) => Rule.required().min(7).max(365),
+    }),
+    defineField({
+      name: 'notes',
+      title: 'Notes',
+      type: 'text',
+      rows: 3,
+    }),
+  ],
+})
+
 export const calloutBlockType = defineType({
   name: 'calloutBlock',
   title: 'Callout',

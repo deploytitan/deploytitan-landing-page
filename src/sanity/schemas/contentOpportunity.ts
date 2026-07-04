@@ -121,6 +121,35 @@ export const contentOpportunityType = defineType({
       type: 'reference',
       to: [{ type: 'article' }],
     }),
+    defineField({
+      name: 'marketQuestion',
+      title: 'Market question',
+      type: 'reference',
+      to: [{ type: 'marketQuestion' }],
+    }),
+    defineField({
+      name: 'researchEvidence',
+      title: 'Research evidence',
+      type: 'array',
+      of: [defineArrayMember({ type: 'reference', to: [{ type: 'researchEvidence' }] })],
+    }),
+    defineField({
+      name: 'contentBrief',
+      title: 'Content brief',
+      type: 'reference',
+      to: [{ type: 'contentBrief' }],
+    }),
+    defineField({
+      name: 'article',
+      title: 'Article',
+      type: 'reference',
+      to: [{ type: 'article' }],
+    }),
+    defineField({
+      name: 'kpiTarget',
+      title: 'KPI target',
+      type: 'contentKpiTarget',
+    }),
   ],
   preview: {
     select: {

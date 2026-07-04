@@ -65,6 +65,17 @@ pnpm content:research --output-dir ./tmp/content-opportunities
 pnpm content:import-opportunities ./tmp/content-opportunities.json
 ```
 
+5. In Sanity Studio, open the imported `contentOpportunity` and use the `Create Brief Pipeline` action.
+
+That Studio action creates or refreshes the downstream content-operating-system records:
+
+- `marketQuestion`
+- `researchEvidence`
+- `contentBrief`
+- a seeded `article` draft for net-new opportunities, or a linked existing article for refresh-oriented opportunities
+
+The action also propagates the opportunity into linked references and a shared KPI target so the same record can later be measured and iterated on.
+
 The research script fetches two 28-day Search Console windows, excluding the newest 3 days, scores opportunities deterministically, scans selected competitor and market sources for relevant themes, and exports the combined research bundle plus current article context.
 
 Required env vars for research:
@@ -89,6 +100,29 @@ GitHub Actions:
 
 - `.github/workflows/content-opportunity-research.yml` runs every Saturday and also supports `workflow_dispatch`.
 - The workflow uploads the generated prompt and candidate JSON as build artifacts for manual review.
+
+### KPI loop foundation
+
+The Studio pipeline now includes `contentKpiTarget` objects on `contentOpportunity`, `contentBrief`, and `article`.
+
+Current defaults:
+
+- new opportunities target `searchImpressions` growth
+- CTR opportunities target `searchCtr`
+- refresh opportunities target `searchClicks`
+
+This is the schema foundation for a feedback loop that combines:
+
+- Search Console performance
+- Google Analytics / `gtag` content engagement
+- PostHog product and CTA events
+
+The current repo already supports:
+
+- client-side PostHog + Google Analytics event capture in [src/lib/analytics.ts](/Users/justinekizhak/projects/deploytitan-landing-page/src/lib/analytics.ts)
+- authenticated performance snapshot ingestion in [src/app/api/content/performance-snapshots/route.ts](/Users/justinekizhak/projects/deploytitan-landing-page/src/app/api/content/performance-snapshots/route.ts)
+
+The next recommended step is a scheduled metrics-ingestion job that writes `articlePerformanceSnapshot` records and generates `contentInsight` records when KPI targets are off-track, exceeded, or decaying.
 
 ### Legacy post migration
 

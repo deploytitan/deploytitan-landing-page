@@ -220,6 +220,17 @@ export const articleType = defineType({
       to: [{ type: 'contentBrief' }],
     }),
     defineField({
+      name: 'contentOpportunity',
+      title: 'Content opportunity',
+      type: 'reference',
+      to: [{ type: 'contentOpportunity' }],
+    }),
+    defineField({
+      name: 'kpiTarget',
+      title: 'KPI target',
+      type: 'contentKpiTarget',
+    }),
+    defineField({
       name: 'relatedArticles',
       title: 'Related articles',
       type: 'array',
