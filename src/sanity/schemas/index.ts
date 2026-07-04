@@ -4,6 +4,7 @@ import { articleType } from './article'
 import { categoryType } from './category'
 import { contentBriefType } from './contentBrief'
 import { contentInsightType } from './contentInsight'
+import { contentOpportunityType } from './contentOpportunity'
 import { distributionAssetType } from './distributionAsset'
 import { marketQuestionType } from './marketQuestion'
 import {
@@ -28,6 +29,7 @@ export const schemaTypes = [
   marketQuestionType,
   researchEvidenceType,
   contentBriefType,
+  contentOpportunityType,
   distributionAssetType,
   articlePerformanceSnapshotType,
   contentInsightType,

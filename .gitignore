@@ -27,3 +27,5 @@ out
 .next
 /tsconfig.tsbuildinfo
 .env.local
+
+tmp

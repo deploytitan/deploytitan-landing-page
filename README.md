@@ -45,6 +45,51 @@ CONTENT_OPS_WEBHOOK_URL=
 CONTENT_OPS_SLACK_WEBHOOK_URL=
 ```
 
+### Content opportunity research MVP
+
+There is now a semi-automated weekly content-opportunity workflow built around Google Search Console, competitor content signals, market trend signals, Sanity, and manual LLM review.
+
+Local operator flow:
+
+1. Generate the weekly candidate bundle:
+
+```bash
+pnpm content:research --output-dir ./tmp/content-opportunities
+```
+
+2. Open [prompts/content-opportunity-analysis.md](/Users/justinekizhak/projects/deploytitan-landing-page/prompts/content-opportunity-analysis.md) or the generated Markdown prompt at `./tmp/content-opportunities/analysis-prompt.md`.
+3. Paste the prompt into ChatGPT or Codex and save the JSON response locally.
+4. Import the reviewed opportunities into Sanity:
+
+```bash
+pnpm content:import-opportunities ./tmp/content-opportunities.json
+```
+
+The research script fetches two 28-day Search Console windows, excluding the newest 3 days, scores opportunities deterministically, scans selected competitor and market sources for relevant themes, and exports the combined research bundle plus current article context.
+
+Required env vars for research:
+
+```bash
+GSC_SITE_URL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REFRESH_TOKEN=
+# Optional alternative auth:
+GOOGLE_SERVICE_ACCOUNT_JSON=
+SANITY_PROJECT_ID=
+SANITY_DATASET=
+SANITY_API_READ_TOKEN=
+SANITY_API_WRITE_TOKEN=
+SANITY_API_VERSION=
+```
+
+The import step preserves any existing `contentOpportunity.status` value once editorial work has moved past `discovered`.
+
+GitHub Actions:
+
+- `.github/workflows/content-opportunity-research.yml` runs every Saturday and also supports `workflow_dispatch`.
+- The workflow uploads the generated prompt and candidate JSON as build artifacts for manual review.
+
 ### Legacy post migration
 
 There is a one-off migration script for moving the legacy `post` document(s) into `article`:

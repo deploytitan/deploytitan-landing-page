@@ -1,0 +1,51 @@
+name: Content Opportunity Research
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 14 * * 6'
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  research:
+    name: Generate Weekly Content Opportunity Payload
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+      GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+      GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+      SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+      SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
+      SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+      NEXT_PUBLIC_SANITY_API_VERSION: '2026-07-05'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate candidate payload
+        run: pnpm content:research --output-dir ./.artifacts/content-opportunities
+
+      - name: Upload research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-opportunity-research
+          path: ./.artifacts/content-opportunities
+          if-no-files-found: error

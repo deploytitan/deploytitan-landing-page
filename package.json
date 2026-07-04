@@ -12,7 +12,9 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "migrate:posts-to-articles": "tsx scripts/migrate-posts-to-articles.ts"
+    "content:research": "tsx scripts/run-content-opportunity-research.ts",
+    "migrate:posts-to-articles": "tsx scripts/migrate-posts-to-articles.ts",
+    "content:import-opportunities": "tsx scripts/import-content-opportunities.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
@@ -30,6 +32,8 @@
     "@vercel/analytics": "^2.0.1",
     "animejs": "^4.4.1",
     "d3-force": "^3.0.0",
+    "dotenv": "^17.4.2",
+    "googleapis": "^173.0.0",
     "next": "16.2.4",
     "next-sanity": "12",
     "posthog-js": "^1.373.5",
@@ -39,7 +43,8 @@
     "sanity": "5",
     "sanity-plugin-asset-source-unsplash": "^7.0.7",
     "shiki": "^4.0.2",
-    "styled-components": "^6.4.1"
+    "styled-components": "^6.4.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
