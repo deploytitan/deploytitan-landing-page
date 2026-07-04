@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { cn } from '../../utils'
 import { useTheme } from '../../hooks/useTheme'
-import { trackEvent } from '@/lib/analytics'
+import { buildArticleTrackingPayload, type ArticleAnalyticsContext, trackEvent } from '@/lib/analytics'
 
 // Re-export InlineCode from its own module so importers that only need
 // InlineCode don't pull in this file (and the Shiki dynamic import chain).
@@ -50,6 +50,7 @@ interface CodeBlockProps {
    */
   children?: React.ReactNode
   className?: string
+  articleContext?: ArticleAnalyticsContext
 }
 
 /** Traffic-light dots for the terminal variant header */
@@ -71,6 +72,7 @@ export function CodeBlock({
   variant = 'code',
   children,
   className,
+  articleContext,
 }: CodeBlockProps) {
   const { resolved } = useTheme()
   const [mounted, setMounted] = useState(false)
@@ -119,11 +121,20 @@ export function CodeBlock({
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(trimmed)
-    trackEvent('codeCopied', {
-      filename: filename ?? null,
-      language: lang,
-      characters: trimmed.length,
-    })
+    trackEvent(
+      'codeCopied',
+      articleContext
+        ? buildArticleTrackingPayload(articleContext, {
+            filename: filename ?? null,
+            language: lang,
+            characters: trimmed.length,
+          })
+        : {
+            filename: filename ?? null,
+            language: lang,
+            characters: trimmed.length,
+          },
+    )
     setCopied(true)
     setTimeout(() => setCopied(false), 1800)
   }

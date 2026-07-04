@@ -1,15 +1,13 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { trackEvent } from '@/lib/analytics'
+import { buildArticleTrackingPayload, type ArticleAnalyticsContext, trackEvent } from '@/lib/analytics'
 
 type BlogPostAnalyticsProps = {
-  slug: string
-  title: string
-  categories: string[]
+  articleContext: ArticleAnalyticsContext
 }
 
-export function BlogPostAnalytics({ slug, title, categories }: BlogPostAnalyticsProps) {
+export function BlogPostAnalytics({ articleContext }: BlogPostAnalyticsProps) {
   const hasTrackedView = useRef(false)
   const sentMilestones = useRef<Set<number>>(new Set())
 
@@ -17,15 +15,15 @@ export function BlogPostAnalytics({ slug, title, categories }: BlogPostAnalytics
     if (hasTrackedView.current) return
     hasTrackedView.current = true
 
-    const payload = {
-      post_slug: slug,
-      post_title: title,
-      categories,
-      page_path: typeof window !== 'undefined' ? window.location.pathname : `/blog/${slug}`,
-    }
+    const payload = buildArticleTrackingPayload(articleContext, {
+      page_path:
+        typeof window !== 'undefined'
+          ? window.location.pathname
+          : `/blog/${articleContext.articleSlug}`,
+    })
 
     trackEvent('articleViewed', payload)
-  }, [categories, slug, title])
+  }, [articleContext])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,11 +41,9 @@ export function BlogPostAnalytics({ slug, title, categories }: BlogPostAnalytics
         if (progress >= milestone && !sentMilestones.current.has(milestone)) {
           sentMilestones.current.add(milestone)
 
-          const payload = {
-            post_slug: slug,
-            post_title: title,
+          const payload = buildArticleTrackingPayload(articleContext, {
             read_percent: milestone,
-          }
+          })
 
           trackEvent(milestone === 50 ? 'article50PercentRead' : 'article90PercentRead', payload)
         }
@@ -58,7 +54,7 @@ export function BlogPostAnalytics({ slug, title, categories }: BlogPostAnalytics
     handleScroll()
 
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [slug, title])
+  }, [articleContext])
 
   return null
 }

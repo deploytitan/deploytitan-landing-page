@@ -1,11 +1,21 @@
 import type { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
-import { articleSlugsQuery } from '@/sanity/lib/queries'
 import { generatedNodes } from '@/data/siteGraph.generated'
+import { SITE_URL } from '@/lib/site'
 
-const BASE_URL = 'https://deploytitan.com'
+const articleSitemapQuery = `*[_type == "article" && defined(slug.current) && status == "published"]{
+  "slug": slug.current,
+  updatedAt,
+  _updatedAt,
+  publishedAt
+}`
 
 type SitemapEntryDefaults = Pick<MetadataRoute.Sitemap[number], 'changeFrequency' | 'priority'>
+
+function toSitemapUrl(route: string) {
+  if (route === '/') return SITE_URL
+  return `${SITE_URL}${route}/`
+}
 
 const routeOverrides = new Map<string, SitemapEntryDefaults>([
   ['/', { changeFrequency: 'weekly', priority: 1.0 }],
@@ -44,7 +54,7 @@ function getRouteDefaults(route: string): SitemapEntryDefaults {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
   const staticRoutes = generatedNodes.map(({ id }) => ({
-    url: `${BASE_URL}${id}`,
+    url: toSitemapUrl(id),
     lastModified: now,
     ...getRouteDefaults(id),
   }))
@@ -52,10 +62,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch published blog article slugs from Sanity
   let blogRoutes: MetadataRoute.Sitemap = []
   try {
-    const slugs = await client.fetch<{ slug: string }[]>(articleSlugsQuery)
-    blogRoutes = (slugs ?? []).map(({ slug }) => ({
-      url: `${BASE_URL}/blog/${slug}`,
-      lastModified: now,
+    const articles = await client.fetch<
+      { slug: string; updatedAt?: string | null; _updatedAt?: string | null; publishedAt?: string | null }[]
+    >(articleSitemapQuery)
+    blogRoutes = (articles ?? []).map(({ slug, updatedAt, _updatedAt, publishedAt }) => ({
+      url: `${SITE_URL}/blog/${slug}/`,
+      lastModified: updatedAt ?? _updatedAt ?? publishedAt ?? now,
       ...getRouteDefaults(`/blog/${slug}`),
     }))
   } catch {

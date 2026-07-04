@@ -1,4 +1,5 @@
 import type { TypedObject } from 'sanity'
+import { SITE_URL } from './site'
 
 export type ArticleRecord = {
   _id: string
@@ -8,9 +9,15 @@ export type ArticleRecord = {
   excerpt?: string | null
   directAnswer?: string | null
   primaryQuestion?: string | null
+  primaryKeyword?: string | null
+  secondaryKeywords?: string[] | null
+  relatedQuestions?: string[] | null
+  searchIntent?: string | null
   publishedAt?: string | null
+  updatedAt?: string | null
   _updatedAt?: string | null
   status?: string | null
+  targetPersona?: { name?: string | null; seniority?: string | null; team?: string | null } | null
   body?: TypedObject[]
   topicCluster?: { name?: string | null; slug?: { current?: string | null } | null } | null
   seo?: {
@@ -18,6 +25,13 @@ export type ArticleRecord = {
     description?: string | null
     canonicalUrl?: string | null
     noIndex?: boolean | null
+    seoTitle?: string | null
+    metaDescription?: string | null
+    robotsDirective?: string | null
+    openGraphTitle?: string | null
+    openGraphDescription?: string | null
+    openGraphImage?: { asset?: object; alt?: string | null; hotspot?: object; crop?: object } | null
+    structuredDataType?: 'Article' | 'TechArticle' | null
   } | null
   faq?: { question?: string | null; answer?: string | null }[] | null
   citations?:
@@ -54,7 +68,7 @@ export type ArticleRecord = {
 }
 
 export function getArticleCanonicalUrl(article: Pick<ArticleRecord, 'slug' | 'seo'>) {
-  return article.seo?.canonicalUrl || `/blog/${article.slug.current}/`
+  return article.seo?.canonicalUrl || `${SITE_URL}/blog/${article.slug.current}/`
 }
 
 export function getArticleLlmTextUrl(article: Pick<ArticleRecord, 'slug' | 'seo'>) {
@@ -62,13 +76,19 @@ export function getArticleLlmTextUrl(article: Pick<ArticleRecord, 'slug' | 'seo'
 }
 
 export function getArticleSeoTitle(article: Pick<ArticleRecord, 'title' | 'seo'>) {
-  return article.seo?.title || article.title
+  return article.seo?.seoTitle || article.seo?.title || article.title
 }
 
 export function getArticleSeoDescription(
   article: Pick<ArticleRecord, 'excerpt' | 'directAnswer' | 'seo'>,
 ) {
-  return article.seo?.description || article.excerpt || article.directAnswer || undefined
+  return (
+    article.seo?.metaDescription ||
+    article.seo?.description ||
+    article.excerpt ||
+    article.directAnswer ||
+    undefined
+  )
 }
 
 export function portableTextToPlainText(blocks: TypedObject[] = []) {
@@ -239,6 +259,13 @@ export function normalizeAuthor(author: ArticleRecord['author']) {
     role: author.role ?? undefined,
     bio: author.bio ?? undefined,
   }
+}
+
+export function getArticleRobots(article: Pick<ArticleRecord, 'seo'>) {
+  const directive = article.seo?.robotsDirective
+  if (directive === 'noindex,nofollow') return { index: false, follow: false }
+  if (directive === 'noindex,follow' || article.seo?.noIndex) return { index: false, follow: true }
+  return undefined
 }
 
 export function formatArticleAsLlmText(article: ArticleRecord) {

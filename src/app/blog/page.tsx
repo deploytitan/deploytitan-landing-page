@@ -4,6 +4,7 @@ import { sanityFetch } from '@/sanity/lib/live'
 import { articlesQuery, categoriesQuery } from '@/sanity/lib/queries'
 import { BlogClientIndex } from '@/components/blog/BlogClientIndex'
 import { Container } from '@/components/shared/Container'
+import { SITE_URL } from '@/lib/site'
 
 type PostListItem = {
   _id: string
@@ -27,6 +28,12 @@ export const metadata: Metadata = {
   title: 'Blog | DeployTitan',
   description:
     'Engineering insights on progressive delivery, release safety, and deployment best practices from the DeployTitan team.',
+  alternates: {
+    canonical: `${SITE_URL}/blog`,
+    types: {
+      'application/rss+xml': `${SITE_URL}/feed.xml`,
+    },
+  },
 }
 
 export default async function BlogPage() {

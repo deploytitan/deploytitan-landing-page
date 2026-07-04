@@ -55,42 +55,71 @@ pnpm migrate:posts-to-articles
 
 The app still has temporary read compatibility for the old `post` type, but `article` is the canonical model going forward.
 
-## Waitlist Form
+## HubSpot forms
 
-The waitlist UI posts directly to Formspree from the browser.
-Configure the public env var:
+The waitlist and article newsletter forms now submit to internal Next.js routes,
+which forward the data to authenticated HubSpot forms server-side.
+
+Required env vars:
 
 ```bash
-NEXT_PUBLIC_FORM_ENDPOINT=https://formspree.io/f/mojokkwl
+HUBSPOT_ACCESS_TOKEN=
+HUBSPOT_PORTAL_ID=
+HUBSPOT_WAITLIST_FORM_GUID=
+HUBSPOT_NEWSLETTER_FORM_GUID=
+NEXT_PUBLIC_NEWSLETTER_PROVIDER=hubspot
 ```
 
-This direct-submit setup keeps the real browser context attached to the request.
+Recommended HubSpot setup:
 
-### Formspree setup
+1. Create one HubSpot form for waitlist submissions and one for newsletter signups.
+2. Make sure the form field internal names match the properties sent by the app.
+3. Set the form GUIDs and portal/token env vars locally and in Vercel.
+4. Submit `/waitlist` and an article newsletter signup once and confirm both appear in HubSpot.
 
-Formspree's `llms.txt` recommends creating forms with a claim URL, then pasting
-the generated `/f/...` endpoint into your app config.
+Waitlist fields currently submitted:
 
-Claim URL for the current waitlist fields:
+- `firstname`
+- `email`
+- `company`
+- `jobtitle`
+- `team_size`
+- `pain_level`
+- `budget_range`
+- `current_process`
+- `notes`
+- `source`
+- `page_path`
+- `referrer`
+- `utm_source`
+- `utm_medium`
+- `utm_campaign`
+- `utm_term`
+- `utm_content`
 
-```text
-https://formspree.io/claim?name=DeployTitan+Waitlist&project=deploytitan-website&field.name=text,required,maxlength:100,prettyName:Full+Name&field.email=email,required,prettyName:Work+Email&field.company=text,maxlength:160,prettyName:Company&field.role=text,maxlength:120,prettyName:Role&field.team_size=text,prettyName:Team+Size&field.pain_level=text,prettyName:Current+Pain+Level&field.budget_range=text,prettyName:Expected+Budget&field.current_process=text,maxlength:2000,prettyName:What+is+painful+today&field.notes=text,maxlength:2000,prettyName:Anything+else+we+should+know&action.email=hello@deploytitan.com
-```
+Newsletter fields currently submitted:
 
-Setup flow:
-
-1. Open the claim URL above.
-2. Sign in to Formspree and confirm the form creation.
-3. Copy the generated endpoint URL, which looks like `https://formspree.io/f/...`.
-4. Set that value as `NEXT_PUBLIC_FORM_ENDPOINT` in local env and Vercel env.
-5. Submit the `/waitlist` form once and confirm the submission appears in Formspree.
+- `email`
+- `firstname`
+- `article_slug`
+- `article_title`
+- `topic_cluster`
+- `primary_keyword`
+- `target_persona`
+- `distribution_asset_id`
+- `signup_placement`
+- `utm_source`
+- `utm_medium`
+- `utm_campaign`
+- `utm_term`
+- `utm_content`
 
 ## Notes
 
-- The current setup submits directly to Formspree so it carries browser context
-  like the real client IP, referrer, and user agent.
-- If you add or rename fields later, update the claim URL in this README only if
-  you want Formspree's dashboard schema to stay aligned with the UI.
+- The server-side HubSpot route forwards browser context such as page URL and the
+  `hubspotutk` cookie when available.
+- If you rename HubSpot field internal names, update the server-side field mapping
+  in `/api/waitlist` or `/api/newsletter`.
 
 # React + TypeScript + Vite
 

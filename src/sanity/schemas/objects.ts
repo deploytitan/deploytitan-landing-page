@@ -7,27 +7,103 @@ export const seoMetadataType = defineType({
   fields: [
     defineField({
       name: 'title',
-      title: 'SEO title',
+      title: 'Legacy SEO title',
       type: 'string',
+      hidden: true,
       validation: (Rule) => Rule.max(60).warning('Keep SEO titles under 60 characters.'),
     }),
     defineField({
       name: 'description',
+      title: 'Legacy meta description',
+      type: 'text',
+      hidden: true,
+      rows: 3,
+      validation: (Rule) => Rule.max(160).warning('Keep meta descriptions under 160 characters.'),
+    }),
+    defineField({
+      name: 'seoTitle',
+      title: 'SEO title',
+      type: 'string',
+      validation: (Rule) =>
+        Rule.max(70)
+          .warning('Aim for 45-65 characters; avoid repeating the primary keyword.')
+          .custom((value) => {
+            const title = String(value ?? '').trim()
+            return title.length && title.length < 30
+              ? 'SEO titles should usually be more specific than 30 characters.'
+              : true
+          }),
+    }),
+    defineField({
+      name: 'metaDescription',
       title: 'Meta description',
       type: 'text',
       rows: 3,
-      validation: (Rule) => Rule.max(160).warning('Keep meta descriptions under 160 characters.'),
+      validation: (Rule) =>
+        Rule.max(170)
+          .warning('Aim for 140-160 characters with a direct technical promise.')
+          .custom((value) => {
+            const description = String(value ?? '').trim()
+            return description.length && description.length < 80
+              ? 'Meta descriptions should usually be more descriptive than 80 characters.'
+              : true
+          }),
     }),
     defineField({
       name: 'canonicalUrl',
       title: 'Canonical URL override',
       type: 'url',
+      validation: (Rule) =>
+        Rule.uri({ scheme: ['https'] }).custom((value) => {
+          if (!value) return true
+          return String(value).startsWith('https://deploytitan.com/')
+            ? true
+            : 'Canonical overrides must point to an https://deploytitan.com/ URL.'
+        }),
     }),
     defineField({
       name: 'noIndex',
-      title: 'No index',
+      title: 'Legacy noindex flag',
       type: 'boolean',
+      hidden: true,
       initialValue: false,
+    }),
+    defineField({
+      name: 'robotsDirective',
+      title: 'Robots directive',
+      type: 'string',
+      initialValue: 'index,follow',
+      options: {
+        list: ['index,follow', 'noindex,follow', 'noindex,nofollow'],
+        layout: 'radio',
+      },
+    }),
+    defineField({
+      name: 'openGraphTitle',
+      title: 'Open Graph title',
+      type: 'string',
+      validation: (Rule) => Rule.max(95).warning('Keep Open Graph titles concise and explicit.'),
+    }),
+    defineField({
+      name: 'openGraphDescription',
+      title: 'Open Graph description',
+      type: 'text',
+      rows: 3,
+      validation: (Rule) => Rule.max(220).warning('Keep Open Graph descriptions concise.'),
+    }),
+    defineField({
+      name: 'openGraphImage',
+      title: 'Open Graph image',
+      type: 'image',
+      options: { hotspot: true },
+      fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
+    }),
+    defineField({
+      name: 'structuredDataType',
+      title: 'Structured data type',
+      type: 'string',
+      initialValue: 'TechArticle',
+      options: { list: ['Article', 'TechArticle'], layout: 'radio' },
     }),
   ],
 })

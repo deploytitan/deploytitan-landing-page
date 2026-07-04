@@ -5,7 +5,7 @@ import { PortableText, type PortableTextComponents } from 'next-sanity'
 import Image from 'next/image'
 import { urlFor } from '@/sanity/lib/image'
 import { CodeBlock, InlineCode } from '@/components/shared/CodeBlock'
-import { trackEvent } from '@/lib/analytics'
+import { buildArticleTrackingPayload, type ArticleAnalyticsContext, trackEvent } from '@/lib/analytics'
 import { slugifyHeading } from '@/lib/articles'
 
 type Lang = 'bash' | 'yaml' | 'powershell' | 'dockerfile' | 'tsx' | 'hcl' | 'diff' | 'json'
@@ -64,10 +64,12 @@ function HeadingLink({
   )
 }
 
-const components: PortableTextComponents = {
+function createComponents(articleContext?: ArticleAnalyticsContext): PortableTextComponents {
+  return {
   block: {
+    // Downgrade editor h1 blocks to h2 so the page keeps a single visible h1.
     h1: ({ children }) => (
-      <HeadingLink level="h1" className="text-3xl font-semibold text-ink mt-10 mb-4 leading-tight">
+      <HeadingLink level="h2" className="text-3xl font-semibold text-ink mt-10 mb-4 leading-tight">
         {children}
       </HeadingLink>
     ),
@@ -133,7 +135,10 @@ const components: PortableTextComponents = {
               href: value?.href ?? '',
               external: target === '_blank',
             }
-            trackEvent(target === '_blank' ? 'outboundToolLinkClicked' : 'relatedArticleClicked', payload)
+            trackEvent(
+              target === '_blank' ? 'outboundToolLinkClicked' : 'relatedArticleClicked',
+              articleContext ? buildArticleTrackingPayload(articleContext, payload) : payload,
+            )
           }}
         >
           {children}
@@ -172,6 +177,7 @@ const components: PortableTextComponents = {
             code={value.code ?? ''}
             lang={toKnownLang(value.language)}
             filename={value.filename}
+            articleContext={articleContext}
           />
         </div>
       )
@@ -200,14 +206,29 @@ const components: PortableTextComponents = {
             <button
               type="button"
               className="block w-full overflow-hidden rounded-[2px] border border-line"
-              onClick={() => trackEvent('diagramOpened', { title: value?.title ?? 'diagram' })}
+              onClick={() =>
+                trackEvent(
+                  'diagramOpened',
+                  articleContext
+                    ? buildArticleTrackingPayload(articleContext, {
+                        title: value?.title ?? 'diagram',
+                        diagramId: value?._key ?? value?.title ?? 'diagram',
+                      })
+                    : { title: value?.title ?? 'diagram' },
+                )
+              }
             >
               <Image src={imageUrl} alt={value?.title ?? 'Diagram'} width={1200} height={675} style={{ width: '100%', height: 'auto' }} />
             </button>
           )}
           {value?.code && (
             <div className="mt-4">
-              <CodeBlock code={value.code} lang="bash" filename="diagram.txt" />
+              <CodeBlock
+                code={value.code}
+                lang="bash"
+                filename="diagram.txt"
+                articleContext={articleContext}
+              />
             </div>
           )}
           {value?.description && <figcaption className="mt-3 text-sm text-ink-secondary">{value.description}</figcaption>}
@@ -249,11 +270,13 @@ const components: PortableTextComponents = {
     },
   },
 }
+}
 
 interface PortableTextRendererProps {
   value: Parameters<typeof PortableText>[0]['value']
+  articleContext?: ArticleAnalyticsContext
 }
 
-export function PortableTextRenderer({ value }: PortableTextRendererProps) {
-  return <PortableText value={value} components={components} />
+export function PortableTextRenderer({ value, articleContext }: PortableTextRendererProps) {
+  return <PortableText value={value} components={createComponents(articleContext)} />
 }

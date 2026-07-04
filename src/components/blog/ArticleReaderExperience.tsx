@@ -2,7 +2,11 @@
 
 import Link from 'next/link'
 import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
-import { trackEvent } from '@/lib/analytics'
+import {
+  buildArticleTrackingPayload,
+  type ArticleAnalyticsContext,
+  trackEvent,
+} from '@/lib/analytics'
 
 type SharePopoverState = {
   text: string
@@ -13,6 +17,7 @@ type SharePopoverState = {
 type ArticleReaderExperienceProps = {
   articleTitle: string
   articleSlug: string
+  articleContext: ArticleAnalyticsContext
   children: ReactNode
 }
 
@@ -81,6 +86,7 @@ function ShareIcon({ platform }: { platform: 'x' | 'facebook' | 'reddit' | 'link
 export function ArticleReaderExperience({
   articleTitle,
   articleSlug,
+  articleContext,
   children,
 }: ArticleReaderExperienceProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -155,12 +161,13 @@ export function ArticleReaderExperience({
   const handleShareClick = async (platform: 'x' | 'facebook' | 'reddit' | 'linkedin' | 'copy') => {
     if (!popover || !shareLinks) return
 
-    trackEvent('articleShared', {
-      article_slug: articleSlug,
-      article_title: articleTitle,
-      platform,
-      selected_text_length: popover.text.length,
-    })
+    trackEvent(
+      'articleShared',
+      buildArticleTrackingPayload(articleContext, {
+        shareChannel: platform,
+        selected_text_length: popover.text.length,
+      }),
+    )
 
     if (platform === 'copy') {
       await navigator.clipboard.writeText(shareLinks.copy)
@@ -261,12 +268,13 @@ export function ArticleReaderExperience({
           rel="noreferrer"
           className="hover:text-primary transition-colors"
           onClick={() =>
-            trackEvent('articleShared', {
-              article_slug: articleSlug,
-              article_title: articleTitle,
-              platform: 'x',
-              selected_text_length: 0,
-            })
+            trackEvent(
+              'articleShared',
+              buildArticleTrackingPayload(articleContext, {
+                shareChannel: 'x',
+                selected_text_length: 0,
+              }),
+            )
           }
         >
           <span className="flex items-center gap-1.5">
@@ -281,12 +289,13 @@ export function ArticleReaderExperience({
           rel="noreferrer"
           className="hover:text-primary transition-colors"
           onClick={() =>
-            trackEvent('articleShared', {
-              article_slug: articleSlug,
-              article_title: articleTitle,
-              platform: 'reddit',
-              selected_text_length: 0,
-            })
+            trackEvent(
+              'articleShared',
+              buildArticleTrackingPayload(articleContext, {
+                shareChannel: 'reddit',
+                selected_text_length: 0,
+              }),
+            )
           }
         >
           <span className="flex items-center gap-1.5">

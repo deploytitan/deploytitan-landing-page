@@ -3,6 +3,7 @@ import { client } from '@/sanity/lib/client'
 import {
   extractArticleHeadings,
   getArticleCanonicalUrl,
+  getArticleLlmTextUrl,
   portableTextToPlainText,
   type ArticleRecord,
 } from '@/lib/articles'
@@ -21,16 +22,19 @@ export async function GET(_: Request, { params }: { params: Promise<{ slug: stri
     slug: article.slug.current,
     title: article.title,
     canonicalUrl: getArticleCanonicalUrl(article),
+    llmTextUrl: getArticleLlmTextUrl(article),
     directAnswer: article.directAnswer ?? null,
     primaryQuestion: article.primaryQuestion ?? null,
+    primaryKeyword: article.primaryKeyword ?? null,
+    relatedQuestions: article.relatedQuestions ?? [],
+    searchIntent: article.searchIntent ?? null,
     headings: extractArticleHeadings(article.body),
     bodyText: portableTextToPlainText(article.body),
     faq: article.faq ?? [],
     publicationDate: article.publishedAt ?? null,
-    modificationDate: article._updatedAt ?? null,
+    modificationDate: article.updatedAt ?? article._updatedAt ?? null,
     author: article.author?.name ?? null,
     topicCluster: article.topicCluster?.name ?? null,
-    relatedQuestions: article.contentBrief?.marketQuestion?.question ? [article.contentBrief.marketQuestion.question] : [],
     citations: article.citations ?? [],
   })
 }

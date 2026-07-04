@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { client } from '@/sanity/lib/client'
 import { getArticleCanonicalUrl, getArticleSeoDescription, portableTextToPlainText, type ArticleRecord } from '@/lib/articles'
+import { SITE_URL } from '@/lib/site'
 import { articlesQuery } from '@/sanity/lib/queries'
 
 export async function GET() {
@@ -15,7 +16,7 @@ export async function GET() {
           <title><![CDATA[${article.title}]]></title>
           <link>${url}</link>
           <guid>${url}</guid>
-          <pubDate>${new Date(article.publishedAt ?? article._updatedAt ?? Date.now()).toUTCString()}</pubDate>
+          <pubDate>${new Date(article.publishedAt ?? article.updatedAt ?? article._updatedAt ?? Date.now()).toUTCString()}</pubDate>
           <description><![CDATA[${description}]]></description>
         </item>
       `
@@ -26,7 +27,7 @@ export async function GET() {
   <rss version="2.0">
     <channel>
       <title>DeployTitan Blog</title>
-      <link>https://deploytitan.com/blog</link>
+      <link>${SITE_URL}/blog</link>
       <description>Release coordination, deployment intelligence, and engineering operations insights from DeployTitan.</description>
       ${items}
     </channel>

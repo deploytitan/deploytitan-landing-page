@@ -3,6 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { TypedObject } from 'sanity'
+import { type ArticleAnalyticsContext } from '@/lib/analytics'
+import { SITE_URL } from '@/lib/site'
+import { ArticleNewsletterSignup } from '@/components/blog/ArticleNewsletterSignup'
 import { BlogPostAnalytics } from '@/components/blog/BlogPostAnalytics'
 import { ArticleReaderExperience } from '@/components/blog/ArticleReaderExperience'
 import { PortableTextRenderer } from '@/components/blog/PortableTextRenderer'
@@ -15,6 +18,7 @@ import {
   extractArticleHeadings,
   getArticleCanonicalUrl,
   getArticleLlmTextUrl,
+  getArticleRobots,
   getArticleSeoDescription,
   getArticleSeoTitle,
   normalizeAuthor,
@@ -52,12 +56,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = getArticleSeoTitle(article)
   const description = getArticleSeoDescription(article)
   const canonical = getArticleCanonicalUrl(article)
-  const ogImage = article.coverImage?.asset
-    ? urlFor(article.coverImage as object)
+  const ogTitle = article.seo?.openGraphTitle || title
+  const ogDescription = article.seo?.openGraphDescription || description
+  const ogImage = article.seo?.openGraphImage?.asset
+    ? urlFor(article.seo.openGraphImage as object)
         .width(1200)
         .height(630)
         .url()
-    : undefined
+    : article.coverImage?.asset
+      ? urlFor(article.coverImage as object)
+        .width(1200)
+        .height(630)
+        .url()
+      : undefined
 
   return {
     title,
@@ -68,21 +79,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         'text/plain': getArticleLlmTextUrl(article),
       },
     },
-    robots: article.seo?.noIndex ? { index: false, follow: true } : undefined,
+    robots: getArticleRobots(article),
     openGraph: {
       type: 'article',
-      title,
-      description,
+      title: ogTitle,
+      description: ogDescription,
       url: canonical,
       publishedTime: article.publishedAt ?? undefined,
-      modifiedTime: article._updatedAt ?? article.publishedAt ?? undefined,
+      modifiedTime: article.updatedAt ?? article._updatedAt ?? article.publishedAt ?? undefined,
       authors: article.author?.name ? [article.author.name] : undefined,
       images: ogImage ? [{ url: ogImage }] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description,
+      title: ogTitle,
+      description: ogDescription,
       images: ogImage ? [ogImage] : undefined,
     },
   }
@@ -108,6 +119,16 @@ export default async function BlogArticlePage({ params }: Props) {
   const headings = extractArticleHeadings((article.body as TypedObject[] | undefined) ?? [])
   const faq = normalizeFaq(article.faq)
   const author = normalizeAuthor(article.author)
+  const articleContext: ArticleAnalyticsContext = {
+    articleId: article._id,
+    articleSlug: article.slug.current,
+    canonicalUrl: getArticleCanonicalUrl(article),
+    articleTitle: article.title,
+    topicCluster: article.topicCluster?.name ?? '',
+    articleType: article.seo?.structuredDataType ?? 'TechArticle',
+    primaryKeyword: article.primaryKeyword ?? '',
+    targetPersona: article.targetPersona?.name ?? '',
+  }
 
   return (
     <>
@@ -180,11 +201,7 @@ export default async function BlogArticlePage({ params }: Props) {
           <div className="">
             <div className="xl:grid">
               <article className="min-w-0 px-4 lg:pr-4 lg:pl-0 xl:col-start-2">
-                <BlogPostAnalytics
-                  slug={article.slug.current}
-                  title={article.title}
-                  categories={article.categories?.map((category) => category.slug.current) ?? []}
-                />
+                <BlogPostAnalytics articleContext={articleContext} />
 
                 {publishedLabel && (
                   <p className="text-ink-tertiary mb-6 font-mono text-xs tracking-widest uppercase">
@@ -226,8 +243,14 @@ export default async function BlogArticlePage({ params }: Props) {
                 <ArticleReaderExperience
                   articleTitle={article.title}
                   articleSlug={article.slug.current}
+                  articleContext={articleContext}
                 >
-                  {article.body && <PortableTextRenderer value={article.body} />}
+                  {article.body && (
+                    <PortableTextRenderer
+                      value={article.body}
+                      articleContext={articleContext}
+                    />
+                  )}
                 </ArticleReaderExperience>
 
                 {faq.length > 0 && (
@@ -280,10 +303,10 @@ export default async function BlogArticlePage({ params }: Props) {
                                 : 'researchCtaClicked'
                           }
                           eventPayload={{
-                            slug: article.slug.current,
-                            title: article.title,
+                            ctaLabel: article.customerDiscoveryCta.label,
                             href: article.customerDiscoveryCta.href,
                           }}
+                          articleContext={articleContext}
                         >
                           {article.customerDiscoveryCta.label}
                         </TrackedArticleLink>
@@ -375,6 +398,26 @@ export default async function BlogArticlePage({ params }: Props) {
                       </p>
                     </section>
                   )}
+
+                  <section className="border-line border-t pt-6">
+                    <h2 className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
+                      Machine-readable
+                    </h2>
+                    <div className="space-y-2 text-sm">
+                      <Link
+                        href={getArticleLlmTextUrl(article)}
+                        className="text-ink-secondary hover:text-primary block transition-colors"
+                      >
+                        Plain text / LLM version
+                      </Link>
+                      <Link
+                        href={`${SITE_URL}/feed.xml`}
+                        className="text-ink-secondary hover:text-primary block transition-colors"
+                      >
+                        RSS feed
+                      </Link>
+                    </div>
+                  </section>
                 </div>
               </aside>
             </div>
@@ -405,10 +448,10 @@ export default async function BlogArticlePage({ params }: Props) {
                         href={`/blog/${relatedArticle.slug.current}`}
                         eventName="relatedArticleClicked"
                         eventPayload={{
-                          slug: article.slug.current,
-                          targetSlug: relatedArticle.slug.current,
-                          source: 'related-articles',
+                          destinationSlug: relatedArticle.slug.current,
+                          linkContext: 'related-articles',
                         }}
+                        articleContext={articleContext}
                         className="border-line hover:border-primary/25 rounded-[2px] border px-4 py-4 transition-colors"
                       >
                         <h3 className="text-ink text-base font-semibold">{relatedArticle.title}</h3>
@@ -422,6 +465,8 @@ export default async function BlogArticlePage({ params }: Props) {
                   </div>
                 </section>
               )}
+
+              <ArticleNewsletterSignup articleContext={articleContext} />
 
               <div className="mt-10">
                 <Link
