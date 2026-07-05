@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { defaultOpportunityChecklist } from '../lib/workflowDefaults'
 
 const contentOpportunityStatusValues = [
   { title: 'Discovered', value: 'discovered' },
@@ -149,6 +150,14 @@ export const contentOpportunityType = defineType({
       name: 'kpiTarget',
       title: 'KPI target',
       type: 'contentKpiTarget',
+    }),
+    defineField({
+      name: 'workflowChecklist',
+      title: 'Workflow checklist',
+      description: 'Use this as the common operator checklist for moving an opportunity into the brief pipeline.',
+      type: 'array',
+      initialValue: defaultOpportunityChecklist(),
+      of: [defineArrayMember({ type: 'workflowChecklistItem' })],
     }),
   ],
   preview: {

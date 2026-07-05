@@ -5,6 +5,7 @@ import { categoryType } from './category'
 import { contentBriefType } from './contentBrief'
 import { contentInsightType } from './contentInsight'
 import { contentOpportunityType } from './contentOpportunity'
+import { contentPipelineGuideType } from './contentPipelineGuide'
 import { distributionAssetType } from './distributionAsset'
 import { marketQuestionType } from './marketQuestion'
 import {
@@ -15,6 +16,7 @@ import {
   customerDiscoveryCtaType,
   diagramBlockType,
   faqItemType,
+  pipelineGuideStageType,
   productHypothesisConfidenceType,
   seoMetadataType,
   sourceCitationType,
@@ -22,6 +24,7 @@ import {
   targetPersonaType,
   topicClusterType,
   utmParametersType,
+  workflowChecklistItemType,
 } from './objects'
 import { researchEvidenceType } from './researchEvidence'
 
@@ -31,6 +34,7 @@ export const schemaTypes = [
   researchEvidenceType,
   contentBriefType,
   contentOpportunityType,
+  contentPipelineGuideType,
   distributionAssetType,
   articlePerformanceSnapshotType,
   contentInsightType,
@@ -47,6 +51,8 @@ export const schemaTypes = [
   articleOutlineSectionType,
   productHypothesisConfidenceType,
   contentKpiTargetType,
+  workflowChecklistItemType,
+  pipelineGuideStageType,
   calloutBlockType,
   diagramBlockType,
   tableBlockType,

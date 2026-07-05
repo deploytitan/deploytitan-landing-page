@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { defaultBriefChecklist } from '../lib/workflowDefaults'
 
 export const contentBriefType = defineType({
   name: 'contentBrief',
@@ -29,6 +30,14 @@ export const contentBriefType = defineType({
     defineField({ name: 'productHypothesis', title: 'Product hypothesis', type: 'text', rows: 3 }),
     defineField({ name: 'contentOpportunity', title: 'Content opportunity', type: 'reference', to: [{ type: 'contentOpportunity' }] }),
     defineField({ name: 'kpiTarget', title: 'KPI target', type: 'contentKpiTarget' }),
+    defineField({
+      name: 'workflowChecklist',
+      title: 'Workflow checklist',
+      description: 'Use this as the common operator checklist for refining the brief and handing it to drafting.',
+      type: 'array',
+      initialValue: defaultBriefChecklist(),
+      of: [defineArrayMember({ type: 'workflowChecklistItem' })],
+    }),
   ],
   validation: (Rule) =>
     Rule.custom((value) => {

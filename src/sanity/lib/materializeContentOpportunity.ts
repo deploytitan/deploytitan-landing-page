@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto'
 
 import type { SanityClient } from 'sanity'
+import { defaultArticleChecklist, defaultBriefChecklist } from './workflowDefaults'
 
 type Reference = {
   _key?: string
@@ -335,6 +336,7 @@ export async function materializeContentOpportunity(
     productHypothesis: String(opportunity.uniqueAngle ?? '').trim(),
     contentOpportunity: reference(opportunity._id),
     kpiTarget,
+    workflowChecklist: defaultBriefChecklist(),
   })
 
   if (articleId && opportunity.opportunityType === 'new-article') {
@@ -356,6 +358,7 @@ export async function materializeContentOpportunity(
       contentBrief: reference(contentBriefId),
       contentOpportunity: reference(opportunity._id),
       kpiTarget,
+      workflowChecklist: defaultArticleChecklist(),
     })
     transaction.patch(articleId, {
       setIfMissing: {

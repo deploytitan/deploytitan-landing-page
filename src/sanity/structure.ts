@@ -3,6 +3,7 @@ import type { StructureResolver } from 'sanity/structure'
 const hiddenTypes = [
   'article',
   'contentOpportunity',
+  'contentPipelineGuide',
   'marketQuestion',
   'researchEvidence',
   'contentBrief',
@@ -135,6 +136,13 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title('DeployTitan Content OS')
     .items([
+      S.listItem()
+        .title('Pipeline Guide')
+        .child(
+          S.document()
+            .schemaType('contentPipelineGuide')
+            .documentId('content-pipeline-guide'),
+        ),
       S.listItem()
         .title('Content Operations')
         .child(

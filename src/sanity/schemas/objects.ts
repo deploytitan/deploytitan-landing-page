@@ -263,6 +263,32 @@ export const contentKpiTargetType = defineType({
   ],
 })
 
+export const workflowChecklistItemType = defineType({
+  name: 'workflowChecklistItem',
+  title: 'Workflow Checklist Item',
+  type: 'object',
+  fields: [
+    defineField({ name: 'label', title: 'Label', type: 'string', validation: (Rule) => Rule.required() }),
+    defineField({ name: 'done', title: 'Done', type: 'boolean', initialValue: false }),
+    defineField({ name: 'notes', title: 'Notes', type: 'text', rows: 2 }),
+  ],
+})
+
+export const pipelineGuideStageType = defineType({
+  name: 'pipelineGuideStage',
+  title: 'Pipeline Guide Stage',
+  type: 'object',
+  fields: [
+    defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
+    defineField({ name: 'owner', title: 'Owner', type: 'string' }),
+    defineField({ name: 'summary', title: 'Summary', type: 'text', rows: 3, validation: (Rule) => Rule.required() }),
+    defineField({ name: 'entryCriteria', title: 'Entry criteria', type: 'array', of: [defineArrayMember({ type: 'string' })] }),
+    defineField({ name: 'checklist', title: 'Checklist', type: 'array', of: [defineArrayMember({ type: 'string' })] }),
+    defineField({ name: 'exitCriteria', title: 'Exit criteria', type: 'array', of: [defineArrayMember({ type: 'string' })] }),
+    defineField({ name: 'relevantDocs', title: 'Relevant document types', type: 'array', of: [defineArrayMember({ type: 'string' })] }),
+  ],
+})
+
 export const calloutBlockType = defineType({
   name: 'calloutBlock',
   title: 'Callout',

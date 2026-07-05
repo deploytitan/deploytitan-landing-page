@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { defaultArticleChecklist } from '../lib/workflowDefaults'
 
 const articleStatusValues = [
   { title: 'Idea', value: 'idea' },
@@ -229,6 +230,14 @@ export const articleType = defineType({
       name: 'kpiTarget',
       title: 'KPI target',
       type: 'contentKpiTarget',
+    }),
+    defineField({
+      name: 'workflowChecklist',
+      title: 'Workflow checklist',
+      description: 'Use this as the common operator checklist for drafting, publishing, and post-publish review.',
+      type: 'array',
+      initialValue: defaultArticleChecklist(),
+      of: [defineArrayMember({ type: 'workflowChecklistItem' })],
     }),
     defineField({
       name: 'relatedArticles',
