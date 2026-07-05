@@ -181,6 +181,18 @@ function buildKpiTarget(opportunity: ContentOpportunityRecord) {
   }
 }
 
+function buildMethodologyNote(opportunity: ContentOpportunityRecord) {
+  const sourceKinds = [
+    'search performance signals',
+    opportunity.sourcePage ? 'external technical documentation' : null,
+    'DeployTitan product and operator research',
+  ]
+    .filter(Boolean)
+    .join(', ')
+
+  return `This article is being developed from ${sourceKinds}. Public-facing proof should be curated from the linked evidence set before publication.`
+}
+
 function buildPrimaryQuestion(opportunity: ContentOpportunityRecord) {
   const query = String(opportunity.primaryQuery ?? '').trim()
   if (!query) return String(opportunity.title ?? 'Untitled opportunity')
@@ -292,11 +304,15 @@ export async function materializeContentOpportunity(
     _type: 'researchEvidence',
     title: `${opportunityTitle} · Search signal`,
     evidenceType: 'internalExperience',
+    visibility: 'internal',
+    evidenceStrength: 'Medium',
     summary: [
       `Primary query: ${primaryQuery}.`,
       metricsSummary ? `Observed search performance: ${metricsSummary}.` : null,
       String(opportunity.reasoning ?? '').trim(),
     ].filter(Boolean).join(' '),
+    publicSummary: `DeployTitan observed meaningful demand around ${primaryQuery} based on aggregated search and field signals.`,
+    sensitivityReason: 'Contains internal search analysis and opportunity framing that should stay private.',
     marketQuestion: reference(marketQuestionId),
     signalsProductNeed: true,
     existingWorkaround: String(opportunity.uniqueAngle ?? '').trim() || undefined,
@@ -308,8 +324,17 @@ export async function materializeContentOpportunity(
       _type: 'researchEvidence',
       title: `${opportunityTitle} · External source`,
       evidenceType: 'technicalSource',
+      visibility: 'public',
+      evidenceStrength: 'High',
       summary: String(opportunity.reasoning ?? opportunity.uniqueAngle ?? '').trim(),
+      publicSummary: String(opportunity.reasoning ?? opportunity.uniqueAngle ?? '').trim(),
       source: {
+        _type: 'sourceCitation',
+        label: opportunityTitle,
+        url: opportunity.sourcePage,
+        publisher: new URL(opportunity.sourcePage).hostname.replace(/^www\./, ''),
+      },
+      publicSource: {
         _type: 'sourceCitation',
         label: opportunityTitle,
         url: opportunity.sourcePage,
@@ -329,6 +354,11 @@ export async function materializeContentOpportunity(
     targetPersona,
     primaryKeyword: primaryQuery,
     directAnswer,
+    thesis: String(opportunity.uniqueAngle ?? '').trim() || directAnswer,
+    ctaGoal:
+      opportunity.opportunityType === 'ctr'
+        ? 'Improve click-through to the article from search results.'
+        : 'Move qualified readers toward DeployTitan product exploration or customer discovery.',
     outline: buildOutlineSections(opportunity),
     researchEvidence: researchEvidenceIds.map((refId) => reference(refId)),
     articles: articleId ? [reference(articleId)] : [],
@@ -355,6 +385,7 @@ export async function materializeContentOpportunity(
       searchIntent: 'problem-solving',
       targetPersona,
       topicCluster,
+      methodologyNote: buildMethodologyNote(opportunity),
       contentBrief: reference(contentBriefId),
       contentOpportunity: reference(opportunity._id),
       kpiTarget,

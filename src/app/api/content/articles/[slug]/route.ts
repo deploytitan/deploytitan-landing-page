@@ -4,6 +4,8 @@ import {
   extractArticleHeadings,
   getArticleCanonicalUrl,
   getArticleLlmTextUrl,
+  hasDeployTitanResearchNote,
+  normalizePublicEvidence,
   portableTextToPlainText,
   type ArticleRecord,
 } from '@/lib/articles'
@@ -28,13 +30,17 @@ export async function GET(_: Request, { params }: { params: Promise<{ slug: stri
     primaryKeyword: article.primaryKeyword ?? null,
     relatedQuestions: article.relatedQuestions ?? [],
     searchIntent: article.searchIntent ?? null,
-    headings: extractArticleHeadings(article.body),
-    bodyText: portableTextToPlainText(article.body),
+    headings: extractArticleHeadings(article.body ?? []),
+    bodyText: portableTextToPlainText(article.body ?? []),
     faq: article.faq ?? [],
     publicationDate: article.publishedAt ?? null,
     modificationDate: article.updatedAt ?? article._updatedAt ?? null,
+    lastReviewedAt: article.lastReviewedAt ?? null,
     author: article.author?.name ?? null,
     topicCluster: article.topicCluster?.name ?? null,
+    methodologyNote: article.methodologyNote ?? null,
     citations: article.citations ?? [],
+    publicEvidence: normalizePublicEvidence(article.publicEvidence),
+    basedOnDeployTitanResearch: hasDeployTitanResearchNote(article.publicEvidence),
   })
 }

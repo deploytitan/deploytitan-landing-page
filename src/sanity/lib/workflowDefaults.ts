@@ -29,7 +29,8 @@ export function defaultBriefChecklist(): WorkflowChecklistItem[] {
     checklistItem('Refine the direct answer so it clearly resolves the reader question'),
     checklistItem('Tighten the outline around a differentiated DeployTitan angle'),
     checklistItem('Verify research evidence and customer pain are strong enough'),
-    checklistItem('Confirm primary keyword, target persona, and KPI target'),
+    checklistItem('Classify every evidence item as internal, public, or public-summary'),
+    checklistItem('Confirm primary keyword, target persona, thesis, CTA goal, and KPI target'),
     checklistItem('Move to Brief Ready when the brief can be handed to drafting'),
   ]
 }
@@ -38,7 +39,9 @@ export function defaultArticleChecklist(): WorkflowChecklistItem[] {
   return [
     checklistItem('Turn the brief into a strong technical draft'),
     checklistItem('Add citations, FAQ, and customer discovery CTA where relevant'),
+    checklistItem('Prepare the public proof layer, methodology note, and evidence section'),
     checklistItem('Review title, excerpt, slug, and SEO metadata'),
+    checklistItem('Confirm last reviewed date and technical reviewer owner'),
     checklistItem('Prepare distribution assets and publication plan'),
     checklistItem('Review post-publish KPI performance after 7 and 30 days'),
   ]
@@ -100,8 +103,10 @@ export function defaultPipelineGuideStages() {
       entryCriteria: ['Content brief has been created'],
       checklist: [
         'Refine the direct answer and outline',
+        'Define the differentiated thesis and CTA goal',
         'Set target persona and primary keyword',
         'Check the evidence is strong and differentiated',
+        'Classify each evidence item for internal/public visibility',
         'Confirm KPI target and success metric',
         'Move the brief to briefReady',
       ],
@@ -109,27 +114,45 @@ export function defaultPipelineGuideStages() {
       relevantDocs: ['contentBrief', 'marketQuestion', 'researchEvidence'],
     },
     {
+      _key: 'evidence-review',
+      _type: 'pipelineGuideStage',
+      title: '4. Evidence Review',
+      owner: 'Editor + subject-matter reviewer',
+      summary:
+        'Convert raw research into a trustworthy public proof set without exposing sensitive internal material.',
+      entryCriteria: ['Brief exists and linked evidence has been assembled'],
+      checklist: [
+        'Classify evidence visibility and sensitivity',
+        'Write sanitized public summaries where needed',
+        'Select article-level public evidence overrides only if the brief evidence set needs curation',
+        'Draft the methodology note for the article',
+      ],
+      exitCriteria: ['The brief evidence is classified and the future article has a public-safe proof set'],
+      relevantDocs: ['researchEvidence', 'contentBrief', 'article'],
+    },
+    {
       _key: 'article-production',
       _type: 'pipelineGuideStage',
-      title: '4. Article Production',
+      title: '5. Article Production',
       owner: 'Writer + reviewer',
       summary:
         'Draft the article from the brief, then complete editorial, technical, and SEO checks before publishing.',
       entryCriteria: ['Brief is ready or article is awaitingResearch'],
       checklist: [
         'Write or refresh the article',
-        'Add citations, FAQs, and CTA',
+        'Add citations, FAQs, CTA, and methodology note',
+        'Prepare the public evidence and sources section',
         'Complete SEO title and meta description',
         'Run technical review',
-        'Schedule or publish the article',
+        'Move the article to publicationReady before scheduling or publishing',
       ],
-      exitCriteria: ['Article is scheduled or published'],
+      exitCriteria: ['Article is publicationReady, scheduled, or published'],
       relevantDocs: ['article', 'contentBrief'],
     },
     {
       _key: 'distribution-and-measurement',
       _type: 'pipelineGuideStage',
-      title: '5. Distribution and Measurement',
+      title: '6. Distribution and Measurement',
       owner: 'AI + human ops',
       summary:
         'Measure content against KPI targets, create insights, and feed the results back into future opportunities and refresh decisions.',

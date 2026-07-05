@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { defaultBriefChecklist } from '../lib/workflowDefaults'
+import { validateBriefReadiness } from '../lib/evidenceValidation'
 
 export const contentBriefType = defineType({
   name: 'contentBrief',
@@ -15,6 +16,7 @@ export const contentBriefType = defineType({
       options: { list: [
         { title: 'Researching', value: 'researching' },
         { title: 'Brief Ready', value: 'briefReady' },
+        { title: 'Evidence Reviewed', value: 'evidenceReviewed' },
         { title: 'Drafting', value: 'drafting' },
         { title: 'Published', value: 'published' },
       ] },
@@ -23,6 +25,19 @@ export const contentBriefType = defineType({
     defineField({ name: 'targetPersona', title: 'Target persona', type: 'targetPersona' }),
     defineField({ name: 'primaryKeyword', title: 'Primary keyword', type: 'string' }),
     defineField({ name: 'directAnswer', title: 'Direct answer', type: 'text', rows: 4 }),
+    defineField({
+      name: 'thesis',
+      title: 'Differentiated thesis',
+      description: 'The opinionated angle the writer should defend throughout the article.',
+      type: 'text',
+      rows: 4,
+    }),
+    defineField({
+      name: 'ctaGoal',
+      title: 'CTA goal',
+      description: 'What action or next step this article should guide the reader toward.',
+      type: 'string',
+    }),
     defineField({ name: 'outline', title: 'Outline', type: 'array', of: [defineArrayMember({ type: 'articleOutlineSection' })] }),
     defineField({ name: 'researchEvidence', title: 'Evidence', type: 'array', of: [defineArrayMember({ type: 'reference', to: [{ type: 'researchEvidence' }] })] }),
     defineField({ name: 'articles', title: 'Articles', type: 'array', of: [defineArrayMember({ type: 'reference', to: [{ type: 'article' }] })] }),
@@ -40,11 +55,13 @@ export const contentBriefType = defineType({
     }),
   ],
   validation: (Rule) =>
-    Rule.custom((value) => {
+    Rule.custom(async (value, context) => {
       const brief = value as
         | {
             status?: string
             directAnswer?: string
+            thesis?: string
+            ctaGoal?: string
             targetPersona?: { name?: string }
             primaryKeyword?: string
             researchEvidence?: unknown[]
@@ -52,12 +69,7 @@ export const contentBriefType = defineType({
           }
         | undefined
       if (!brief || brief.status !== 'briefReady') return true
-      if (!brief.directAnswer) return 'Brief-ready briefs require a direct answer.'
-      if (!brief.targetPersona?.name) return 'Brief-ready briefs require a target persona.'
-      if (!brief.primaryKeyword) return 'Brief-ready briefs require a primary keyword.'
-      if (!brief.researchEvidence?.length) return 'Brief-ready briefs require evidence.'
-      if (!brief.outline?.length) return 'Brief-ready briefs require an outline.'
-      return true
+      return validateBriefReadiness(context, brief)
     }),
   preview: {
     select: { title: 'title', subtitle: 'status' },

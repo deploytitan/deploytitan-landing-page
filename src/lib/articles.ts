@@ -16,7 +16,10 @@ export type ArticleRecord = {
   publishedAt?: string | null
   updatedAt?: string | null
   _updatedAt?: string | null
+  lastReviewedAt?: string | null
   status?: string | null
+  methodologyNote?: string | null
+  technicalReviewer?: string | null
   targetPersona?: { name?: string | null; seniority?: string | null; team?: string | null } | null
   body?: TypedObject[]
   topicCluster?: { name?: string | null; slug?: { current?: string | null } | null } | null
@@ -42,6 +45,23 @@ export type ArticleRecord = {
         notes?: string | null
       }[]
     | null
+  publicEvidence?:
+    | {
+        _id: string
+        title?: string | null
+        evidenceType?: string | null
+        visibility?: 'public' | 'publicSummaryOnly' | null
+        evidenceStrength?: string | null
+        signalsProductNeed?: boolean | null
+        summary?: string | null
+        source?: {
+          label?: string | null
+          url?: string | null
+          publisher?: string | null
+          notes?: string | null
+        } | null
+      }[]
+    | null
   customerDiscoveryCta?: {
     question?: string | null
     label?: string | null
@@ -63,6 +83,8 @@ export type ArticleRecord = {
   contentBrief?: {
     _id: string
     title: string
+    thesis?: string | null
+    ctaGoal?: string | null
     marketQuestion?: { _id: string; question: string; status?: string | null } | null
   } | null
 }
@@ -261,6 +283,30 @@ export function normalizeAuthor(author: ArticleRecord['author']) {
   }
 }
 
+export function normalizePublicEvidence(evidence: ArticleRecord['publicEvidence']) {
+  return (evidence ?? []).filter(
+    (
+      item,
+    ): item is NonNullable<NonNullable<ArticleRecord['publicEvidence']>[number]> &
+      Required<Pick<NonNullable<NonNullable<ArticleRecord['publicEvidence']>[number]>, '_id'>> =>
+      Boolean(
+        item?._id &&
+          item.visibility &&
+          (item.visibility === 'public' || item.visibility === 'publicSummaryOnly') &&
+          String(item.summary ?? '').trim(),
+      ),
+  )
+}
+
+export function hasDeployTitanResearchNote(evidence: ArticleRecord['publicEvidence']) {
+  return normalizePublicEvidence(evidence).some(
+    (item) =>
+      item.visibility === 'publicSummaryOnly' ||
+      item.evidenceType === 'internalExperience' ||
+      !String(item.source?.url ?? '').trim(),
+  )
+}
+
 export function getArticleRobots(article: Pick<ArticleRecord, 'seo'>) {
   const directive = article.seo?.robotsDirective
   if (directive === 'noindex,nofollow') return { index: false, follow: false }
@@ -271,6 +317,7 @@ export function getArticleRobots(article: Pick<ArticleRecord, 'seo'>) {
 export function formatArticleAsLlmText(article: ArticleRecord) {
   const author = normalizeAuthor(article.author)
   const faq = normalizeFaq(article.faq)
+  const publicEvidence = normalizePublicEvidence(article.publicEvidence)
   const sections = [
     `Title: ${article.title}`,
     `Canonical URL: ${getArticleCanonicalUrl(article)}`,
@@ -283,8 +330,11 @@ export function formatArticleAsLlmText(article: ArticleRecord) {
     author?.role ? `Author Role: ${author.role}` : null,
     article.topicCluster?.name ? `Topic Cluster: ${article.topicCluster.name}` : null,
     article.primaryQuestion ? `Primary Question: ${article.primaryQuestion}` : null,
+    article.lastReviewedAt ? `Last Reviewed: ${article.lastReviewedAt}` : null,
+    article.technicalReviewer ? `Technical Reviewer: ${article.technicalReviewer}` : null,
     '',
     article.directAnswer ? `Direct Answer:\n${article.directAnswer}` : null,
+    article.methodologyNote ? `Methodology:\n${article.methodologyNote}` : null,
     article.excerpt ? `Excerpt:\n${article.excerpt}` : null,
     '',
     portableTextToStructuredPlainText(article.body ?? []),
@@ -303,6 +353,21 @@ export function formatArticleAsLlmText(article: ArticleRecord) {
               citation.publisher ? `Publisher: ${citation.publisher}` : null,
               citation.url ? `URL: ${citation.url}` : null,
               citation.notes ? `Notes: ${citation.notes}` : null,
+            ].filter(Boolean)
+            return parts.join(' | ')
+          }),
+        ].join('\n')
+      : null,
+    publicEvidence.length
+      ? [
+          'Public Evidence',
+          ...publicEvidence.map((item, index) => {
+            const parts = [
+              `${index + 1}. ${item.title ?? 'Evidence'}`,
+              item.evidenceStrength ? `Strength: ${item.evidenceStrength}` : null,
+              item.summary ? `Summary: ${item.summary}` : null,
+              item.source?.label ? `Source: ${item.source.label}` : null,
+              item.source?.url ? `URL: ${item.source.url}` : null,
             ].filter(Boolean)
             return parts.join(' | ')
           }),

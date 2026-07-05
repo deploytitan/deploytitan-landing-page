@@ -12,6 +12,7 @@ import { PortableTextRenderer } from '@/components/blog/PortableTextRenderer'
 import { AuthorBadge } from '@/components/blog/AuthorBadge'
 import { Breadcrumbs } from '@/components/shared/Breadcrumbs'
 import { ArticleJsonLd } from '@/components/blog/ArticleJsonLd'
+import { ArticleEvidenceSection } from '@/components/blog/ArticleEvidenceSection'
 import { TrackedArticleLink } from '@/components/blog/TrackedArticleLink'
 import {
   type ArticleRecord,
@@ -163,14 +164,16 @@ export default async function BlogArticlePage({ params }: Props) {
             </p>
           )}
 
-          <p className="mb-6">
-            <Link
-              href={getArticleLlmTextUrl(article)}
-              className="text-primary-accessible hover:text-primary font-mono text-xs tracking-widest uppercase transition-colors"
-            >
-              Plain text / LLM version
-            </Link>
-          </p>
+          {article.methodologyNote && (
+            <div className="border-line bg-surface-alt/50 mb-6 max-w-3xl rounded-[2px] border px-4 py-3">
+              <p className="text-ink-tertiary mb-2 font-mono text-[10px] tracking-widest uppercase">
+                How we researched this
+              </p>
+              <p className="text-ink-secondary text-sm leading-relaxed">
+                {article.methodologyNote}
+              </p>
+            </div>
+          )}
 
           {author && <AuthorBadge author={author} publishedAt={article.publishedAt ?? undefined} />}
         </div>
@@ -179,7 +182,7 @@ export default async function BlogArticlePage({ params }: Props) {
       {article.coverImage?.asset && (
         <div className="border-line border-b">
           <div className="mx-auto w-full max-w-5xl">
-            <div className="sharp-card border-line -mt-1 overflow-hidden border">
+            <div className="sharp-card border-line my-[-1px] overflow-hidden border">
               <Image
                 src={urlFor(article.coverImage as object)
                   .width(1400)
@@ -252,6 +255,8 @@ export default async function BlogArticlePage({ params }: Props) {
                     />
                   )}
                 </ArticleReaderExperience>
+
+                <ArticleEvidenceSection article={article} />
 
                 {faq.length > 0 && (
                   <section

@@ -1,6 +1,19 @@
 import { defineQuery } from 'next-sanity'
 
 const ARTICLE_WHERE = '_type == "article"'
+const PUBLIC_EVIDENCE_PROJECTION = `
+  _id,
+  title,
+  evidenceType,
+  visibility,
+  evidenceStrength,
+  signalsProductNeed,
+  "summary": select(
+    visibility == "publicSummaryOnly" => coalesce(publicSummary, summary),
+    coalesce(publicSummary, summary)
+  ),
+  "source": coalesce(publicSource, source)
+`
 const ARTICLE_LIST_PROJECTION = `
   _id,
   title,
@@ -15,8 +28,11 @@ const ARTICLE_LIST_PROJECTION = `
   publishedAt,
   updatedAt,
   _updatedAt,
+  lastReviewedAt,
   status,
   cardLayout,
+  methodologyNote,
+  technicalReviewer,
   topicCluster,
   targetPersona,
   seo,
@@ -47,10 +63,20 @@ export const articleBySlugQuery = defineQuery(`
     ${ARTICLE_LIST_PROJECTION},
     body,
     citations,
+    "publicEvidence": select(
+      count(publicEvidence) > 0 => publicEvidence[]->{
+        ${PUBLIC_EVIDENCE_PROJECTION}
+      }[defined(visibility) && visibility != "internal"],
+      contentBrief->researchEvidence[]->{
+        ${PUBLIC_EVIDENCE_PROJECTION}
+      }[defined(visibility) && visibility != "internal"]
+    ),
     customerDiscoveryCta,
     contentBrief->{
       _id,
       title,
+      thesis,
+      ctaGoal,
       "marketQuestion": marketQuestion->{
         _id,
         question,

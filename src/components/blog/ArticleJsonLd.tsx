@@ -4,6 +4,7 @@ import {
   getArticleLlmTextUrl,
   getArticleSeoDescription,
   getArticleSeoTitle,
+  normalizePublicEvidence,
   type ArticleRecord,
   normalizeFaq,
 } from '@/lib/articles'
@@ -13,6 +14,7 @@ export function ArticleJsonLd({ article }: { article: ArticleRecord }) {
   const canonicalUrl = getArticleCanonicalUrl(article)
   const description = getArticleSeoDescription(article)
   const faq = normalizeFaq(article.faq)
+  const publicEvidence = normalizePublicEvidence(article.publicEvidence)
   const ogImage = article.seo?.openGraphImage?.asset
     ? urlFor(article.seo.openGraphImage as object).width(1200).height(630).url()
     : article.coverImage?.asset
@@ -55,7 +57,7 @@ export function ArticleJsonLd({ article }: { article: ArticleRecord }) {
     url: canonicalUrl,
     image: ogImage ? [ogImage] : undefined,
     datePublished: article.publishedAt || undefined,
-    dateModified: article.updatedAt || article._updatedAt || article.publishedAt || undefined,
+    dateModified: article.updatedAt || article.lastReviewedAt || article._updatedAt || article.publishedAt || undefined,
     author: article.author?.name
       ? {
           '@type': 'Person',
@@ -84,6 +86,10 @@ export function ArticleJsonLd({ article }: { article: ArticleRecord }) {
     keywords: [article.primaryKeyword, ...(article.secondaryKeywords ?? [])]
       .filter(Boolean)
       .join(', '),
+    citation: [
+      ...(article.citations ?? []).map((citation) => citation.url || citation.label).filter(Boolean),
+      ...publicEvidence.map((item) => item.source?.url || item.source?.label).filter(Boolean),
+    ],
     subjectOf: {
       '@type': 'DigitalDocument',
       name: 'Plain text / LLM version',

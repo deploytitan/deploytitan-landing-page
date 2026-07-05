@@ -1,5 +1,10 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { defaultArticleChecklist } from '../lib/workflowDefaults'
+import {
+  fetchContentBriefValidationRecord,
+  hasClassifiedEvidence,
+  isProofReadyStatus,
+} from '../lib/evidenceValidation'
 
 const articleStatusValues = [
   { title: 'Idea', value: 'idea' },
@@ -7,6 +12,7 @@ const articleStatusValues = [
   { title: 'Brief Ready', value: 'briefReady' },
   { title: 'Drafting', value: 'drafting' },
   { title: 'Technical Review', value: 'technicalReview' },
+  { title: 'Publication Ready', value: 'publicationReady' },
   { title: 'Scheduled', value: 'scheduled' },
   { title: 'Published', value: 'published' },
   { title: 'Needs Refresh', value: 'needsRefresh' },
@@ -195,6 +201,12 @@ export const articleType = defineType({
     defineField({ name: 'sevenDayReviewAt', title: 'Seven-day review at', type: 'datetime' }),
     defineField({ name: 'thirtyDayReviewAt', title: 'Thirty-day review at', type: 'datetime' }),
     defineField({
+      name: 'technicalReviewer',
+      title: 'Technical reviewer',
+      description: 'Owner accountable for the technical accuracy review before publication.',
+      type: 'string',
+    }),
+    defineField({
       name: 'author',
       title: 'Author',
       type: 'reference',
@@ -250,6 +262,20 @@ export const articleType = defineType({
       title: 'FAQ',
       type: 'array',
       of: [defineArrayMember({ type: 'faqItem' })],
+    }),
+    defineField({
+      name: 'methodologyNote',
+      title: 'Methodology note',
+      description: 'Short explanation of how the article was researched and what evidence types were used.',
+      type: 'text',
+      rows: 4,
+    }),
+    defineField({
+      name: 'publicEvidence',
+      title: 'Public evidence override',
+      description: 'Optional publishable evidence references. Leave empty to derive from the linked content brief evidence.',
+      type: 'array',
+      of: [defineArrayMember({ type: 'reference', to: [{ type: 'researchEvidence' }] })],
     }),
     defineField({
       name: 'citations',
@@ -327,4 +353,61 @@ export const articleType = defineType({
       media: 'coverImage',
     },
   },
+  validation: (Rule) =>
+    Rule.custom(async (value, context) => {
+      const article = value as
+        | {
+            status?: string
+            contentBrief?: { _ref?: string }
+            publicEvidence?: Array<{ _ref?: string }>
+            citations?: unknown[]
+            methodologyNote?: string
+            lastReviewedAt?: string
+            technicalReviewer?: string
+          }
+        | undefined
+
+      if (!article || !isProofReadyStatus(article.status)) return true
+
+      const brief = await fetchContentBriefValidationRecord(context, article.contentBrief)
+      if (!brief) {
+        return 'Publication-ready articles require a linked content brief.'
+      }
+
+      if (!String(brief.directAnswer ?? '').trim()) return 'The linked brief needs a direct answer.'
+      if (!String(brief.thesis ?? '').trim()) return 'The linked brief needs a differentiated thesis.'
+      if (!String(brief.ctaGoal ?? '').trim()) return 'The linked brief needs a CTA goal.'
+      if (!brief.targetPersona?.name) return 'The linked brief needs a target persona.'
+      if (!String(brief.primaryKeyword ?? '').trim()) return 'The linked brief needs a primary keyword.'
+      if (!(brief.outline ?? []).length) return 'The linked brief needs an outline.'
+
+      const briefEvidenceResult = await hasClassifiedEvidence(context, brief.researchEvidence)
+      if (!briefEvidenceResult.ok) return briefEvidenceResult.message
+
+      const selectedEvidenceRefs = article.publicEvidence?.length ? article.publicEvidence : brief.researchEvidence
+      const publicEvidenceResult = await hasClassifiedEvidence(context, selectedEvidenceRefs)
+      if (!publicEvidenceResult.ok) return publicEvidenceResult.message
+
+      const citationsCount = Array.isArray(article.citations) ? article.citations.length : 0
+      const hasMethodology = Boolean(String(article.methodologyNote ?? '').trim())
+      const meetsProofMinimum =
+        citationsCount >= 2 ||
+        (citationsCount >= 1 &&
+          publicEvidenceResult.publishableEvidenceCount >= 1 &&
+          hasMethodology)
+
+      if (!meetsProofMinimum) {
+        return 'Publication-ready articles need at least two citations, or one citation plus one publishable evidence item and a methodology note.'
+      }
+
+      if (!String(article.lastReviewedAt ?? '').trim()) {
+        return 'Publication-ready articles require a last reviewed date.'
+      }
+
+      if (!String(article.technicalReviewer ?? '').trim()) {
+        return 'Publication-ready articles require a technical reviewer.'
+      }
+
+      return true
+    }),
 })
