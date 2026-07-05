@@ -29,7 +29,7 @@ export function SiteLayoutClient({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-clip">
       <Analytics />
       {/* Skip-to-main link: visible on focus, hidden otherwise */}
       <a
