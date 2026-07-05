@@ -93,13 +93,13 @@ export async function fetchSearchConsoleMetrics(
       startDate: window.startDate,
       endDate: window.endDate,
       dimensions: ['page'],
-      type: 'web',
+      searchType: 'web',
       rowLimit: 25000,
     },
   })
 
   const rows = response.data.rows ?? []
-  const rowByPage = new Map(
+  const rowByPage = new Map<string, SearchMetrics>(
     rows.map((row) => [
       String(row.keys?.[0] ?? ''),
       {
@@ -112,9 +112,8 @@ export async function fetchSearchConsoleMetrics(
 
   const metricsByArticleId = new Map<string, SearchMetrics>()
   for (const article of articles) {
-    const match = canonicalCandidates(article)
-      .map((candidate) => rowByPage.get(candidate))
-      .find(Boolean)
+    const matchingCandidate = canonicalCandidates(article).find((candidate) => rowByPage.has(candidate))
+    const match = matchingCandidate ? rowByPage.get(matchingCandidate) : undefined
 
     metricsByArticleId.set(article._id, match ?? {
       searchClicks: 0,

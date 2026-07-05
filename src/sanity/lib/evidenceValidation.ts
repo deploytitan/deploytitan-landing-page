@@ -1,4 +1,4 @@
-type ReferenceLike = {
+export type ReferenceLike = {
   _ref?: string
 } | null
 
@@ -52,7 +52,18 @@ async function fetchEvidenceRecords(context: ValidationContextLike, evidenceIds:
 export async function hasClassifiedEvidence(
   context: ValidationContextLike,
   evidenceRefs: ReferenceLike[] | null | undefined,
-) {
+): Promise<
+  | {
+      ok: false
+      publishableEvidenceCount: 0
+      message: string
+    }
+  | {
+      ok: true
+      publishableEvidenceCount: number
+      message: null
+    }
+> {
   const evidenceIds = refIds(evidenceRefs)
   if (!evidenceIds.length) {
     return {
@@ -135,7 +146,7 @@ export async function validateBriefReadiness(
         researchEvidence?: ReferenceLike[] | null
       }
     | undefined,
-) {
+): Promise<true | string> {
   if (!brief) return 'Brief-ready briefs require a content brief payload.'
   if (!String(brief.directAnswer ?? '').trim()) return 'Brief-ready briefs require a direct answer.'
   if (!String(brief.thesis ?? '').trim()) return 'Brief-ready briefs require a thesis.'

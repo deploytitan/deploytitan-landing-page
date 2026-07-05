@@ -87,7 +87,7 @@ export async function saveContentInsight(
       ? { _type: 'reference' as const, _ref: input.article.contentBrief.contentOpportunity._ref }
       : null
 
-  const payload: Record<string, unknown> = {
+  const payload = {
     _id: insightId,
     _type: 'contentInsight',
     title: evaluation.title,
@@ -102,10 +102,7 @@ export async function saveContentInsight(
       label: evaluation.confidenceLabel,
       rationale: `Auto-evaluated from KPI performance for ${input.reviewWindow}.`,
     },
-  }
-
-  if (contentOpportunityRef) {
-    payload.contentOpportunity = contentOpportunityRef
+    ...(contentOpportunityRef ? { contentOpportunity: contentOpportunityRef } : {}),
   }
 
   await client.createOrReplace(payload)

@@ -46,7 +46,7 @@ async function createGoogleClient() {
       ],
     })
 
-    return await auth.getClient()
+    return auth
   }
 
   const clientId = requireEnv('GOOGLE_CLIENT_ID')

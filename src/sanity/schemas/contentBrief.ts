@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { defaultBriefChecklist } from '../lib/workflowDefaults'
-import { validateBriefReadiness } from '../lib/evidenceValidation'
+import { validateBriefReadiness, type ReferenceLike } from '../lib/evidenceValidation'
 
 export const contentBriefType = defineType({
   name: 'contentBrief',
@@ -64,7 +64,7 @@ export const contentBriefType = defineType({
             ctaGoal?: string
             targetPersona?: { name?: string }
             primaryKeyword?: string
-            researchEvidence?: unknown[]
+            researchEvidence?: ReferenceLike[] | null
             outline?: unknown[]
           }
         | undefined
