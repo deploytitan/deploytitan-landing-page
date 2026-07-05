@@ -100,6 +100,7 @@ GitHub Actions:
 
 - `.github/workflows/content-opportunity-research.yml` runs every Saturday and also supports `workflow_dispatch`.
 - The workflow uploads the generated prompt and candidate JSON as build artifacts for manual review.
+- `.github/workflows/content-performance-sync.yml` runs daily and syncs 7-day and 30-day article performance snapshots plus KPI-driven content insights.
 
 ### KPI loop foundation
 
@@ -123,6 +124,45 @@ The current repo already supports:
 - authenticated performance snapshot ingestion in [src/app/api/content/performance-snapshots/route.ts](/Users/justinekizhak/projects/deploytitan-landing-page/src/app/api/content/performance-snapshots/route.ts)
 
 The next recommended step is a scheduled metrics-ingestion job that writes `articlePerformanceSnapshot` records and generates `contentInsight` records when KPI targets are off-track, exceeded, or decaying.
+
+That metrics-ingestion layer now exists as:
+
+```bash
+pnpm content:sync-performance --window 7d
+pnpm content:sync-performance --window 30d
+```
+
+It:
+
+- loads published `article` records with KPI targets
+- pulls per-article search metrics from Search Console
+- pulls page metrics from GA4
+- pulls article engagement/conversion events from PostHog
+- writes `articlePerformanceSnapshot` records
+- evaluates KPI progress and writes `contentInsight` recommendations
+
+Additional env vars for the feedback loop:
+
+```bash
+GA4_PROPERTY_ID=
+NEXT_PUBLIC_POSTHOG_HOST=
+POSTHOG_PROJECT_ID=
+POSTHOG_PERSONAL_API_KEY=
+```
+
+Recommended KPI usage:
+
+- New net-new articles: target `searchImpressions` over 30-90 days.
+- Refresh articles: target `searchClicks` over 30-60 days.
+- CTR-focused articles: target `searchCtr`.
+- Conversion-focused articles: target `newsletterSignups` or `researchCtaClicks`.
+
+Current implementation notes:
+
+- GA4 uses the Data API to retrieve page-level `views`, `activeUsers`, and `averageSessionDuration`.
+- Search Console syncs page-level `clicks`, `impressions`, and `CTR`.
+- PostHog aggregates `article50PercentRead`, `article90PercentRead`, `newsletterSignup`, `interviewRequested`, `researchCtaClicked`, `articleShared`, and `outboundToolLinkClicked`.
+- The PostHog pull is intentionally small and article-focused. It is meant for content KPI evaluation, not bulk warehouse export.
 
 ### Legacy post migration
 

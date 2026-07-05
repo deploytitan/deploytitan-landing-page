@@ -9,6 +9,7 @@ import { VisualEditing } from 'next-sanity/visual-editing'
 import { DisableDraftMode } from '@/components/blog/DisableDraftMode'
 import { GaPageViewTracker } from '@/components/analytics/GaPageViewTracker'
 import { ConsentBanner } from '@/components/analytics/ConsentBanner'
+import { PosthogInit } from '@/components/analytics/PosthogInit'
 import { SiteJsonLd } from '@/components/seo/SiteJsonLd'
 import { parseAnalyticsConsent } from '@/lib/consent'
 import { SITE_DESCRIPTION, SITE_NAME, SITE_OG_DESCRIPTION, SITE_OG_IMAGE, SITE_URL } from '@/lib/site'
@@ -79,6 +80,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { isEnabled: isDraft } = await draftMode()
   const cookieStore = await cookies()
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
+  const posthogApiKey = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN
+  const posthogApiHost = process.env.NEXT_PUBLIC_POSTHOG_HOST
   const analyticsConsent = parseAnalyticsConsent(
     cookieStore.get('dt_analytics_consent')?.value,
   )
@@ -112,6 +115,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </Script>
             <GaPageViewTracker measurementId={gaMeasurementId} />
           </>
+        )}
+        {posthogApiKey && posthogApiHost && canLoadAnalytics && (
+          <PosthogInit apiKey={posthogApiKey} apiHost={posthogApiHost} />
         )}
         {canLoadAnalytics && (
           <Script

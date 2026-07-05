@@ -13,6 +13,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "content:research": "tsx scripts/run-content-opportunity-research.ts",
+    "content:sync-performance": "tsx scripts/sync-content-performance.ts",
     "migrate:posts-to-articles": "tsx scripts/migrate-posts-to-articles.ts",
     "content:import-opportunities": "tsx scripts/import-content-opportunities.ts"
   },
