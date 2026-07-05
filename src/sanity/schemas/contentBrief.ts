@@ -1,6 +1,10 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { withPublishingRequirement } from '../components/publishingRequirementField'
 import { defaultBriefChecklist } from '../lib/workflowDefaults'
 import { validateBriefReadiness, type ReferenceLike } from '../lib/evidenceValidation'
+
+const briefPublishingRequirement =
+  'Required on the linked brief before an article can move to Publication Ready, Scheduled, or Published.'
 
 export const contentBriefType = defineType({
   name: 'contentBrief',
@@ -22,24 +26,24 @@ export const contentBriefType = defineType({
       ] },
     }),
     defineField({ name: 'marketQuestion', title: 'Market question', type: 'reference', to: [{ type: 'marketQuestion' }], validation: (Rule) => Rule.required() }),
-    defineField({ name: 'targetPersona', title: 'Target persona', type: 'targetPersona' }),
-    defineField({ name: 'primaryKeyword', title: 'Primary keyword', type: 'string' }),
-    defineField({ name: 'directAnswer', title: 'Direct answer', type: 'text', rows: 4 }),
-    defineField({
+    defineField(withPublishingRequirement({ name: 'targetPersona', title: 'Target persona', type: 'targetPersona' }, briefPublishingRequirement)),
+    defineField(withPublishingRequirement({ name: 'primaryKeyword', title: 'Primary keyword', type: 'string' }, briefPublishingRequirement)),
+    defineField(withPublishingRequirement({ name: 'directAnswer', title: 'Direct answer', type: 'text', rows: 4 }, briefPublishingRequirement)),
+    defineField(withPublishingRequirement({
       name: 'thesis',
       title: 'Differentiated thesis',
       description: 'The opinionated angle the writer should defend throughout the article.',
       type: 'text',
       rows: 4,
-    }),
-    defineField({
+    }, briefPublishingRequirement)),
+    defineField(withPublishingRequirement({
       name: 'ctaGoal',
       title: 'CTA goal',
       description: 'What action or next step this article should guide the reader toward.',
       type: 'string',
-    }),
-    defineField({ name: 'outline', title: 'Outline', type: 'array', of: [defineArrayMember({ type: 'articleOutlineSection' })] }),
-    defineField({ name: 'researchEvidence', title: 'Evidence', type: 'array', of: [defineArrayMember({ type: 'reference', to: [{ type: 'researchEvidence' }] })] }),
+    }, briefPublishingRequirement)),
+    defineField(withPublishingRequirement({ name: 'outline', title: 'Outline', type: 'array', of: [defineArrayMember({ type: 'articleOutlineSection' })] }, briefPublishingRequirement)),
+    defineField(withPublishingRequirement({ name: 'researchEvidence', title: 'Evidence', type: 'array', of: [defineArrayMember({ type: 'reference', to: [{ type: 'researchEvidence' }] })] }, briefPublishingRequirement)),
     defineField({ name: 'articles', title: 'Articles', type: 'array', of: [defineArrayMember({ type: 'reference', to: [{ type: 'article' }] })] }),
     defineField({ name: 'distributionNotes', title: 'Distribution notes', type: 'text', rows: 3 }),
     defineField({ name: 'productHypothesis', title: 'Product hypothesis', type: 'text', rows: 3 }),

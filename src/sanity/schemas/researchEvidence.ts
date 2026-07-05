@@ -1,4 +1,8 @@
 import { defineField, defineType } from 'sanity'
+import { withPublishingRequirement } from '../components/publishingRequirementField'
+
+const evidencePublishingRequirement =
+  'Required before linked evidence can support a publishable article.'
 
 export const researchEvidenceType = defineType({
   name: 'researchEvidence',
@@ -13,7 +17,7 @@ export const researchEvidenceType = defineType({
       options: { list: ['customerInterview', 'technicalSource', 'communityDiscussion', 'competitor', 'workaround', 'internalExperience'] },
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
+    defineField(withPublishingRequirement({
       name: 'visibility',
       title: 'Visibility',
       type: 'string',
@@ -28,7 +32,7 @@ export const researchEvidenceType = defineType({
         layout: 'radio',
       },
       validation: (Rule) => Rule.required(),
-    }),
+    }, evidencePublishingRequirement)),
     defineField({
       name: 'evidenceStrength',
       title: 'Evidence strength',
@@ -37,7 +41,7 @@ export const researchEvidenceType = defineType({
       initialValue: 'Medium',
     }),
     defineField({ name: 'summary', title: 'Summary', type: 'text', rows: 4, validation: (Rule) => Rule.required() }),
-    defineField({
+    defineField(withPublishingRequirement({
       name: 'publicSummary',
       title: 'Public summary',
       description: 'Sanitized version that is safe to show on public articles.',
@@ -51,7 +55,7 @@ export const researchEvidenceType = defineType({
           }
           return true
         }),
-    }),
+    }, 'Required when visibility is "Public summary only" and the evidence is used in a publishable article.')),
     defineField({
       name: 'sensitivityReason',
       title: 'Sensitivity reason',

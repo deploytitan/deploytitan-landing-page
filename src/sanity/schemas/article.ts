@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { withPublishingRequirement } from '../components/publishingRequirementField'
 import { defaultArticleChecklist } from '../lib/workflowDefaults'
 import {
   fetchContentBriefValidationRecord,
@@ -23,13 +24,19 @@ const articleCardLayoutValues = [
   { title: 'Featured wide card', value: 'featured' },
 ]
 
+const proofReadyRequirement =
+  'Required before an article can move to Publication Ready, Scheduled, or Published.'
+
+const publishedRequirement =
+  'Required before an article can be considered fully Published.'
+
 export const articleType = defineType({
   name: 'article',
   title: 'Article',
   type: 'document',
   fields: [
     defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
-    defineField({
+    defineField(withPublishingRequirement({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
@@ -42,7 +49,7 @@ export const articleType = defineType({
           }
           return true
         }),
-    }),
+    }, publishedRequirement)),
     defineField({
       name: 'status',
       title: 'Workflow status',
@@ -51,7 +58,7 @@ export const articleType = defineType({
       options: { list: articleStatusValues },
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
+    defineField(withPublishingRequirement({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
@@ -64,7 +71,7 @@ export const articleType = defineType({
           }
           return true
         }),
-    }),
+    }, publishedRequirement)),
     defineField({
       name: 'directAnswer',
       title: 'Direct answer',
@@ -73,7 +80,7 @@ export const articleType = defineType({
       description: 'Two to four sentences answering the article question near the top.',
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
+    defineField(withPublishingRequirement({
       name: 'primaryQuestion',
       title: 'Primary question',
       type: 'string',
@@ -85,8 +92,8 @@ export const articleType = defineType({
           }
           return true
         }),
-    }),
-    defineField({
+    }, publishedRequirement)),
+    defineField(withPublishingRequirement({
       name: 'primaryKeyword',
       title: 'Primary keyword',
       type: 'string',
@@ -98,7 +105,7 @@ export const articleType = defineType({
           }
           return true
         }),
-    }),
+    }, publishedRequirement)),
     defineField({
       name: 'secondaryKeywords',
       title: 'Secondary keywords',
@@ -136,7 +143,7 @@ export const articleType = defineType({
           return true
         }),
     }),
-    defineField({
+    defineField(withPublishingRequirement({
       name: 'searchIntent',
       title: 'Search intent',
       type: 'string',
@@ -152,13 +159,13 @@ export const articleType = defineType({
           }
           return true
         }),
-    }),
+    }, publishedRequirement)),
     defineField({
       name: 'targetPersona',
       title: 'Target persona',
       type: 'targetPersona',
     }),
-    defineField({
+    defineField(withPublishingRequirement({
       name: 'topicCluster',
       title: 'Topic cluster',
       type: 'topicCluster',
@@ -170,7 +177,7 @@ export const articleType = defineType({
           }
           return true
         }),
-    }),
+    }, publishedRequirement)),
     defineField({
       name: 'coverImage',
       title: 'Cover image',
@@ -178,7 +185,7 @@ export const articleType = defineType({
       options: { hotspot: true },
       fields: [defineField({ name: 'alt', title: 'Alt text', type: 'string' })],
     }),
-    defineField({
+    defineField(withPublishingRequirement({
       name: 'publishedAt',
       title: 'Published at',
       type: 'datetime',
@@ -190,23 +197,28 @@ export const articleType = defineType({
           }
           return true
         }),
-    }),
+    }, publishedRequirement)),
     defineField({
       name: 'updatedAt',
       title: 'Updated at',
       type: 'datetime',
       description: 'Set when the article is materially refreshed after publication.',
     }),
-    defineField({ name: 'lastReviewedAt', title: 'Last reviewed at', type: 'datetime' }),
+    defineField(withPublishingRequirement({
+      name: 'lastReviewedAt',
+      title: 'Last reviewed at',
+      type: 'datetime',
+      description: 'Set the most recent editorial or technical accuracy review date.',
+    }, proofReadyRequirement)),
     defineField({ name: 'sevenDayReviewAt', title: 'Seven-day review at', type: 'datetime' }),
     defineField({ name: 'thirtyDayReviewAt', title: 'Thirty-day review at', type: 'datetime' }),
-    defineField({
+    defineField(withPublishingRequirement({
       name: 'technicalReviewer',
       title: 'Technical reviewer',
       description: 'Owner accountable for the technical accuracy review before publication.',
       type: 'string',
-    }),
-    defineField({
+    }, proofReadyRequirement)),
+    defineField(withPublishingRequirement({
       name: 'author',
       title: 'Author',
       type: 'reference',
@@ -219,19 +231,19 @@ export const articleType = defineType({
           }
           return true
         }),
-    }),
+    }, publishedRequirement)),
     defineField({
       name: 'categories',
       title: 'Categories',
       type: 'array',
       of: [defineArrayMember({ type: 'reference', to: [{ type: 'category' }] })],
     }),
-    defineField({
+    defineField(withPublishingRequirement({
       name: 'contentBrief',
       title: 'Content brief',
       type: 'reference',
       to: [{ type: 'contentBrief' }],
-    }),
+    }, proofReadyRequirement)),
     defineField({
       name: 'contentOpportunity',
       title: 'Content opportunity',
@@ -288,7 +300,7 @@ export const articleType = defineType({
       title: 'Customer discovery CTA',
       type: 'customerDiscoveryCta',
     }),
-    defineField({
+    defineField(withPublishingRequirement({
       name: 'seo',
       title: 'SEO metadata',
       type: 'seoMetadata',
@@ -308,7 +320,7 @@ export const articleType = defineType({
           }
           return true
         }),
-    }),
+    }, publishedRequirement)),
     defineField({
       name: 'cardLayout',
       title: 'Blog card layout',
@@ -387,18 +399,6 @@ export const articleType = defineType({
       const selectedEvidenceRefs = article.publicEvidence?.length ? article.publicEvidence : brief.researchEvidence
       const publicEvidenceResult = await hasClassifiedEvidence(context, selectedEvidenceRefs)
       if (!publicEvidenceResult.ok) return publicEvidenceResult.message
-
-      const citationsCount = Array.isArray(article.citations) ? article.citations.length : 0
-      const hasMethodology = Boolean(String(article.methodologyNote ?? '').trim())
-      const meetsProofMinimum =
-        citationsCount >= 2 ||
-        (citationsCount >= 1 &&
-          publicEvidenceResult.publishableEvidenceCount >= 1 &&
-          hasMethodology)
-
-      if (!meetsProofMinimum) {
-        return 'Publication-ready articles need at least two citations, or one citation plus one publishable evidence item and a methodology note.'
-      }
 
       if (!String(article.lastReviewedAt ?? '').trim()) {
         return 'Publication-ready articles require a last reviewed date.'
