@@ -170,50 +170,616 @@ export default function TitanRollout() {
       </section>
 
       <section className="border-line border-b py-18 lg:py-24">
-        <div className="mx-auto grid w-full max-w-[1560px] gap-12 px-6 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:gap-16 lg:px-10">
-          <div data-reveal>
-            <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
-              What it replaces
-            </p>
-            <h2 className="font-display mt-4 max-w-[11ch] text-[clamp(2.3rem,4vw,4.2rem)] leading-[0.95] font-medium tracking-[-0.05em]">
-              The last two hours of the sprint should not become a second job.
-            </h2>
-            <p className="text-ink-secondary mt-6 max-w-[33rem] text-lg leading-8">
-              Without a release owner view, the sprint turns into handoffs, checking, waiting, and
-              one person translating the whole room for everybody else.
-            </p>
-          </div>
+        <div data-impeccable-variants="3841d0d5" data-impeccable-variant-count="3" style={{ display: "contents" }}>
+          {/* impeccable-variants-start 3841d0d5 */}
+          {/* Original */}
+          <div data-impeccable-variant="original">
+            <div className="mx-auto grid w-full max-w-[1560px] gap-12 px-6 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1.16fr)] lg:gap-16 lg:px-10">
+              <div data-reveal>
+                <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
+                  What it replaces
+                </p>
+                <h2 className="font-display mt-4 max-w-[11ch] text-[clamp(2.3rem,4vw,4.2rem)] leading-[0.95] font-medium tracking-[-0.05em]">
+                  The last two hours of the sprint should not become a second job.
+                </h2>
+                <p className="text-ink-secondary mt-6 max-w-[33rem] text-lg leading-8">
+                  Without a release owner view, the sprint turns into handoffs, checking, waiting, and
+                  one person translating the whole room for everybody else.
+                </p>
+              </div>
 
-          <div
-            className="bg-surface-alt/38 px-6 py-6 sm:px-8 sm:py-8"
-            style={{ borderRadius: '12px' }}
-            data-reveal
-            data-reveal-delay="1"
-          >
-            <div className="border-line mb-8 flex items-center justify-between gap-6 border-b pb-5">
-              <p className="text-ink text-sm font-semibold">Release-night timeline</p>
-              <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.18em] uppercase">
-                5 moments every team recognizes
-              </p>
-            </div>
-
-            <div className="grid gap-8 lg:grid-cols-[96px_minmax(0,1fr)]">
-              {STORY_BEATS.map((beat) => (
-                <div
-                  key={beat.time}
-                  className="border-line grid gap-3 border-t pt-5 first:border-t-0 first:pt-0 lg:col-span-2 lg:grid-cols-subgrid"
-                >
+              <div
+                className="bg-surface-alt/38 px-6 py-6 sm:px-8 sm:py-8"
+                style={{ borderRadius: '12px' }}
+                data-reveal
+                data-reveal-delay="1"
+              >
+                <div className="border-line mb-8 flex items-center justify-between gap-6 border-b pb-5">
+                  <p className="text-ink text-sm font-semibold">Release-night timeline</p>
                   <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.18em] uppercase">
-                    {beat.time}
+                    5 moments every team recognizes
                   </p>
-                  <div className="max-w-[38rem]">
-                    <p className="text-ink text-base leading-7 font-semibold">{beat.title}</p>
-                    <p className="text-ink-secondary mt-2 text-sm leading-7">{beat.body}</p>
+                </div>
+
+                <div className="grid gap-8 lg:grid-cols-[96px_minmax(0,1fr)]">
+                  {STORY_BEATS.map((beat) => (
+                    <div
+                      key={beat.time}
+                      className="border-line grid gap-3 border-t pt-5 first:border-t-0 first:pt-0 lg:col-span-2 lg:grid-cols-subgrid"
+                    >
+                      <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.18em] uppercase">
+                        {beat.time}
+                      </p>
+                      <div className="max-w-[38rem]">
+                        <p className="text-ink text-base leading-7 font-semibold">{beat.title}</p>
+                        <p className="text-ink-secondary mt-2 text-sm leading-7">{beat.body}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Variants: insert below this line */}
+          <style data-impeccable-css="3841d0d5">{`
+            @scope ([data-impeccable-variant="1"]) {
+              :scope > .dt-live-v1 {
+                --p-accent: 0.42;
+                display: grid;
+                gap: 3rem;
+              }
+
+              :scope[data-p-density="compact"] > .dt-live-v1 {
+                gap: 2.25rem;
+              }
+
+              :scope[data-p-density="open"] > .dt-live-v1 {
+                gap: 3.75rem;
+              }
+
+              :scope > .dt-live-v1 .dt-live-v1-copy {
+                max-width: 36rem;
+              }
+
+              :scope > .dt-live-v1 .dt-live-v1-kicker {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.75rem;
+                color: var(--color-primary-accessible);
+              }
+
+              :scope > .dt-live-v1 .dt-live-v1-kicker::after {
+                content: "";
+                width: 3rem;
+                height: 1px;
+                background: rgb(var(--color-primary-rgb) / calc(0.24 + (var(--p-accent) * 0.34)));
+              }
+
+              :scope > .dt-live-v1 .dt-live-v1-title {
+                margin-top: 1rem;
+                max-width: 11ch;
+                font-family: var(--font-display);
+                font-size: clamp(2.55rem, 4.2vw, 4.5rem);
+                line-height: 0.94;
+                font-weight: 500;
+                letter-spacing: -0.055em;
+                color: var(--color-ink);
+              }
+
+              :scope > .dt-live-v1 .dt-live-v1-body {
+                margin-top: 1.5rem;
+                color: var(--color-ink-secondary);
+                font-size: 1.08rem;
+                line-height: 2rem;
+              }
+
+              :scope > .dt-live-v1 .dt-live-v1-note {
+                margin-top: 1.5rem;
+                border-top: 1px solid rgb(var(--color-primary-rgb) / calc(0.18 + (var(--p-accent) * 0.28)));
+                padding-top: 1rem;
+                color: var(--color-ink-tertiary);
+                font-family: var(--font-mono);
+                font-size: 0.68rem;
+                line-height: 1.5;
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+              }
+
+              :scope > .dt-live-v1 .dt-live-v1-panel {
+                border: 1px solid rgb(var(--color-primary-rgb) / calc(0.16 + (var(--p-accent) * 0.22)));
+                border-radius: 12px;
+                background:
+                  linear-gradient(180deg, rgb(var(--color-primary-rgb) / calc(0.08 + (var(--p-accent) * 0.12))), transparent 42%),
+                  rgb(255 255 255 / 0.015);
+                padding: 1.75rem;
+              }
+
+              :scope > .dt-live-v1 .dt-live-v1-panel-head {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid var(--color-line);
+              }
+
+              :scope > .dt-live-v1 .dt-live-v1-panel-grid {
+                display: grid;
+                gap: 1rem;
+                margin-top: 1.25rem;
+              }
+
+              :scope > .dt-live-v1 .dt-live-v1-row {
+                display: grid;
+                gap: 0.75rem;
+                padding-top: 1rem;
+                border-top: 1px solid var(--color-line);
+              }
+
+              :scope > .dt-live-v1 .dt-live-v1-row:first-child {
+                border-top: 0;
+                padding-top: 0;
+              }
+
+              :scope[data-p-density="compact"] > .dt-live-v1 .dt-live-v1-row {
+                gap: 0.5rem;
+                padding-top: 0.75rem;
+              }
+
+              :scope[data-p-density="open"] > .dt-live-v1 .dt-live-v1-row {
+                gap: 1rem;
+                padding-top: 1.2rem;
+              }
+
+              @media (min-width: 1024px) {
+                :scope > .dt-live-v1 {
+                  grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
+                  align-items: start;
+                }
+              }
+            }
+
+            @scope ([data-impeccable-variant="2"]) {
+              :scope > .dt-live-v2 {
+                display: grid;
+                gap: 2.75rem;
+              }
+
+              :scope[data-p-density="tight"] > .dt-live-v2 {
+                gap: 2rem;
+              }
+
+              :scope[data-p-density="roomy"] > .dt-live-v2 {
+                gap: 3.35rem;
+              }
+
+              :scope > .dt-live-v2 .dt-live-v2-title {
+                margin-top: 1rem;
+                max-width: 12ch;
+                font-family: var(--font-display);
+                font-size: clamp(2.45rem, 4vw, 4.35rem);
+                line-height: 0.95;
+                font-weight: 500;
+                letter-spacing: -0.05em;
+              }
+
+              :scope > .dt-live-v2 .dt-live-v2-body {
+                margin-top: 1.4rem;
+                max-width: 34rem;
+                color: var(--color-ink-secondary);
+                font-size: 1.05rem;
+                line-height: 2rem;
+              }
+
+              :scope > .dt-live-v2 .dt-live-v2-stack {
+                margin-top: 1.5rem;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.6rem;
+              }
+
+              :scope > .dt-live-v2 .dt-live-v2-chip {
+                border: 1px solid var(--color-line);
+                border-radius: 999px;
+                padding: 0.45rem 0.75rem;
+                color: var(--color-ink-tertiary);
+                font-family: var(--font-mono);
+                font-size: 0.64rem;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+              }
+
+              :scope[data-p-rail] > .dt-live-v2 .dt-live-v2-card {
+                box-shadow: inset 0 0 0 1px rgb(var(--color-primary-rgb) / 0.14);
+              }
+
+              :scope > .dt-live-v2 .dt-live-v2-card {
+                border: 1px solid var(--color-line);
+                border-radius: 12px;
+                background: rgb(255 255 255 / 0.02);
+                overflow: hidden;
+              }
+
+              :scope > .dt-live-v2 .dt-live-v2-card-head {
+                display: grid;
+                gap: 0.35rem;
+                padding: 1.35rem 1.5rem;
+                border-bottom: 1px solid var(--color-line);
+                background: linear-gradient(180deg, rgb(var(--color-primary-rgb) / 0.08), transparent 100%);
+              }
+
+              :scope > .dt-live-v2 .dt-live-v2-list {
+                display: grid;
+              }
+
+              :scope > .dt-live-v2 .dt-live-v2-item {
+                display: grid;
+                grid-template-columns: 104px minmax(0, 1fr);
+                gap: 1rem;
+                padding: 1rem 1.5rem;
+                border-top: 1px solid var(--color-line);
+              }
+
+              :scope > .dt-live-v2 .dt-live-v2-item:first-child {
+                border-top: 0;
+              }
+
+              :scope[data-p-density="tight"] > .dt-live-v2 .dt-live-v2-item {
+                padding-top: 0.8rem;
+                padding-bottom: 0.8rem;
+              }
+
+              :scope[data-p-density="roomy"] > .dt-live-v2 .dt-live-v2-item {
+                padding-top: 1.2rem;
+                padding-bottom: 1.2rem;
+              }
+
+              @media (min-width: 1024px) {
+                :scope > .dt-live-v2 {
+                  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+                  align-items: start;
+                }
+              }
+            }
+
+            @scope ([data-impeccable-variant="3"]) {
+              :scope > .dt-live-v3 {
+                --p-heat: 0.5;
+                display: grid;
+                gap: 2.75rem;
+              }
+
+              :scope > .dt-live-v3 .dt-live-v3-copy {
+                max-width: 35rem;
+              }
+
+              :scope > .dt-live-v3 .dt-live-v3-title {
+                margin-top: 1rem;
+                max-width: 11ch;
+                font-family: var(--font-display);
+                font-size: clamp(2.45rem, 4vw, 4.3rem);
+                line-height: 0.94;
+                font-weight: 500;
+                letter-spacing: -0.052em;
+              }
+
+              :scope > .dt-live-v3 .dt-live-v3-body {
+                margin-top: 1.4rem;
+                color: var(--color-ink-secondary);
+                font-size: 1.06rem;
+                line-height: 2rem;
+              }
+
+              :scope > .dt-live-v3 .dt-live-v3-divider {
+                margin-top: 1.4rem;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.9rem;
+                color: var(--color-ink-tertiary);
+                font-family: var(--font-mono);
+                font-size: 0.68rem;
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+              }
+
+              :scope > .dt-live-v3 .dt-live-v3-divider::before {
+                content: "";
+                width: 3.25rem;
+                height: 1px;
+                background: rgb(248 113 113 / calc(0.16 + (var(--p-heat) * 0.36)));
+              }
+
+              :scope > .dt-live-v3 .dt-live-v3-board {
+                border: 1px solid rgb(248 113 113 / calc(0.14 + (var(--p-heat) * 0.22)));
+                border-radius: 12px;
+                background:
+                  linear-gradient(180deg, rgb(248 113 113 / calc(0.05 + (var(--p-heat) * 0.07))), transparent 38%),
+                  rgb(255 255 255 / 0.015);
+                padding: 1.5rem;
+              }
+
+              :scope > .dt-live-v3 .dt-live-v3-board-head {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid var(--color-line);
+              }
+
+              :scope > .dt-live-v3 .dt-live-v3-mode {
+                display: grid;
+                gap: 0.9rem;
+                margin-top: 1.2rem;
+              }
+
+              :scope[data-p-mode="ledger"] > .dt-live-v3 .dt-live-v3-mode {
+                gap: 0.65rem;
+              }
+
+              :scope[data-p-mode="incident"] > .dt-live-v3 .dt-live-v3-mode {
+                gap: 1.1rem;
+              }
+
+              :scope > .dt-live-v3 .dt-live-v3-alert {
+                border-left: 0;
+                border: 1px solid var(--color-line);
+                border-radius: 10px;
+                padding: 1rem 1rem 1rem 1.1rem;
+                background: rgb(13 12 10 / 0.18);
+              }
+
+              :scope[data-p-mode="ledger"] > .dt-live-v3 .dt-live-v3-alert {
+                display: grid;
+                grid-template-columns: 94px minmax(0, 1fr);
+                align-items: start;
+                gap: 0.9rem;
+              }
+
+              @media (min-width: 1024px) {
+                :scope > .dt-live-v3 {
+                  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+                  align-items: start;
+                }
+              }
+            }
+          `}</style>
+          <div
+            data-impeccable-variant="1"
+            data-impeccable-params='[{"id":"density","kind":"steps","default":"balanced","label":"Density","options":[{"value":"compact","label":"Compact"},{"value":"balanced","label":"Balanced"},{"value":"open","label":"Open"}]},{"id":"accent","kind":"range","min":0,"max":1,"step":0.05,"default":0.42,"label":"Amber heat"}]'
+          >
+            <div className="dt-live-v1">
+              <div className="dt-live-v1-copy">
+                <p className="dt-live-v1-kicker font-mono text-[11px] tracking-[0.18em] uppercase">
+                  What it replaces
+                </p>
+                <h2 className="dt-live-v1-title">
+                  Slack says shipped. The spreadsheet says blocked.
+                </h2>
+                <p className="dt-live-v1-body">
+                  Release pain is not the deploy itself. It is the hour where nobody trusts the
+                  status, the team starts pasting PR links into Slack, and someone opens Google
+                  Sheets because chat cannot tell you what is actually safe to ship.
+                </p>
+                <p className="dt-live-v1-note">
+                  One bad release night usually means: duplicate status updates, missing owners,
+                  last-minute approval chasing, and rollback context rebuilt from chat history.
+                </p>
+              </div>
+
+              <div className="dt-live-v1-panel">
+                <div className="dt-live-v1-panel-head">
+                  <div>
+                    <p className="text-ink text-sm font-semibold">How the war room actually feels</p>
+                    <p className="text-ink-tertiary mt-1 font-mono text-[10px] tracking-[0.16em] uppercase">
+                      Slack thread + Google Sheet + memory
+                    </p>
+                  </div>
+                  <p className="text-primary-accessible font-mono text-[10px] tracking-[0.18em] uppercase">
+                    No source of truth
+                  </p>
+                </div>
+
+                <div className="dt-live-v1-panel-grid">
+                  <div className="dt-live-v1-row">
+                    <p className="text-signal-warning-text font-mono text-[10px] tracking-[0.18em] uppercase">
+                      7:08 PM
+                    </p>
+                    <div>
+                      <p className="text-ink text-base leading-7 font-semibold">
+                        The Slack thread becomes the release tracker.
+                      </p>
+                      <p className="text-ink-secondary mt-2 text-sm leading-7">
+                        PR links, approvals, deploy notes, and questions pile into one channel. By
+                        the third reply, nobody knows which message is still true.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="dt-live-v1-row">
+                    <p className="text-signal-danger-text font-mono text-[10px] tracking-[0.18em] uppercase">
+                      8:21 PM
+                    </p>
+                    <div>
+                      <p className="text-ink text-base leading-7 font-semibold">
+                        A spreadsheet appears because chat is not enough.
+                      </p>
+                      <p className="text-ink-secondary mt-2 text-sm leading-7">
+                        Someone starts a sheet to track what shipped, what failed, and who still
+                        owes approval. The sheet is already stale before the next Jenkins job ends.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="dt-live-v1-row">
+                    <p className="text-primary-accessible font-mono text-[10px] tracking-[0.18em] uppercase">
+                      9:47 PM
+                    </p>
+                    <div>
+                      <p className="text-ink text-base leading-7 font-semibold">
+                        Rollback starts with reconstruction, not action.
+                      </p>
+                      <p className="text-ink-secondary mt-2 text-sm leading-7">
+                        The team has to figure out which service moved, which PRs landed, and who
+                        approved what. The release is already broken, and context is still missing.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
+          <div
+            data-impeccable-variant="2"
+            data-impeccable-params='[{"id":"density","kind":"steps","default":"balanced","label":"Density","options":[{"value":"tight","label":"Tight"},{"value":"balanced","label":"Balanced"},{"value":"roomy","label":"Roomy"}]},{"id":"rail","kind":"toggle","default":true,"label":"Amber edge"}]'
+            style={{ display: 'none' }}
+          >
+            <div className="dt-live-v2">
+              <div>
+                <p className="text-primary-accessible font-mono text-[11px] tracking-[0.18em] uppercase">
+                  What it replaces
+                </p>
+                <h2 className="dt-live-v2-title">
+                  One engineer should not become the human release system.
+                </h2>
+                <p className="dt-live-v2-body">
+                  Without a release owner view, one person absorbs the whole sprint into their
+                  head. They answer the same Slack questions, translate Jenkins noise, check
+                  dashboards, update the sheet, and carry rollback context nobody else can see.
+                </p>
+                <div className="dt-live-v2-stack">
+                  <span className="dt-live-v2-chip">Slack approvals</span>
+                  <span className="dt-live-v2-chip">Google Sheet status</span>
+                  <span className="dt-live-v2-chip">Jenkins tabs</span>
+                  <span className="dt-live-v2-chip">Rollback guesswork</span>
+                </div>
+              </div>
+
+              <div className="dt-live-v2-card">
+                <div className="dt-live-v2-card-head">
+                  <p className="text-ink text-sm font-semibold">What the coordinator is really doing</p>
+                  <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.18em] uppercase">
+                    Work that should not exist
+                  </p>
+                </div>
+
+                <div className="dt-live-v2-list">
+                  <div className="dt-live-v2-item">
+                    <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.18em] uppercase">
+                      Status
+                    </p>
+                    <p className="text-ink-secondary text-sm leading-7">
+                      Reading GitHub, CI, and chat at once because no single place can say which PR
+                      is ready, blocked, or already moved.
+                    </p>
+                  </div>
+
+                  <div className="dt-live-v2-item">
+                    <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.18em] uppercase">
+                      Memory
+                    </p>
+                    <p className="text-ink-secondary text-sm leading-7">
+                      Remembering which services depend on each other, which stakeholder approved
+                      in Slack, and which failure can still be safely ignored.
+                    </p>
+                  </div>
+
+                  <div className="dt-live-v2-item">
+                    <p className="text-ink-tertiary font-mono text-[10px] tracking-[0.18em] uppercase">
+                      Cleanup
+                    </p>
+                    <p className="text-ink-secondary text-sm leading-7">
+                      Writing the release summary after midnight because the only history is spread
+                      across screenshots, thread replies, and one spreadsheet tab nobody wants to
+                      reopen.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            data-impeccable-variant="3"
+            data-impeccable-params='[{"id":"mode","kind":"steps","default":"incident","label":"Panel mode","options":[{"value":"incident","label":"Incident"},{"value":"ledger","label":"Ledger"}]},{"id":"heat","kind":"range","min":0,"max":1,"step":0.05,"default":0.5,"label":"Failure heat"}]'
+            style={{ display: 'none' }}
+          >
+            <div className="dt-live-v3">
+              <div className="dt-live-v3-copy">
+                <p className="text-primary-accessible font-mono text-[11px] tracking-[0.18em] uppercase">
+                  What it replaces
+                </p>
+                <h2 className="dt-live-v3-title">
+                  The worst time to figure out rollback is after Slack goes quiet.
+                </h2>
+                <p className="dt-live-v3-body">
+                  When a release runs through chat and spreadsheets, the dangerous part starts
+                  after the failure. Nobody knows exactly what moved, what is blocked behind it, or
+                  which change can be reversed without taking something else down with it.
+                </p>
+                <p className="dt-live-v3-divider">Failure feels organized until one service breaks</p>
+              </div>
+
+              <div className="dt-live-v3-board">
+                <div className="dt-live-v3-board-head">
+                  <div>
+                    <p className="text-ink text-sm font-semibold">What rollback panic looks like</p>
+                    <p className="text-ink-tertiary mt-1 font-mono text-[10px] tracking-[0.18em] uppercase">
+                      Chat first, certainty later
+                    </p>
+                  </div>
+                  <p className="text-signal-danger-text font-mono text-[10px] tracking-[0.18em] uppercase">
+                    Incident mode
+                  </p>
+                </div>
+
+                <div className="dt-live-v3-mode">
+                  <div className="dt-live-v3-alert">
+                    <p className="text-signal-danger-text font-mono text-[10px] tracking-[0.18em] uppercase">
+                      Alert
+                    </p>
+                    <div>
+                      <p className="text-ink mt-1 text-base leading-7 font-semibold">
+                        A service fails, and the room immediately asks what else shipped with it.
+                      </p>
+                      <p className="text-ink-secondary mt-2 text-sm leading-7">
+                        The answer lives across PR comments, Slack replies, Jenkins output, and a
+                        release sheet that may already be out of date.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="dt-live-v3-alert">
+                    <p className="text-primary-accessible font-mono text-[10px] tracking-[0.18em] uppercase">
+                      Guesswork
+                    </p>
+                    <div>
+                      <p className="text-ink mt-1 text-base leading-7 font-semibold">
+                        Teams start asking owners from memory instead of working from a release record.
+                      </p>
+                      <p className="text-ink-secondary mt-2 text-sm leading-7">
+                        Who approved this? Which PR landed after the last green run? Can we back
+                        out one service without reopening the whole release window?
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="dt-live-v3-alert">
+                    <p className="text-signal-warning-text font-mono text-[10px] tracking-[0.18em] uppercase">
+                      Cost
+                    </p>
+                    <div>
+                      <p className="text-ink mt-1 text-base leading-7 font-semibold">
+                        The delay is not technical, it is coordination debt coming due.
+                      </p>
+                      <p className="text-ink-secondary mt-2 text-sm leading-7">
+                        The team can probably fix the service. What burns time is reconstructing
+                        the release path while production is already waiting.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* impeccable-variants-end 3841d0d5 */}
         </div>
       </section>
 

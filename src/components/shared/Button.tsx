@@ -109,7 +109,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       // Base
       'inline-flex items-center justify-center gap-2',
       'font-medium leading-none select-none',
-      'rounded-[2px]',
+      'rounded-lg',
       // Size (only for sized variants)
       isSized && SIZE[size],
       // Variant

@@ -69,17 +69,17 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
   block: {
     // Downgrade editor h1 blocks to h2 so the page keeps a single visible h1.
     h1: ({ children }) => (
-      <HeadingLink level="h2" className="text-3xl font-semibold text-ink mt-10 mb-4 leading-tight">
+      <HeadingLink level="h2" className="text-ink mt-14 mb-5 font-[family:var(--font-serif)] text-3xl leading-tight font-medium tracking-[-0.025em]">
         {children}
       </HeadingLink>
     ),
     h2: ({ children }) => (
-      <HeadingLink level="h2" className="text-2xl font-semibold text-ink mt-10 mb-3 leading-tight">
+      <HeadingLink level="h2" className="text-ink mt-14 mb-4 font-[family:var(--font-serif)] text-[2rem] leading-tight font-medium tracking-[-0.025em]">
         {children}
       </HeadingLink>
     ),
     h3: ({ children }) => (
-      <HeadingLink level="h3" className="text-xl font-semibold text-ink mt-8 mb-2 leading-snug">
+      <HeadingLink level="h3" className="text-ink mt-10 mb-3 font-[family:var(--font-serif)] text-[1.55rem] leading-snug font-medium tracking-[-0.02em]">
         {children}
       </HeadingLink>
     ),
@@ -89,10 +89,10 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
       </HeadingLink>
     ),
     normal: ({ children }) => (
-      <p className="text-base text-ink-secondary leading-relaxed mb-5">{children}</p>
+      <p className="mb-6 text-[1.0625rem] leading-8 text-ink-secondary">{children}</p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="border-l-2 border-primary pl-5 my-6 text-ink-secondary italic leading-relaxed">
+      <blockquote className="border-line bg-surface-alt/45 my-8 rounded-[12px] border px-6 py-5 text-[1.05rem] leading-8 text-ink-secondary italic">
         {children}
       </blockquote>
     ),
@@ -100,12 +100,12 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
 
   list: {
     bullet: ({ children }) => (
-      <ul className="list-disc list-outside ml-5 mb-5 flex flex-col gap-1.5 text-ink-secondary text-base leading-relaxed">
+      <ul className="mb-6 ml-5 flex list-disc flex-col gap-2.5 text-[1.0625rem] leading-8 text-ink-secondary">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="list-decimal list-outside ml-5 mb-5 flex flex-col gap-1.5 text-ink-secondary text-base leading-relaxed">
+      <ol className="mb-6 ml-5 flex list-decimal flex-col gap-2.5 text-[1.0625rem] leading-8 text-ink-secondary">
         {children}
       </ol>
     ),
@@ -129,7 +129,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
           href={value?.href}
           target={target}
           rel={target === '_blank' ? 'noopener noreferrer' : undefined}
-          className="text-primary underline underline-offset-2 hover:text-primary-dark transition-colors"
+          className="text-primary-accessible underline decoration-primary/35 underline-offset-4 transition-colors hover:text-primary hover:decoration-primary"
           onClick={() => {
             const payload = {
               href: value?.href ?? '',
@@ -152,7 +152,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
       if (!value?.asset) return null
       return (
         <figure className="my-8">
-          <div className="sharp-card border border-line overflow-hidden">
+          <div className="overflow-hidden rounded-[12px] border border-line bg-surface-alt/40">
             <Image
               src={urlFor(value).width(1200).url()}
               alt={value.alt ?? ''}
@@ -163,7 +163,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
             />
           </div>
           {value.caption && (
-            <figcaption className="text-center text-xs text-ink-tertiary font-mono mt-2">
+            <figcaption className="mt-3 text-center font-mono text-[11px] text-ink-tertiary">
               {value.caption}
             </figcaption>
           )}
@@ -191,21 +191,21 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
             ? 'border-primary/30 bg-primary/5'
             : 'border-line bg-surface-alt/60'
       return (
-        <aside className={`my-8 rounded-[2px] border px-5 py-4 ${toneClass}`}>
-          {value?.title && <h3 className="mb-2 text-sm font-semibold text-ink">{value.title}</h3>}
-          <p className="text-sm leading-relaxed text-ink-secondary">{value?.body}</p>
+        <aside className={`my-8 rounded-[12px] border px-5 py-5 ${toneClass}`}>
+          {value?.title && <h3 className="mb-2 text-base font-semibold text-ink">{value.title}</h3>}
+          <p className="text-sm leading-7 text-ink-secondary">{value?.body}</p>
         </aside>
       )
     },
     diagramBlock: ({ value }) => {
       const imageUrl = value?.image?.asset ? urlFor(value.image).width(1200).url() : null
       return (
-        <figure className="my-8 rounded-[2px] border border-line bg-surface-alt/50 p-4">
-          {value?.title && <h3 className="mb-2 text-base font-semibold text-ink">{value.title}</h3>}
+        <figure className="my-8 rounded-[12px] border border-line bg-surface-alt/45 p-5">
+          {value?.title && <h3 className="mb-3 text-lg font-semibold text-ink">{value.title}</h3>}
           {imageUrl && (
             <button
               type="button"
-              className="block w-full overflow-hidden rounded-[2px] border border-line"
+              className="block w-full overflow-hidden rounded-[12px] border border-line"
               onClick={() =>
                 trackEvent(
                   'diagramOpened',
@@ -239,7 +239,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
       const columns = Array.isArray(value?.columns) ? value.columns : []
       const rows = Array.isArray(value?.rows) ? value.rows : []
       return (
-        <figure className="my-8 overflow-hidden rounded-[2px] border border-line">
+        <figure className="my-8 overflow-hidden rounded-[12px] border border-line">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-line text-left text-sm">
               <thead className="bg-surface-alt/80">

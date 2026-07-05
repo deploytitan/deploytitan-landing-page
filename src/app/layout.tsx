@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { cookies, draftMode } from 'next/headers'
 import Script from 'next/script'
-import { Barlow, JetBrains_Mono } from 'next/font/google'
+import { Barlow, Bitter, JetBrains_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { SiteLayoutClient } from '@/layouts/SiteLayoutClient'
 import { SanityLive } from '@/sanity/lib/live'
@@ -33,6 +33,13 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '500'],
   variable: '--font-mono',
+  display: 'swap',
+})
+
+const bitterSerif = Bitter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-serif',
   display: 'swap',
 })
 
@@ -92,7 +99,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${barlowDisplay.variable} ${barlowSans.variable} ${jetbrainsMono.variable}`}
+      className={`${barlowDisplay.variable} ${barlowSans.variable} ${jetbrainsMono.variable} ${bitterSerif.variable}`}
     >
       <head>
         {/* Apply stored theme before first paint and on bfcache restore to avoid flash */}

@@ -135,54 +135,67 @@ export default async function BlogArticlePage({ params }: Props) {
     <>
       <ArticleJsonLd article={article} />
 
-      <section className="blueprint-grid border-line border-b pt-28 pb-12">
-        <div className="mx-auto w-full max-w-5xl px-4 lg:px-0">
-          <Breadcrumbs className="mb-6" />
+      <section className="border-line border-b bg-[linear-gradient(180deg,rgba(201,168,76,0.09)_0%,rgba(201,168,76,0.04)_28%,rgba(250,250,249,0)_100%)] pt-28 pb-12 dark:bg-[linear-gradient(180deg,rgba(212,180,84,0.08)_0%,rgba(212,180,84,0.03)_24%,rgba(13,12,10,0)_100%)]">
+        <div className="mx-auto w-full max-w-5xl gap-10 px-0">
+          <div className="min-w-0 px-4 lg:px-0">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 lg:gap-6">
+              <Breadcrumbs className="" />
 
-          {article.categories && article.categories.length > 0 && (
-            <div className="mb-4 flex flex-wrap gap-2">
-              {article.categories.map((category) => (
-                <Link
-                  key={category.slug.current}
-                  href={`/blog?category=${category.slug.current}`}
-                  className="text-primary-accessible border-primary/25 border px-2 py-0.5 font-mono text-[10px] tracking-widest uppercase"
-                  style={{ borderRadius: '2px' }}
-                >
-                  {category.title}
-                </Link>
-              ))}
+              <div className="flex gap-4">
+                {article.categories && article.categories.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {article.categories.map((category) => (
+                      <Link
+                        key={category.slug.current}
+                        href={`/blog?category=${category.slug.current}`}
+                        className="text-primary-accessible border-primary/25 bg-surface/80 inline-flex items-center border px-2.5 py-1 font-mono text-[10px] tracking-[0.18em] uppercase"
+                        style={{ borderRadius: '999px' }}
+                      >
+                        {category.title}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          )}
 
-          <h1 className="text-ink mb-5 text-3xl leading-tight font-semibold lg:text-4xl">
-            {article.title}
-          </h1>
+            <div className="mt-4 lg:mt-0">
+              <h1 className="text-ink mb-5 text-4xl leading-[1.05] font-[family:var(--font-serif)] font-medium tracking-[-0.035em] lg:text-6xl">
+                {article.title}
+              </h1>
 
-          {article.directAnswer && (
-            <p className="text-ink-secondary mb-6 max-w-3xl text-lg leading-relaxed">
-              {article.directAnswer}
-            </p>
-          )}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                {publishedLabel && (
+                  <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
+                    Published {publishedLabel}
+                  </p>
+                )}
+                <div className="text-ink-tertiary bg-line hidden h-3 w-px sm:block" />
+                {author && (
+                  <p className="text-ink-secondary text-sm leading-6">
+                    By <span className="text-ink font-medium">{author.name}</span>
+                    {author.role ? ` · ${author.role}` : ''}
+                  </p>
+                )}
+              </div>
 
-          {article.methodologyNote && (
-            <div className="border-line bg-surface-alt/50 mb-6 max-w-3xl rounded-[2px] border px-4 py-3">
-              <p className="text-ink-tertiary mb-2 font-mono text-[10px] tracking-widest uppercase">
-                How we researched this
-              </p>
-              <p className="text-ink-secondary text-sm leading-relaxed">
-                {article.methodologyNote}
-              </p>
+              {article.methodologyNote && (
+                <div className="border-line bg-surface/75 mt-6 max-w-3xl rounded-[12px] border px-5 py-4">
+                  <p className="text-primary-accessible mb-2 font-mono text-[10px] tracking-[0.18em] uppercase">
+                    Research note
+                  </p>
+                  <p className="text-ink-secondary text-sm leading-7">{article.methodologyNote}</p>
+                </div>
+              )}
             </div>
-          )}
-
-          {author && <AuthorBadge author={author} publishedAt={article.publishedAt ?? undefined} />}
+          </div>
         </div>
       </section>
 
       {article.coverImage?.asset && (
         <div className="border-line border-b">
-          <div className="mx-auto w-full max-w-5xl">
-            <div className="sharp-card border-line my-[-1px] overflow-hidden border">
+          <div className="mx-auto w-full max-w-5xl px-0">
+            <div className="border-line bg-surface-alt/50 -my-px overflow-hidden border">
               <Image
                 src={urlFor(article.coverImage as object)
                   .width(1400)
@@ -191,7 +204,7 @@ export default async function BlogArticlePage({ params }: Props) {
                 width={1400}
                 height={0}
                 priority
-                sizes="(min-width: 1024px) 896px, 100vw"
+                sizes="(min-width: 1280px) 1152px, 100vw"
                 style={{ width: '100%', height: 'auto' }}
               />
             </div>
@@ -199,289 +212,278 @@ export default async function BlogArticlePage({ params }: Props) {
         </div>
       )}
 
-      <section className="py-16">
-        <div className="mx-auto max-w-5xl">
-          <div className="">
-            <div className="xl:grid">
-              <article className="min-w-0 px-4 lg:pr-4 lg:pl-0 xl:col-start-2">
-                <BlogPostAnalytics articleContext={articleContext} />
+      <section className="py-16 lg:py-20">
+        <div className="mx-auto max-w-5xl px-4 xl:px-0">
+          <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_18rem] xl:gap-14">
+            <article className="max-w-[68ch] min-w-0">
+              <BlogPostAnalytics articleContext={articleContext} />
 
-                {publishedLabel && (
-                  <p className="text-ink-tertiary mb-6 font-mono text-xs tracking-widest uppercase">
-                    Published {publishedLabel}
-                  </p>
-                )}
-
-                {headings.length > 0 && (
-                  <aside className="mb-8 xl:hidden">
-                    <section
-                      aria-labelledby="on-this-page-mobile-heading"
-                      className="border-line bg-surface-alt/50 rounded-[2px] border px-4 py-4"
+              {headings.length > 0 && (
+                <aside className="mb-10 xl:hidden">
+                  <section
+                    aria-labelledby="on-this-page-mobile-heading"
+                    className="border-line bg-surface-alt/45 rounded-[12px] border px-5 py-5"
+                  >
+                    <h2
+                      id="on-this-page-mobile-heading"
+                      className="text-ink-tertiary mb-3 font-mono text-[10px] tracking-[0.2em] uppercase"
                     >
-                      <h2
-                        id="on-this-page-mobile-heading"
-                        className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase"
-                      >
-                        On this page
-                      </h2>
-                      <ol className="space-y-2 text-sm">
-                        {headings.map((heading) => (
-                          <li
-                            key={`mobile-${heading.level}-${heading.text}`}
-                            className={heading.level > 2 ? 'pl-3' : ''}
-                          >
-                            <a
-                              href={`#${heading.id}`}
-                              className="text-ink-secondary hover:text-primary transition-colors"
-                            >
-                              {heading.text}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </section>
-                  </aside>
-                )}
-
-                <ArticleReaderExperience
-                  articleTitle={article.title}
-                  articleSlug={article.slug.current}
-                  articleContext={articleContext}
-                >
-                  {article.body && (
-                    <PortableTextRenderer
-                      value={article.body}
-                      articleContext={articleContext}
-                    />
-                  )}
-                </ArticleReaderExperience>
-
-                <ArticleEvidenceSection article={article} />
-
-                {faq.length > 0 && (
-                  <section
-                    className="border-line mt-14 border-t pt-8"
-                    aria-labelledby="faq-heading"
-                  >
-                    <h2 id="faq-heading" className="text-ink mb-5 text-2xl font-semibold">
-                      Frequently Asked Questions
+                      On this page
                     </h2>
-                    <div className="space-y-5">
-                      {faq.map((item) => (
-                        <div key={item.question}>
-                          <h3 className="text-ink text-base font-semibold">{item.question}</h3>
-                          <p className="text-ink-secondary mt-2 text-base leading-relaxed">
-                            {item.answer}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                )}
-
-                {article.customerDiscoveryCta?.question && (
-                  <section
-                    className="border-primary/20 bg-primary/5 mt-14 rounded-[2px] border px-6 py-6"
-                    aria-labelledby="discovery-heading"
-                  >
-                    <h2 id="discovery-heading" className="text-ink text-lg font-semibold">
-                      Customer-Discovery Question
-                    </h2>
-                    <p className="text-ink-secondary mt-3 text-base leading-relaxed">
-                      {article.customerDiscoveryCta.question}
-                    </p>
-                    {article.customerDiscoveryCta.supportingText && (
-                      <p className="text-ink-tertiary mt-2 text-sm leading-relaxed">
-                        {article.customerDiscoveryCta.supportingText}
-                      </p>
-                    )}
-                    {article.customerDiscoveryCta.href && article.customerDiscoveryCta.label && (
-                      <div className="mt-4">
-                        <TrackedArticleLink
-                          href={article.customerDiscoveryCta.href}
-                          className="border-primary/30 text-primary-accessible hover:border-primary/50 hover:text-primary inline-flex items-center rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors"
-                          eventName={
-                            /interview|demo|call/i.test(article.customerDiscoveryCta.label)
-                              ? 'interviewRequested'
-                              : /newsletter/i.test(article.customerDiscoveryCta.label)
-                                ? 'newsletterSignup'
-                                : 'researchCtaClicked'
-                          }
-                          eventPayload={{
-                            ctaLabel: article.customerDiscoveryCta.label,
-                            href: article.customerDiscoveryCta.href,
-                          }}
-                          articleContext={articleContext}
+                    <ol className="space-y-2.5 text-sm">
+                      {headings.map((heading) => (
+                        <li
+                          key={`mobile-${heading.level}-${heading.text}`}
+                          className={heading.level > 2 ? 'pl-3' : ''}
                         >
-                          {article.customerDiscoveryCta.label}
-                        </TrackedArticleLink>
-                      </div>
-                    )}
-                  </section>
-                )}
-
-                {article.citations && article.citations.length > 0 && (
-                  <section
-                    className="border-line mt-14 border-t pt-8"
-                    aria-labelledby="citations-heading"
-                  >
-                    <h2 id="citations-heading" className="text-ink mb-5 text-2xl font-semibold">
-                      Citations
-                    </h2>
-                    <ol className="text-ink-secondary space-y-3 text-sm leading-relaxed">
-                      {article.citations.map((citation, index) => (
-                        <li key={`${citation.label}-${index}`}>
-                          <span className="text-ink font-medium">{citation.label}</span>
-                          {citation.publisher ? `, ${citation.publisher}` : ''}
-                          {citation.url && (
-                            <>
-                              {' '}
-                              <a
-                                href={citation.url}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-primary underline underline-offset-2"
-                              >
-                                Source
-                              </a>
-                            </>
-                          )}
-                          {citation.notes ? ` — ${citation.notes}` : ''}
+                          <a
+                            href={`#${heading.id}`}
+                            className="text-ink-secondary hover:text-primary transition-colors"
+                          >
+                            {heading.text}
+                          </a>
                         </li>
                       ))}
                     </ol>
                   </section>
-                )}
-              </article>
-
-              <aside className="hidden max-w-64 xl:col-start-3 xl:block xl:min-w-0">
-                <div className="sticky top-28 space-y-8">
-                  {headings.length > 0 && (
-                    <section aria-labelledby="on-this-page-heading">
-                      <h2
-                        id="on-this-page-heading"
-                        className="text-ink-tertiary mb-4 font-mono text-xs tracking-widest uppercase"
-                      >
-                        On this page
-                      </h2>
-                      <ol className="space-y-3 text-sm">
-                        {headings.map((heading) => (
-                          <li
-                            key={`${heading.level}-${heading.text}`}
-                            className={heading.level > 2 ? 'pl-3' : ''}
-                          >
-                            <a
-                              href={`#${heading.id}`}
-                              className="text-ink-secondary hover:text-primary transition-colors"
-                            >
-                              {heading.text}
-                            </a>
-                          </li>
-                        ))}
-                      </ol>
-                    </section>
-                  )}
-
-                  {article.primaryQuestion && (
-                    <section className="border-line border-t pt-6">
-                      <h2 className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
-                        Primary question
-                      </h2>
-                      <p className="text-ink-secondary text-sm leading-relaxed">
-                        {article.primaryQuestion}
-                      </p>
-                    </section>
-                  )}
-
-                  {article.topicCluster?.name && (
-                    <section className="border-line border-t pt-6">
-                      <h2 className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
-                        Topic cluster
-                      </h2>
-                      <p className="text-ink-secondary text-sm leading-relaxed">
-                        {article.topicCluster.name}
-                      </p>
-                    </section>
-                  )}
-
-                  <section className="border-line border-t pt-6">
-                    <h2 className="text-ink-tertiary mb-3 font-mono text-xs tracking-widest uppercase">
-                      Machine-readable
-                    </h2>
-                    <div className="space-y-2 text-sm">
-                      <Link
-                        href={getArticleLlmTextUrl(article)}
-                        className="text-ink-secondary hover:text-primary block transition-colors"
-                      >
-                        Plain text / LLM version
-                      </Link>
-                      <Link
-                        href={`${SITE_URL}/feed.xml`}
-                        className="text-ink-secondary hover:text-primary block transition-colors"
-                      >
-                        RSS feed
-                      </Link>
-                    </div>
-                  </section>
-                </div>
-              </aside>
-            </div>
-
-            <div className="px-4 lg:px-0">
-              {author && (
-                <div className="border-line mt-16 border-t pt-8">
-                  <AuthorBadge
-                    author={author}
-                    publishedAt={article.publishedAt ?? undefined}
-                    showBio
-                  />
-                </div>
+                </aside>
               )}
 
-              {article.relatedArticles && article.relatedArticles.length > 0 && (
-                <section
-                  className="border-line mt-14 border-t pt-8"
-                  aria-labelledby="related-heading"
-                >
-                  <h2 id="related-heading" className="text-ink mb-5 text-2xl font-semibold">
-                    Related Articles
+              <ArticleReaderExperience
+                articleTitle={article.title}
+                articleSlug={article.slug.current}
+                articleContext={articleContext}
+              >
+                <div className="article-prose">
+                  {article.body && (
+                    <PortableTextRenderer value={article.body} articleContext={articleContext} />
+                  )}
+                </div>
+              </ArticleReaderExperience>
+
+              <ArticleEvidenceSection article={article} />
+
+              {faq.length > 0 && (
+                <section className="border-line mt-16 border-t pt-10" aria-labelledby="faq-heading">
+                  <h2
+                    id="faq-heading"
+                    className="text-ink mb-5 text-3xl leading-tight font-[family:var(--font-serif)] font-medium tracking-[-0.02em]"
+                  >
+                    Frequently Asked Questions
                   </h2>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    {article.relatedArticles.map((relatedArticle) => (
-                      <TrackedArticleLink
-                        key={relatedArticle._id}
-                        href={`/blog/${relatedArticle.slug.current}`}
-                        eventName="relatedArticleClicked"
-                        eventPayload={{
-                          destinationSlug: relatedArticle.slug.current,
-                          linkContext: 'related-articles',
-                        }}
-                        articleContext={articleContext}
-                        className="border-line hover:border-primary/25 rounded-[2px] border px-4 py-4 transition-colors"
-                      >
-                        <h3 className="text-ink text-base font-semibold">{relatedArticle.title}</h3>
-                        {relatedArticle.excerpt && (
-                          <p className="text-ink-secondary mt-2 text-sm leading-relaxed">
-                            {relatedArticle.excerpt}
-                          </p>
-                        )}
-                      </TrackedArticleLink>
+                  <div className="space-y-5">
+                    {faq.map((item) => (
+                      <div key={item.question}>
+                        <h3 className="text-ink text-base font-semibold">{item.question}</h3>
+                        <p className="text-ink-secondary mt-2 text-base leading-8">{item.answer}</p>
+                      </div>
                     ))}
                   </div>
                 </section>
               )}
 
-              <ArticleNewsletterSignup articleContext={articleContext} />
-
-              <div className="mt-10">
-                <Link
-                  href="/blog"
-                  className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
+              {article.customerDiscoveryCta?.question && (
+                <section
+                  className="border-primary/20 bg-primary/5 mt-16 rounded-[12px] border px-6 py-6"
+                  aria-labelledby="discovery-heading"
                 >
-                  ← Back to blog
-                </Link>
+                  <h2
+                    id="discovery-heading"
+                    className="text-ink text-2xl leading-tight font-[family:var(--font-serif)] font-medium tracking-[-0.02em]"
+                  >
+                    Customer-Discovery Question
+                  </h2>
+                  <p className="text-ink-secondary mt-3 text-base leading-8">
+                    {article.customerDiscoveryCta.question}
+                  </p>
+                  {article.customerDiscoveryCta.supportingText && (
+                    <p className="text-ink-tertiary mt-2 text-sm leading-7">
+                      {article.customerDiscoveryCta.supportingText}
+                    </p>
+                  )}
+                  {article.customerDiscoveryCta.href && article.customerDiscoveryCta.label && (
+                    <div className="mt-4">
+                      <TrackedArticleLink
+                        href={article.customerDiscoveryCta.href}
+                        className="border-primary/30 text-primary-accessible hover:border-primary/50 hover:text-primary inline-flex items-center rounded-[999px] border px-4 py-2 text-sm font-medium transition-colors"
+                        eventName={
+                          /interview|demo|call/i.test(article.customerDiscoveryCta.label)
+                            ? 'interviewRequested'
+                            : /newsletter/i.test(article.customerDiscoveryCta.label)
+                              ? 'newsletterSignup'
+                              : 'researchCtaClicked'
+                        }
+                        eventPayload={{
+                          ctaLabel: article.customerDiscoveryCta.label,
+                          href: article.customerDiscoveryCta.href,
+                        }}
+                        articleContext={articleContext}
+                      >
+                        {article.customerDiscoveryCta.label}
+                      </TrackedArticleLink>
+                    </div>
+                  )}
+                </section>
+              )}
+
+              {article.citations && article.citations.length > 0 && (
+                <section
+                  className="border-line mt-16 border-t pt-10"
+                  aria-labelledby="citations-heading"
+                >
+                  <h2
+                    id="citations-heading"
+                    className="text-ink mb-5 text-3xl leading-tight font-[family:var(--font-serif)] font-medium tracking-[-0.02em]"
+                  >
+                    Citations
+                  </h2>
+                  <ol className="text-ink-secondary space-y-3 text-sm leading-7">
+                    {article.citations.map((citation, index) => (
+                      <li key={`${citation.label}-${index}`}>
+                        <span className="text-ink font-medium">{citation.label}</span>
+                        {citation.publisher ? `, ${citation.publisher}` : ''}
+                        {citation.url && (
+                          <>
+                            {' '}
+                            <a
+                              href={citation.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-primary underline underline-offset-2"
+                            >
+                              Source
+                            </a>
+                          </>
+                        )}
+                        {citation.notes ? ` - ${citation.notes}` : ''}
+                      </li>
+                    ))}
+                  </ol>
+                </section>
+              )}
+            </article>
+
+            <aside className="hidden xl:block xl:min-w-0">
+              <div className="border-line sticky top-28 border-l pl-8">
+
+                {headings.length > 0 && (
+                  <section aria-labelledby="on-this-page-heading">
+                    <h2
+                      id="on-this-page-heading"
+                      className="text-ink-tertiary mb-4 font-mono text-[10px] tracking-[0.2em] uppercase"
+                    >
+                      On this page
+                    </h2>
+                    <ol className="space-y-3 text-sm">
+                      {headings.map((heading) => (
+                        <li
+                          key={`${heading.level}-${heading.text}`}
+                          className={heading.level > 2 ? 'pl-3' : ''}
+                        >
+                          <a
+                            href={`#${heading.id}`}
+                            className="text-ink-secondary hover:text-primary transition-colors"
+                          >
+                            {heading.text}
+                          </a>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                )}
+
+                {(article.primaryQuestion || article.topicCluster?.name) && (
+                  <section className="border-line mt-8 border-t pt-6">
+                    <h2 className="text-ink-tertiary mb-3 font-mono text-[10px] tracking-[0.2em] uppercase">
+                      Article brief
+                    </h2>
+                    <div className="space-y-4">
+                      {article.primaryQuestion && (
+                        <p className="text-ink-secondary text-sm leading-7">
+                          {article.primaryQuestion}
+                        </p>
+                      )}
+                      {article.topicCluster?.name && (
+                        <p className="text-ink-tertiary text-sm leading-7">
+                          Cluster:{' '}
+                          <span className="text-ink-secondary">{article.topicCluster.name}</span>
+                        </p>
+                      )}
+                    </div>
+                  </section>
+                )}
+
+                <section className="border-line mt-8 border-t pt-6">
+                  <h2 className="text-ink-tertiary mb-3 font-mono text-[10px] tracking-[0.2em] uppercase">
+                    Machine-readable
+                  </h2>
+                  <div className="space-y-2 text-sm">
+                    <Link
+                      href={getArticleLlmTextUrl(article)}
+                      className="text-ink-secondary hover:text-primary block transition-colors"
+                    >
+                      Plain text / LLM version
+                    </Link>
+                    <Link
+                      href={`${SITE_URL}/feed.xml`}
+                      className="text-ink-secondary hover:text-primary block transition-colors"
+                    >
+                      RSS feed
+                    </Link>
+                  </div>
+                </section>
               </div>
+            </aside>
+          </div>
+
+          {author && (
+            <div className="border-line mt-16 border-t pt-10">
+              <AuthorBadge author={author} publishedAt={article.publishedAt ?? undefined} showBio />
             </div>
+          )}
+
+          {article.relatedArticles && article.relatedArticles.length > 0 && (
+            <section className="border-line mt-16 border-t pt-10" aria-labelledby="related-heading">
+              <h2
+                id="related-heading"
+                className="text-ink mb-5 text-3xl leading-tight font-[family:var(--font-serif)] font-medium tracking-[-0.02em]"
+              >
+                Related Articles
+              </h2>
+              <div className="grid gap-4 md:grid-cols-2">
+                {article.relatedArticles.map((relatedArticle) => (
+                  <TrackedArticleLink
+                    key={relatedArticle._id}
+                    href={`/blog/${relatedArticle.slug.current}`}
+                    eventName="relatedArticleClicked"
+                    eventPayload={{
+                      destinationSlug: relatedArticle.slug.current,
+                      linkContext: 'related-articles',
+                    }}
+                    articleContext={articleContext}
+                    className="border-line hover:border-primary/25 rounded-[12px] border px-5 py-5 transition-colors"
+                  >
+                    <h3 className="text-ink text-lg font-semibold">{relatedArticle.title}</h3>
+                    {relatedArticle.excerpt && (
+                      <p className="text-ink-secondary mt-2 text-sm leading-7">
+                        {relatedArticle.excerpt}
+                      </p>
+                    )}
+                  </TrackedArticleLink>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <ArticleNewsletterSignup articleContext={articleContext} />
+
+          <div className="mt-10">
+            <Link
+              href="/blog"
+              className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
+            >
+              ← Back to blog
+            </Link>
           </div>
         </div>
       </section>
