@@ -32,10 +32,6 @@ export function PosthogInit({ apiKey, apiHost }: PosthogInitProps) {
     }
 
     posthog.opt_in_capturing()
-
-    return () => {
-      posthog.flush()
-    }
   }, [apiHost, apiKey])
 
   return null
