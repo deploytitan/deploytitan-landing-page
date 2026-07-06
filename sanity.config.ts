@@ -2,12 +2,15 @@ import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { codeInput } from '@sanity/code-input'
+import { dashboardTool, projectInfoWidget } from '@sanity/dashboard'
 import {
   defineLocations,
   type PresentationPluginOptions,
   presentationTool,
 } from 'sanity/presentation'
+import { media } from 'sanity-plugin-media'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
+import { vercelWidget } from 'sanity-plugin-dashboard-widget-vercel'
 import { apiVersion, dataset, projectId } from './src/sanity/env'
 import { schemaTypes } from './src/sanity/schemas'
 import { structure } from './src/sanity/structure'
@@ -58,7 +61,11 @@ export default defineConfig({
       },
     }),
     structureTool({ structure }),
+    dashboardTool({
+      widgets: [vercelWidget({ layout: { width: 'full' } }), projectInfoWidget()],
+    }),
     codeInput(),
+    media(),
     unsplashImageAsset(),
     visionTool({ defaultApiVersion: apiVersion }),
   ],
