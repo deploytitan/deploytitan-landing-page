@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { DistributionAssetPipelineGuideInput } from '../components/contentPipelineGuideInput'
 
 const distributionChannels = ['xThread', 'xPost', 'linkedin', 'dev', 'newsletter', 'community'] as const
 
@@ -38,6 +39,7 @@ export const distributionAssetType = defineType({
       name: 'channel',
       title: 'Channel',
       type: 'string',
+      description: 'Where this spoke will be published. Pick the channel before writing copy so the format fits.',
       options: { list: [...distributionChannels] },
       validation: (Rule) => Rule.required(),
     }),
@@ -45,6 +47,7 @@ export const distributionAssetType = defineType({
       name: 'spokeType',
       title: 'Spoke type',
       type: 'string',
+      description: 'The content angle for this spoke. Use this to avoid six repeated posts that all say the same thing.',
       options: { list: spokeTypeValues, layout: 'dropdown' },
       validation: (Rule) => Rule.required(),
     }),
@@ -53,6 +56,8 @@ export const distributionAssetType = defineType({
       title: 'Distribution goal',
       type: 'string',
       initialValue: 'traffic',
+      description:
+        'The primary outcome for this individual spoke. It should usually match the hub revenue goal unless this channel has a narrower job.',
       options: { list: distributionGoalValues, layout: 'radio' },
       validation: (Rule) => Rule.required(),
     }),
@@ -67,25 +72,67 @@ export const distributionAssetType = defineType({
         { title: 'Published', value: 'published' },
       ] },
     }),
-    defineField({ name: 'campaignName', title: 'Campaign name', type: 'string' }),
+    defineField({
+      name: 'pipelineStageGuide',
+      title: 'Pipeline stage guide',
+      description: 'Focused guidance for this spoke asset in the distribution workflow.',
+      type: 'string',
+      readOnly: true,
+      components: {
+        input: DistributionAssetPipelineGuideInput,
+      },
+    }),
+    defineField({
+      name: 'campaignName',
+      title: 'Campaign name',
+      description: 'Same campaign label used on the hub article and UTM campaign tag.',
+      type: 'string',
+    }),
     defineField({
       name: 'weekNumber',
       title: 'Campaign week number',
       type: 'number',
+      description: 'Week in the hub spoke cadence when this asset should go live.',
       validation: (Rule) => Rule.integer().min(1).max(12),
     }),
     defineField({ name: 'copy', title: 'Copy', type: 'text', rows: 6 }),
-    defineField({ name: 'ctaLabel', title: 'CTA label', type: 'string' }),
-    defineField({ name: 'ctaUrl', title: 'CTA URL', type: 'url' }),
+    defineField({
+      name: 'ctaLabel',
+      title: 'CTA label',
+      description: 'The visible action text. For spokes, this usually invites the reader back to the hub article.',
+      type: 'string',
+    }),
+    defineField({
+      name: 'ctaUrl',
+      title: 'CTA URL',
+      description: 'Destination for the CTA. Prefer the hub article URL with UTM tags unless the spoke has a specific direct-response goal.',
+      type: 'url',
+    }),
     defineField({
       name: 'ctaPlacement',
       title: 'CTA placement',
       type: 'string',
+      description: 'Where the call to action appears in the spoke copy.',
       options: { list: ['opening', 'mid-post', 'closing'], layout: 'radio' },
     }),
-    defineField({ name: 'externalUrl', title: 'Published URL', type: 'url' }),
-    defineField({ name: 'utmParameters', title: 'UTM parameters', type: 'utmParameters' }),
-    defineField({ name: 'scheduledFor', title: 'Scheduled for', type: 'datetime' }),
+    defineField({
+      name: 'externalUrl',
+      title: 'Published URL',
+      description: 'The live URL after this spoke is published. Required once status is Published.',
+      type: 'url',
+    }),
+    defineField({
+      name: 'utmParameters',
+      title: 'UTM parameters',
+      description: 'Tracking tags used to attribute spoke performance back to the hub campaign.',
+      type: 'utmParameters',
+    }),
+    defineField({
+      name: 'scheduledFor',
+      title: 'Scheduled for',
+      description: 'Planned publish date and time for the spoke.',
+      type: 'datetime',
+    }),
   ],
   validation: (Rule) =>
     Rule.custom((value) => {

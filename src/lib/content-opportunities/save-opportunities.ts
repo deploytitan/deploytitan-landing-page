@@ -3,6 +3,7 @@ import process from 'node:process'
 
 import { createClient } from 'next-sanity'
 
+import { defaultOpportunityChecklist } from '../../sanity/lib/workflowDefaults'
 import type { ManualOpportunity } from './types'
 
 function getEnv(name: string, fallbackName?: string) {
@@ -51,7 +52,10 @@ export async function saveManualOpportunities(opportunities: ManualOpportunity[]
 
   for (const opportunity of opportunities) {
     const documentId = createOpportunityId(opportunity.primaryQuery, opportunity.opportunityType)
-    const existing = await client.fetch<{ status?: string } | null>(`*[_id == $id][0]{status}`, { id: documentId })
+    const existing = await client.fetch<{
+      status?: string
+      workflowChecklist?: unknown[] | null
+    } | null>(`*[_id == $id][0]{status, workflowChecklist}`, { id: documentId })
     const matchedArticleId = opportunity.matchedArticleSlug
       ? await findArticleIdBySlug(client, opportunity.matchedArticleSlug)
       : null
@@ -73,6 +77,9 @@ export async function saveManualOpportunities(opportunities: ManualOpportunity[]
       sourcePage: opportunity.sourcePage ?? null,
       matchedArticle: matchedArticleId ? { _type: 'reference', _ref: matchedArticleId } : undefined,
       metrics: opportunity.metrics,
+      workflowChecklist: existing?.workflowChecklist?.length
+        ? existing.workflowChecklist
+        : defaultOpportunityChecklist(),
       generatedAt: new Date().toISOString(),
     })
 

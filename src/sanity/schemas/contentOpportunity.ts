@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { ContentOpportunityPipelineGuideInput } from '../components/contentPipelineGuideInput'
 import { defaultOpportunityChecklist } from '../lib/workflowDefaults'
 
 const contentOpportunityStatusValues = [
@@ -20,6 +21,11 @@ export const contentOpportunityType = defineType({
   name: 'contentOpportunity',
   title: 'Content Opportunity',
   type: 'document',
+  initialValue: () => ({
+    status: 'discovered',
+    source: 'manual-llm-review',
+    workflowChecklist: defaultOpportunityChecklist(),
+  }),
   fields: [
     defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
     defineField({
@@ -31,9 +37,21 @@ export const contentOpportunityType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'pipelineStageGuide',
+      title: 'Pipeline stage guide',
+      description: 'Focused guidance for this opportunity based on its current workflow status.',
+      type: 'string',
+      readOnly: true,
+      components: {
+        input: ContentOpportunityPipelineGuideInput,
+      },
+    }),
+    defineField({
       name: 'opportunityType',
       title: 'Opportunity type',
       type: 'string',
+      description:
+        'Classifies what kind of content work this opportunity should trigger: a new article, a refresh of an existing article, a CTR rewrite, or an internal-linking improvement.',
       options: { list: opportunityTypeValues },
       validation: (Rule) => Rule.required(),
     }),
@@ -53,6 +71,7 @@ export const contentOpportunityType = defineType({
       name: 'score',
       title: 'Score',
       type: 'number',
+      description: 'Priority score from 0-100. Higher scores should be reviewed first.',
       validation: (Rule) => Rule.required().min(0).max(100),
     }),
     defineField({
@@ -82,6 +101,8 @@ export const contentOpportunityType = defineType({
       title: 'Unique angle',
       type: 'text',
       rows: 4,
+      description:
+        'The DeployTitan-specific point of view that makes this content worth creating instead of writing a generic SEO article.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -94,6 +115,7 @@ export const contentOpportunityType = defineType({
       name: 'productPillar',
       title: 'Product pillar',
       type: 'string',
+      description: 'The DeployTitan product area or narrative pillar this opportunity should support.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -149,6 +171,7 @@ export const contentOpportunityType = defineType({
     defineField({
       name: 'kpiTarget',
       title: 'KPI target',
+      description: 'The measurable outcome this opportunity should improve after the article or refresh ships.',
       type: 'contentKpiTarget',
     }),
     defineField({

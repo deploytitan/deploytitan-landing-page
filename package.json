@@ -15,7 +15,8 @@
     "content:research": "tsx scripts/run-content-opportunity-research.ts",
     "content:sync-performance": "tsx scripts/sync-content-performance.ts",
     "migrate:posts-to-articles": "tsx scripts/migrate-posts-to-articles.ts",
-    "content:import-opportunities": "tsx scripts/import-content-opportunities.ts"
+    "content:import-opportunities": "tsx scripts/import-content-opportunities.ts",
+    "content:backfill-opportunity-checklists": "tsx scripts/backfill-content-opportunity-checklists.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",

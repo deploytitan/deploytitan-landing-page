@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { ArticlePipelineGuideInput } from '../components/contentPipelineGuideInput'
 import { withPublishingRequirement } from '../components/publishingRequirementField'
 import { defaultArticleChecklist } from '../lib/workflowDefaults'
 import {
@@ -44,21 +45,31 @@ const proofReadyRequirement =
 const publishedRequirement =
   'Required before an article can be considered fully Published.'
 
+// Sanity narrows validation rule types per field, but schema wrappers lose that context.
+// Keep this local alias intentionally loose so wrapped validations remain type-checkable.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type LooseValidationRule = any
+
+type ValidationContextLike = {
+  document?: unknown
+}
+
 export const articleType = defineType({
   name: 'article',
   title: 'Article',
   type: 'document',
   fields: [
-    defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
+    defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule: LooseValidationRule) => Rule.required() }),
     defineField(withPublishingRequirement({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: { source: 'title', maxLength: 96 },
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
+      validation: (rule: LooseValidationRule) =>
+        rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
-          if (parent?.status === 'published' && !value?.current) {
+          const slug = value as { current?: string } | undefined
+          if (parent?.status === 'published' && !slug?.current) {
             return 'Published articles require a slug.'
           }
           return true
@@ -70,15 +81,25 @@ export const articleType = defineType({
       type: 'string',
       initialValue: 'idea',
       options: { list: articleStatusValues },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: LooseValidationRule) => Rule.required(),
+    }),
+    defineField({
+      name: 'pipelineStageGuide',
+      title: 'Pipeline stage guide',
+      description: 'Focused guidance for the article based on its current workflow status.',
+      type: 'string',
+      readOnly: true,
+      components: {
+        input: ArticlePipelineGuideInput,
+      },
     }),
     defineField(withPublishingRequirement({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
       rows: 3,
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
+      validation: (rule: LooseValidationRule) =>
+        rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
           if (parent?.status === 'published' && !value) {
             return 'Published articles require an excerpt.'
@@ -92,14 +113,14 @@ export const articleType = defineType({
       type: 'text',
       rows: 4,
       description: 'Two to four sentences answering the article question near the top.',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: LooseValidationRule) => Rule.required(),
     }),
     defineField(withPublishingRequirement({
       name: 'primaryQuestion',
       title: 'Primary question',
       type: 'string',
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
+      validation: (rule: LooseValidationRule) =>
+        rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
           if (parent?.status === 'published' && !value) {
             return 'Published articles require a primary question.'
@@ -111,8 +132,8 @@ export const articleType = defineType({
       name: 'primaryKeyword',
       title: 'Primary keyword',
       type: 'string',
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
+      validation: (Rule: LooseValidationRule) =>
+        Rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
           if (parent?.status === 'published' && !String(value ?? '').trim()) {
             return 'Published articles require one primary keyword.'
@@ -125,14 +146,14 @@ export const articleType = defineType({
       title: 'Secondary keywords',
       type: 'array',
       of: [defineArrayMember({ type: 'string' })],
-      validation: (Rule) =>
-        Rule.max(5).custom((value, context) => {
+      validation: (Rule: LooseValidationRule) =>
+        Rule.max(5).custom((value: unknown, context: ValidationContextLike) => {
           const primaryKeyword = String(
             (context.document as { primaryKeyword?: string } | undefined)?.primaryKeyword ?? '',
           )
             .trim()
             .toLowerCase()
-          const values = (value ?? []).map((entry) => String(entry ?? '').trim()).filter(Boolean)
+          const values = (Array.isArray(value) ? value : []).map((entry: unknown) => String(entry ?? '').trim()).filter(Boolean)
           if (new Set(values.map((entry) => entry.toLowerCase())).size !== values.length) {
             return 'Secondary keywords must be unique.'
           }
@@ -147,9 +168,9 @@ export const articleType = defineType({
       title: 'Related questions',
       type: 'array',
       of: [defineArrayMember({ type: 'string' })],
-      validation: (Rule) =>
-        Rule.max(6).custom((value) => {
-          const values = (value ?? []).map((entry) => String(entry ?? '').trim()).filter(Boolean)
+      validation: (Rule: LooseValidationRule) =>
+        Rule.max(6).custom((value: unknown) => {
+          const values = (Array.isArray(value) ? value : []).map((entry: unknown) => String(entry ?? '').trim()).filter(Boolean)
           if (values.length < 2) return 'Add at least two related questions for published articles.'
           if (new Set(values.map((entry) => entry.toLowerCase())).size !== values.length) {
             return 'Related questions must be unique.'
@@ -165,8 +186,8 @@ export const articleType = defineType({
         list: ['informational', 'commercial-investigation', 'comparison', 'problem-solving'],
         layout: 'radio',
       },
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
+      validation: (Rule: LooseValidationRule) =>
+        Rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
           if (parent?.status === 'published' && !value) {
             return 'Published articles require a search intent.'
@@ -183,8 +204,8 @@ export const articleType = defineType({
       name: 'topicCluster',
       title: 'Topic cluster',
       type: 'topicCluster',
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
+      validation: (Rule: LooseValidationRule) =>
+        Rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
           if (parent?.status === 'published' && !value) {
             return 'Published articles require a topic cluster.'
@@ -197,23 +218,25 @@ export const articleType = defineType({
       title: 'Hub status',
       type: 'string',
       initialValue: 'activeHub',
-      description: 'Use active hubs to drive the spoke distribution system after publication.',
+      description:
+        'Marks whether this article is the central hub for a distribution campaign. Use Active hub for publishable pillar articles that should receive spoke assets; Not a hub for supporting posts; Retired hub when the article should no longer drive campaign work.',
       options: { list: hubStatusValues, layout: 'radio' },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: LooseValidationRule) => Rule.required(),
     }),
     defineField({
       name: 'hubCampaignName',
       title: 'Hub campaign name',
       type: 'string',
-      description: 'Shared campaign label used across all spoke assets and UTM tags.',
-      validation: (Rule) => Rule.max(96),
+      description:
+        'Short shared label for this article campaign. Use the same value on distribution assets and UTM campaign tags so performance rolls up cleanly.',
+      validation: (Rule: LooseValidationRule) => Rule.max(96),
     }),
     defineField({
       name: 'hubPrimaryCta',
       title: 'Hub primary CTA',
       type: 'customerDiscoveryCta',
       description:
-        'Primary CTA for the hub itself. Spokes should still point readers back to the article before this CTA takes over.',
+        'The main reader action on the hub article, such as joining research, signing up, or requesting discovery. Distribution spokes should usually send readers to the article first; this CTA is what the article then asks them to do.',
     }),
     defineField({
       name: 'hubRevenueGoal',
@@ -221,16 +244,18 @@ export const articleType = defineType({
       type: 'string',
       initialValue: 'traffic',
       options: { list: hubRevenueGoalValues, layout: 'radio' },
-      description: 'Primary downstream outcome this hub should optimize for.',
-      validation: (Rule) => Rule.required(),
+      description:
+        'Primary outcome the article should optimize for. Pick one so title, CTA, distribution copy, and KPI review all point at the same goal.',
+      validation: (Rule: LooseValidationRule) => Rule.required(),
     }),
     defineField({
       name: 'spokeCadenceWeeks',
       title: 'Spoke cadence (weeks)',
       type: 'number',
       initialValue: 6,
-      description: 'Number of weeks to spread the six spoke assets across.',
-      validation: (Rule) => Rule.required().integer().min(4).max(8),
+      description:
+        'Number of weeks to spread the six spoke assets across. Default is six weeks; shorten only for urgent campaigns and lengthen only when the topic needs a slower educational sequence.',
+      validation: (Rule: LooseValidationRule) => Rule.required().integer().min(4).max(8),
     }),
     defineField({
       name: 'coverImage',
@@ -243,8 +268,8 @@ export const articleType = defineType({
       name: 'publishedAt',
       title: 'Published at',
       type: 'datetime',
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
+      validation: (Rule: LooseValidationRule) =>
+        Rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
           if (parent?.status === 'published' && !value) {
             return 'Published articles require a publication date.'
@@ -264,8 +289,18 @@ export const articleType = defineType({
       type: 'datetime',
       description: 'Set the most recent editorial or technical accuracy review date.',
     }, proofReadyRequirement)),
-    defineField({ name: 'sevenDayReviewAt', title: 'Seven-day review at', type: 'datetime' }),
-    defineField({ name: 'thirtyDayReviewAt', title: 'Thirty-day review at', type: 'datetime' }),
+    defineField({
+      name: 'sevenDayReviewAt',
+      title: 'Seven-day review at',
+      type: 'datetime',
+      description: 'Date for the first lightweight performance check after publication.',
+    }),
+    defineField({
+      name: 'thirtyDayReviewAt',
+      title: 'Thirty-day review at',
+      type: 'datetime',
+      description: 'Date for the deeper KPI review that decides whether to keep growing, refresh, or reposition.',
+    }),
     defineField(withPublishingRequirement({
       name: 'technicalReviewer',
       title: 'Technical reviewer',
@@ -277,8 +312,8 @@ export const articleType = defineType({
       title: 'Author',
       type: 'reference',
       to: [{ type: 'author' }],
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
+      validation: (Rule: LooseValidationRule) =>
+        Rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
           if (parent?.status === 'published' && !value) {
             return 'Published articles require an author.'
@@ -358,8 +393,8 @@ export const articleType = defineType({
       name: 'seo',
       title: 'SEO metadata',
       type: 'seoMetadata',
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
+      validation: (Rule: LooseValidationRule) =>
+        Rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string; coverImage?: unknown } | undefined
           if (parent?.status !== 'published') return true
           const seo = (value as {
@@ -402,7 +437,7 @@ export const articleType = defineType({
         defineArrayMember({ type: 'diagramBlock' }),
         defineArrayMember({ type: 'tableBlock' }),
       ],
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: LooseValidationRule) => Rule.required(),
     }),
     defineField({
       name: 'legacyPostId',
@@ -419,8 +454,8 @@ export const articleType = defineType({
       media: 'coverImage',
     },
   },
-  validation: (Rule) =>
-    Rule.custom(async (value, context) => {
+  validation: (Rule: LooseValidationRule) =>
+    Rule.custom(async (value: unknown, context: ValidationContextLike) => {
       const article = value as
         | {
             status?: string
@@ -435,7 +470,8 @@ export const articleType = defineType({
 
       if (!article || !isProofReadyStatus(article.status)) return true
 
-      const brief = await fetchContentBriefValidationRecord(context, article.contentBrief)
+      const validationContext = context as Parameters<typeof fetchContentBriefValidationRecord>[0]
+      const brief = await fetchContentBriefValidationRecord(validationContext, article.contentBrief)
       if (!brief) {
         return 'Publication-ready articles require a linked content brief.'
       }
@@ -447,11 +483,11 @@ export const articleType = defineType({
       if (!String(brief.primaryKeyword ?? '').trim()) return 'The linked brief needs a primary keyword.'
       if (!(brief.outline ?? []).length) return 'The linked brief needs an outline.'
 
-      const briefEvidenceResult = await hasClassifiedEvidence(context, brief.researchEvidence)
+      const briefEvidenceResult = await hasClassifiedEvidence(validationContext, brief.researchEvidence)
       if (!briefEvidenceResult.ok) return briefEvidenceResult.message
 
       const selectedEvidenceRefs = article.publicEvidence?.length ? article.publicEvidence : brief.researchEvidence
-      const publicEvidenceResult = await hasClassifiedEvidence(context, selectedEvidenceRefs)
+      const publicEvidenceResult = await hasClassifiedEvidence(validationContext, selectedEvidenceRefs)
       if (!publicEvidenceResult.ok) return publicEvidenceResult.message
 
       if (!String(article.lastReviewedAt ?? '').trim()) {

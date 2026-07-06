@@ -123,11 +123,11 @@ export const utmParametersType = defineType({
   title: 'UTM Parameters',
   type: 'object',
   fields: [
-    defineField({ name: 'source', title: 'UTM source', type: 'string' }),
-    defineField({ name: 'medium', title: 'UTM medium', type: 'string' }),
-    defineField({ name: 'campaign', title: 'UTM campaign', type: 'string' }),
-    defineField({ name: 'content', title: 'UTM content', type: 'string' }),
-    defineField({ name: 'term', title: 'UTM term', type: 'string' }),
+    defineField({ name: 'source', title: 'UTM source', description: 'Where the click comes from, such as linkedin, x, newsletter, or dev.', type: 'string' }),
+    defineField({ name: 'medium', title: 'UTM medium', description: 'Traffic medium, such as social, email, community, or referral.', type: 'string' }),
+    defineField({ name: 'campaign', title: 'UTM campaign', description: 'Shared campaign label. Match this to the hub campaign name.', type: 'string' }),
+    defineField({ name: 'content', title: 'UTM content', description: 'Optional variant label for this specific spoke or CTA.', type: 'string' }),
+    defineField({ name: 'term', title: 'UTM term', description: 'Optional keyword or audience segment label.', type: 'string' }),
   ],
 })
 
@@ -175,10 +175,10 @@ export const customerDiscoveryCtaType = defineType({
   title: 'Customer Discovery CTA',
   type: 'object',
   fields: [
-    defineField({ name: 'question', title: 'Question', type: 'string', validation: (Rule) => Rule.required() }),
-    defineField({ name: 'label', title: 'Button label', type: 'string', validation: (Rule) => Rule.required() }),
-    defineField({ name: 'href', title: 'Destination URL', type: 'string', validation: (Rule) => Rule.required() }),
-    defineField({ name: 'supportingText', title: 'Supporting text', type: 'text', rows: 2 }),
+    defineField({ name: 'question', title: 'Question', description: 'The research or discovery question shown near the CTA.', type: 'string', validation: (Rule) => Rule.required() }),
+    defineField({ name: 'label', title: 'Button label', description: 'Short action text for the CTA button.', type: 'string', validation: (Rule) => Rule.required() }),
+    defineField({ name: 'href', title: 'Destination URL', description: 'Where the CTA sends readers, such as waitlist, research signup, or contact flow.', type: 'string', validation: (Rule) => Rule.required() }),
+    defineField({ name: 'supportingText', title: 'Supporting text', description: 'Optional sentence that explains why the reader should click.', type: 'text', rows: 2 }),
   ],
 })
 
@@ -233,9 +233,9 @@ export const productHypothesisConfidenceType = defineType({
   title: 'Product Hypothesis Confidence',
   type: 'object',
   fields: [
-    defineField({ name: 'score', title: 'Confidence score', type: 'number', validation: (Rule) => Rule.required().min(0).max(1) }),
-    defineField({ name: 'label', title: 'Label', type: 'string', options: { list: ['Low', 'Medium', 'High'] } }),
-    defineField({ name: 'rationale', title: 'Rationale', type: 'text', rows: 3 }),
+    defineField({ name: 'score', title: 'Confidence score', description: 'Numeric confidence from 0 to 1. Use this for automation and sorting.', type: 'number', validation: (Rule) => Rule.required().min(0).max(1) }),
+    defineField({ name: 'label', title: 'Label', description: 'Human-readable confidence label that matches the score.', type: 'string', options: { list: ['Low', 'Medium', 'High'] } }),
+    defineField({ name: 'rationale', title: 'Rationale', description: 'Why this confidence level is justified.', type: 'text', rows: 3 }),
   ],
 })
 
@@ -248,6 +248,7 @@ export const contentKpiTargetType = defineType({
       name: 'primaryMetric',
       title: 'Primary metric',
       type: 'string',
+      description: 'The one metric this content object is primarily accountable for improving.',
       options: {
         list: [
           { title: 'Search impressions', value: 'searchImpressions' },
@@ -263,6 +264,7 @@ export const contentKpiTargetType = defineType({
       name: 'targetValue',
       title: 'Target value',
       type: 'number',
+      description: 'Numeric target for the selected metric. For CTR, enter a decimal such as 0.05 for 5%.',
       validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
@@ -270,6 +272,7 @@ export const contentKpiTargetType = defineType({
       title: 'Review window (days)',
       type: 'number',
       initialValue: 30,
+      description: 'How many days after publication or update before judging the target.',
       validation: (Rule) => Rule.required().min(7).max(365),
     }),
     defineField({

@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { ContentBriefPipelineGuideInput } from '../components/contentPipelineGuideInput'
 import { withPublishingRequirement } from '../components/publishingRequirementField'
 import { defaultBriefChecklist } from '../lib/workflowDefaults'
 import { validateBriefReadiness, type ReferenceLike } from '../lib/evidenceValidation'
@@ -25,10 +26,36 @@ export const contentBriefType = defineType({
         { title: 'Published', value: 'published' },
       ] },
     }),
+    defineField({
+      name: 'pipelineStageGuide',
+      title: 'Pipeline stage guide',
+      description: 'Focused guidance for this brief based on its current workflow status.',
+      type: 'string',
+      readOnly: true,
+      components: {
+        input: ContentBriefPipelineGuideInput,
+      },
+    }),
     defineField({ name: 'marketQuestion', title: 'Market question', type: 'reference', to: [{ type: 'marketQuestion' }], validation: (Rule) => Rule.required() }),
-    defineField(withPublishingRequirement({ name: 'targetPersona', title: 'Target persona', type: 'targetPersona' }, briefPublishingRequirement)),
-    defineField(withPublishingRequirement({ name: 'primaryKeyword', title: 'Primary keyword', type: 'string' }, briefPublishingRequirement)),
-    defineField(withPublishingRequirement({ name: 'directAnswer', title: 'Direct answer', type: 'text', rows: 4 }, briefPublishingRequirement)),
+    defineField(withPublishingRequirement({
+      name: 'targetPersona',
+      title: 'Target persona',
+      description: 'The specific reader this brief is written for. Use this to keep the article angle, examples, and CTA focused.',
+      type: 'targetPersona',
+    }, briefPublishingRequirement)),
+    defineField(withPublishingRequirement({
+      name: 'primaryKeyword',
+      title: 'Primary keyword',
+      description: 'The main search phrase or reader language this article should satisfy.',
+      type: 'string',
+    }, briefPublishingRequirement)),
+    defineField(withPublishingRequirement({
+      name: 'directAnswer',
+      title: 'Direct answer',
+      description: 'Two to four sentences that answer the reader question directly before the article expands into detail.',
+      type: 'text',
+      rows: 4,
+    }, briefPublishingRequirement)),
     defineField(withPublishingRequirement({
       name: 'thesis',
       title: 'Differentiated thesis',
@@ -39,14 +66,39 @@ export const contentBriefType = defineType({
     defineField(withPublishingRequirement({
       name: 'ctaGoal',
       title: 'CTA goal',
-      description: 'What action or next step this article should guide the reader toward.',
+      description:
+        'The intended reader action after the article. This should match the article hub CTA and KPI target when possible.',
       type: 'string',
     }, briefPublishingRequirement)),
-    defineField(withPublishingRequirement({ name: 'outline', title: 'Outline', type: 'array', of: [defineArrayMember({ type: 'articleOutlineSection' })] }, briefPublishingRequirement)),
-    defineField(withPublishingRequirement({ name: 'researchEvidence', title: 'Evidence', type: 'array', of: [defineArrayMember({ type: 'reference', to: [{ type: 'researchEvidence' }] })] }, briefPublishingRequirement)),
+    defineField(withPublishingRequirement({
+      name: 'outline',
+      title: 'Outline',
+      description: 'The planned article structure. Each section should earn its place by supporting the thesis or direct answer.',
+      type: 'array',
+      of: [defineArrayMember({ type: 'articleOutlineSection' })],
+    }, briefPublishingRequirement)),
+    defineField(withPublishingRequirement({
+      name: 'researchEvidence',
+      title: 'Evidence',
+      description: 'Evidence records that support the brief. Classify visibility before the article becomes publication-ready.',
+      type: 'array',
+      of: [defineArrayMember({ type: 'reference', to: [{ type: 'researchEvidence' }] })],
+    }, briefPublishingRequirement)),
     defineField({ name: 'articles', title: 'Articles', type: 'array', of: [defineArrayMember({ type: 'reference', to: [{ type: 'article' }] })] }),
-    defineField({ name: 'distributionNotes', title: 'Distribution notes', type: 'text', rows: 3 }),
-    defineField({ name: 'productHypothesis', title: 'Product hypothesis', type: 'text', rows: 3 }),
+    defineField({
+      name: 'distributionNotes',
+      title: 'Distribution notes',
+      description: 'Guidance for future spoke assets: channels, angles, audiences, or timing constraints.',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'productHypothesis',
+      title: 'Product hypothesis',
+      description: 'What this reader problem suggests about product demand or positioning.',
+      type: 'text',
+      rows: 3,
+    }),
     defineField({ name: 'contentOpportunity', title: 'Content opportunity', type: 'reference', to: [{ type: 'contentOpportunity' }] }),
     defineField({ name: 'kpiTarget', title: 'KPI target', type: 'contentKpiTarget' }),
     defineField({

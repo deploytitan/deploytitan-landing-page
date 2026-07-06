@@ -170,7 +170,13 @@ export function defaultPipelineGuideStages() {
         'Create or review contentInsight recommendations',
       ],
       exitCriteria: ['The article has a clear keep-growing, refresh, or reposition recommendation'],
-      relevantDocs: ['article', 'distributionAsset', 'articlePerformanceSnapshot', 'contentInsight'],
+      relevantDocs: [
+        'article',
+        'distributionAsset',
+        'articlePerformanceSnapshot',
+        'distributionAssetPerformanceSnapshot',
+        'contentInsight',
+      ],
     },
   ]
 }
