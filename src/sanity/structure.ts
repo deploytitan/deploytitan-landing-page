@@ -8,6 +8,7 @@ const hiddenTypes = [
   'researchEvidence',
   'contentBrief',
   'distributionAsset',
+  'distributionAssetPerformanceSnapshot',
   'articlePerformanceSnapshot',
   'contentInsight',
   'author',
@@ -89,6 +90,12 @@ const articleViews = (S: Parameters<StructureResolver>[0]) => [
     title: 'Published',
     schemaType: 'article',
     filter: '_type == "article" && status == "published"',
+  }),
+  filteredListItem(S, {
+    id: 'active-hubs',
+    title: 'Active Hubs',
+    schemaType: 'article',
+    filter: '_type == "article" && status == "published" && hubStatus == "activeHub"',
   }),
   filteredListItem(S, {
     id: 'needs-refresh',
@@ -215,6 +222,18 @@ export const structure: StructureResolver = (S) =>
                 filter: '_type == "distributionAsset" && status == "ready"',
               }),
               filteredListItem(S, {
+                id: 'story-spokes',
+                title: 'Story Spokes',
+                schemaType: 'distributionAsset',
+                filter: '_type == "distributionAsset" && spokeType == "story"',
+              }),
+              filteredListItem(S, {
+                id: 'missing-spoke-cta',
+                title: 'Missing Spoke CTA',
+                schemaType: 'distributionAsset',
+                filter: '_type == "distributionAsset" && (!defined(ctaUrl) || !defined(ctaLabel) || !defined(hubArticle))',
+              }),
+              filteredListItem(S, {
                 id: 'distribution-x',
                 title: 'X',
                 schemaType: 'distributionAsset',
@@ -275,6 +294,13 @@ export const structure: StructureResolver = (S) =>
                 title: 'Low Search CTR',
                 schemaType: 'articlePerformanceSnapshot',
                 filter: '_type == "articlePerformanceSnapshot" && metrics.searchImpressions > 100 && metrics.searchCtr < 0.02',
+              }),
+              filteredListItem(S, {
+                id: 'spoke-performance',
+                title: 'Spoke Performance',
+                schemaType: 'distributionAssetPerformanceSnapshot',
+                filter: '_type == "distributionAssetPerformanceSnapshot"',
+                defaultOrdering: [{ field: 'captureDate', direction: 'desc' }],
               }),
               filteredListItem(S, {
                 id: 'strong-product-signal',

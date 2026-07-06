@@ -2,6 +2,8 @@
 
 ## Content Operating System
 
+The full operator-facing walkthrough lives in [docs/CONTENT_OPERATING_SYSTEM.md](/Users/justinekizhak/projects/deploytitan-landing-page/docs/CONTENT_OPERATING_SYSTEM.md).
+
 The blog now runs on a Sanity-first content operating system centered on the `article` document type and its linked research/distribution/performance records:
 
 - `marketQuestion`
@@ -30,7 +32,10 @@ When an `article` publish webhook hits `/api/revalidate`, the app:
 - revalidates the article page and blog index
 - refreshes feed and sitemap routes
 - backfills seven-day and thirty-day review dates
-- creates draft `distributionAsset` records for `xThread`, `linkedin`, `dev`, and `newsletter`
+- promotes the article into an active content hub unless it was intentionally configured otherwise
+- creates six draft spoke-style `distributionAsset` records across X and LinkedIn using the story, observation, thread, contrarian, past-vs-present, and listicle formats
+- staggers those spoke assets across the article's configured `spokeCadenceWeeks`
+- seeds each spoke with a CTA back to the hub article plus campaign-specific UTM parameters
 - optionally pings `CONTENT_OPS_WEBHOOK_URL`
 - optionally posts to `CONTENT_OPS_SLACK_WEBHOOK_URL`
 

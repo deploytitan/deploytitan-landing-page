@@ -136,13 +136,14 @@ export function defaultPipelineGuideStages() {
       title: '5. Article Production',
       owner: 'Writer + reviewer',
       summary:
-        'Draft the article from the brief, then complete editorial, technical, and SEO checks before publishing.',
+        'Draft the article from the brief, configure it as a hub, then complete editorial, technical, and SEO checks before publishing.',
       entryCriteria: ['Brief is ready or article is awaitingResearch'],
       checklist: [
         'Write or refresh the article',
         'Add citations, FAQs, CTA, and methodology note',
         'Prepare the public evidence and sources section',
         'Complete SEO title and meta description',
+        'Set hub campaign name, revenue goal, primary CTA, and spoke cadence',
         'Run technical review',
         'Move the article to publicationReady before scheduling or publishing',
       ],
@@ -155,10 +156,13 @@ export function defaultPipelineGuideStages() {
       title: '6. Distribution and Measurement',
       owner: 'AI + human ops',
       summary:
-        'Measure content against KPI targets, create insights, and feed the results back into future opportunities and refresh decisions.',
+        'Publish the hub, generate six spokes, review CTA readiness, measure KPI performance, and feed the results back into future opportunities and refresh decisions.',
       entryCriteria: ['Article is published'],
       checklist: [
-        'Create distribution assets if missing',
+        'Confirm the article is marked as an active hub',
+        'Review the generated six-spoke distribution campaign',
+        'Confirm CTA labels, CTA URLs, schedule dates, and UTM parameters on each spoke',
+        'Capture spoke-level performance snapshots when channel metrics are available',
         'Run content:sync-performance for 7d and 30d windows',
         'Capture article performance snapshots',
         'Review 7-day and 30-day signals',

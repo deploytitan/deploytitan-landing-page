@@ -24,6 +24,20 @@ const articleCardLayoutValues = [
   { title: 'Featured wide card', value: 'featured' },
 ]
 
+const hubStatusValues = [
+  { title: 'Not a hub', value: 'notHub' },
+  { title: 'Active hub', value: 'activeHub' },
+  { title: 'Retired hub', value: 'retiredHub' },
+]
+
+const hubRevenueGoalValues = [
+  { title: 'Traffic', value: 'traffic' },
+  { title: 'Newsletter signups', value: 'newsletter' },
+  { title: 'Waitlist', value: 'waitlist' },
+  { title: 'Research CTA', value: 'researchCta' },
+  { title: 'Product discovery', value: 'productDiscovery' },
+]
+
 const proofReadyRequirement =
   'Required before an article can move to Publication Ready, Scheduled, or Published.'
 
@@ -178,6 +192,46 @@ export const articleType = defineType({
           return true
         }),
     }, publishedRequirement)),
+    defineField({
+      name: 'hubStatus',
+      title: 'Hub status',
+      type: 'string',
+      initialValue: 'activeHub',
+      description: 'Use active hubs to drive the spoke distribution system after publication.',
+      options: { list: hubStatusValues, layout: 'radio' },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'hubCampaignName',
+      title: 'Hub campaign name',
+      type: 'string',
+      description: 'Shared campaign label used across all spoke assets and UTM tags.',
+      validation: (Rule) => Rule.max(96),
+    }),
+    defineField({
+      name: 'hubPrimaryCta',
+      title: 'Hub primary CTA',
+      type: 'customerDiscoveryCta',
+      description:
+        'Primary CTA for the hub itself. Spokes should still point readers back to the article before this CTA takes over.',
+    }),
+    defineField({
+      name: 'hubRevenueGoal',
+      title: 'Hub revenue goal',
+      type: 'string',
+      initialValue: 'traffic',
+      options: { list: hubRevenueGoalValues, layout: 'radio' },
+      description: 'Primary downstream outcome this hub should optimize for.',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'spokeCadenceWeeks',
+      title: 'Spoke cadence (weeks)',
+      type: 'number',
+      initialValue: 6,
+      description: 'Number of weeks to spread the six spoke assets across.',
+      validation: (Rule) => Rule.required().integer().min(4).max(8),
+    }),
     defineField({
       name: 'coverImage',
       title: 'Cover image',

@@ -6,6 +6,7 @@ import {
   type ArticleAnalyticsContext,
   hasAnalyticsConsent,
   identifyUser,
+  resolveArticleAnalyticsContext,
   trackEvent,
 } from '@/lib/analytics'
 import { NEWSLETTER_API_PATH, NEWSLETTER_PROVIDER } from '@/lib/env'
@@ -24,15 +25,17 @@ export function ArticleNewsletterSignup({ articleContext }: ArticleNewsletterSig
     setState('loading')
 
     try {
+      const resolvedArticleContext = resolveArticleAnalyticsContext(articleContext)
       const response = await fetch(NEWSLETTER_API_PATH, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
           name,
-          articleContext,
+          articleContext: resolvedArticleContext,
           signupPlacement: 'article-inline',
-          referringSite: typeof window !== 'undefined' ? window.location.href : articleContext.canonicalUrl,
+          referringSite:
+            typeof window !== 'undefined' ? window.location.href : resolvedArticleContext.canonicalUrl,
         }),
       })
 
@@ -45,13 +48,13 @@ export function ArticleNewsletterSignup({ articleContext }: ArticleNewsletterSig
           email,
           name,
           newsletter_provider: NEWSLETTER_PROVIDER,
-          latest_newsletter_signup_article: articleContext.articleSlug,
+          latest_newsletter_signup_article: resolvedArticleContext.articleSlug,
         })
       }
 
       trackEvent(
         'newsletterSignup',
-        buildArticleTrackingPayload(articleContext, {
+        buildArticleTrackingPayload(resolvedArticleContext, {
           provider: NEWSLETTER_PROVIDER,
           signupPlacement: 'article-inline',
         }),

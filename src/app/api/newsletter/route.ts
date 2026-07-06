@@ -44,7 +44,13 @@ export async function POST(request: Request) {
 
   const canonical = normalizedContext.canonicalUrl || `${SITE_URL}/blog/${normalizedContext.articleSlug}/`
   const url = new URL(canonical)
+  const referringUrl = referringSite ? new URL(referringSite) : null
   const searchParams = url.searchParams
+  const distributionAssetId =
+    normalizedContext.distributionAssetId ||
+    referringUrl?.searchParams.get('distribution_asset_id') ||
+    referringUrl?.searchParams.get('distributionAssetId') ||
+    ''
 
   try {
     await submitToHubSpotForm({
@@ -59,7 +65,7 @@ export async function POST(request: Request) {
         { name: 'topic_cluster', value: normalizedContext.topicCluster },
         { name: 'primary_keyword', value: normalizedContext.primaryKeyword },
         { name: 'target_persona', value: normalizedContext.targetPersona },
-        { name: 'distribution_asset_id', value: normalizedContext.distributionAssetId },
+        { name: 'distribution_asset_id', value: distributionAssetId },
         { name: 'signup_placement', value: signupPlacement },
         { name: 'utm_source', value: searchParams.get('utm_source') ?? 'deploytitan' },
         { name: 'utm_medium', value: searchParams.get('utm_medium') ?? 'blog' },

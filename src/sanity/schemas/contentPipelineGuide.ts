@@ -20,7 +20,7 @@ export const contentPipelineGuideType = defineType({
       type: 'text',
       rows: 6,
       initialValue:
-        'Use this guide as the operating manual for the DeployTitan content system. The flow is: discover an opportunity, materialize it into a brief pipeline, refine the brief, draft the article, publish, then measure KPI impact and feed learnings back into the system.',
+        'Use this guide as the operating manual for the DeployTitan content system. The flow is: discover an opportunity, materialize it into a brief pipeline, refine the brief, draft the article as a hub, publish, generate a six-spoke distribution campaign, then measure KPI impact and feed learnings back into the system.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

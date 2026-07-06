@@ -13,6 +13,10 @@ export type ArticleRecord = {
   secondaryKeywords?: string[] | null
   relatedQuestions?: string[] | null
   searchIntent?: string | null
+  hubStatus?: 'notHub' | 'activeHub' | 'retiredHub' | null
+  hubCampaignName?: string | null
+  hubRevenueGoal?: 'traffic' | 'newsletter' | 'waitlist' | 'researchCta' | 'productDiscovery' | null
+  spokeCadenceWeeks?: number | null
   publishedAt?: string | null
   updatedAt?: string | null
   _updatedAt?: string | null
@@ -63,6 +67,12 @@ export type ArticleRecord = {
       }[]
     | null
   customerDiscoveryCta?: {
+    question?: string | null
+    label?: string | null
+    href?: string | null
+    supportingText?: string | null
+  } | null
+  hubPrimaryCta?: {
     question?: string | null
     label?: string | null
     href?: string | null

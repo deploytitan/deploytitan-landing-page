@@ -7,6 +7,7 @@ import { contentInsightType } from './contentInsight'
 import { contentOpportunityType } from './contentOpportunity'
 import { contentPipelineGuideType } from './contentPipelineGuide'
 import { distributionAssetType } from './distributionAsset'
+import { distributionAssetPerformanceSnapshotType } from './distributionAssetPerformanceSnapshot'
 import { marketQuestionType } from './marketQuestion'
 import {
   analyticsMetricSetType,
@@ -14,6 +15,7 @@ import {
   calloutBlockType,
   contentKpiTargetType,
   customerDiscoveryCtaType,
+  distributionAnalyticsMetricSetType,
   diagramBlockType,
   faqItemType,
   pipelineGuideStageType,
@@ -36,6 +38,7 @@ export const schemaTypes = [
   contentOpportunityType,
   contentPipelineGuideType,
   distributionAssetType,
+  distributionAssetPerformanceSnapshotType,
   articlePerformanceSnapshotType,
   contentInsightType,
   authorType,
@@ -44,6 +47,7 @@ export const schemaTypes = [
   faqItemType,
   utmParametersType,
   analyticsMetricSetType,
+  distributionAnalyticsMetricSetType,
   customerDiscoveryCtaType,
   targetPersonaType,
   topicClusterType,

@@ -25,6 +25,10 @@ const ARTICLE_LIST_PROJECTION = `
   secondaryKeywords,
   relatedQuestions,
   searchIntent,
+  hubStatus,
+  hubCampaignName,
+  hubRevenueGoal,
+  spokeCadenceWeeks,
   publishedAt,
   updatedAt,
   _updatedAt,
@@ -72,6 +76,7 @@ export const articleBySlugQuery = defineQuery(`
       }[defined(visibility) && visibility != "internal"]
     ),
     customerDiscoveryCta,
+    hubPrimaryCta,
     contentBrief->{
       _id,
       title,

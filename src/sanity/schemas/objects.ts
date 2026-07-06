@@ -152,6 +152,24 @@ export const analyticsMetricSetType = defineType({
   ],
 })
 
+export const distributionAnalyticsMetricSetType = defineType({
+  name: 'distributionAnalyticsMetricSet',
+  title: 'Distribution Analytics Metric Set',
+  type: 'object',
+  fields: [
+    defineField({ name: 'impressions', title: 'Impressions', type: 'number', initialValue: 0 }),
+    defineField({ name: 'clicks', title: 'Clicks', type: 'number', initialValue: 0 }),
+    defineField({ name: 'clickThroughRate', title: 'Click-through rate', type: 'number', initialValue: 0 }),
+    defineField({ name: 'articleViews', title: 'Article views', type: 'number', initialValue: 0 }),
+    defineField({ name: 'uniqueVisitors', title: 'Unique visitors', type: 'number', initialValue: 0 }),
+    defineField({ name: 'newsletterSignups', title: 'Newsletter signups', type: 'number', initialValue: 0 }),
+    defineField({ name: 'researchCtaClicks', title: 'Research CTA clicks', type: 'number', initialValue: 0 }),
+    defineField({ name: 'waitlistSignups', title: 'Waitlist signups', type: 'number', initialValue: 0 }),
+    defineField({ name: 'interviewRequests', title: 'Interview requests', type: 'number', initialValue: 0 }),
+    defineField({ name: 'shares', title: 'Shares', type: 'number', initialValue: 0 }),
+  ],
+})
+
 export const customerDiscoveryCtaType = defineType({
   name: 'customerDiscoveryCta',
   title: 'Customer Discovery CTA',
