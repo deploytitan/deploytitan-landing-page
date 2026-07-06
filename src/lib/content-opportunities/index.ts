@@ -7,10 +7,12 @@ import {
   renderManualAnalysisPrompt,
 } from './analyse-with-llm'
 import { fetchGscComparison, type GscComparisonResult } from './fetch-gsc'
+import { fetchSocialSignals } from './fetch-social-signals'
 import { getExistingArticles } from './get-existing-articles'
 import { fetchWebSignals } from './fetch-web-signals'
 import { scoreContentOpportunities } from './score-opportunities'
 import { scoreMarketOpportunities } from './score-market-opportunities'
+import { DEFAULT_SOCIAL_SOURCES } from './social-source-config'
 import { DEFAULT_WEB_SOURCES } from './source-config'
 import type { ExistingArticleSummary, ExternalContentSignal } from './types'
 
@@ -25,10 +27,12 @@ export async function runContentOpportunityResearch(
   const fetched: GscComparisonResult = await fetchGscComparison()
   const existingArticles: ExistingArticleSummary[] = await getExistingArticles()
   const webSignals = await fetchWebSignals(DEFAULT_WEB_SOURCES)
+  const socialSignals = await fetchSocialSignals(DEFAULT_SOCIAL_SOURCES)
+  const combinedSignals = [...webSignals, ...socialSignals]
   const candidates = scoreContentOpportunities(fetched.currentRows, fetched.previousRows)
-  const competitorSignals = webSignals.filter((signal) => signal.sourceType === 'competitor')
-  const marketSignals = webSignals.filter((signal) => signal.sourceType === 'market')
-  const marketOpportunities = scoreMarketOpportunities(webSignals)
+  const competitorSignals = combinedSignals.filter((signal) => signal.sourceType === 'competitor')
+  const marketSignals = combinedSignals.filter((signal) => signal.sourceType === 'market')
+  const marketOpportunities = scoreMarketOpportunities(combinedSignals)
   const bundle = buildManualAnalysisBundle({
     siteUrl: fetched.siteUrl,
     windows: fetched.windows,
@@ -48,8 +52,10 @@ export async function runContentOpportunityResearch(
 
   const bundlePath = path.join(outputDir, 'candidate-payload.json')
   const promptPath = path.join(outputDir, 'analysis-prompt.md')
+  const socialEvidencePath = path.join(outputDir, 'social-evidence.json')
   await writeFile(bundlePath, `${JSON.stringify(bundle, null, 2)}\n`, 'utf8')
   await writeFile(promptPath, prompt, 'utf8')
+  await writeFile(socialEvidencePath, `${JSON.stringify(socialSignals, null, 2)}\n`, 'utf8')
 
   return {
     siteUrl: fetched.siteUrl,
@@ -61,8 +67,10 @@ export async function runContentOpportunityResearch(
     existingArticleCount: existingArticles.length,
     competitorSignalCount: competitorSignals.length,
     marketSignalCount: marketSignals.length,
+    socialSignalCount: socialSignals.length,
     marketOpportunityCount: marketOpportunities.length,
     bundlePath,
     promptPath,
+    socialEvidencePath,
   }
 }

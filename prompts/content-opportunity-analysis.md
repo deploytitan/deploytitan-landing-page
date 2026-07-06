@@ -22,6 +22,9 @@ Rules:
 - Group semantically similar queries into one opportunity.
 - Use Search Console metrics as evidence, not as absolute keyword volume.
 - If an opportunity is mostly competitor-gap or market-trend driven, say that clearly in the reasoning.
+- Treat social/community signals as qualitative evidence of pain, language, and emerging requirements; do not treat likes, upvotes, comments, or views as market size.
+- Prefer social patterns that repeat across multiple communities, repositories, or platforms.
+- When social/community evidence influences an opportunity, mention the platform or community in `reasoning`.
 - Prefer narrow technical topics where DeployTitan can offer a real framework, implementation, benchmark, diagram, or opinionated point of view.
 - Do not fabricate demand, competitor data, or search volume.
 - Return no more than 3 opportunities.
@@ -75,7 +78,7 @@ I will provide:
 1. Existing article catalog
 2. Candidate GSC opportunities with current and previous period metrics
 3. Competitor content signals
-4. Market trend signals
+4. Market trend signals, including public social/community signals when available
 5. Aggregated market opportunity themes
 
 If there is no strong Search Console data, you may still return opportunities derived from competitor gaps or market signals. In that case, keep metrics at `0` where no GSC evidence exists and explain the non-GSC evidence in `reasoning`.

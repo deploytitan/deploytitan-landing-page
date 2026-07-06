@@ -134,12 +134,33 @@ export interface ManualAnalysisBundle {
 
 export type SourceType = 'competitor' | 'market'
 
+export type SocialPlatform = 'reddit' | 'x' | 'hacker-news' | 'github' | 'stack-exchange'
+
 export interface WebSourceConfig {
   name: string
   url: string
   type: SourceType
   tags: string[]
   maxItems?: number
+}
+
+export interface SocialSourceConfig {
+  platform: SocialPlatform
+  name: string
+  queries: string[]
+  communities?: string[]
+  repositories?: string[]
+  tags?: string[]
+  maxItems?: number
+  enabled?: boolean
+}
+
+export interface SignalEngagement {
+  score?: number | null
+  comments?: number | null
+  reactions?: number | null
+  reposts?: number | null
+  views?: number | null
 }
 
 export interface ExternalContentSignal {
@@ -151,6 +172,13 @@ export interface ExternalContentSignal {
   excerpt: string | null
   publishedAt: string | null
   matchedThemes: MarketThemeId[]
+  platform?: SocialPlatform | null
+  community?: string | null
+  authorHandle?: string | null
+  query?: string | null
+  contentKind?: string | null
+  engagement?: SignalEngagement | null
+  fetchedAt?: string | null
 }
 
 export interface MarketOpportunityCandidate {

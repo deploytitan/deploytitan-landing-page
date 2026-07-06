@@ -61,6 +61,8 @@ Operator runs:
 pnpm content:research --output-dir ./tmp/content-opportunities
 ```
 
+The research run combines Search Console, curated web sources, and public social/community signals. Reddit and X require credentials; Hacker News, Stack Overflow, and public GitHub issue search can run without credentials, though GitHub works better with `GITHUB_TOKEN`. Social inputs are exported to `social-evidence.json` for review before importing any opportunity.
+
 The generated prompt is reviewed in ChatGPT or Codex, and the final JSON is imported:
 
 ```bash

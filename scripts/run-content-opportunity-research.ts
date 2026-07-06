@@ -30,9 +30,11 @@ async function main() {
   console.log(`Existing article records loaded: ${result.existingArticleCount}`)
   console.log(`Competitor signals collected: ${result.competitorSignalCount}`)
   console.log(`Market signals collected: ${result.marketSignalCount}`)
+  console.log(`Social signals collected: ${result.socialSignalCount}`)
   console.log(`Combined market opportunities scored: ${result.marketOpportunityCount}`)
   console.log(`Prompt written to: ${result.promptPath}`)
   console.log(`Payload written to: ${result.bundlePath}`)
+  console.log(`Social evidence written to: ${result.socialEvidencePath}`)
 }
 
 main().catch((error) => {
