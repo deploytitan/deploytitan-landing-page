@@ -12,6 +12,7 @@ jobs:
   sync:
     name: Sync Content Performance
     runs-on: ubuntu-latest
+    environment: Production
     permissions:
       contents: read
     env:

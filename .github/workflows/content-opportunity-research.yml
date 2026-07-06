@@ -12,6 +12,7 @@ jobs:
   research:
     name: Generate Weekly Content Opportunity Payload
     runs-on: ubuntu-latest
+    environment: Production
     permissions:
       contents: read
     env:
