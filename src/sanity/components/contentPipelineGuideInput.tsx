@@ -286,6 +286,79 @@ export const DistributionAssetPerformanceSnapshotPipelineGuideInput = createCont
   defaultNextStep: 'Capture channel metrics for the spoke and use them to improve future distribution.',
 })
 
+export function ContentPipelineGuideOverviewInput() {
+  const stages = (useFormValue(['stages']) as PipelineGuideStage[] | undefined) ?? defaultPipelineGuideStages()
+  const overview = String(useFormValue(['overview']) ?? '').trim()
+
+  return (
+    <div style={styles.panel}>
+      <div style={styles.header}>
+        <div>
+          <div style={styles.eyebrow}>System map</div>
+          <div style={styles.title}>DeployTitan Content Pipeline</div>
+        </div>
+        <div style={styles.badge}>{stages.length} stages</div>
+      </div>
+
+      {overview ? <div style={styles.summary}>{overview}</div> : null}
+
+      <div style={styles.flow} aria-label="DeployTitan content pipeline flow chart">
+        {stages.map((stage, index) => (
+          <div
+            key={stage._key ?? stage.title ?? index}
+            style={{
+              ...styles.flowStep,
+              ...(index === 0 ? styles.flowStepComplete : {}),
+            }}
+          >
+            <span style={styles.flowNumber}>{index + 1}</span>
+            <span>{cleanTitle(stage.title)}</span>
+          </div>
+        ))}
+      </div>
+
+      <div style={styles.stageGrid}>
+        {stages.map((stage, index) => (
+          <div key={stage._key ?? stage.title ?? index} style={styles.stageCard}>
+            <div style={styles.stageCardHeader}>
+              <span style={styles.stageNumber}>{index + 1}</span>
+              <div>
+                <div style={styles.stageTitle}>{cleanTitle(stage.title)}</div>
+                {stage.owner ? <div style={styles.stageOwner}>{stage.owner}</div> : null}
+              </div>
+            </div>
+
+            <div style={styles.stageSummary}>{stage.summary}</div>
+
+            <Checklist title="Primary work" items={stage.checklist?.slice(0, 4)} />
+
+            {stage.relevantDocs?.length ? (
+              <div style={styles.docTypeRow}>
+                {stage.relevantDocs.map((docType) => (
+                  <span key={docType} style={styles.docTypePill}>
+                    {formatDocType(docType)}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        ))}
+      </div>
+
+      <div style={styles.nextStep}>
+        <strong>How to use this page:</strong> edit the overview and stage records below when the operating model changes.
+        Individual documents read from this guide to show their focused stage help.
+      </div>
+    </div>
+  )
+}
+
+function formatDocType(docType: string) {
+  return docType
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/^./, (character) => character.toUpperCase())
+}
+
 function Checklist({
   title,
   items,
@@ -388,6 +461,65 @@ const styles: Record<string, CSSProperties> = {
     display: 'grid',
     gap: 14,
     gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+  },
+  stageGrid: {
+    display: 'grid',
+    gap: 12,
+    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+    marginTop: 14,
+  },
+  stageCard: {
+    border: '1px solid var(--card-border-color)',
+    borderRadius: 8,
+    display: 'grid',
+    gap: 10,
+    padding: 12,
+  },
+  stageCardHeader: {
+    alignItems: 'flex-start',
+    display: 'flex',
+    gap: 10,
+  },
+  stageNumber: {
+    alignItems: 'center',
+    border: '1px solid var(--card-focus-ring-color)',
+    borderRadius: 999,
+    display: 'inline-flex',
+    flex: '0 0 auto',
+    fontSize: 12,
+    fontWeight: 700,
+    height: 24,
+    justifyContent: 'center',
+    width: 24,
+  },
+  stageTitle: {
+    fontSize: 14,
+    fontWeight: 700,
+    lineHeight: 1.3,
+  },
+  stageOwner: {
+    color: 'var(--card-muted-fg-color)',
+    fontSize: 12,
+    lineHeight: 1.4,
+    marginTop: 2,
+  },
+  stageSummary: {
+    color: 'var(--card-muted-fg-color)',
+    fontSize: 13,
+    lineHeight: 1.45,
+  },
+  docTypeRow: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  docTypePill: {
+    border: '1px solid var(--card-border-color)',
+    borderRadius: 999,
+    color: 'var(--card-muted-fg-color)',
+    fontSize: 11,
+    fontWeight: 600,
+    padding: '3px 7px',
   },
   listTitle: {
     fontSize: 13,

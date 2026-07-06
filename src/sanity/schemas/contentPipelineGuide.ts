@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 
+import { ContentPipelineGuideOverviewInput } from '../components/contentPipelineGuideInput'
 import { defaultPipelineGuideStages } from '../lib/workflowDefaults'
 
 export const contentPipelineGuideType = defineType({
@@ -7,6 +8,16 @@ export const contentPipelineGuideType = defineType({
   title: 'Content Pipeline Guide',
   type: 'document',
   fields: [
+    defineField({
+      name: 'pipelineGuideOverview',
+      title: 'Pipeline guide overview',
+      description: 'High-level operating map for how the DeployTitan content system works.',
+      type: 'string',
+      readOnly: true,
+      components: {
+        input: ContentPipelineGuideOverviewInput,
+      },
+    }),
     defineField({
       name: 'title',
       title: 'Title',
