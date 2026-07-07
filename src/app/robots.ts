@@ -8,7 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         disallow: '/',
       },
-      host: SITE_URL,
     }
   }
 
@@ -19,6 +18,5 @@ export default function robots(): MetadataRoute.Robots {
       disallow: ['/studio', '/api/'],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
   }
 }
