@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import posthog from 'posthog-js'
 import { WAITLIST_URL } from '@/lib/env'
+import { trackEvent } from '@/lib/analytics'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
 import { Button } from '../components/shared/Button'
@@ -32,7 +32,7 @@ export default function Contact() {
     try {
       await navigator.clipboard.writeText(email)
       setCopiedEmail(email)
-      posthog.capture('contact_email_copied', { email })
+      trackEvent('contact_email_copied', { email })
       window.setTimeout(() => {
         setCopiedEmail((current) => (current === email ? null : current))
       }, 2000)
@@ -65,7 +65,7 @@ export default function Contact() {
               size="lg"
               className="rounded-[8px]"
               onClick={() =>
-                posthog.capture('contact_route_clicked', {
+                trackEvent('contact_route_clicked', {
                   contact_type: 'signup',
                   href: WAITLIST_URL,
                 })
@@ -80,7 +80,7 @@ export default function Contact() {
               size="lg"
               className="rounded-[8px]"
               onClick={() =>
-                posthog.capture('contact_route_clicked', {
+                trackEvent('contact_route_clicked', {
                   contact_type: 'sales',
                   href: 'mailto:sales@deploytitan.com',
                 })
@@ -109,7 +109,7 @@ export default function Contact() {
                 href="mailto:sales@deploytitan.com?subject=DeployTitan%20fit%20for%20our%20team"
                 className="text-primary-accessible mt-5 inline-block font-mono text-[11px] tracking-[0.12em] transition-opacity hover:opacity-70"
                 onClick={() =>
-                  posthog.capture('contact_route_clicked', {
+                  trackEvent('contact_route_clicked', {
                     contact_type: 'sales',
                     href: 'mailto:sales@deploytitan.com',
                   })
@@ -137,7 +137,7 @@ export default function Contact() {
                   size="sm"
                   className="rounded-[8px]"
                   onClick={() =>
-                    posthog.capture('contact_route_clicked', {
+                    trackEvent('contact_route_clicked', {
                       contact_type: 'signup',
                       href: WAITLIST_URL,
                     })
@@ -176,7 +176,7 @@ export default function Contact() {
                   href={`mailto:${route.email}`}
                   className="text-ink-secondary hover:text-ink font-mono text-[11px] tracking-[0.08em] transition-colors"
                   onClick={() =>
-                    posthog.capture('contact_support_route_clicked', {
+                    trackEvent('contact_support_route_clicked', {
                       contact_type: route.label,
                       email: route.email,
                     })

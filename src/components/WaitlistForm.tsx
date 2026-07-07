@@ -1,9 +1,9 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import posthog from 'posthog-js'
 import { useState } from 'react'
 import { FORM_ENDPOINT } from '@/lib/env'
+import { identifyUser, trackEvent } from '@/lib/analytics'
 import { Button } from './shared/Button'
 
 declare global {
@@ -70,7 +70,7 @@ export function WaitlistForm({
         utm_term: currentSearchParams.get('utm_term') ?? '',
         utm_content: currentSearchParams.get('utm_content') ?? '',
       }
-      posthog.identify(email, {
+      identifyUser(email, {
         name,
         email,
         company,
@@ -80,7 +80,7 @@ export function WaitlistForm({
         budget_range: budgetRange,
         latest_waitlist_source: source,
       })
-      posthog.capture('waitlist_joined', payload)
+      trackEvent('waitlist_joined', payload)
       window.gtag?.('event', 'sign_up', {
         method: 'waitlist_form',
         source,

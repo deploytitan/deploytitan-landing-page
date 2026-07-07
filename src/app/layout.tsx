@@ -4,9 +4,6 @@ import Script from 'next/script'
 import { Barlow, Bitter, JetBrains_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { SiteLayoutClient } from '@/layouts/SiteLayoutClient'
-import { SanityLive } from '@/sanity/lib/live'
-import { VisualEditing } from 'next-sanity/visual-editing'
-import { DisableDraftMode } from '@/components/blog/DisableDraftMode'
 import { GaPageViewTracker } from '@/components/analytics/GaPageViewTracker'
 import { ConsentBanner } from '@/components/analytics/ConsentBanner'
 import { PosthogInit } from '@/components/analytics/PosthogInit'
@@ -93,6 +90,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     cookieStore.get('dt_analytics_consent')?.value,
   )
   const canLoadAnalytics = analyticsConsent === 'granted'
+  const draftModeControls = isDraft
+    ? await import('@/components/blog/DraftModeControls').then(({ DraftModeControls }) => (
+        <DraftModeControls />
+      ))
+    : null
 
   return (
     <html
@@ -140,13 +142,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <SiteLayoutClient>{children}</SiteLayoutClient>
           <ConsentBanner initialState={analyticsConsent} />
         </ThemeProvider>
-        <SanityLive />
-        {isDraft && (
-          <>
-            <VisualEditing />
-            <DisableDraftMode />
-          </>
-        )}
+        {draftModeControls}
       </body>
     </html>
   )

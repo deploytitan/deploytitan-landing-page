@@ -1,7 +1,7 @@
 'use client'
 
-import posthog from 'posthog-js'
 import { DEMO_URL } from '@/lib/env'
+import { trackEvent } from '@/lib/analytics'
 import Link from 'next/link'
 
 const resources = [
@@ -43,7 +43,7 @@ interface Props {
 
 export function ResourcesDropdown({ onClose }: Props) {
   const handleClick = (label: string, external: boolean) => {
-    posthog.capture('nav_resource_clicked', { resource_label: label, external })
+    trackEvent('nav_resource_clicked', { resource_label: label, external })
     onClose()
   }
 

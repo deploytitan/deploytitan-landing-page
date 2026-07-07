@@ -15,8 +15,19 @@ export function SiteLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
   useEffect(() => {
-    setBarHeight(announcementRef.current?.offsetHeight || 0)
-  }, [announcementRef, barDismissed])
+    const announcement = announcementRef.current
+    if (!announcement) {
+      setBarHeight(0)
+      return
+    }
+
+    const resizeObserver = new ResizeObserver(([entry]) => {
+      setBarHeight(entry?.borderBoxSize?.[0]?.blockSize ?? entry?.contentRect.height ?? 0)
+    })
+
+    resizeObserver.observe(announcement)
+    return () => resizeObserver.disconnect()
+  }, [barDismissed])
 
   // Scroll to top on route change
   useEffect(() => {

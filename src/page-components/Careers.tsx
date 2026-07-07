@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import posthog from 'posthog-js'
+import { trackEvent } from '@/lib/analytics'
 import { jobs, DEPARTMENT_LABELS, type Department } from '../data/jobs'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
@@ -136,7 +136,7 @@ export default function Careers() {  const [filter, setFilter] = useState<string
                 href={`mailto:jobs@deploytitan.com?subject=Application: ${encodeURIComponent(job.title)}`}
                 className="inline-flex items-center gap-2 shrink-0 px-4 py-2.5 border border-line text-ink-secondary text-sm font-medium hover:border-primary/30 hover:text-ink transition-colors"
                 style={{ borderRadius: '2px' }}
-                onClick={() => posthog.capture('job_application_clicked', { job_title: job.title, department: job.department, location: job.location, job_type: job.type })}
+                onClick={() => trackEvent('job_application_clicked', { job_title: job.title, department: job.department, location: job.location, job_type: job.type })}
               >
                 Apply
                 <svg

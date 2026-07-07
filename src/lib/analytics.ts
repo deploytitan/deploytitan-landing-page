@@ -1,6 +1,5 @@
 'use client'
 
-import posthog from 'posthog-js'
 import { ANALYTICS_CONSENT_COOKIE } from './consent'
 
 declare global {
@@ -91,7 +90,9 @@ export function resolveArticleAnalyticsContext(context: ArticleAnalyticsContext)
 
 export function trackEvent(name: string, payload: Record<string, unknown>) {
   if (!hasAnalyticsConsent()) return
-  posthog.capture(name, payload)
+  void import('posthog-js').then(({ default: posthog }) => {
+    posthog.capture(name, payload)
+  })
   if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
     window.gtag('event', name, payload)
   }
@@ -99,5 +100,7 @@ export function trackEvent(name: string, payload: Record<string, unknown>) {
 
 export function identifyUser(id: string, payload: Record<string, unknown>) {
   if (!hasAnalyticsConsent()) return
-  posthog.identify(id, payload)
+  void import('posthog-js').then(({ default: posthog }) => {
+    posthog.identify(id, payload)
+  })
 }

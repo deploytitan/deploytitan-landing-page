@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect } from 'react'
-import posthog from 'posthog-js'
 
 type PosthogInitProps = {
   apiKey: string
@@ -20,18 +19,28 @@ export function PosthogInit({ apiKey, apiHost }: PosthogInitProps) {
       return
     }
 
-    if (!window.__deployTitanPosthogInitialized) {
-      posthog.init(apiKey, {
-        api_host: apiHost,
-        capture_pageview: true,
-        capture_pageleave: true,
-        persistence: 'localStorage+cookie',
-        person_profiles: 'identified_only',
-      })
-      window.__deployTitanPosthogInitialized = true
-    }
+    let cancelled = false
 
-    posthog.opt_in_capturing()
+    void import('posthog-js').then(({ default: posthog }) => {
+      if (cancelled) return
+
+      if (!window.__deployTitanPosthogInitialized) {
+        posthog.init(apiKey, {
+          api_host: apiHost,
+          capture_pageview: true,
+          capture_pageleave: true,
+          persistence: 'localStorage+cookie',
+          person_profiles: 'identified_only',
+        })
+        window.__deployTitanPosthogInitialized = true
+      }
+
+      posthog.opt_in_capturing()
+    })
+
+    return () => {
+      cancelled = true
+    }
   }, [apiHost, apiKey])
 
   return null
