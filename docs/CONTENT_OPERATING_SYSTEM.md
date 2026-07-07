@@ -6,19 +6,19 @@ This document describes the end-to-end content pipeline that powers DeployTitan'
 
 The system is built around one connected record graph:
 
-`contentOpportunity -> marketQuestion -> researchEvidence -> contentBrief -> article -> distributionAsset -> distributionAssetPerformanceSnapshot -> articlePerformanceSnapshot -> contentInsight`
+`contentOpportunity -> researchEvidence -> article -> distributionAsset -> distributionAssetPerformanceSnapshot -> articlePerformanceSnapshot -> contentInsight`
 
 Each model has a specific job:
 
 - `contentOpportunity`: stores candidate topics discovered from Search Console, competitor signals, and market signals.
-- `marketQuestion`: frames the customer problem or demand signal behind the opportunity.
-- `researchEvidence`: captures internal and public proof that supports the topic.
-- `contentBrief`: turns the opportunity into a draftable plan with thesis, outline, keyword, persona, CTA goal, and KPI target.
-- `article`: the core long-form content object. Published articles act as hubs.
+- `researchEvidence`: captures only proof that materially helps the article. Most public facts can stay as article citations.
+- `article`: the core long-form content object. It now holds the draft plan, answer, SEO intent, proof, body, CTA, and hub settings.
 - `distributionAsset`: the spoke layer for distribution, CTA routing, and campaign scheduling.
 - `distributionAssetPerformanceSnapshot`: stores per-spoke reach, click, and conversion performance.
 - `articlePerformanceSnapshot`: stores 7-day, 30-day, or custom KPI snapshots.
 - `contentInsight`: stores recommendations based on KPI performance and creates the loop back into future refreshes or new opportunities.
+
+`marketQuestion` and `contentBrief` may still exist as legacy Sanity types, but they are no longer part of the fast publishing path.
 
 ## Operating model
 
@@ -74,48 +74,58 @@ Result:
 - new or refreshed `contentOpportunity` records
 - opportunity score, reasoning, unique angle, query set, source context, and KPI target seed
 
-### 2. Brief materialization
+### 1.5 ChatGPT round-trip in Studio
 
-In Sanity Studio, the operator opens an accepted `contentOpportunity` and runs `Create Brief Pipeline`.
+For single-record editing, use the Studio clipboard actions instead of hand-copying fields:
+
+1. Open a `contentOpportunity` or `article`.
+2. Run `Copy for ChatGPT`.
+3. Paste the JSON into ChatGPT or Codex and ask for a completed JSON response.
+4. Copy the JSON response.
+5. Return to the same Sanity document and run `Import from ChatGPT`.
+6. Confirm the field list before the patch is applied.
+
+The importer accepts the labeled JSON produced by `Copy for ChatGPT`, and it also accepts a simple direct object with matching field names. It patches matching non-empty fields only, so unanswered fields can stay blank instead of being overwritten with placeholder text.
+
+### 2. Article draft creation
+
+In Sanity Studio, the operator opens an accepted `contentOpportunity` and runs `Create Article Draft`.
 
 That action creates or refreshes:
 
-- `marketQuestion`
 - `researchEvidence`
-- `contentBrief`
 - a seeded `article` record for new opportunities, or a linked existing article for refresh work
 
-### 3. Brief refinement
+### 3. Article shaping
 
-The editor strengthens the brief before drafting:
+The editor strengthens the article record before drafting:
 
 - clarify the direct answer
-- tighten the differentiated thesis
+- tighten the DeployTitan-specific angle
 - confirm target persona and primary keyword
 - refine the outline
-- classify evidence for internal or public use
-- set the CTA goal and KPI target
+- attach citations or public evidence where claims need support
+- set the CTA and KPI target
 
-When ready, the brief moves to `briefReady`.
+When ready, the article moves into `drafting` or `technicalReview`.
 
 ### 4. Evidence review
 
 The proof layer is prepared for publication:
 
-- validate evidence quality
-- add `publicSummary` where needed
-- explain sensitive evidence with `sensitivityReason`
-- decide whether the article needs a `publicEvidence` override
-- draft the methodology note
+- use article citations for ordinary public sources
+- use `researchEvidence` only for reusable research signals or generated evidence
+- mark evidence Public only when it is safe to render on the article page
+- add a concise methodology note
 
 ### 5. Article production
 
-The writer turns the brief into the final long-form hub article:
+The writer turns the shaped article record into the final long-form hub article:
 
 - write the article body
 - add citations and FAQ
 - complete SEO metadata
-- assign technical reviewer and review date
+- set the last reviewed date when the article has been accuracy checked
 - define hub settings:
   - `hubStatus`
   - `hubCampaignName`
@@ -211,7 +221,7 @@ Sanity Studio currently exposes the main operating areas:
 
 - Opportunities
 - Articles
-- Customer Discovery
+- Research
 - Distribution
 - Performance
 - Pipeline Guide
@@ -219,8 +229,17 @@ Sanity Studio currently exposes the main operating areas:
 Useful newer views include:
 
 - `Active Hubs`
+- `Public Evidence`
 - `Story Spokes`
 - `Missing Spoke CTA`
+
+To refresh the Pipeline Guide singleton in Sanity after changing the default stages in code, run:
+
+```bash
+pnpm content:sync-pipeline-guide
+```
+
+This requires `SANITY_PROJECT_ID` or `NEXT_PUBLIC_SANITY_PROJECT_ID`, `SANITY_DATASET` or `NEXT_PUBLIC_SANITY_DATASET`, and `SANITY_API_WRITE_TOKEN`.
 
 ## Current limitations
 

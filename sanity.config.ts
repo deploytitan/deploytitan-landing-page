@@ -16,6 +16,8 @@ import { schemaTypes } from './src/sanity/schemas'
 import { structure } from './src/sanity/structure'
 import { createOpportunityPipelineAction } from './src/sanity/actions/createOpportunityPipelineAction'
 import { copyDocumentForLLMAction } from './src/sanity/actions/copyDocumentForLLMAction'
+import { deleteContentPipelineAction } from './src/sanity/actions/deleteContentPipelineAction'
+import { importDocumentFromLLMAction } from './src/sanity/actions/importDocumentFromLLMAction'
 
 const resolve: PresentationPluginOptions['resolve'] = {
   locations: {
@@ -48,11 +50,36 @@ export default defineConfig({
   document: {
     actions: (previousActions, context) => {
       if (context.schemaType === 'contentOpportunity') {
-        return [createOpportunityPipelineAction, copyDocumentForLLMAction, ...previousActions]
+        return [
+          createOpportunityPipelineAction,
+          copyDocumentForLLMAction,
+          importDocumentFromLLMAction,
+          deleteContentPipelineAction,
+          ...previousActions,
+        ]
       }
 
       if (context.schemaType === 'article') {
-        return [copyDocumentForLLMAction, ...previousActions]
+        return [
+          copyDocumentForLLMAction,
+          importDocumentFromLLMAction,
+          deleteContentPipelineAction,
+          ...previousActions,
+        ]
+      }
+
+      if (
+        [
+          'articlePerformanceSnapshot',
+          'contentBrief',
+          'contentInsight',
+          'distributionAsset',
+          'distributionAssetPerformanceSnapshot',
+          'marketQuestion',
+          'researchEvidence',
+        ].includes(context.schemaType)
+      ) {
+        return [deleteContentPipelineAction, ...previousActions]
       }
 
       return previousActions

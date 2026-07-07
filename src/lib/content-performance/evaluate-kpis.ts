@@ -6,7 +6,7 @@ import type {
 } from './types'
 
 function resolveTarget(article: TrackedArticleRecord): ContentKpiTarget | null {
-  return article.kpiTarget ?? article.contentBrief?.kpiTarget ?? null
+  return article.kpiTarget ?? null
 }
 
 function confidenceLabel(score: number): 'Low' | 'Medium' | 'High' {

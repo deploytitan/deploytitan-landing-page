@@ -1,12 +1,13 @@
 import { createHash } from 'node:crypto'
 
 import type { SanityClient } from 'sanity'
-import { defaultArticleChecklist, defaultBriefChecklist } from './workflowDefaults'
+import { defaultArticleChecklist } from './workflowDefaults'
 
 type Reference = {
   _key?: string
   _ref: string
   _type: 'reference'
+  _weak?: boolean
 }
 
 type KpiTarget = {
@@ -32,9 +33,7 @@ export type ContentOpportunityRecord = {
   source?: string
   sourcePage?: string | null
   matchedArticle?: Reference | null
-  marketQuestion?: Reference | null
   researchEvidence?: Reference[] | null
-  contentBrief?: Reference | null
   article?: Reference | null
   kpiTarget?: KpiTarget
   metrics?: {
@@ -50,10 +49,12 @@ export type ContentOpportunityRecord = {
 }
 
 type MaterializeResult = {
-  marketQuestionId: string
   researchEvidenceIds: string[]
-  contentBriefId: string
   articleId: string | null
+}
+
+function getPublishedDocumentId(id: string) {
+  return id.replace(/^drafts\./, '')
 }
 
 function createDeterministicId(prefix: string, ...parts: string[]) {
@@ -202,73 +203,60 @@ function buildPrimaryQuestion(opportunity: ContentOpportunityRecord) {
   return `How should engineering teams approach ${query}?`
 }
 
-function buildOutlineSections(opportunity: ContentOpportunityRecord) {
-  return (opportunity.outline ?? [])
-    .map((heading) => String(heading ?? '').trim())
-    .filter(Boolean)
-    .map((heading) => ({
-      _key: slugify(heading).slice(0, 32) || Math.random().toString(36).slice(2, 10),
-      _type: 'articleOutlineSection' as const,
-      heading,
-      notes: [opportunity.uniqueAngle, opportunity.reasoning].map((value) => String(value ?? '').trim()).filter(Boolean),
-    }))
+function buildDraftBody(opportunity: ContentOpportunityRecord, directAnswer: string) {
+  const blocks = [
+    {
+      _key: 'direct-answer',
+      _type: 'block' as const,
+      style: 'normal',
+      children: [{ _key: 'direct-answer-span', _type: 'span' as const, text: directAnswer }],
+      markDefs: [],
+    },
+  ]
+
+  for (const [index, heading] of (opportunity.outline ?? []).entries()) {
+    const cleanHeading = String(heading ?? '').trim()
+    if (!cleanHeading) continue
+
+    blocks.push({
+      _key: `outline-${index}`,
+      _type: 'block' as const,
+      style: 'h2',
+      children: [{ _key: `outline-${index}-span`, _type: 'span' as const, text: cleanHeading }],
+      markDefs: [],
+    })
+  }
+
+  return blocks
 }
 
-function reference(_ref: string): Reference {
+function reference(_ref: string, weak = false): Reference {
   return {
     _key: createDeterministicId('ref', _ref).replace(/^ref\./, ''),
     _type: 'reference',
     _ref,
+    ...(weak ? { _weak: true } : {}),
   }
-}
-
-async function appendUniqueReferences(
-  client: SanityClient,
-  documentId: string,
-  fieldName: string,
-  refs: string[],
-) {
-  const existingDocument = await client.fetch<Record<string, Array<{ _ref?: string }> | null> | null>(
-    `*[_id == $id][0]{researchEvidence, contentBriefs, articles}`,
-    { id: documentId },
-  )
-  const existing = existingDocument?.[fieldName] ?? null
-
-  const existingRefs = new Set((existing ?? []).map((entry) => String(entry?._ref ?? '')).filter(Boolean))
-  const nextRefs = [...existingRefs]
-  for (const refId of refs) {
-    if (!existingRefs.has(refId)) {
-      nextRefs.push(refId)
-      existingRefs.add(refId)
-    }
-  }
-
-  await client.patch(documentId).set({
-    [fieldName]: nextRefs.map((refId) => reference(refId)),
-  }).commit()
 }
 
 export async function materializeContentOpportunity(
   client: SanityClient,
   opportunity: ContentOpportunityRecord,
 ): Promise<MaterializeResult> {
+  const opportunityId = getPublishedDocumentId(opportunity._id)
   const opportunityTitle = String(opportunity.title ?? opportunity.primaryQuery ?? 'Untitled opportunity').trim()
   const primaryQuery = String(opportunity.primaryQuery ?? opportunityTitle).trim()
   const kpiTarget = buildKpiTarget(opportunity)
 
-  const marketQuestionId =
-    opportunity.marketQuestion?._ref ?? createDeterministicId('marketQuestion', opportunity._id, primaryQuery)
-  const contentBriefId =
-    opportunity.contentBrief?._ref ?? createDeterministicId('contentBrief', opportunity._id, primaryQuery)
-  const gscEvidenceId = createDeterministicId('researchEvidence', opportunity._id, 'gsc')
+  const gscEvidenceId = createDeterministicId('researchEvidence', opportunityId, 'gsc')
   const sourceEvidenceId = opportunity.sourcePage
-    ? createDeterministicId('researchEvidence', opportunity._id, 'source')
+    ? createDeterministicId('researchEvidence', opportunityId, 'source')
     : null
 
   const researchEvidenceIds = [gscEvidenceId, sourceEvidenceId].filter((value): value is string => Boolean(value))
   const articleId =
     opportunity.opportunityType === 'new-article'
-      ? opportunity.article?._ref ?? createDeterministicId('article', opportunity._id, primaryQuery)
+      ? opportunity.article?._ref ?? createDeterministicId('article', opportunityId, primaryQuery)
       : opportunity.article?._ref ?? opportunity.matchedArticle?._ref ?? null
 
   const primaryQuestion = buildPrimaryQuestion(opportunity)
@@ -280,42 +268,18 @@ export async function materializeContentOpportunity(
   const transaction = client.transaction()
 
   transaction.createIfNotExists({
-    _id: marketQuestionId,
-    _type: 'marketQuestion',
-    question: primaryQuestion,
-    status: 'validated',
-    priority: (opportunity.score ?? 0) >= 75 ? 'High' : (opportunity.score ?? 0) >= 50 ? 'Medium' : 'Low',
-    topicCluster,
-    targetPersona,
-    problemSummary: String(opportunity.reasoning ?? '').trim(),
-    productHypothesis: String(opportunity.uniqueAngle ?? '').trim(),
-    productHypothesisConfidence: {
-      _type: 'productHypothesisConfidence',
-      score: Math.max(0, Math.min(1, (opportunity.score ?? 50) / 100)),
-      label: (opportunity.score ?? 0) >= 75 ? 'High' : (opportunity.score ?? 0) >= 50 ? 'Medium' : 'Low',
-      rationale: `Auto-generated from content opportunity score ${Math.round(opportunity.score ?? 0)}.`,
-    },
-    researchEvidence: researchEvidenceIds.map((refId) => reference(refId)),
-    contentBriefs: [reference(contentBriefId)],
-  })
-
-  transaction.createIfNotExists({
     _id: gscEvidenceId,
     _type: 'researchEvidence',
     title: `${opportunityTitle} · Search signal`,
-    evidenceType: 'internalExperience',
+    evidenceType: 'searchSignal',
     visibility: 'internal',
-    evidenceStrength: 'Medium',
     summary: [
       `Primary query: ${primaryQuery}.`,
       metricsSummary ? `Observed search performance: ${metricsSummary}.` : null,
       String(opportunity.reasoning ?? '').trim(),
     ].filter(Boolean).join(' '),
-    publicSummary: `DeployTitan observed meaningful demand around ${primaryQuery} based on aggregated search and field signals.`,
-    sensitivityReason: 'Contains internal search analysis and opportunity framing that should stay private.',
-    marketQuestion: reference(marketQuestionId),
-    signalsProductNeed: true,
-    existingWorkaround: String(opportunity.uniqueAngle ?? '').trim() || undefined,
+    article: articleId ? reference(articleId, true) : undefined,
+    contentOpportunity: reference(opportunityId, true),
   })
 
   if (sourceEvidenceId && opportunity.sourcePage) {
@@ -323,51 +287,19 @@ export async function materializeContentOpportunity(
       _id: sourceEvidenceId,
       _type: 'researchEvidence',
       title: `${opportunityTitle} · External source`,
-      evidenceType: 'technicalSource',
+      evidenceType: 'publicSource',
       visibility: 'public',
-      evidenceStrength: 'High',
       summary: String(opportunity.reasoning ?? opportunity.uniqueAngle ?? '').trim(),
-      publicSummary: String(opportunity.reasoning ?? opportunity.uniqueAngle ?? '').trim(),
       source: {
         _type: 'sourceCitation',
         label: opportunityTitle,
         url: opportunity.sourcePage,
         publisher: new URL(opportunity.sourcePage).hostname.replace(/^www\./, ''),
       },
-      publicSource: {
-        _type: 'sourceCitation',
-        label: opportunityTitle,
-        url: opportunity.sourcePage,
-        publisher: new URL(opportunity.sourcePage).hostname.replace(/^www\./, ''),
-      },
-      marketQuestion: reference(marketQuestionId),
-      signalsProductNeed: true,
+      article: articleId ? reference(articleId, true) : undefined,
+      contentOpportunity: reference(opportunityId, true),
     })
   }
-
-  transaction.createIfNotExists({
-    _id: contentBriefId,
-    _type: 'contentBrief',
-    title: opportunityTitle,
-    status: 'researching',
-    marketQuestion: reference(marketQuestionId),
-    targetPersona,
-    primaryKeyword: primaryQuery,
-    directAnswer,
-    thesis: String(opportunity.uniqueAngle ?? '').trim() || directAnswer,
-    ctaGoal:
-      opportunity.opportunityType === 'ctr'
-        ? 'Improve click-through to the article from search results.'
-        : 'Move qualified readers toward DeployTitan product exploration or customer discovery.',
-    outline: buildOutlineSections(opportunity),
-    researchEvidence: researchEvidenceIds.map((refId) => reference(refId)),
-    articles: articleId ? [reference(articleId)] : [],
-    distributionNotes: `Opportunity type: ${opportunity.opportunityType ?? 'unknown'}. Product pillar: ${opportunity.productPillar ?? 'unknown'}.`,
-    productHypothesis: String(opportunity.uniqueAngle ?? '').trim(),
-    contentOpportunity: reference(opportunity._id),
-    kpiTarget,
-    workflowChecklist: defaultBriefChecklist(),
-  })
 
   if (articleId && opportunity.opportunityType === 'new-article') {
     transaction.createIfNotExists({
@@ -386,25 +318,26 @@ export async function materializeContentOpportunity(
       targetPersona,
       topicCluster,
       methodologyNote: buildMethodologyNote(opportunity),
-      contentBrief: reference(contentBriefId),
-      contentOpportunity: reference(opportunity._id),
+      publicEvidence: researchEvidenceIds.map((refId) => reference(refId, true)),
+      contentOpportunity: reference(opportunityId, true),
       kpiTarget,
       workflowChecklist: defaultArticleChecklist(),
+      body: buildDraftBody(opportunity, directAnswer),
     })
     transaction.patch(articleId, {
       setIfMissing: {
-        contentBrief: reference(contentBriefId),
-        contentOpportunity: reference(opportunity._id),
+        contentOpportunity: reference(opportunityId, true),
         kpiTarget,
+        publicEvidence: researchEvidenceIds.map((refId) => reference(refId, true)),
       },
     })
   }
 
   if (articleId && opportunity.opportunityType !== 'new-article') {
     const patchSetIfMissing: Record<string, unknown> = {
-      contentBrief: reference(contentBriefId),
-      contentOpportunity: reference(opportunity._id),
+      contentOpportunity: reference(opportunityId, true),
       kpiTarget,
+      publicEvidence: researchEvidenceIds.map((refId) => reference(refId, true)),
     }
     const patchSet: Record<string, unknown> = {}
     if (opportunity.opportunityType === 'refresh') {
@@ -418,14 +351,12 @@ export async function materializeContentOpportunity(
   }
 
   const opportunityPatch: Record<string, unknown> = {
-    status: 'briefCreated',
-    marketQuestion: reference(marketQuestionId),
-    researchEvidence: researchEvidenceIds.map((refId) => reference(refId)),
-    contentBrief: reference(contentBriefId),
+    status: 'articleCreated',
+    researchEvidence: researchEvidenceIds.map((refId) => reference(refId, true)),
     kpiTarget,
   }
   if (articleId) {
-    opportunityPatch.article = reference(articleId)
+    opportunityPatch.article = reference(articleId, true)
   }
 
   transaction.patch(opportunity._id, {
@@ -434,25 +365,8 @@ export async function materializeContentOpportunity(
 
   await transaction.commit()
 
-  await appendUniqueReferences(client, marketQuestionId, 'researchEvidence', researchEvidenceIds)
-  await appendUniqueReferences(client, marketQuestionId, 'contentBriefs', [contentBriefId])
-  await appendUniqueReferences(client, contentBriefId, 'researchEvidence', researchEvidenceIds)
-  if (articleId) {
-    await appendUniqueReferences(client, contentBriefId, 'articles', [articleId])
-  }
-  await client
-    .patch(contentBriefId)
-    .setIfMissing({
-      marketQuestion: reference(marketQuestionId),
-      contentOpportunity: reference(opportunity._id),
-      kpiTarget,
-    })
-    .commit()
-
   return {
-    marketQuestionId,
     researchEvidenceIds,
-    contentBriefId,
     articleId,
   }
 }

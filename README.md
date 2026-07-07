@@ -6,15 +6,13 @@ The full operator-facing walkthrough lives in [docs/CONTENT_OPERATING_SYSTEM.md]
 
 The blog now runs on a Sanity-first content operating system centered on the `article` document type and its linked research/distribution/performance records:
 
-- `marketQuestion`
 - `researchEvidence`
-- `contentBrief`
 - `article`
 - `distributionAsset`
 - `articlePerformanceSnapshot`
 - `contentInsight`
 
-Reusable Sanity objects power SEO metadata, FAQ blocks, UTM parameters, analytics metric sets, customer-discovery CTAs, personas, topic clusters, citations, outlines, and hypothesis confidence.
+Reusable Sanity objects power SEO metadata, FAQ blocks, UTM parameters, analytics metric sets, customer-discovery CTAs, personas, topic clusters, and citations.
 
 ### Key routes
 
@@ -70,16 +68,25 @@ pnpm content:research --output-dir ./tmp/content-opportunities
 pnpm content:import-opportunities ./tmp/content-opportunities.json
 ```
 
-5. In Sanity Studio, open the imported `contentOpportunity` and use the `Create Brief Pipeline` action.
+5. In Sanity Studio, open the imported `contentOpportunity` and use the `Create Article Draft` action.
 
-That Studio action creates or refreshes the downstream content-operating-system records:
+That Studio action creates or refreshes the minimum downstream records:
 
-- `marketQuestion`
 - `researchEvidence`
-- `contentBrief`
 - a seeded `article` draft for net-new opportunities, or a linked existing article for refresh-oriented opportunities
 
-The action also propagates the opportunity into linked references and a shared KPI target so the same record can later be measured and iterated on.
+The action also propagates the opportunity reference, evidence, and KPI target onto the article so the same record can later be measured and iterated on.
+
+For one-off ChatGPT editing, use the Studio document actions:
+
+- `Copy for ChatGPT`: copies a labeled JSON payload with unanswered fields included.
+- `Import from ChatGPT`: reads JSON from the clipboard, confirms the matching fields, and patches the current `contentOpportunity` or `article`.
+
+To sync the Studio Pipeline Guide singleton after editing the guide defaults in code:
+
+```bash
+pnpm content:sync-pipeline-guide
+```
 
 The research script fetches two 28-day Search Console windows, excluding the newest 3 days, scores opportunities deterministically, scans selected competitor and market sources for relevant themes, and exports the combined research bundle plus current article context.
 
@@ -109,7 +116,7 @@ GitHub Actions:
 
 ### KPI loop foundation
 
-The Studio pipeline now includes `contentKpiTarget` objects on `contentOpportunity`, `contentBrief`, and `article`.
+The Studio pipeline now includes `contentKpiTarget` objects on `contentOpportunity` and `article`.
 
 Current defaults:
 

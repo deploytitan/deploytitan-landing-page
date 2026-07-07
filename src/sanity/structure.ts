@@ -62,8 +62,8 @@ const articleViews = (S: Parameters<StructureResolver>[0]) => [
     filter: '_type == "article" && status == "awaitingResearch"',
   }),
   filteredListItem(S, {
-    id: 'brief-ready',
-    title: 'Brief Ready',
+    id: 'ready-to-draft',
+    title: 'Ready to Draft',
     schemaType: 'article',
     filter: '_type == "article" && status == "briefReady"',
   }),
@@ -126,10 +126,10 @@ const contentOpportunityViews = (S: Parameters<StructureResolver>[0]) => [
     filter: '_type == "contentOpportunity" && status == "accepted"',
   }),
   filteredListItem(S, {
-    id: 'opportunities-brief-created',
-    title: 'Brief Created',
+    id: 'opportunities-article-created',
+    title: 'Article Created',
     schemaType: 'contentOpportunity',
-    filter: '_type == "contentOpportunity" && status == "briefCreated"',
+    filter: '_type == "contentOpportunity" && status in ["articleCreated", "briefCreated"]',
   }),
   filteredListItem(S, {
     id: 'opportunities-rejected',
@@ -165,23 +165,11 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
       S.listItem()
-        .title('Customer Discovery')
+        .title('Research')
         .child(
           S.list()
-            .title('Customer Discovery')
+            .title('Research')
             .items([
-              filteredListItem(S, {
-                id: 'unvalidated-questions',
-                title: 'Unvalidated Questions',
-                schemaType: 'marketQuestion',
-                filter: '_type == "marketQuestion" && status == "unvalidated"',
-              }),
-              filteredListItem(S, {
-                id: 'validated-questions',
-                title: 'Validated Questions',
-                schemaType: 'marketQuestion',
-                filter: '_type == "marketQuestion" && status == "validated"',
-              }),
               filteredListItem(S, {
                 id: 'recent-evidence',
                 title: 'Recent Evidence',
@@ -190,22 +178,11 @@ export const structure: StructureResolver = (S) =>
                 defaultOrdering: [{ field: '_updatedAt', direction: 'desc' }],
               }),
               filteredListItem(S, {
-                id: 'customer-interviews',
-                title: 'Customer Interviews',
+                id: 'public-evidence',
+                title: 'Public Evidence',
                 schemaType: 'researchEvidence',
-                filter: '_type == "researchEvidence" && evidenceType == "customerInterview"',
-              }),
-              filteredListItem(S, {
-                id: 'existing-workarounds',
-                title: 'Existing Workarounds',
-                schemaType: 'researchEvidence',
-                filter: '_type == "researchEvidence" && defined(existingWorkaround)',
-              }),
-              filteredListItem(S, {
-                id: 'product-signals',
-                title: 'Product Signals',
-                schemaType: 'contentInsight',
-                filter: '_type == "contentInsight" && signalType == "product"',
+                filter: '_type == "researchEvidence" && visibility == "public"',
+                defaultOrdering: [{ field: '_updatedAt', direction: 'desc' }],
               }),
             ]),
         ),
@@ -317,9 +294,7 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
       S.divider(),
-      S.documentTypeListItem('marketQuestion').title('Market Questions'),
       S.documentTypeListItem('researchEvidence').title('Research Evidence'),
-      S.documentTypeListItem('contentBrief').title('Content Briefs'),
       S.documentTypeListItem('distributionAsset').title('Distribution Assets'),
       S.documentTypeListItem('articlePerformanceSnapshot').title('Performance Snapshots'),
       S.documentTypeListItem('contentInsight').title('Content Insights'),

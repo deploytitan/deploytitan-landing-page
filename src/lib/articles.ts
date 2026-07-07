@@ -90,13 +90,6 @@ export type ArticleRecord = {
   relatedArticles?:
     | { _id: string; title: string; slug: { current: string }; excerpt?: string | null }[]
     | null
-  contentBrief?: {
-    _id: string
-    title: string
-    thesis?: string | null
-    ctaGoal?: string | null
-    marketQuestion?: { _id: string; question: string; status?: string | null } | null
-  } | null
 }
 
 export function getArticleCanonicalUrl(article: Pick<ArticleRecord, 'slug' | 'seo'>) {

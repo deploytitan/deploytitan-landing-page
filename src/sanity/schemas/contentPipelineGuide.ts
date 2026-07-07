@@ -31,7 +31,7 @@ export const contentPipelineGuideType = defineType({
       type: 'text',
       rows: 6,
       initialValue:
-        'Use this guide as the operating manual for the DeployTitan content system. The flow is: discover an opportunity, materialize it into a brief pipeline, refine the brief, draft the article as a hub, publish, generate a six-spoke distribution campaign, then measure KPI impact and feed learnings back into the system.',
+        'Use this guide as the operating manual for the DeployTitan content system. The flow is: discover an opportunity, optionally round-trip a document through ChatGPT with Copy for ChatGPT and Import from ChatGPT, turn the accepted opportunity into an article draft with evidence, publish the article as a hub, generate distribution assets, then measure KPI impact and feed learnings back into future opportunities.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

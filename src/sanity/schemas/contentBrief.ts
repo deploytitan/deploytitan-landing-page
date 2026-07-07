@@ -82,9 +82,14 @@ export const contentBriefType = defineType({
       title: 'Evidence',
       description: 'Evidence records that support the brief. Classify visibility before the article becomes publication-ready.',
       type: 'array',
-      of: [defineArrayMember({ type: 'reference', to: [{ type: 'researchEvidence' }] })],
+      of: [defineArrayMember({ type: 'reference', weak: true, to: [{ type: 'researchEvidence' }] })],
     }, briefPublishingRequirement)),
-    defineField({ name: 'articles', title: 'Articles', type: 'array', of: [defineArrayMember({ type: 'reference', to: [{ type: 'article' }] })] }),
+    defineField({
+      name: 'articles',
+      title: 'Articles',
+      type: 'array',
+      of: [defineArrayMember({ type: 'reference', weak: true, to: [{ type: 'article' }] })],
+    }),
     defineField({
       name: 'distributionNotes',
       title: 'Distribution notes',
@@ -99,7 +104,13 @@ export const contentBriefType = defineType({
       type: 'text',
       rows: 3,
     }),
-    defineField({ name: 'contentOpportunity', title: 'Content opportunity', type: 'reference', to: [{ type: 'contentOpportunity' }] }),
+    defineField({
+      name: 'contentOpportunity',
+      title: 'Content opportunity',
+      type: 'reference',
+      weak: true,
+      to: [{ type: 'contentOpportunity' }],
+    }),
     defineField({ name: 'kpiTarget', title: 'KPI target', type: 'contentKpiTarget' }),
     defineField({
       name: 'workflowChecklist',

@@ -79,13 +79,11 @@ export async function saveContentInsight(
   evaluation: KpiEvaluation,
 ) {
   const client = createSanityWriteClient()
-  const metric = input.article.kpiTarget?.primaryMetric ?? input.article.contentBrief?.kpiTarget?.primaryMetric ?? 'unknown'
+  const metric = input.article.kpiTarget?.primaryMetric ?? 'unknown'
   const insightId = buildInsightId(input.article._id, input.reviewWindow, metric)
   const contentOpportunityRef = input.article.contentOpportunity?._ref
     ? { _type: 'reference' as const, _ref: input.article.contentOpportunity._ref }
-    : input.article.contentBrief?.contentOpportunity?._ref
-      ? { _type: 'reference' as const, _ref: input.article.contentBrief.contentOpportunity._ref }
-      : null
+    : null
 
   const payload = {
     _id: insightId,

@@ -23,18 +23,18 @@ export const createOpportunityPipelineAction: DocumentActionComponent = (props) 
     return null
   }
 
-  const hasPipeline = Boolean(document.marketQuestion?._ref && document.contentBrief?._ref)
+  const hasPipeline = Boolean(document.article?._ref)
   const isRejected = document.status === 'rejected'
 
   return {
     label: isRunning
-      ? 'Creating Pipeline...'
+      ? 'Creating Article Draft...'
       : hasPipeline
-        ? 'Refresh Brief Pipeline'
-        : 'Create Brief Pipeline',
+        ? 'Refresh Article Draft'
+        : 'Create Article Draft',
     title: isRejected
-      ? 'Rejected opportunities cannot be materialized into briefs.'
-      : 'Create or refresh downstream content records from this opportunity.',
+      ? 'Rejected opportunities cannot be materialized into an article draft.'
+      : 'Create or refresh the article draft and supporting evidence from this opportunity.',
     tone: 'primary',
     disabled: isRunning || isRejected,
     onHandle: async () => {
@@ -44,16 +44,14 @@ export const createOpportunityPipelineAction: DocumentActionComponent = (props) 
         const result = await materializeContentOpportunity(client, document)
         window.alert(
           [
-            'Created/updated content pipeline records:',
-            `Market question: ${result.marketQuestionId}`,
+            'Created/updated article pipeline records:',
             `Research evidence: ${result.researchEvidenceIds.join(', ') || 'none'}`,
-            `Content brief: ${result.contentBriefId}`,
             `Article: ${result.articleId ?? 'linked existing article or none created'}`,
           ].join('\n'),
         )
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error'
-        window.alert(`Failed to create brief pipeline: ${message}`)
+        window.alert(`Failed to create article draft: ${message}`)
       } finally {
         setIsRunning(false)
         props.onComplete()

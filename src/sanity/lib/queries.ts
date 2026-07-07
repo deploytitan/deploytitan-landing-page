@@ -67,27 +67,11 @@ export const articleBySlugQuery = defineQuery(`
     ${ARTICLE_LIST_PROJECTION},
     body,
     citations,
-    "publicEvidence": select(
-      count(publicEvidence) > 0 => publicEvidence[]->{
-        ${PUBLIC_EVIDENCE_PROJECTION}
-      }[defined(visibility) && visibility != "internal"],
-      contentBrief->researchEvidence[]->{
-        ${PUBLIC_EVIDENCE_PROJECTION}
-      }[defined(visibility) && visibility != "internal"]
-    ),
+    "publicEvidence": publicEvidence[]->{
+      ${PUBLIC_EVIDENCE_PROJECTION}
+    }[defined(visibility) && visibility != "internal"],
     customerDiscoveryCta,
-    hubPrimaryCta,
-    contentBrief->{
-      _id,
-      title,
-      thesis,
-      ctaGoal,
-      "marketQuestion": marketQuestion->{
-        _id,
-        question,
-        status
-      }
-    }
+    hubPrimaryCta
   }
 `)
 

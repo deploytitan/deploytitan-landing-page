@@ -19,14 +19,6 @@ export type TrackedArticleRecord = {
   contentOpportunity?: {
     _ref?: string
   } | null
-  contentBrief?: {
-    _id: string
-    title?: string | null
-    kpiTarget?: ContentKpiTarget | null
-    contentOpportunity?: {
-      _ref?: string
-    } | null
-  } | null
   kpiTarget?: ContentKpiTarget | null
 }
 
@@ -69,4 +61,3 @@ export type KpiEvaluation = {
   confidenceScore: number
   confidenceLabel: 'Low' | 'Medium' | 'High'
 }
-

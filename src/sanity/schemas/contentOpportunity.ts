@@ -7,7 +7,7 @@ const contentOpportunityStatusValues = [
   { title: 'Reviewing', value: 'reviewing' },
   { title: 'Accepted', value: 'accepted' },
   { title: 'Rejected', value: 'rejected' },
-  { title: 'Brief Created', value: 'briefCreated' },
+  { title: 'Article Created', value: 'articleCreated' },
 ]
 
 const opportunityTypeValues = [
@@ -142,30 +142,21 @@ export const contentOpportunityType = defineType({
       name: 'matchedArticle',
       title: 'Matched article',
       type: 'reference',
+      weak: true,
       to: [{ type: 'article' }],
-    }),
-    defineField({
-      name: 'marketQuestion',
-      title: 'Market question',
-      type: 'reference',
-      to: [{ type: 'marketQuestion' }],
     }),
     defineField({
       name: 'researchEvidence',
       title: 'Research evidence',
+      description: 'Only attach evidence that will materially improve the article.',
       type: 'array',
-      of: [defineArrayMember({ type: 'reference', to: [{ type: 'researchEvidence' }] })],
-    }),
-    defineField({
-      name: 'contentBrief',
-      title: 'Content brief',
-      type: 'reference',
-      to: [{ type: 'contentBrief' }],
+      of: [defineArrayMember({ type: 'reference', weak: true, to: [{ type: 'researchEvidence' }] })],
     }),
     defineField({
       name: 'article',
       title: 'Article',
       type: 'reference',
+      weak: true,
       to: [{ type: 'article' }],
     }),
     defineField({
@@ -177,7 +168,7 @@ export const contentOpportunityType = defineType({
     defineField({
       name: 'workflowChecklist',
       title: 'Workflow checklist',
-      description: 'Use this as the common operator checklist for moving an opportunity into the brief pipeline.',
+      description: 'Use this as the lightweight checklist for moving an opportunity into an article draft.',
       type: 'array',
       initialValue: defaultOpportunityChecklist(),
       of: [defineArrayMember({ type: 'workflowChecklistItem' })],

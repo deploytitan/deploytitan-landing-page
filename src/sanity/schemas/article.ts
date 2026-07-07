@@ -2,16 +2,12 @@ import { defineArrayMember, defineField, defineType } from 'sanity'
 import { ArticlePipelineGuideInput } from '../components/contentPipelineGuideInput'
 import { withPublishingRequirement } from '../components/publishingRequirementField'
 import { defaultArticleChecklist } from '../lib/workflowDefaults'
-import {
-  fetchContentBriefValidationRecord,
-  hasClassifiedEvidence,
-  isProofReadyStatus,
-} from '../lib/evidenceValidation'
+import { hasClassifiedEvidence, isProofReadyStatus } from '../lib/evidenceValidation'
 
 const articleStatusValues = [
   { title: 'Idea', value: 'idea' },
   { title: 'Awaiting Research', value: 'awaitingResearch' },
-  { title: 'Brief Ready', value: 'briefReady' },
+  { title: 'Ready to Draft', value: 'briefReady' },
   { title: 'Drafting', value: 'drafting' },
   { title: 'Technical Review', value: 'technicalReview' },
   { title: 'Publication Ready', value: 'publicationReady' },
@@ -38,9 +34,6 @@ const hubRevenueGoalValues = [
   { title: 'Research CTA', value: 'researchCta' },
   { title: 'Product discovery', value: 'productDiscovery' },
 ]
-
-const proofReadyRequirement =
-  'Required before an article can move to Publication Ready, Scheduled, or Published.'
 
 const publishedRequirement =
   'Required before an article can be considered fully Published.'
@@ -283,12 +276,12 @@ export const articleType = defineType({
       type: 'datetime',
       description: 'Set when the article is materially refreshed after publication.',
     }),
-    defineField(withPublishingRequirement({
+    defineField({
       name: 'lastReviewedAt',
       title: 'Last reviewed at',
       type: 'datetime',
-      description: 'Set the most recent editorial or technical accuracy review date.',
-    }, proofReadyRequirement)),
+      description: 'Set when you have reviewed the article for technical accuracy.',
+    }),
     defineField({
       name: 'sevenDayReviewAt',
       title: 'Seven-day review at',
@@ -301,12 +294,12 @@ export const articleType = defineType({
       type: 'datetime',
       description: 'Date for the deeper KPI review that decides whether to keep growing, refresh, or reposition.',
     }),
-    defineField(withPublishingRequirement({
+    defineField({
       name: 'technicalReviewer',
       title: 'Technical reviewer',
-      description: 'Owner accountable for the technical accuracy review before publication.',
+      description: 'Optional reviewer name when someone other than the author checks the article.',
       type: 'string',
-    }, proofReadyRequirement)),
+    }),
     defineField(withPublishingRequirement({
       name: 'author',
       title: 'Author',
@@ -327,16 +320,20 @@ export const articleType = defineType({
       type: 'array',
       of: [defineArrayMember({ type: 'reference', to: [{ type: 'category' }] })],
     }),
-    defineField(withPublishingRequirement({
+    defineField({
       name: 'contentBrief',
-      title: 'Content brief',
+      title: 'Legacy content brief',
       type: 'reference',
+      weak: true,
       to: [{ type: 'contentBrief' }],
-    }, proofReadyRequirement)),
+      readOnly: true,
+      hidden: true,
+    }),
     defineField({
       name: 'contentOpportunity',
       title: 'Content opportunity',
       type: 'reference',
+      weak: true,
       to: [{ type: 'contentOpportunity' }],
     }),
     defineField({
@@ -356,7 +353,7 @@ export const articleType = defineType({
       name: 'relatedArticles',
       title: 'Related articles',
       type: 'array',
-      of: [defineArrayMember({ type: 'reference', to: [{ type: 'article' }] })],
+      of: [defineArrayMember({ type: 'reference', weak: true, to: [{ type: 'article' }] })],
     }),
     defineField({
       name: 'faq',
@@ -367,16 +364,16 @@ export const articleType = defineType({
     defineField({
       name: 'methodologyNote',
       title: 'Methodology note',
-      description: 'Short explanation of how the article was researched and what evidence types were used.',
+      description: 'Short explanation of how the article was researched. Keep this concise.',
       type: 'text',
       rows: 4,
     }),
     defineField({
       name: 'publicEvidence',
-      title: 'Public evidence override',
-      description: 'Optional publishable evidence references. Leave empty to derive from the linked content brief evidence.',
+      title: 'Evidence',
+      description: 'Attach only the evidence that readers or the writer actually need. Public items can render on the article page.',
       type: 'array',
-      of: [defineArrayMember({ type: 'reference', to: [{ type: 'researchEvidence' }] })],
+      of: [defineArrayMember({ type: 'reference', weak: true, to: [{ type: 'researchEvidence' }] })],
     }),
     defineField({
       name: 'citations',
@@ -459,43 +456,30 @@ export const articleType = defineType({
       const article = value as
         | {
             status?: string
-            contentBrief?: { _ref?: string }
             publicEvidence?: Array<{ _ref?: string }>
             citations?: unknown[]
             methodologyNote?: string
-            lastReviewedAt?: string
-            technicalReviewer?: string
           }
         | undefined
 
       if (!article || !isProofReadyStatus(article.status)) return true
 
-      const validationContext = context as Parameters<typeof fetchContentBriefValidationRecord>[0]
-      const brief = await fetchContentBriefValidationRecord(validationContext, article.contentBrief)
-      if (!brief) {
-        return 'Publication-ready articles require a linked content brief.'
+      const hasEvidence = (article.publicEvidence?.length ?? 0) > 0 || (article.citations?.length ?? 0) > 0
+      if (!hasEvidence) {
+        return 'Publication-ready articles require at least one citation or evidence item.'
       }
 
-      if (!String(brief.directAnswer ?? '').trim()) return 'The linked brief needs a direct answer.'
-      if (!String(brief.thesis ?? '').trim()) return 'The linked brief needs a differentiated thesis.'
-      if (!String(brief.ctaGoal ?? '').trim()) return 'The linked brief needs a CTA goal.'
-      if (!brief.targetPersona?.name) return 'The linked brief needs a target persona.'
-      if (!String(brief.primaryKeyword ?? '').trim()) return 'The linked brief needs a primary keyword.'
-      if (!(brief.outline ?? []).length) return 'The linked brief needs an outline.'
-
-      const briefEvidenceResult = await hasClassifiedEvidence(validationContext, brief.researchEvidence)
-      if (!briefEvidenceResult.ok) return briefEvidenceResult.message
-
-      const selectedEvidenceRefs = article.publicEvidence?.length ? article.publicEvidence : brief.researchEvidence
-      const publicEvidenceResult = await hasClassifiedEvidence(validationContext, selectedEvidenceRefs)
-      if (!publicEvidenceResult.ok) return publicEvidenceResult.message
-
-      if (!String(article.lastReviewedAt ?? '').trim()) {
-        return 'Publication-ready articles require a last reviewed date.'
+      if (article.publicEvidence?.length) {
+        const validationContext = context as Parameters<typeof hasClassifiedEvidence>[0]
+        const publicEvidenceResult = await hasClassifiedEvidence(validationContext, article.publicEvidence)
+        if (!publicEvidenceResult.ok) return publicEvidenceResult.message
+        if (!article.citations?.length && publicEvidenceResult.publishableEvidenceCount === 0) {
+          return 'Publication-ready articles require at least one public citation or public evidence item.'
+        }
       }
 
-      if (!String(article.technicalReviewer ?? '').trim()) {
-        return 'Publication-ready articles require a technical reviewer.'
+      if (!String(article.methodologyNote ?? '').trim()) {
+        return 'Publication-ready articles require a short methodology note.'
       }
 
       return true

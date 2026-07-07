@@ -43,13 +43,7 @@ export async function getTrackedArticles(): Promise<TrackedArticleRecord[]> {
       targetPersona,
       topicCluster,
       contentOpportunity,
-      kpiTarget,
-      contentBrief->{
-        _id,
-        title,
-        kpiTarget,
-        contentOpportunity
-      }
+      kpiTarget
     }`,
   )
 }
