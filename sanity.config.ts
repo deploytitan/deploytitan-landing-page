@@ -15,6 +15,7 @@ import { apiVersion, dataset, projectId } from './src/sanity/env'
 import { schemaTypes } from './src/sanity/schemas'
 import { structure } from './src/sanity/structure'
 import { createOpportunityPipelineAction } from './src/sanity/actions/createOpportunityPipelineAction'
+import { copyDocumentForLLMAction } from './src/sanity/actions/copyDocumentForLLMAction'
 
 const resolve: PresentationPluginOptions['resolve'] = {
   locations: {
@@ -45,10 +46,17 @@ export default defineConfig({
   dataset,
   schema: { types: schemaTypes },
   document: {
-    actions: (previousActions, context) =>
-      context.schemaType === 'contentOpportunity'
-        ? [createOpportunityPipelineAction, ...previousActions]
-        : previousActions,
+    actions: (previousActions, context) => {
+      if (context.schemaType === 'contentOpportunity') {
+        return [createOpportunityPipelineAction, copyDocumentForLLMAction, ...previousActions]
+      }
+
+      if (context.schemaType === 'article') {
+        return [copyDocumentForLLMAction, ...previousActions]
+      }
+
+      return previousActions
+    },
   },
   plugins: [
     presentationTool({
