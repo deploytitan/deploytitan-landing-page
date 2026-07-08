@@ -24,7 +24,7 @@ export function AuthorBadge({ author, publishedAt, showBio }: AuthorBadgeProps) 
   return (
     <div className="flex items-start gap-3">
       {author.image && (
-        <div className="relative w-10 h-10 rounded-[2px] overflow-hidden shrink-0 border border-line">
+        <div className="relative w-10 h-10 rounded-[var(--radius-standard)] overflow-hidden shrink-0 border border-line">
           <Image
             src={urlFor(author.image as object).width(80).height(80).url()}
             alt={author.name}
@@ -35,12 +35,6 @@ export function AuthorBadge({ author, publishedAt, showBio }: AuthorBadgeProps) 
       )}
       <div className="flex flex-col gap-0.5">
         <span className="text-sm font-medium text-ink">{author.name}</span>
-        {author.role && (
-          <span className="text-xs text-ink-tertiary">{author.role}</span>
-        )}
-        {date && (
-          <span className="text-xs font-mono text-ink-tertiary">{date}</span>
-        )}
         {showBio && author.bio && (
           <p className="text-sm text-ink-secondary mt-1 leading-relaxed">{author.bio}</p>
         )}

@@ -27,7 +27,7 @@ type CategoryListItem = {
 export const metadata: Metadata = {
   title: 'Blog | DeployTitan',
   description:
-    'Engineering insights on progressive delivery, release safety, and deployment best practices from the DeployTitan team.',
+    'Engineering notes on release coordination, developer tooling, AI-assisted work, and the systems that keep teams shipping.',
   alternates: {
     canonical: `${SITE_URL}/blog`,
     types: {
@@ -57,8 +57,8 @@ export default async function BlogPage() {
             Engineering insights.
           </h1>
           <p className="max-w-xl text-lg leading-relaxed text-ink-secondary">
-            Progressive delivery, release safety, and deployment best practices from the DeployTitan
-            team.
+            Notes on release coordination, developer tooling, AI-assisted work, and the systems
+            that keep teams shipping.
           </p>
         </Container>
       </section>

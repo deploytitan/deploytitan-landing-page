@@ -77,8 +77,12 @@ rounded:
   sharp: "2px"
   none: "0px"
   micro: "1px"
-  button: "8px"
-  card-approachable: "12px"
+  serious: "6px"
+  standard: "12px"
+  invited: "18px"
+  pill: "999px"
+  button: "{rounded.invited}"
+  card-approachable: "{rounded.standard}"
 spacing:
   xs: "4px"
   sm: "8px"
@@ -87,26 +91,27 @@ spacing:
   xl: "40px"
   page: "48px"
 components:
-  # Buttons — primary CTAs use rounded-[8px]; other variants use rounded-[2px]
+  # Roundedness follows interaction warmth.
+  # Serious technical controls use 6px. Customer-inviting actions use 18px or pill.
   button-primary:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.surface}"
-    rounded: "8px"
+    rounded: "{rounded.invited}"
     padding: "16px 32px"
   button-primary-xs:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.surface}"
-    rounded: "{rounded.sharp}"
+    rounded: "{rounded.serious}"
     padding: "10px 20px"
   button-primary-lg:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.surface}"
-    rounded: "8px"
+    rounded: "{rounded.invited}"
     padding: "16px 32px"
   button-outline:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
-    rounded: "8px"
+    rounded: "{rounded.invited}"
     padding: "14px 32px"
   button-outline-hover:
     backgroundColor: "{colors.primary}"
@@ -197,10 +202,11 @@ Primary and outline CTAs use `rounded-[8px]` (`border-radius: 8px`). This applie
 **Rule:** The 8px radius on buttons signals "click here" without abandoning the sharp product aesthetic. It creates just enough visual warmth at the moment of conversion. Nav bar CTA (xs size) retains 2px to stay within the product chrome register.
 
 ### Tier 3 — Approachable card (12px): Conversion containers
-Used exclusively on outer containers that frame a conversion moment:
-- CTA section outer card (`borderRadius: '12px'`)
+Used on content containers that should feel approachable without losing technical restraint:
+- Blog cards, article modules, and marketing content panels (`borderRadius: '12px'`)
+- CTA section outer card (`borderRadius: '12px'` or invited radius when the whole surface is a customer action)
 
-**Rule:** 12px is a single-use signal. It tells the reader: "this is a different kind of surface — this one is for you." Do not migrate general cards, panels, or feature sections to 12px. Sharp remains the default everywhere else.
+**Rule:** 12px is the standard editorial and marketing content radius. It tells the reader: "this is a human-readable surface." Dense operational panels remain tighter, while high-intent customer interactions may round further.
 
 ### Tier 4 — Micro (1px): Status indicators
 Status badges, dots, and inline tags that need to be readable but stay below the visual weight of even 2px. Used on status dots (`border-radius: 1px`) and platform badge labels.
@@ -209,11 +215,13 @@ Status badges, dots, and inline tags that need to be readable but stay below the
 
 | Context | Radius | Token |
 |---|---|---|
-| All panels, cards, data containers | 2px | `rounded-[2px]` |
-| Primary and outline CTA buttons | 8px | `rounded-[8px]` |
-| CTA section outer card | 12px | `rounded-[12px]` |
+| Dense technical panels, data containers | 6px | `rounded-[var(--radius-serious)]` |
+| Editorial cards, article modules, content panels | 12px | `rounded-[var(--radius-standard)]` |
+| Primary and outline CTA buttons | 18px | `rounded-[var(--radius-invited)]` |
+| Category chips, filter chips, friendly inline actions | Pill | `rounded-[var(--radius-pill)]` |
+| CTA section outer card | 12px or 18px | `rounded-[var(--radius-standard)]` or `rounded-[var(--radius-invited)]` |
 | Status badges, dots, micro tags | 1px | `rounded-[1px]` |
-| Nav bar CTA button (xs) | 2px | `rounded-[2px]` |
+| Nav bar CTA button (xs) | 18px | `rounded-[var(--radius-invited)]` |
 
 ## 3. Colors: The Instrument Palette
 
@@ -288,11 +296,12 @@ Shadows appear only as a response to state: hover on interactive containers, act
 ## 6. Components
 
 ### Buttons
-Sharp at the product layer, approachable at the conversion layer.
+Roundedness follows interaction warmth: tighter for serious technical work, warmer for customer-inviting actions.
 
 - **Shape:** 
-  - Nav bar CTA (xs): `rounded-[2px]` — stays within the product chrome register
-  - All other primary and outline CTAs: `rounded-[8px]` — conversion signal
+  - Dense technical controls: `rounded-[var(--radius-serious)]`
+  - Nav bar CTA and conversion CTAs: `rounded-[var(--radius-invited)]` or pill treatment
+  - Compact category/filter actions: `rounded-[var(--radius-pill)]`
 - **Primary:** Deep charcoal background (`bg-ink`), bone surface text (`text-surface`). On hover: a compound ring shadow appears: `0 0 0 1px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.08)`. The gold ring at 15% opacity is the hover tell; the button does not change color.
 - **Outline:** No fill, `border border-ink/15`. On hover: border shifts to `border-primary/40`, fill becomes `bg-primary-muted`. The button becomes amber-tinged without becoming solid.
 - **Ghost:** No border, no fill. Text shifts from `text-ink-secondary` to `text-ink` on hover. Used for tertiary actions and nav triggers.
@@ -301,8 +310,9 @@ Sharp at the product layer, approachable at the conversion layer.
 - **Sizes:** `xs` (nav bar, compact contexts; `px-5 py-2.5`), `sm` (secondary inline CTAs; `px-5 py-3`), `md` (default; `px-6 py-3.5`), `lg` (hero and section-level primaries; `px-8 py-4`).
 
 ### Cards / Containers
-- **Default corner style:** 2px radius (`border-radius: 2px`) — all panels, data containers, feature rows.
-- **CTA outer card:** 12px radius (`border-radius: 12px`) — used once on the final CTA section.
+- **Serious corner style:** 6px radius (`var(--radius-serious)`) — data containers, evidence modules, technical panels.
+- **Standard content style:** 12px radius (`var(--radius-standard)`) — article modules, blog cards, marketing content panels.
+- **Invited surfaces:** 18px radius (`var(--radius-invited)`) — customer signup and conversion surfaces.
 - **Background:** `var(--color-surface)` at rest (`tone="default"`); `var(--color-surface-alt)` for elevated or nested containers (`tone="muted"`).
 - **Shadow Strategy:** None at rest. Hover applies the amber reveal compound shadow (see Elevation).
 - **Border:** `1px solid var(--color-line)` at rest; on hover shifts toward `rgba(201,168,76,0.3)`.
@@ -315,7 +325,7 @@ Sharp at the product layer, approachable at the conversion layer.
 - **Dark mode:** Transitions to `rgba(13,12,10,0.92)` on scroll.
 - **Links:** Instrument Sans, text-sm, `text-ink-secondary` by default. On hover: `text-ink`. Active state: `text-primary`.
 - **Underline treatment:** `.nav-link-underline` — a 1px amber underline grows from `width: 0` to `width: 100%` on hover via `cubic-bezier(0.22, 1, 0.36, 1)`. No thick stripe; hairline only.
-- **Primary CTA button:** `xs` size, primary variant, `rounded-[2px]`. Always visible. Right-aligned in the nav bar.
+- **Primary CTA button:** `xs` size, primary variant, invited rounding. Always visible. Right-aligned in the nav bar.
 - **Mobile:** Slide-in drawer, full-height.
 
 ### Hero Demo Panel
@@ -379,9 +389,9 @@ The `.TrafficSplitVisual` pattern is the system's signature: a terminal-style pa
 - **Do** keep the amber scan-line, blueprint grid, and corner-accent motifs as sparse structural signals. One per section maximum.
 
 ### Don't:
-- **Don't** use `rounded-[12px]` on anything other than the CTA section outer card. It breaks the technical precision register.
-- **Don't** use soft corners (≥4px radius) on panels, data containers, or product-layer cards. Sharp is the default; softness is a purposeful conversion signal, not a general aesthetic choice.
-- **Don't** apply `rounded-[8px]` to the nav bar CTA — that stays at `rounded-[2px]` to remain within the product chrome register.
+- **Don't** use the same radius everywhere. Roundedness should communicate interaction warmth and surface seriousness.
+- **Don't** use pill shapes on dense data containers, evidence modules, tables, or code surfaces.
+- **Don't** keep customer-inviting actions overly sharp. Signup, waitlist, and account creation actions should feel approachable.
 - **Don't** use `#000` or `#fff`. Every extreme neutral must be tinted. Pure black on pure white reads as generic; it erases the system's material character.
 - **Don't** use amber as a decorative color: no amber card fills, no amber section backgrounds, no amber heading text (outside the single `.gold-shimmer` hero motif). Its rarity is the point.
 - **Don't** use glassmorphism. The `.cap-modal-backdrop` uses `backdrop-filter: blur(4px)` as a focus-lock, not a glass aesthetic. No other element uses blur. This is not a glass-card system.

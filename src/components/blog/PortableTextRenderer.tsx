@@ -84,7 +84,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
       h1: ({ children }) => (
         <HeadingLink
           level="h2"
-          className="text-ink mt-14 mb-5 text-3xl leading-tight font-[family:var(--font-serif)] font-medium tracking-[-0.025em]"
+          className="text-ink mt-14 mb-5 text-3xl leading-tight font-semibold tracking-[-0.015em]"
         >
           {children}
         </HeadingLink>
@@ -92,7 +92,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
       h2: ({ children }) => (
         <HeadingLink
           level="h2"
-          className="text-ink mt-14 mb-4 text-[2rem] leading-tight font-[family:var(--font-serif)] font-medium tracking-[-0.025em]"
+          className="text-ink mt-14 mb-4 text-[2rem] leading-tight font-semibold tracking-[-0.015em]"
         >
           {children}
         </HeadingLink>
@@ -100,7 +100,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
       h3: ({ children }) => (
         <HeadingLink
           level="h3"
-          className="text-ink mt-10 mb-3 text-[1.55rem] leading-snug font-[family:var(--font-serif)] font-medium tracking-[-0.02em]"
+          className="text-ink mt-10 mb-3 text-[1.45rem] leading-snug font-semibold tracking-[-0.01em]"
         >
           {children}
         </HeadingLink>
@@ -114,7 +114,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
         <p className="text-ink-secondary mb-4 text-[1.0625rem] leading-7">{children}</p>
       ),
       blockquote: ({ children }) => (
-        <blockquote className="border-line bg-surface-alt/45 text-ink-secondary my-7 rounded-[12px] border px-6 py-5 text-[1.05rem] leading-7 italic">
+        <blockquote className="border-line bg-surface-alt/45 text-ink-secondary my-7 rounded-[var(--radius-standard)] border px-6 py-5 text-[1.05rem] leading-7 italic">
           {children}
         </blockquote>
       ),
@@ -172,7 +172,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
         if (!value?.asset) return null
         return (
           <figure className="my-8">
-            <div className="border-line bg-surface-alt/40 overflow-hidden rounded-[12px] border">
+            <div className="border-line bg-surface-alt/40 overflow-hidden rounded-[var(--radius-standard)] border">
               <Image
                 src={urlFor(value).width(1200).url()}
                 alt={value.alt ?? ''}
@@ -211,7 +211,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
               ? 'border-primary/30 bg-primary/5'
               : 'border-line bg-surface-alt/60'
         return (
-          <aside className={`my-8 rounded-[12px] border px-5 py-5 ${toneClass}`}>
+          <aside className={`my-8 rounded-[var(--radius-standard)] border px-5 py-5 ${toneClass}`}>
             {value?.title && (
               <h3 className="text-ink mb-2 text-base font-semibold">{value.title}</h3>
             )}
@@ -222,12 +222,12 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
       diagramBlock: ({ value }) => {
         const imageUrl = value?.image?.asset ? urlFor(value.image).width(1200).url() : null
         return (
-          <figure className="border-line bg-surface-alt/45 my-8 rounded-[12px] border p-5">
+          <figure className="border-line bg-surface-alt/45 my-8 rounded-[var(--radius-standard)] border p-5">
             {value?.title && <h3 className="text-ink mb-3 text-lg font-semibold">{value.title}</h3>}
             {imageUrl && (
               <button
                 type="button"
-                className="border-line block w-full overflow-hidden rounded-[12px] border"
+                className="border-line block w-full overflow-hidden rounded-[var(--radius-serious)] border"
                 onClick={() =>
                   trackEvent(
                     'diagramOpened',
@@ -271,7 +271,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
         const columns = Array.isArray(value?.columns) ? value.columns : []
         const rows = Array.isArray(value?.rows) ? value.rows : []
         return (
-          <figure className="border-line my-8 overflow-hidden rounded-[12px] border">
+          <figure className="border-line my-8 overflow-hidden rounded-[var(--radius-serious)] border">
             <div className="overflow-x-auto">
               <table className="divide-line min-w-full divide-y text-left text-sm">
                 <thead className="bg-surface-alt/80">

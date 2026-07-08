@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import {
   buildArticleTrackingPayload,
@@ -186,7 +185,7 @@ export function ArticleReaderExperience({
       {popover && (
         <div
           ref={popoverRef}
-          className="border-line bg-surface fixed z-50 -translate-x-1/2 -translate-y-full rounded-[2px] border px-3 py-2 shadow-[0_10px_30px_rgba(26,21,18,0.12)]"
+          className="border-line bg-surface fixed z-50 -translate-x-1/2 -translate-y-full rounded-[var(--radius-standard)] border px-3 py-2 shadow-[0_10px_30px_rgba(26,21,18,0.12)]"
           style={{
             left: popover.x,
             top: popover.y,
@@ -202,7 +201,7 @@ export function ArticleReaderExperience({
             <button
               type="button"
               onClick={() => void handleShareClick('x')}
-              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[2px] border px-2.5 py-1.5 text-xs transition-colors"
+              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[var(--radius-serious)] border px-2.5 py-1.5 text-xs transition-colors"
               aria-label="Share on X"
             >
               <span className="flex items-center gap-1.5">
@@ -212,7 +211,7 @@ export function ArticleReaderExperience({
             <button
               type="button"
               onClick={() => void handleShareClick('facebook')}
-              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[2px] border px-2.5 py-1.5 text-xs transition-colors"
+              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[var(--radius-serious)] border px-2.5 py-1.5 text-xs transition-colors"
               aria-label="Share on Facebook"
             >
               <span className="flex items-center gap-1.5">
@@ -222,7 +221,7 @@ export function ArticleReaderExperience({
             <button
               type="button"
               onClick={() => void handleShareClick('reddit')}
-              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[2px] border px-2.5 py-1.5 text-xs transition-colors"
+              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[var(--radius-serious)] border px-2.5 py-1.5 text-xs transition-colors"
               aria-label="Share on Reddit"
             >
               <span className="flex items-center gap-1.5">
@@ -233,7 +232,7 @@ export function ArticleReaderExperience({
             <button
               type="button"
               onClick={() => void handleShareClick('linkedin')}
-              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[2px] border px-2.5 py-1.5 text-xs transition-colors"
+              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[var(--radius-serious)] border px-2.5 py-1.5 text-xs transition-colors"
               aria-label="Share on LinkedIn"
             >
               <span className="flex items-center gap-1.5">
@@ -244,7 +243,7 @@ export function ArticleReaderExperience({
             <button
               type="button"
               onClick={() => void handleShareClick('copy')}
-              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[2px] border px-2.5 py-1.5 text-xs transition-colors"
+              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[var(--radius-serious)] border px-2.5 py-1.5 text-xs transition-colors"
               aria-label="Copy selected quote"
             >
               <span className="flex items-center gap-1.5">
@@ -256,54 +255,6 @@ export function ArticleReaderExperience({
         </div>
       )}
 
-      <div className="text-ink-tertiary mt-6 flex items-center gap-2 text-xs">
-        <span className="font-mono tracking-widest uppercase">Tip</span>
-        <span>Select any passage to share it.</span>
-      </div>
-
-      <div className="text-ink-secondary mt-5 flex items-center gap-3 text-sm">
-        <Link
-          href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${BASE_URL}/blog/${articleSlug}/`)}`}
-          target="_blank"
-          rel="noreferrer"
-          className="hover:text-primary transition-colors"
-          onClick={() =>
-            trackEvent(
-              'articleShared',
-              buildArticleTrackingPayload(articleContext, {
-                shareChannel: 'x',
-                selected_text_length: 0,
-              }),
-            )
-          }
-        >
-          <span className="flex items-center gap-1.5">
-            <ShareIcon platform="x" />
-            <span>Share on X</span>
-          </span>
-        </Link>
-        <span className="text-ink-quaternary">·</span>
-        <Link
-          href={`https://www.reddit.com/submit?url=${encodeURIComponent(`${BASE_URL}/blog/${articleSlug}/`)}&title=${encodeURIComponent(articleTitle)}`}
-          target="_blank"
-          rel="noreferrer"
-          className="hover:text-primary transition-colors"
-          onClick={() =>
-            trackEvent(
-              'articleShared',
-              buildArticleTrackingPayload(articleContext, {
-                shareChannel: 'reddit',
-                selected_text_length: 0,
-              }),
-            )
-          }
-        >
-          <span className="flex items-center gap-1.5">
-            <ShareIcon platform="reddit" />
-            <span>Share on Reddit</span>
-          </span>
-        </Link>
-      </div>
     </div>
   )
 }

@@ -15,7 +15,8 @@
 /* -------------------------------------------------------------------------
    Theme: light mode (default)
    All tokens follow the DeployTitan "Instrument Panel" visual language.
-   Single precision amber accent (#c9a84c), warm-tinted neutrals, 2px radius.
+   Single precision amber accent (#c9a84c), warm-tinted neutrals, intentional
+   roundedness based on interaction warmth.
    See DESIGN.md for full rationale.
    ---------------------------------------------------------------------- */
 @theme {
@@ -71,8 +72,16 @@
     /* Layout */
     --max-width-page: 1400px;
 
-    /* Radius — 2px is non-negotiable; it signals precision, not softness */
+    /* Radius scale
+       serious: dense technical surfaces, evidence, tables, code, and machine UI
+       standard: default cards, article modules, and navigational panels
+       invited: customer-inviting surfaces such as forms, CTAs, and signup blocks
+       pill: compact category chips, filters, and friendly inline actions */
     --radius-sharp: 2px;
+    --radius-serious: 6px;
+    --radius-standard: 12px;
+    --radius-invited: 18px;
+    --radius-pill: 999px;
 }
 
 /* -------------------------------------------------------------------------

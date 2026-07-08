@@ -67,8 +67,12 @@ typography:
 rounded:
   micro: "1px"
   sharp: "2px"
-  cta: "8px"
-  cta-card: "12px"
+  serious: "6px"
+  standard: "12px"
+  invited: "18px"
+  pill: "999px"
+  cta: "{rounded.invited}"
+  cta-card: "{rounded.standard}"
 spacing:
   xs: "4px"
   sm: "8px"
@@ -85,7 +89,7 @@ components:
   button-primary-nav:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.surface}"
-    rounded: "{rounded.sharp}"
+    rounded: "{rounded.invited}"
     padding: "10px 20px"
   button-outline:
     backgroundColor: "transparent"
@@ -95,15 +99,15 @@ components:
   product-page-hero-primary:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.sharp}"
+    rounded: "{rounded.serious}"
     padding: "10px 20px"
   sharp-card:
     backgroundColor: "{colors.surface}"
-    rounded: "{rounded.sharp}"
+    rounded: "{rounded.serious}"
     padding: "{spacing.lg}"
   sharp-card-muted:
     backgroundColor: "{colors.surface-alt}"
-    rounded: "{rounded.sharp}"
+    rounded: "{rounded.serious}"
     padding: "{spacing.lg}"
   cta-card:
     backgroundColor: "{colors.surface}"
@@ -122,7 +126,7 @@ components:
 
 **Creative North Star: "The Instrument Panel"**
 
-DeployTitan’s site should feel like release infrastructure that learned how to speak clearly. The surface is warm, spare, and exact: bone-tinted neutrals, a single precision amber accent, sharp borders, and just enough motion to suggest a live system without turning the page into theater. The design is for founders, engineers, and technical leaders who want the point fast.
+DeployTitan’s site should feel like release infrastructure that learned how to speak clearly. The surface is warm, spare, and exact: bone-tinted neutrals, a single precision amber accent, precise borders, and just enough motion to suggest a live system without turning the page into theater. The design is for founders, engineers, and technical leaders who want the point fast.
 
 The homepage and product pages stay in the brand register, but the brand is still operational. The product is not a generic SaaS app and it is not a dark hacker toy. It is a calm instrument for a team that is tired of babysitting GitHub tabs, Jenkins jobs, and Slack approvals at the end of every sprint.
 
@@ -130,7 +134,7 @@ The homepage and product pages stay in the brand register, but the brand is stil
 - Bone-white and cartridge-paper surfaces carry the page, not pure white
 - Precision amber is the only brand accent and must stay rare
 - Inter handles display authority, Instrument Sans handles reading, JetBrains Mono marks the machine layer
-- Structural surfaces stay sharp at 2px radius, except conversion CTAs at 8px and the final CTA card at 12px
+- Roundedness is intentional: serious technical surfaces use 6px, standard content cards use 12px, and customer-inviting interactions use 18px or pill shapes
 - Depth comes from tonal layering, hairline borders, and grid motifs, not default shadows
 - Motion is purposeful, sparse, and always respects `prefers-reduced-motion`
 
@@ -203,23 +207,24 @@ DeployTitan is flat at rest. Surfaces do not float by default. Depth comes from 
 ## 5. Components
 
 ### Buttons
-- **Shape:** Product chrome stays at `2px`; conversion CTAs use `8px`.
+- **Shape:** Serious product chrome can stay tight at `6px`; conversion CTAs use the invited radius (`18px`) or pill treatment when the action should feel welcoming.
 - **Primary:** Deep-charcoal fill, bone-white text, gold ring on hover. Used for `Create account`, nav CTA, and primary section actions.
 - **Outline:** Transparent fill, ink border, amber-tinted hover state. Used for pricing and secondary conversion actions.
 - **Ghost / Icon / Dismiss:** Text-first controls with no filled background. Hover shifts color rather than adding decoration.
-- **Special case:** `ProductPageHero` uses a smaller amber-filled primary button with `2px` radius, distinct from the black 8px homepage CTA style.
+- **Special case:** `ProductPageHero` uses a smaller amber-filled primary button with serious rounding, distinct from larger invited conversion CTAs.
 
 ### Cards / Containers
-- **Sharp cards:** Default container pattern. `2px` radius, `1px` border, no shadow at rest.
+- **Serious cards:** Default operational container pattern. `6px` radius, `1px` border, no shadow at rest.
+- **Standard cards:** Default editorial and marketing content grouping. `12px` radius, `1px` border, no shadow at rest.
 - **Muted cards:** Same geometry, but use `surface-alt` for quieter grouping.
 - **Spotlight cards:** Add a cursor-following amber radial glow through `.spotlight-card`. Use only where engagement matters.
-- **CTA card:** The final conversion card uses `12px` radius to feel intentionally more approachable than the rest of the system.
+- **CTA card:** Conversion areas use standard or invited rounding so they feel approachable without becoming playful.
 
 ### Navigation
 - **Style:** Transparent at the top of the page, then lightly frosted on scroll.
 - **Links:** Instrument Sans, small size, ink-secondary at rest.
 - **Active state:** Amber text plus a persistent 1px underline.
-- **Nav CTA:** Deep-charcoal button with `2px` radius so it stays inside the product chrome rather than reading like a large marketing pill.
+- **Nav CTA:** Deep-charcoal button with invited rounding so the primary customer action feels approachable.
 
 ### Hero and Page Motifs
 - **`hero-grid`:** Neutral 60px grid, used where the page needs quiet structure.
@@ -235,8 +240,8 @@ DeployTitan is flat at rest. Surfaces do not float by default. Depth comes from 
 ## 6. Do's and Don'ts
 
 ### Do:
-- **Do** keep panels, rows, cards, and machine-facing UI at `2px` radius by default.
-- **Do** use `8px` only for conversion CTAs and `12px` only for the final CTA card.
+- **Do** choose radius by interaction warmth: serious technical UI at `6px`, standard content at `12px`, invited customer actions at `18px` or pill.
+- **Do** keep extremely tight `2px` radius only for tiny badges, status chips, and truly machine-like controls.
 - **Do** keep amber rare and purposeful: active nav, CTA emphasis, hover rings, blueprint accents.
 - **Do** reserve JetBrains Mono for machine-like content and tight labels.
 - **Do** keep body copy plain, short, and consequence-first. A founder should understand the product within two minutes.
@@ -244,7 +249,7 @@ DeployTitan is flat at rest. Surfaces do not float by default. Depth comes from 
 - **Do** use tonal layering and hairlines before reaching for shadow.
 
 ### Don't:
-- **Don't** drift into the **generic SaaS cream + purple** aesthetic. No soft pastels, no rounded-everything friendliness, no “everyone-welcome” productivity-tool vibe.
+- **Don't** drift into the **generic SaaS cream + purple** aesthetic. Rounding should signal approachability by context, not rounded-everything friendliness.
 - **Don't** drift into **dark neon DevOps**. No terminal-green glow, no hacker theatrics, no aggressive gradients on black.
 - **Don't** drift into **enterprise boring**. No stock-photo heroes, no lifeless navy dashboards, no generic corporate-grey marketing layouts.
 - **Don't** introduce **Phase 2/3 feature creep** into the visual or copy system. The current site is about sprint release coordination, not blast radius, traffic routing, or progressive delivery.

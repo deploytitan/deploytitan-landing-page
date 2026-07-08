@@ -204,10 +204,11 @@ body.modal-open {
 }
 
 /* -------------------------------------------------------------------------
-   Sharp card — 2px radius, amber hover ring
+   Sharp card — now the serious end of the radius scale.
+   Use for operational cards and dense technical surfaces.
    ---------------------------------------------------------------------- */
 .sharp-card {
-    border-radius: 2px;
+    border-radius: var(--radius-serious);
     border: 1px solid var(--color-line);
     transition: border-color 0.3s, box-shadow 0.3s;
 }
@@ -220,6 +221,27 @@ body.modal-open {
 }
 
 .dark .sharp-card:hover {
+    border-color: rgba(212, 180, 84, 0.25);
+    box-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(212, 180, 84, 0.08);
+}
+
+/* Standard card — approachable content container for editorial and marketing UI */
+.standard-card {
+    border-radius: var(--radius-standard);
+    border: 1px solid var(--color-line);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.standard-card:hover {
+    border-color: rgba(201, 168, 76, 0.3);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.04),
+        0 0 0 1px rgba(201, 168, 76, 0.06);
+}
+
+.dark .standard-card:hover {
     border-color: rgba(212, 180, 84, 0.25);
     box-shadow:
         0 2px 12px rgba(0, 0, 0, 0.2),

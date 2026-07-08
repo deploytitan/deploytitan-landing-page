@@ -31,7 +31,7 @@ export function PostCard({ post }: PostCardProps) {
   return (
     <article
       className={[
-        'group relative overflow-hidden sharp-card border border-line transition-all duration-200 hover:border-primary/20',
+        'group relative overflow-hidden standard-card border border-line transition-all duration-200 hover:border-primary/20',
         isFeatured ? 'sm:col-span-2 lg:col-span-3' : '',
       ].join(' ')}
     >
@@ -63,8 +63,8 @@ export function PostCard({ post }: PostCardProps) {
                   key={cat.slug.current}
                   href={`/blog?category=${cat.slug.current}`}
                   scroll={false}
-                  className="font-mono text-[10px] tracking-widest uppercase text-primary-accessible border border-primary/25 px-2 py-0.5 hover:border-primary/50 hover:text-primary transition-colors"
-                  style={{ borderRadius: '2px' }}
+                  className="font-mono text-[10px] tracking-widest uppercase text-primary-accessible border border-primary/25 px-3 py-0.5 hover:border-primary/50 hover:text-primary transition-colors"
+                  style={{ borderRadius: 'var(--radius-pill)' }}
                 >
                   {cat.title}
                 </Link>

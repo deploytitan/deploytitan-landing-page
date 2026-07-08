@@ -128,6 +128,7 @@ export default async function BlogArticlePage({ params }: Props) {
       })
     : null
   const headings = extractArticleHeadings((article.body as TypedObject[] | undefined) ?? [])
+  const primaryHeadings = headings.filter((heading) => heading.level <= 2)
   const faq = normalizeFaq(article.faq)
   const author = normalizeAuthor(article.author)
   const readTimeMinutes = estimateReadTimeMinutes(article)
@@ -161,8 +162,7 @@ export default async function BlogArticlePage({ params }: Props) {
                       <Link
                         key={category.slug.current}
                         href={`/blog?category=${category.slug.current}`}
-                        className="text-primary-accessible border-primary/25 bg-surface/80 inline-flex items-center border px-2.5 py-1 font-mono text-[10px] tracking-[0.18em] uppercase"
-                        style={{ borderRadius: '999px' }}
+                        className="text-primary-accessible border-primary/25 bg-surface/80 inline-flex items-center rounded-[var(--radius-pill)] border px-3 py-1 font-mono text-[10px] tracking-[0.18em] uppercase transition-colors hover:border-primary/50 hover:text-primary"
                       >
                         {category.title}
                       </Link>
@@ -173,7 +173,7 @@ export default async function BlogArticlePage({ params }: Props) {
             </div>
 
             <div className="mt-4 lg:mt-0">
-              <h1 className="text-ink mb-5 text-4xl leading-[1.05] font-[family:var(--font-serif)] font-medium tracking-[-0.035em] lg:text-6xl">
+              <h1 className="text-ink mb-5 text-4xl leading-[1.05] font-semibold tracking-[-0.025em] lg:text-6xl">
                 {article.title}
               </h1>
 
@@ -226,15 +226,24 @@ export default async function BlogArticlePage({ params }: Props) {
             <article className="max-w-[68ch] min-w-0">
               <BlogPostAnalytics articleContext={articleContext} />
 
-              {headings.length > 0 && (
+              {primaryHeadings.length > 0 && (
                 <aside className="mb-10 xl:hidden">
-                  <section className="border-line bg-surface-alt/45 rounded-[12px] border px-5 py-5">
-                    <ArticleTableOfContents
-                      headings={headings}
-                      headingId="on-this-page-mobile-heading"
-                      variant="mobile"
-                    />
-                  </section>
+                  <details className="group border-line bg-surface-alt/45 rounded-[var(--radius-standard)] border">
+                    <summary className="text-ink-tertiary flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 font-mono text-[10px] tracking-[0.2em] uppercase">
+                      <span>On this page</span>
+                      <span className="text-primary-accessible transition-transform group-open:rotate-45">
+                        +
+                      </span>
+                    </summary>
+                    <div className="border-line border-t px-4 py-4">
+                      <ArticleTableOfContents
+                        headings={primaryHeadings}
+                        headingId="on-this-page-mobile-heading"
+                        variant="mobile"
+                        hideHeading
+                      />
+                    </div>
+                  </details>
                 </aside>
               )}
 
@@ -256,7 +265,7 @@ export default async function BlogArticlePage({ params }: Props) {
                 <section className="border-line mt-16 border-t pt-10" aria-labelledby="faq-heading">
                   <h2
                     id="faq-heading"
-                    className="text-ink mb-5 text-3xl leading-tight font-[family:var(--font-serif)] font-medium tracking-[-0.02em]"
+                    className="text-ink mb-5 text-3xl leading-tight font-semibold tracking-[-0.015em]"
                   >
                     Frequently Asked Questions
                   </h2>
@@ -278,12 +287,12 @@ export default async function BlogArticlePage({ params }: Props) {
 
               {article.customerDiscoveryCta?.question && (
                 <section
-                  className="border-primary/20 bg-primary/5 mt-16 rounded-[12px] border px-6 py-6"
+                  className="border-primary/20 bg-primary/5 mt-16 rounded-[var(--radius-standard)] border px-6 py-6"
                   aria-labelledby="discovery-heading"
                 >
                   <h2
                     id="discovery-heading"
-                    className="text-ink text-2xl leading-tight font-[family:var(--font-serif)] font-medium tracking-[-0.02em]"
+                    className="text-ink text-2xl leading-tight font-semibold tracking-[-0.015em]"
                   >
                     Customer-Discovery Question
                   </h2>
@@ -299,7 +308,7 @@ export default async function BlogArticlePage({ params }: Props) {
                     <div className="mt-4">
                       <TrackedArticleLink
                         href={article.customerDiscoveryCta.href}
-                        className="border-primary/30 text-primary-accessible hover:border-primary/50 hover:text-primary inline-flex items-center rounded-[999px] border px-4 py-2 text-sm font-medium transition-colors"
+                        className="border-primary/30 text-primary-accessible hover:border-primary/50 hover:text-primary inline-flex items-center rounded-[var(--radius-pill)] border px-4 py-2 text-sm font-medium transition-colors"
                         eventName={
                           /interview|demo|call/i.test(article.customerDiscoveryCta.label)
                             ? 'interviewRequested'
@@ -323,8 +332,11 @@ export default async function BlogArticlePage({ params }: Props) {
 
             <aside className="hidden xl:block xl:min-w-0">
               <div className="border-line sticky top-28 border-l pl-8">
-                {headings.length > 0 && (
-                  <ArticleTableOfContents headings={headings} headingId="on-this-page-heading" />
+                {primaryHeadings.length > 0 && (
+                  <ArticleTableOfContents
+                    headings={primaryHeadings}
+                    headingId="on-this-page-heading"
+                  />
                 )}
 
                 {(article.primaryQuestion || article.topicCluster?.name) && (
@@ -350,7 +362,7 @@ export default async function BlogArticlePage({ params }: Props) {
 
                 <section className="border-line mt-8 border-t pt-6">
                   <h2 className="text-ink-tertiary mb-3 font-mono text-[10px] tracking-[0.2em] uppercase">
-                    Machine-readable
+                    Reader formats
                   </h2>
                   <div className="space-y-2 text-sm">
                     <Link
@@ -381,7 +393,7 @@ export default async function BlogArticlePage({ params }: Props) {
             <section className="border-line mt-16 border-t pt-10" aria-labelledby="related-heading">
               <h2
                 id="related-heading"
-                className="text-ink mb-5 text-3xl leading-tight font-[family:var(--font-serif)] font-medium tracking-[-0.02em]"
+                className="text-ink mb-5 text-3xl leading-tight font-semibold tracking-[-0.015em]"
               >
                 Related Articles
               </h2>
@@ -396,7 +408,7 @@ export default async function BlogArticlePage({ params }: Props) {
                       linkContext: 'related-articles',
                     }}
                     articleContext={articleContext}
-                    className="border-line hover:border-primary/25 rounded-[12px] border px-5 py-5 transition-colors"
+                    className="border-line hover:border-primary/25 rounded-[var(--radius-standard)] border px-5 py-5 transition-colors"
                   >
                     <h3 className="text-ink text-lg font-semibold">{relatedArticle.title}</h3>
                     {relatedArticle.excerpt && (

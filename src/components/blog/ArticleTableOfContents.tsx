@@ -13,12 +13,14 @@ type ArticleTableOfContentsProps = {
   headings: ArticleHeading[]
   headingId: string
   variant?: 'mobile' | 'desktop'
+  hideHeading?: boolean
 }
 
 export function ArticleTableOfContents({
   headings,
   headingId,
   variant = 'desktop',
+  hideHeading = false,
 }: ArticleTableOfContentsProps) {
   const headingIds = useMemo(() => headings.map((heading) => heading.id), [headings])
   const [activeId, setActiveId] = useState(headings[0]?.id ?? '')
@@ -61,12 +63,18 @@ export function ArticleTableOfContents({
 
   return (
     <section aria-labelledby={headingId}>
-      <h2
-        id={headingId}
-        className="text-ink-tertiary mb-4 font-mono text-[10px] tracking-[0.2em] uppercase"
-      >
-        On this page
-      </h2>
+      {hideHeading ? (
+        <h2 id={headingId} className="sr-only">
+          On this page
+        </h2>
+      ) : (
+        <h2
+          id={headingId}
+          className="text-ink-tertiary mb-4 font-mono text-[10px] tracking-[0.2em] uppercase"
+        >
+          On this page
+        </h2>
+      )}
       <ol className={cn('text-sm', variant === 'mobile' ? 'space-y-2.5' : 'space-y-3')}>
         {headings.map((heading) => {
           const isActive = heading.id === activeId

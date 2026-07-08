@@ -32,7 +32,7 @@ export function ArticleEvidenceSection({ article }: ArticleEvidenceSectionProps)
 
   return (
     <section className="border-line mt-14 border-t pt-8" aria-labelledby="evidence-sources-heading">
-      <div className="rounded-[2px] border border-line bg-surface-alt/45 p-5">
+      <div className="rounded-[var(--radius-serious)] border border-line bg-surface-alt/45 p-5">
         <div className="mb-5 flex flex-wrap items-center gap-2">
           <h2
             id="evidence-sources-heading"
@@ -61,7 +61,7 @@ export function ArticleEvidenceSection({ article }: ArticleEvidenceSectionProps)
             </p>
             <div className="grid gap-3">
               {publicEvidence.map((item) => (
-                <article key={item._id} className="rounded-[2px] border border-line bg-surface px-4 py-4">
+                <article key={item._id} className="rounded-[var(--radius-serious)] border border-line bg-surface px-4 py-4">
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <h3 className="text-sm font-semibold text-ink">{item.title ?? 'Evidence'}</h3>
                     {item.evidenceStrength && (
@@ -105,7 +105,7 @@ export function ArticleEvidenceSection({ article }: ArticleEvidenceSectionProps)
         )}
 
         {hasResearchNote && (
-          <div className="mb-6 rounded-[2px] border border-primary/20 bg-primary/5 px-4 py-3">
+          <div className="mb-6 rounded-[var(--radius-serious)] border border-primary/20 bg-primary/5 px-4 py-3">
             <p className="text-ink-tertiary mb-1 font-mono text-[10px] tracking-widest uppercase">
               DeployTitan Research
             </p>
