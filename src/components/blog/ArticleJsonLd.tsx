@@ -13,6 +13,8 @@ import { ORGANIZATION_LOGO, ORGANIZATION_NAME, SITE_URL } from '@/lib/site'
 export function ArticleJsonLd({ article }: { article: ArticleRecord }) {
   const canonicalUrl = getArticleCanonicalUrl(article)
   const description = getArticleSeoDescription(article)
+  const structuredDataType =
+    article.seo?.structuredDataType || (article.contentType === 'essay' ? 'Article' : 'TechArticle')
   const faq = normalizeFaq(article.faq)
   const publicEvidence = normalizePublicEvidence(article.publicEvidence)
   const ogImage = article.seo?.openGraphImage?.asset
@@ -51,7 +53,7 @@ export function ArticleJsonLd({ article }: { article: ArticleRecord }) {
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
-    '@type': article.seo?.structuredDataType || 'TechArticle',
+    '@type': structuredDataType,
     headline: getArticleSeoTitle(article),
     description,
     url: canonicalUrl,

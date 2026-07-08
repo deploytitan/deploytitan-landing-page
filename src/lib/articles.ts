@@ -6,6 +6,7 @@ export type ArticleRecord = {
   _type?: string
   title: string
   slug: { current: string }
+  contentType?: 'article' | 'essay' | null
   excerpt?: string | null
   directAnswer?: string | null
   primaryQuestion?: string | null

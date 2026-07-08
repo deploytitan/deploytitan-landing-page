@@ -18,6 +18,7 @@ const ARTICLE_LIST_PROJECTION = `
   _id,
   title,
   slug,
+  contentType,
   excerpt,
   directAnswer,
   primaryQuestion,

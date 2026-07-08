@@ -120,13 +120,15 @@ export default async function BlogArticlePage({ params }: Props) {
   const headings = extractArticleHeadings((article.body as TypedObject[] | undefined) ?? [])
   const faq = normalizeFaq(article.faq)
   const author = normalizeAuthor(article.author)
+  const articleType =
+    article.seo?.structuredDataType || (article.contentType === 'essay' ? 'Article' : 'TechArticle')
   const articleContext: ArticleAnalyticsContext = {
     articleId: article._id,
     articleSlug: article.slug.current,
     canonicalUrl: getArticleCanonicalUrl(article),
     articleTitle: article.title,
     topicCluster: article.topicCluster?.name ?? '',
-    articleType: article.seo?.structuredDataType ?? 'TechArticle',
+    articleType,
     primaryKeyword: article.primaryKeyword ?? '',
     targetPersona: article.targetPersona?.name ?? '',
   }

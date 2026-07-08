@@ -21,6 +21,11 @@ const articleCardLayoutValues = [
   { title: 'Featured wide card', value: 'featured' },
 ]
 
+const articleContentTypeValues = [
+  { title: 'Article', value: 'article' },
+  { title: 'Essay', value: 'essay' },
+]
+
 const hubStatusValues = [
   { title: 'Not a hub', value: 'notHub' },
   { title: 'Active hub', value: 'activeHub' },
@@ -45,6 +50,10 @@ type LooseValidationRule = any
 
 type ValidationContextLike = {
   document?: unknown
+}
+
+function isEssayDocument(document: unknown) {
+  return (document as { contentType?: string } | undefined)?.contentType === 'essay'
 }
 
 export const articleType = defineType({
@@ -77,6 +86,16 @@ export const articleType = defineType({
       validation: (Rule: LooseValidationRule) => Rule.required(),
     }),
     defineField({
+      name: 'contentType',
+      title: 'Content type',
+      type: 'string',
+      initialValue: 'article',
+      options: { list: articleContentTypeValues, layout: 'radio' },
+      description:
+        'Use Article for SEO, technical, and distribution-led content. Use Essay for opinionated narrative pieces with lighter brief, keyword, evidence, and hub requirements.',
+      validation: (Rule: LooseValidationRule) => Rule.required(),
+    }),
+    defineField({
       name: 'pipelineStageGuide',
       title: 'Pipeline stage guide',
       description: 'Focused guidance for the article based on its current workflow status.',
@@ -106,7 +125,11 @@ export const articleType = defineType({
       type: 'text',
       rows: 4,
       description: 'Two to four sentences answering the article question near the top.',
-      validation: (Rule: LooseValidationRule) => Rule.required(),
+      validation: (Rule: LooseValidationRule) =>
+        Rule.custom((value: unknown, context: ValidationContextLike) => {
+          if (isEssayDocument(context.document)) return true
+          return String(value ?? '').trim() ? true : 'Articles require a direct answer.'
+        }),
     }),
     defineField(withPublishingRequirement({
       name: 'primaryQuestion',
@@ -115,7 +138,7 @@ export const articleType = defineType({
       validation: (rule: LooseValidationRule) =>
         rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
-          if (parent?.status === 'published' && !value) {
+          if (!isEssayDocument(context.document) && parent?.status === 'published' && !value) {
             return 'Published articles require a primary question.'
           }
           return true
@@ -128,7 +151,11 @@ export const articleType = defineType({
       validation: (Rule: LooseValidationRule) =>
         Rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
-          if (parent?.status === 'published' && !String(value ?? '').trim()) {
+          if (
+            !isEssayDocument(context.document) &&
+            parent?.status === 'published' &&
+            !String(value ?? '').trim()
+          ) {
             return 'Published articles require one primary keyword.'
           }
           return true
@@ -162,9 +189,12 @@ export const articleType = defineType({
       type: 'array',
       of: [defineArrayMember({ type: 'string' })],
       validation: (Rule: LooseValidationRule) =>
-        Rule.max(6).custom((value: unknown) => {
+        Rule.max(6).custom((value: unknown, context: ValidationContextLike) => {
           const values = (Array.isArray(value) ? value : []).map((entry: unknown) => String(entry ?? '').trim()).filter(Boolean)
-          if (values.length < 2) return 'Add at least two related questions for published articles.'
+          const parent = context.document as { status?: string } | undefined
+          if (!isEssayDocument(context.document) && parent?.status === 'published' && values.length < 2) {
+            return 'Add at least two related questions for published articles.'
+          }
           if (new Set(values.map((entry) => entry.toLowerCase())).size !== values.length) {
             return 'Related questions must be unique.'
           }
@@ -182,7 +212,7 @@ export const articleType = defineType({
       validation: (Rule: LooseValidationRule) =>
         Rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
-          if (parent?.status === 'published' && !value) {
+          if (!isEssayDocument(context.document) && parent?.status === 'published' && !value) {
             return 'Published articles require a search intent.'
           }
           return true
@@ -200,7 +230,7 @@ export const articleType = defineType({
       validation: (Rule: LooseValidationRule) =>
         Rule.custom((value: unknown, context: ValidationContextLike) => {
           const parent = context.document as { status?: string } | undefined
-          if (parent?.status === 'published' && !value) {
+          if (!isEssayDocument(context.document) && parent?.status === 'published' && !value) {
             return 'Published articles require a topic cluster.'
           }
           return true
@@ -239,7 +269,11 @@ export const articleType = defineType({
       options: { list: hubRevenueGoalValues, layout: 'radio' },
       description:
         'Primary outcome the article should optimize for. Pick one so title, CTA, distribution copy, and KPI review all point at the same goal.',
-      validation: (Rule: LooseValidationRule) => Rule.required(),
+      validation: (Rule: LooseValidationRule) =>
+        Rule.custom((value: unknown, context: ValidationContextLike) => {
+          if (isEssayDocument(context.document)) return true
+          return value ? true : 'Articles require a hub revenue goal.'
+        }),
     }),
     defineField({
       name: 'spokeCadenceWeeks',
@@ -248,7 +282,16 @@ export const articleType = defineType({
       initialValue: 6,
       description:
         'Number of weeks to spread the six spoke assets across. Default is six weeks; shorten only for urgent campaigns and lengthen only when the topic needs a slower educational sequence.',
-      validation: (Rule: LooseValidationRule) => Rule.required().integer().min(4).max(8),
+      validation: (Rule: LooseValidationRule) =>
+        Rule.custom((value: unknown, context: ValidationContextLike) => {
+          if (isEssayDocument(context.document) && (value === undefined || value === null)) return true
+          if (value === undefined || value === null) return 'Articles require a spoke cadence.'
+          if (typeof value !== 'number' || !Number.isInteger(value)) {
+            return 'Spoke cadence must be a whole number.'
+          }
+          if (value < 4 || value > 8) return 'Spoke cadence must be between 4 and 8 weeks.'
+          return true
+        }),
     }),
     defineField({
       name: 'coverImage',
@@ -463,6 +506,7 @@ export const articleType = defineType({
         | undefined
 
       if (!article || !isProofReadyStatus(article.status)) return true
+      if (isEssayDocument(article)) return true
 
       const hasEvidence = (article.publicEvidence?.length ?? 0) > 0 || (article.citations?.length ?? 0) > 0
       if (!hasEvidence) {
