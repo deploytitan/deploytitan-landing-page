@@ -18,6 +18,7 @@ import { createOpportunityPipelineAction } from './src/sanity/actions/createOppo
 import { copyDocumentForLLMAction } from './src/sanity/actions/copyDocumentForLLMAction'
 import { deleteContentPipelineAction } from './src/sanity/actions/deleteContentPipelineAction'
 import { importDocumentFromLLMAction } from './src/sanity/actions/importDocumentFromLLMAction'
+import { createPublishArticleAction } from './src/sanity/actions/publishArticleAction'
 
 const resolve: PresentationPluginOptions['resolve'] = {
   locations: {
@@ -60,11 +61,15 @@ export default defineConfig({
       }
 
       if (context.schemaType === 'article') {
+        const articleActions = previousActions.map((action) =>
+          action.action === 'publish' ? createPublishArticleAction(action) : action,
+        )
+
         return [
           copyDocumentForLLMAction,
           importDocumentFromLLMAction,
           deleteContentPipelineAction,
-          ...previousActions,
+          ...articleActions,
         ]
       }
 

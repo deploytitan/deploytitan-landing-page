@@ -23,7 +23,7 @@ async function main() {
   >(`*[_type == "post"]`)
 
   for (const post of posts) {
-    const articleId = post._id.replace(/^drafts\./, '').replace(/^post\./, 'article.')
+    const articleId = post._id.replace(/^drafts\./, '').replace(/^post\./, 'article-')
 
     await writeClient.createOrReplace({
       _id: articleId,

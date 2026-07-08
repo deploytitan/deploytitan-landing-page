@@ -66,6 +66,10 @@ function createDeterministicId(prefix: string, ...parts: string[]) {
   return `${prefix}.${digest}`
 }
 
+function createPublicDeterministicId(prefix: string, ...parts: string[]) {
+  return createDeterministicId(prefix, ...parts).replace('.', '-')
+}
+
 function slugify(value: string) {
   return value
     .toLowerCase()
@@ -256,7 +260,7 @@ export async function materializeContentOpportunity(
   const researchEvidenceIds = [gscEvidenceId, sourceEvidenceId].filter((value): value is string => Boolean(value))
   const articleId =
     opportunity.opportunityType === 'new-article'
-      ? opportunity.article?._ref ?? createDeterministicId('article', opportunityId, primaryQuery)
+      ? opportunity.article?._ref ?? createPublicDeterministicId('article', opportunityId, primaryQuery)
       : opportunity.article?._ref ?? opportunity.matchedArticle?._ref ?? null
 
   const primaryQuestion = buildPrimaryQuestion(opportunity)
