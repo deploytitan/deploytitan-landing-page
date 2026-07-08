@@ -91,6 +91,9 @@ export default defineConfig({
     },
   },
   plugins: [
+    dashboardTool({
+      widgets: [vercelWidget({ layout: { width: 'full' } }), projectInfoWidget()],
+    }),
     presentationTool({
       resolve,
       previewUrl: {
@@ -101,9 +104,6 @@ export default defineConfig({
       },
     }),
     structureTool({ structure }),
-    dashboardTool({
-      widgets: [vercelWidget({ layout: { width: 'full' } }), projectInfoWidget()],
-    }),
     codeInput(),
     media(),
     unsplashImageAsset(),

@@ -1,6 +1,7 @@
 import { defineQuery } from 'next-sanity'
 
 const ARTICLE_WHERE = '_type == "article"'
+const PUBLISHED_ARTICLE_WHERE = `${ARTICLE_WHERE} && status == "published"`
 const PUBLIC_EVIDENCE_PROJECTION = `
   _id,
   title,
@@ -57,14 +58,14 @@ const ARTICLE_LIST_PROJECTION = `
 `
 
 export const articlesQuery = defineQuery(`
-  *[${ARTICLE_WHERE} && defined(slug.current) && status == "published"]
+  *[${PUBLISHED_ARTICLE_WHERE} && defined(slug.current)]
   | order(coalesce(publishedAt, _createdAt) desc) {
     ${ARTICLE_LIST_PROJECTION}
   }
 `)
 
 export const articleBySlugQuery = defineQuery(`
-  *[${ARTICLE_WHERE} && slug.current == $slug][0] {
+  *[${PUBLISHED_ARTICLE_WHERE} && slug.current == $slug][0] {
     ${ARTICLE_LIST_PROJECTION},
     body,
     citations,
@@ -77,7 +78,7 @@ export const articleBySlugQuery = defineQuery(`
 `)
 
 export const articleSlugsQuery = defineQuery(`
-  *[${ARTICLE_WHERE} && defined(slug.current)] { "slug": slug.current }
+  *[${PUBLISHED_ARTICLE_WHERE} && defined(slug.current)] { "slug": slug.current }
 `)
 
 export const categoriesQuery = defineQuery(`
