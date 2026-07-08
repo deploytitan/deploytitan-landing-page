@@ -14,22 +14,20 @@ import { nodeMeta, GROUP_LABELS, type NodeGroup } from '../../data/siteGraph.met
 
 // Build a quick lookup: route id → label
 const routeLabels = new Map<string, string>(
-  nodeMeta.map((n) => [n.id, n.label ?? slugToTitle(n.id.split('/').pop() ?? n.id)])
+  nodeMeta.map((n) => [n.id, n.label ?? slugToTitle(n.id.split('/').pop() ?? n.id)]),
 )
 
 // Group-level labels for intermediate segments that may not have a nodeMeta entry
 // e.g. /solutions → "Solutions" (from GROUP_LABELS)
 const segmentGroupMap: Record<string, string> = {
-  products:  GROUP_LABELS['product' as NodeGroup],
+  products: GROUP_LABELS['product' as NodeGroup],
   solutions: GROUP_LABELS['solution' as NodeGroup],
-  for:       GROUP_LABELS['persona' as NodeGroup],
-  docs:      GROUP_LABELS['developer' as NodeGroup],
+  for: GROUP_LABELS['persona' as NodeGroup],
+  docs: GROUP_LABELS['developer' as NodeGroup],
 }
 
 function slugToTitle(slug: string): string {
-  return slug
-    .replace(/-/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase())
+  return slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
 }
 
 function getLabel(path: string, segment: string): string {
@@ -62,18 +60,23 @@ export function Breadcrumbs({ className = '' }: BreadcrumbsProps) {
   if (trail.length <= 1) return null
 
   return (
-    <nav aria-label="Breadcrumb" className={`flex items-center gap-1.5 ${className}`}>
+    <nav
+      aria-label="Breadcrumb"
+      className={`flex max-w-full min-w-0 items-center gap-1.5 overflow-hidden ${className}`}
+    >
       {trail.map((crumb, i) => {
         const isLast = i === trail.length - 1
         return (
-          <span key={crumb.path} className="flex items-center gap-1.5">
-            {i > 0 && <span className="text-ink-tertiary text-xs select-none">→</span>}
+          <span key={crumb.path} className="flex min-w-0 items-center gap-1.5">
+            {i > 0 && <span className="text-ink-tertiary shrink-0 text-xs select-none">→</span>}
             {isLast ? (
-              <span className="text-xs text-primary-accessible font-mono">{crumb.label}</span>
+              <span className="text-primary-accessible max-w-[14rem] truncate font-mono text-xs sm:max-w-[20rem] lg:max-w-[24rem]">
+                {crumb.label}
+              </span>
             ) : (
               <Link
                 href={crumb.path}
-                className="text-xs text-ink-secondary hover:text-ink transition-colors"
+                className="text-ink-secondary hover:text-ink max-w-[8rem] truncate text-xs transition-colors sm:max-w-[10rem]"
               >
                 {crumb.label}
               </Link>

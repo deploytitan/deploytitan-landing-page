@@ -1,13 +1,19 @@
 'use client'
 
 import Link from 'next/link'
-import type { ComponentProps } from 'react'
-import { buildArticleTrackingPayload, type ArticleAnalyticsContext, trackEvent } from '@/lib/analytics'
+import type { ComponentProps, MouseEvent } from 'react'
+import {
+  buildArticleTrackingPayload,
+  type ArticleAnalyticsContext,
+  trackEvent,
+} from '@/lib/analytics'
 
-type TrackedArticleLinkProps = ComponentProps<typeof Link> & {
+type TrackedArticleLinkProps = Omit<ComponentProps<typeof Link>, 'href' | 'onClick'> & {
+  href: string
   eventName: string
   eventPayload: Record<string, unknown>
   articleContext?: ArticleAnalyticsContext
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void
 }
 
 export function TrackedArticleLink({
@@ -17,16 +23,17 @@ export function TrackedArticleLink({
   onClick,
   ...props
 }: TrackedArticleLinkProps) {
-  return (
-    <Link
-      {...props}
-      onClick={(event) => {
-        trackEvent(
-          eventName,
-          articleContext ? buildArticleTrackingPayload(articleContext, eventPayload) : eventPayload,
-        )
-        onClick?.(event)
-      }}
-    />
-  )
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    trackEvent(
+      eventName,
+      articleContext ? buildArticleTrackingPayload(articleContext, eventPayload) : eventPayload,
+    )
+    onClick?.(event)
+  }
+
+  if (/^(mailto|tel):/i.test(props.href)) {
+    return <a {...props} onClick={handleClick} />
+  }
+
+  return <Link {...props} onClick={handleClick} />
 }

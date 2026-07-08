@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import readingTime from 'reading-time'
 import { TypedObject } from 'sanity'
 import { type ArticleAnalyticsContext } from '@/lib/analytics'
 import { SITE_URL } from '@/lib/site'
@@ -13,6 +14,7 @@ import { AuthorBadge } from '@/components/blog/AuthorBadge'
 import { Breadcrumbs } from '@/components/shared/Breadcrumbs'
 import { ArticleJsonLd } from '@/components/blog/ArticleJsonLd'
 import { ArticleEvidenceSection } from '@/components/blog/ArticleEvidenceSection'
+import { ArticleTableOfContents } from '@/components/blog/ArticleTableOfContents'
 import { TrackedArticleLink } from '@/components/blog/TrackedArticleLink'
 import {
   type ArticleRecord,
@@ -24,6 +26,7 @@ import {
   getArticleSeoTitle,
   normalizeAuthor,
   normalizeFaq,
+  portableTextToPlainText,
 } from '@/lib/articles'
 import { urlFor } from '@/sanity/lib/image'
 import { articleBySlugQuery, articleSlugsQuery } from '@/sanity/lib/queries'
@@ -31,6 +34,12 @@ import { sanityFetch } from '@/sanity/lib/live'
 
 interface Props {
   params: Promise<{ slug: string }>
+}
+
+function estimateReadTimeMinutes(article: ArticleRecord) {
+  const articleText = portableTextToPlainText((article.body as TypedObject[] | undefined) ?? [])
+
+  return Math.max(1, Math.ceil(readingTime(articleText, { wordsPerMinute: 220 }).minutes))
 }
 
 export async function generateStaticParams() {
@@ -66,9 +75,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         .url()
     : article.coverImage?.asset
       ? urlFor(article.coverImage as object)
-        .width(1200)
-        .height(630)
-        .url()
+          .width(1200)
+          .height(630)
+          .url()
       : undefined
 
   return {
@@ -105,6 +114,7 @@ export default async function BlogArticlePage({ params }: Props) {
   const { data } = await sanityFetch({
     query: articleBySlugQuery,
     params: { slug },
+    stega: false,
   })
 
   const article = data as ArticleRecord | null
@@ -120,6 +130,7 @@ export default async function BlogArticlePage({ params }: Props) {
   const headings = extractArticleHeadings((article.body as TypedObject[] | undefined) ?? [])
   const faq = normalizeFaq(article.faq)
   const author = normalizeAuthor(article.author)
+  const readTimeMinutes = estimateReadTimeMinutes(article)
   const articleType =
     article.seo?.structuredDataType || (article.contentType === 'essay' ? 'Article' : 'TechArticle')
   const articleContext: ArticleAnalyticsContext = {
@@ -140,8 +151,8 @@ export default async function BlogArticlePage({ params }: Props) {
       <section className="border-line border-b bg-[linear-gradient(180deg,rgba(201,168,76,0.09)_0%,rgba(201,168,76,0.04)_28%,rgba(250,250,249,0)_100%)] pt-28 pb-12 dark:bg-[linear-gradient(180deg,rgba(212,180,84,0.08)_0%,rgba(212,180,84,0.03)_24%,rgba(13,12,10,0)_100%)]">
         <div className="mx-auto w-full max-w-5xl gap-10 px-0">
           <div className="min-w-0 px-4 lg:px-0">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 lg:gap-6">
-              <Breadcrumbs className="" />
+            <div className="flex min-w-0 flex-col justify-between gap-4 lg:flex-row lg:items-center lg:gap-6">
+              <Breadcrumbs className="lg:max-w-[34rem]" />
 
               <div className="flex gap-4">
                 {article.categories && article.categories.length > 0 && (
@@ -179,16 +190,11 @@ export default async function BlogArticlePage({ params }: Props) {
                     {author.role ? ` · ${author.role}` : ''}
                   </p>
                 )}
+                <div className="text-ink-tertiary bg-line hidden h-3 w-px sm:block" />
+                <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
+                  Total read time {readTimeMinutes} min
+                </p>
               </div>
-
-              {article.methodologyNote && (
-                <div className="border-line bg-surface/75 mt-6 max-w-3xl rounded-[12px] border px-5 py-4">
-                  <p className="text-primary-accessible mb-2 font-mono text-[10px] tracking-[0.18em] uppercase">
-                    Research note
-                  </p>
-                  <p className="text-ink-secondary text-sm leading-7">{article.methodologyNote}</p>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -222,31 +228,12 @@ export default async function BlogArticlePage({ params }: Props) {
 
               {headings.length > 0 && (
                 <aside className="mb-10 xl:hidden">
-                  <section
-                    aria-labelledby="on-this-page-mobile-heading"
-                    className="border-line bg-surface-alt/45 rounded-[12px] border px-5 py-5"
-                  >
-                    <h2
-                      id="on-this-page-mobile-heading"
-                      className="text-ink-tertiary mb-3 font-mono text-[10px] tracking-[0.2em] uppercase"
-                    >
-                      On this page
-                    </h2>
-                    <ol className="space-y-2.5 text-sm">
-                      {headings.map((heading) => (
-                        <li
-                          key={`mobile-${heading.level}-${heading.text}`}
-                          className={heading.level > 2 ? 'pl-3' : ''}
-                        >
-                          <a
-                            href={`#${heading.id}`}
-                            className="text-ink-secondary hover:text-primary transition-colors"
-                          >
-                            {heading.text}
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
+                  <section className="border-line bg-surface-alt/45 rounded-[12px] border px-5 py-5">
+                    <ArticleTableOfContents
+                      headings={headings}
+                      headingId="on-this-page-mobile-heading"
+                      variant="mobile"
+                    />
                   </section>
                 </aside>
               )}
@@ -273,12 +260,17 @@ export default async function BlogArticlePage({ params }: Props) {
                   >
                     Frequently Asked Questions
                   </h2>
-                  <div className="space-y-5">
+                  <div className="divide-line border-line divide-y border-y">
                     {faq.map((item) => (
-                      <div key={item.question}>
-                        <h3 className="text-ink text-base font-semibold">{item.question}</h3>
-                        <p className="text-ink-secondary mt-2 text-base leading-8">{item.answer}</p>
-                      </div>
+                      <details key={item.question} className="group py-4">
+                        <summary className="text-ink flex cursor-pointer list-none items-start justify-between gap-4 text-base font-semibold">
+                          <span>{item.question}</span>
+                          <span className="text-primary-accessible mt-0.5 font-mono text-sm transition-transform group-open:rotate-45">
+                            +
+                          </span>
+                        </summary>
+                        <p className="text-ink-secondary mt-3 text-base leading-7">{item.answer}</p>
+                      </details>
                     ))}
                   </div>
                 </section>
@@ -327,71 +319,12 @@ export default async function BlogArticlePage({ params }: Props) {
                   )}
                 </section>
               )}
-
-              {article.citations && article.citations.length > 0 && (
-                <section
-                  className="border-line mt-16 border-t pt-10"
-                  aria-labelledby="citations-heading"
-                >
-                  <h2
-                    id="citations-heading"
-                    className="text-ink mb-5 text-3xl leading-tight font-[family:var(--font-serif)] font-medium tracking-[-0.02em]"
-                  >
-                    Citations
-                  </h2>
-                  <ol className="text-ink-secondary space-y-3 text-sm leading-7">
-                    {article.citations.map((citation, index) => (
-                      <li key={`${citation.label}-${index}`}>
-                        <span className="text-ink font-medium">{citation.label}</span>
-                        {citation.publisher ? `, ${citation.publisher}` : ''}
-                        {citation.url && (
-                          <>
-                            {' '}
-                            <a
-                              href={citation.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-primary underline underline-offset-2"
-                            >
-                              Source
-                            </a>
-                          </>
-                        )}
-                        {citation.notes ? ` - ${citation.notes}` : ''}
-                      </li>
-                    ))}
-                  </ol>
-                </section>
-              )}
             </article>
 
             <aside className="hidden xl:block xl:min-w-0">
               <div className="border-line sticky top-28 border-l pl-8">
-
                 {headings.length > 0 && (
-                  <section aria-labelledby="on-this-page-heading">
-                    <h2
-                      id="on-this-page-heading"
-                      className="text-ink-tertiary mb-4 font-mono text-[10px] tracking-[0.2em] uppercase"
-                    >
-                      On this page
-                    </h2>
-                    <ol className="space-y-3 text-sm">
-                      {headings.map((heading) => (
-                        <li
-                          key={`${heading.level}-${heading.text}`}
-                          className={heading.level > 2 ? 'pl-3' : ''}
-                        >
-                          <a
-                            href={`#${heading.id}`}
-                            className="text-ink-secondary hover:text-primary transition-colors"
-                          >
-                            {heading.text}
-                          </a>
-                        </li>
-                      ))}
-                    </ol>
-                  </section>
+                  <ArticleTableOfContents headings={headings} headingId="on-this-page-heading" />
                 )}
 
                 {(article.primaryQuestion || article.topicCluster?.name) && (
