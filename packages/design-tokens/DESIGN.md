@@ -1,6 +1,6 @@
 ---
 name: DeployTitan
-description: The deployment control plane for engineering teams who ship without fear.
+description: Content and products for AI-adopting engineering teams that need to move faster and ship safer.
 colors:
   # Light mode surfaces
   surface: "#fafaf9"
@@ -162,14 +162,14 @@ components:
 
 **Creative North Star: "The Instrument Panel"**
 
-DeployTitan's visual language is built on a single premise: aircraft-grade precision. Every surface reads like a cockpit display, purposeful and calibrated, nothing decorative. The color system uses two registers: a bone-warm neutral field that recedes, and one operational accent (precision amber) that appears only where it earns its place. Type is set in two voices: Inter for authority at scale, Instrument Sans for legibility at reading size, and JetBrains Mono for the machine layer that runs beneath both.
+DeployTitan's visual language is built on a single premise: aircraft-grade precision for AI-era engineering work. Every surface reads like a cockpit display, purposeful and calibrated, nothing decorative. Phase 1 is content-led, so the system must make long-form insight feel as intentional as product UI. The color system uses two registers: a bone-warm neutral field that recedes, and one operational accent (precision amber) that appears only where it earns its place. Type is set in two voices: Inter for authority at scale, Instrument Sans for legibility at reading size, and JetBrains Mono for the machine layer that runs beneath both.
 
 The system is explicitly dark-capable. Light mode reads like a technical data sheet printed on aged cartridge paper; dark mode reads like a mission-critical terminal at 2am. Neither is an afterthought. Both are deployed via the `.dark` class toggle; every token has a matching dark override.
 
 **Key Characteristics:**
-- Default radius is 2px (`--radius-sharp`) — applied universally to panels, cards, capability rows, status badges, and all internal UI elements
-- Primary CTAs (`button-primary`, `button-outline`) use 8px radius to signal approachability at conversion moments
-- CTA section outer card uses 12px radius — the one place on the homepage where softness signals "this is safe to click"
+- Serious technical surfaces use 6px, standard content panels use 12px, and customer-inviting actions use 18px or pill shapes
+- Primary CTAs (`button-primary`, `button-outline`) use invited rounding to signal approachability at conversion moments
+- CTA and intake surfaces use 12px or 18px depending on whether they read as content panels or direct customer actions
 - Precision amber accent used at ≤10% of any surface; its rarity is the point
 - Mono layer (JetBrains Mono) reserved strictly for machine-readable content: labels, statuses, version strings, event logs
 - Noise texture overlay (opacity 0.02) adds material depth without decoration
@@ -178,38 +178,41 @@ The system is explicitly dark-capable. Light mode reads like a technical data sh
 
 ## 2. Border Radius System
 
-The radius system has three tiers. Knowing which tier to use and why prevents brand drift.
+The radius system has four tiers. Knowing which tier to use and why prevents brand drift.
 
-### Tier 1 — Sharp (2px): The default
-Everything that is structural, technical, or informational uses `border-radius: 2px`. This includes:
-- All panel and dashboard containers (hero demo panel, feature rows, capability panels)
-- Cards at rest (sharp-card, sharp-card-muted)
-- Status badges and tags
-- Input fields, code blocks, terminal elements
-- Navigation elements
-- Internal UI elements (column headers, panel footers, integration strips)
-- All decorative corner-accent marks
+### Tier 1: Serious (6px)
+Everything that is structural, technical, or informational uses `border-radius: 6px`. This includes:
+- Dense product panels, evidence modules, feature rows, and capability panels
+- Cards at rest when they represent operational content
+- Input fields and compact controls
+- Internal UI elements such as column headers, panel footers, and integration strips
 
-**Rule:** If an element shows data, contains machine-readable content, or is part of the product interface vocabulary, it uses 2px.
+**Rule:** If an element shows data, contains machine-readable content, or is part of the product interface vocabulary, it uses 6px.
 
-### Tier 2 — Button (8px): Conversion actions
-Primary and outline CTAs use `rounded-[8px]` (`border-radius: 8px`). This applies to:
-- Hero "Create account" button
-- PlatformOverview "Create account" button (section 4)
-- CTA section "Create account" button (primary)
-- CTA section "See pricing" button (outline)
-
-**Rule:** The 8px radius on buttons signals "click here" without abandoning the sharp product aesthetic. It creates just enough visual warmth at the moment of conversion. Nav bar CTA (xs size) retains 2px to stay within the product chrome register.
-
-### Tier 3 — Approachable card (12px): Conversion containers
+### Tier 2: Standard (12px)
 Used on content containers that should feel approachable without losing technical restraint:
-- Blog cards, article modules, and marketing content panels (`borderRadius: '12px'`)
-- CTA section outer card (`borderRadius: '12px'` or invited radius when the whole surface is a customer action)
+- Blog cards, article modules, and marketing content panels
+- Founder notes, editorial callouts, and waitlist form panels
+- CTA section outer cards when they are content containers
 
-**Rule:** 12px is the standard editorial and marketing content radius. It tells the reader: "this is a human-readable surface." Dense operational panels remain tighter, while high-intent customer interactions may round further.
+**Rule:** 12px is the standard editorial and marketing content radius. It tells the reader: "this is a human-readable surface."
 
-### Tier 4 — Micro (1px): Status indicators
-Status badges, dots, and inline tags that need to be readable but stay below the visual weight of even 2px. Used on status dots (`border-radius: 1px`) and platform badge labels.
+### Tier 3: Invited (18px)
+Customer-inviting actions and surfaces use `rounded-[var(--radius-invited)]`:
+- Hero "Join waitlist" or "Request early access" buttons
+- Contact and waitlist conversion actions
+- Nav bar CTA
+- High-intent signup or intake surfaces when the whole surface is a customer action
+
+**Rule:** Invited rounding makes conversion feel approachable without making technical panels soft.
+
+### Tier 4: Micro (1px to 2px)
+Micro shapes stay sharp:
+- Status badges and tags
+- Status dots
+- Inline tags
+- Decorative corner-accent marks
+- Code-block window controls
 
 **Summary table:**
 
@@ -330,8 +333,8 @@ Roundedness follows interaction warmth: tighter for serious technical work, warm
 
 ### Hero Demo Panel
 
-The hero right column contains an animated sprint PR dashboard panel. Key styling rules:
-- Outer panel: `border-radius: 2px`, `border: 1px solid var(--color-line)`, `bg-surface`
+When a hero includes a product demo panel, it should read as a compact operational instrument. Key styling rules:
+- Outer panel: `border-radius: 6px`, `border: 1px solid var(--color-line)`, `bg-surface`
 - Panel header: `bg-surface-alt/70`, `border-bottom`
 - PR rows: slide in with `rowSlideIn` keyframe (translateX -8px → 0, opacity 0 → 1)
 - Status states: queued (muted), running (warning amber + spinner), deployed (success green)
@@ -372,14 +375,14 @@ All keyframes respect `prefers-reduced-motion: reduce` (transitions and animatio
 - `success-reveal`: translateY `10px → 0` + opacity (`0.5s`). CTA success state.
 - `drawEdge`: SVG stroke-dashoffset release. Release graph edge animation.
 
-The `.TrafficSplitVisual` pattern is the system's signature: a terminal-style panel with a header bar, mono labels, animated progress bars, real-time event log, and gold scan-line overlay. Key rules: header bar uses `bg-surface-alt/60`; all labels are JetBrains Mono; signal colors are used directly as `color` and `backgroundColor` at low opacity; the corner radius is `2px` on the outer panel, `1px` on internal elements, `0.5px` on micro-indicators.
+The `.TrafficSplitVisual` pattern is a terminal-style panel with a header bar, mono labels, animated progress bars, real-time event log, and gold scan-line overlay. Key rules: header bar uses `bg-surface-alt/60`; all labels are JetBrains Mono; signal colors are used directly as `color` and `backgroundColor` at low opacity; the corner radius is `6px` on the outer panel, `2px` on internal elements, `1px` on micro-indicators.
 
 ## 7. Do's and Don'ts
 
 ### Do:
-- **Do** use `border-radius: 2px` on all panels, data containers, capability rows, and product-layer UI. This is the default.
-- **Do** use `border-radius: 8px` (`rounded-[8px]`) on primary and outline CTA buttons. This is the conversion signal.
-- **Do** use `border-radius: 12px` exclusively on the CTA section outer card. Nowhere else.
+- **Do** use `border-radius: 6px` on dense technical panels, data containers, capability rows, and product-layer UI.
+- **Do** use `border-radius: 12px` on editorial cards, article modules, founder notes, and content panels.
+- **Do** use invited rounding on primary and outline CTA buttons. This is the conversion signal.
 - **Do** set amber (`var(--color-primary)`) only for operationally significant UI: the primary CTA, active states, hover rings, status highlights, and blueprint motifs. Never as fill color on a card at rest.
 - **Do** use JetBrains Mono strictly for machine-originated content: version strings, deployment statuses, event log lines, CLI commands, timestamps. Human-authored prose and labels use Instrument Sans.
 - **Do** keep body copy to 65–75ch max line length. Dense content at wide line lengths is an SRE's enemy.

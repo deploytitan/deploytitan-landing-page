@@ -109,7 +109,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       // Base
       'inline-flex min-h-11 items-center justify-center gap-2',
       'font-medium leading-none select-none',
-      'rounded-[var(--radius-pill)]',
+      'rounded-[var(--radius-invited)]',
       // Size (only for sized variants)
       isSized && SIZE[size],
       // Variant
@@ -122,12 +122,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     if (as === 'a') {
       const { href, ...rest } = props as ButtonAsAnchor
       return (
-        <a
-          ref={ref as React.Ref<HTMLAnchorElement>}
-          href={href}
-          className={classes}
-          {...rest}
-        />
+        <a ref={ref as React.Ref<HTMLAnchorElement>} href={href} className={classes} {...rest} />
       )
     }
 

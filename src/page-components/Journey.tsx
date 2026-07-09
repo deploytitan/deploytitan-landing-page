@@ -11,41 +11,41 @@ const PRIMARY = 'var(--color-primary)'
 const OUTCOMES = [
   {
     number: '01',
-    title: 'Every sprint PR in one view',
-    body: 'Add every release PR across all repos to one release object. No links in chat, no spreadsheet, no guessing what is actually in the sprint.',
+    title: 'Clear thinking before another tool',
+    body: 'Phase 1 is content because teams need to understand where AI improved throughput and where it pushed stress into review, verification, and release.',
   },
   {
     number: '02',
-    title: 'CI and Jenkins run without babysitting',
-    body: 'Titan triggers your jobs automatically when the release starts. No one has to watch a terminal, refresh a dashboard, or remember to kick off the pipeline.',
+    title: 'A practical map of the bottleneck',
+    body: 'We write for teams trying to identify whether the constraint is review capacity, CI load, release confidence, or custom internal tooling.',
   },
   {
     number: '03',
-    title: 'Failures surface in Slack immediately',
-    body: 'When a job fails, the right people get a Slack alert with the context they need to act. No tab-checking, no refresh loops, no delay.',
+    title: 'Products shaped by real adoption pain',
+    body: 'DeployTitan Rollout is in development for teams that need faster shipping without turning release safety into a manual coordination exercise.',
   },
   {
     number: '04',
-    title: 'Approvals happen without leaving Slack',
-    body: 'Stakeholders get a Slack message with the full release context. One click to approve. No browser, no GitHub, no friction at the moment that matters most.',
+    title: 'Consultation when the system needs help',
+    body: 'The next phase is hands-on support and products for teams that want AI leverage without building distracting internal platforms.',
   },
 ]
 
 const BAD_PATTERNS = [
   {
-    label: 'Night windows',
-    desc: 'Pushed to off-hours to reduce perceived risk',
-    consequence: 'Real traffic exposes issues after the team goes dark.',
+    label: 'Review overload',
+    desc: 'AI creates more code than senior engineers can confidently review',
+    consequence: 'The team moves faster until the approval queue becomes the release plan.',
   },
   {
-    label: '24/7 on-call',
-    desc: "Engineers paged for code they didn't write",
-    consequence: 'Slower response when it matters most.',
+    label: 'Verification debt',
+    desc: 'Tests, CI, and observability were designed for the old pace',
+    consequence: 'Generated work ships only as fast as the safety system can prove it.',
   },
   {
-    label: 'No Fridays',
-    desc: 'Entire deployment windows blocked out of fear',
-    consequence: 'Velocity sacrificed for anxiety management.',
+    label: 'Internal tooling drift',
+    desc: 'Teams start building custom AI delivery glue',
+    consequence: 'The product roadmap loses time to infrastructure the customer never sees.',
   },
 ]
 
@@ -65,8 +65,9 @@ export default function Journey() {
             <br className="hidden md:block" /> because I lived the problem.
           </h1>
           <p className="text-ink-secondary max-w-xl text-xl leading-relaxed">
-            Not from a whiteboard. Not from a VC pitch. From 8 years of watching brilliant engineers
-            treat every deployment like defusing a bomb, and deciding I&apos;d had enough.
+            Not from a whiteboard. Not from a pitch deck. From years of watching teams move faster
+            in one part of engineering while review, verification, and deployment safety struggled
+            to keep up.
           </p>
         </Container>
       </section>
@@ -79,31 +80,31 @@ export default function Journey() {
             className="text-ink-tertiary mb-6 inline-flex items-center gap-3 font-mono text-xs tracking-widest uppercase"
           >
             <span className="bg-primary/40 h-px w-6" aria-hidden="true" />
-            Eight years of the same fear
+            The pattern before AI
           </span>
 
           {/* Anchor sentence for scanning leaders */}
           <p data-reveal className="text-ink mb-8 text-2xl leading-snug font-semibold">
-            Every company I worked at treated deployments as a risk to minimize, not a capability to
-            own.
+            Every company I worked at had brilliant engineers and still treated delivery confidence
+            as something fragile.
           </p>
 
           <div className="space-y-5">
             <p data-reveal className="text-ink-secondary text-lg leading-relaxed">
-              I worked across multiple engineering organizations. Every company had different tools,
-              different stacks, different processes. But one thing was always the same: the anxiety
-              was the same everywhere.
+              I worked across multiple engineering organizations. Different tools, different stacks,
+              different processes. The same pattern kept returning: teams could build, but the
+              system around shipping stayed tense.
             </p>
             <p data-reveal className="text-ink-secondary text-lg leading-relaxed">
-              Night windows. No-deploy Fridays. On-call rotations staffed by engineers who
-              didn&apos;t build the thing they were now responsible for keeping alive at 2am.
+              Review queues. Fragile deploy windows. On-call rotations staffed by engineers who
+              inherited risk from code they did not always write.
             </p>
 
             <figure data-reveal className="border-line my-8 border-t border-b py-7">
               <blockquote>
                 <p className="text-ink text-xl leading-relaxed font-medium">
                   I watched smart, capable people slow themselves down, not because they lacked
-                  discipline, but because their tooling made every release feel dangerous.
+                  ambition, but because their delivery system could not absorb more speed safely.
                 </p>
               </blockquote>
               <figcaption
@@ -115,9 +116,8 @@ export default function Journey() {
             </figure>
 
             <p data-reveal className="text-ink-secondary text-lg leading-relaxed">
-              And honestly? I hated it. I hated the anxiety. I hated the 11pm deploys. I hated
-              watching teams hold back features because nobody wanted to be the one who broke prod
-              on a Friday.
+              AI made this more urgent. It helped teams create more work, but it also made the old
+              bottlenecks impossible to ignore.
             </p>
           </div>
         </Container>
@@ -131,32 +131,32 @@ export default function Journey() {
             className="text-ink-tertiary mb-6 inline-flex items-center gap-3 font-mono text-xs tracking-widest uppercase"
           >
             <span className="bg-primary/40 h-px w-6" aria-hidden="true" />
-            The real problem
+            The new bottleneck
           </span>
 
           <h2
             data-reveal
             className="text-ink mb-3 text-[clamp(1.75rem,3.5vw,2.8rem)] leading-[1.04] font-semibold tracking-[-0.025em]"
           >
-            It was never a people problem.
+            AI did not remove the constraint.
             <br />
-            It was always a tooling problem.
+            It moved it.
           </h2>
 
           {/* Anchor sentence */}
           <p data-reveal className="text-ink-secondary mb-10 text-lg leading-relaxed">
-            Tooling that gives teams no confidence, no visibility, and no fast path to recovery
-            produces exactly the behaviors you see: night windows, pager anxiety, no-deploy Fridays.
-            These aren&apos;t discipline failures.
+            Faster code generation creates value only when review, verification, release
+            coordination, and production confidence can keep pace. Otherwise the team just moves the
+            queue downstream.
           </p>
 
           {/* Pattern list: no cards, structured rows */}
           <div
             data-reveal
             className="border-line divide-line divide-y border"
-            style={{ borderRadius: '2px' }}
+            style={{ borderRadius: 'var(--radius-standard)' }}
             role="list"
-            aria-label="Common deployment anti-patterns"
+            aria-label="Common AI delivery bottlenecks"
           >
             {BAD_PATTERNS.map((item, i) => (
               <div
@@ -192,21 +192,24 @@ export default function Journey() {
             aria-label="What I'm building"
           >
             <span className="bg-primary/40 h-px w-6" aria-hidden="true" />
-            What I&apos;m building
+            What I&apos;m building now
           </span>
 
           <h2
             data-reveal
             className="text-ink mb-3 text-[clamp(1.75rem,3.5vw,2.8rem)] leading-[1.04] font-semibold tracking-[-0.025em]"
           >
-            Deployments should feel boring.
+            AI delivery should feel controlled.
           </h2>
           <p data-reveal className="text-ink-secondary mb-14 max-w-lg text-lg leading-relaxed">
-            My mission with DeployTitan is simple: give every engineering team the controls,
-            visibility, and recovery speed they need to deploy with confidence, any time they want.
+            DeployTitan starts with clear, practical publishing for teams adopting AI. The products
+            come next, shaped by the bottlenecks those teams are already living with.
           </p>
 
-          <div className="border-line space-y-px border" style={{ borderRadius: '2px' }}>
+          <div
+            className="border-line space-y-px overflow-hidden border"
+            style={{ borderRadius: 'var(--radius-standard)' }}
+          >
             {OUTCOMES.map((p) => (
               <div
                 key={p.number}
@@ -246,17 +249,16 @@ export default function Journey() {
             </p>
             <div className="text-ink mb-8 space-y-5 text-base leading-relaxed">
               <p>
-                If you&apos;ve ever pushed a deploy at 11pm just to avoid risking a Friday, I built
-                this for you.
+                If AI helped your team write faster but made review, verification, or deployment
+                confidence harder, I&apos;m building this for you.
               </p>
               <p>
-                If you&apos;ve ever been the on-call engineer staring at an alert for a feature you
-                didn&apos;t write, trying to decide if you should roll back or wait it out: I built
-                this for you.
+                If your team is building custom internal tools just to make AI adoption usable, I
+                want DeployTitan to help you get back to the product only you can build.
               </p>
               <p>
-                I want to hear your deployment story. Every conversation I have with an engineer
-                reminds me exactly why this matters.
+                I want to hear your AI delivery story. Every conversation with an engineer or
+                founder makes the bottleneck sharper.
               </p>
             </div>
 
@@ -280,22 +282,16 @@ export default function Journey() {
       <section className="border-line border-b py-20">
         <Container width="3xl" padding="default" data-reveal>
           <p className="text-ink-tertiary mb-4 font-mono text-[11px] tracking-[0.22em] uppercase">
-            Available now
+            Early access
           </p>
           <h2 className="text-ink mb-6 text-[clamp(2rem,4vw,3.4rem)] leading-[1.0] font-medium tracking-[-0.04em]">
-            Try it on your next sprint.
+            Tell us where AI slowed the system down.
           </h2>
           <p className="text-ink-secondary mb-8 max-w-[42ch] text-lg leading-8">
-            Join the waitlist, share how your team ships today, and we&apos;ll bring you in as soon as
-            early access opens for your workflow.
+            Join the waitlist, share what changed after AI adoption, and we&apos;ll send practical
+            notes while DeployTitan Rollout moves toward early access.
           </p>
-          <Button
-            as="a"
-            href={WAITLIST_URL}
-            variant="primary"
-            size="lg"
-            className="rounded-[8px]"
-          >
+          <Button as="a" href={WAITLIST_URL} variant="primary" size="lg">
             Join waitlist
           </Button>
         </Container>

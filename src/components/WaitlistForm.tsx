@@ -20,7 +20,7 @@ type WaitlistFormProps = {
 
 export function WaitlistForm({
   source = 'waitlist-page',
-  successMessage = "We'll be in touch when early access opens.",
+  successMessage = "We'll send practical AI delivery notes and follow up when early access fits.",
   className,
 }: WaitlistFormProps) {
   const pathname = usePathname()
@@ -201,7 +201,9 @@ export function WaitlistForm({
           className="group flex w-full items-center justify-between gap-4 text-left"
         >
           <span>
-            <span className="text-ink block text-sm font-medium">I want to join ASAP</span>
+            <span className="text-ink block text-sm font-medium">
+              Help us understand the bottleneck
+            </span>
             <span className="text-ink-secondary block text-sm leading-6">
               Answer a few more questions.
             </span>
@@ -247,7 +249,7 @@ export function WaitlistForm({
                 id={`waitlist-role-${source}`}
                 name="role"
                 type="text"
-                placeholder="CTO, Platform Engineer, SRE"
+                placeholder="Founder, CTO, Platform Engineer"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
                 className="border-line bg-surface text-ink placeholder:text-ink-quaternary focus:border-primary/40 min-w-0 flex-1 border px-3 py-2.5 text-sm transition-colors focus:outline-none"
@@ -282,7 +284,7 @@ export function WaitlistForm({
                 htmlFor={`waitlist-pain-level-${source}`}
                 className="text-ink-secondary font-mono text-[11px] tracking-[0.16em] uppercase"
               >
-                Current pain level
+                Current bottleneck
               </label>
               <select
                 id={`waitlist-pain-level-${source}`}
@@ -292,12 +294,12 @@ export function WaitlistForm({
                 className="border-line bg-surface text-ink focus:border-primary/40 min-w-0 flex-1 border px-3 py-2.5 text-sm transition-colors focus:outline-none"
                 style={{ borderRadius: '2px' }}
               >
-                <option value="">Select pain level</option>
-                <option value="1-low">1 - Low</option>
-                <option value="2-annoying">2 - Annoying</option>
-                <option value="3-frequent">3 - Frequent problem</option>
-                <option value="4-critical">4 - Critical issue</option>
-                <option value="5-urgent">5 - Urgent / expensive</option>
+                <option value="">Select bottleneck</option>
+                <option value="review-capacity">Review capacity</option>
+                <option value="verification-load">Verification load</option>
+                <option value="release-safety">Release safety</option>
+                <option value="internal-tooling">Internal tooling distraction</option>
+                <option value="unclear-roi">Unclear AI ROI</option>
               </select>
             </div>
             <div className="flex flex-col gap-1.5 md:col-span-2">
@@ -305,7 +307,7 @@ export function WaitlistForm({
                 htmlFor={`waitlist-budget-range-${source}`}
                 className="text-ink-secondary font-mono text-[11px] tracking-[0.16em] uppercase"
               >
-                Expected budget
+                Expected investment
               </label>
               <select
                 id={`waitlist-budget-range-${source}`}
@@ -328,12 +330,12 @@ export function WaitlistForm({
                 htmlFor={`waitlist-process-${source}`}
                 className="text-ink-secondary font-mono text-[11px] tracking-[0.16em] uppercase"
               >
-                What is painful today
+                What changed after AI adoption
               </label>
               <textarea
                 id={`waitlist-process-${source}`}
                 name="current_process"
-                placeholder="What slows release day down?"
+                placeholder="Where did AI help, and where did the bottleneck move?"
                 value={currentProcess}
                 onChange={(e) => setCurrentProcess(e.target.value)}
                 rows={4}
@@ -351,7 +353,7 @@ export function WaitlistForm({
               <textarea
                 id={`waitlist-notes-${source}`}
                 name="notes"
-                placeholder="Stack, deployment frequency, buying timeline, or any constraints."
+                placeholder="Stack, AI tools, team shape, release process, or internal tooling you are building."
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={3}
@@ -369,7 +371,7 @@ export function WaitlistForm({
           variant="primary"
           size="md"
           disabled={state === 'loading'}
-          className="shrink-0 rounded-[8px] disabled:opacity-50"
+          className="shrink-0 disabled:opacity-50"
         >
           {state === 'loading' ? 'Submitting...' : 'Request early access'}
         </Button>

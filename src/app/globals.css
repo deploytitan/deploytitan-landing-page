@@ -207,7 +207,7 @@
 /* Contact route rows — warm hover tint */
 .contact-route-row {
     transition: background 0.25s ease;
-    border-radius: 2px;
+    border-radius: var(--radius-serious);
     margin-inline: -0.75rem;
     padding-inline: 0.75rem;
 }

@@ -15,7 +15,7 @@ interface TeamMember {
 export const metadata: Metadata = {
   title: 'About | DeployTitan',
   description:
-    'DeployTitan is a deployment control plane for engineering teams. Progressive delivery, automated rollback, and real-time risk intelligence — ship safely, at any scale.',
+    'DeployTitan helps AI-adopting engineering teams understand throughput bottlenecks, move faster, and ship safer.',
 }
 
 export default async function Page() {

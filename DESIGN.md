@@ -1,6 +1,6 @@
 ---
 name: DeployTitan
-description: Sprint release coordination software for teams that ship without the war room.
+description: Content and products for AI-adopting engineering teams that need to move faster and ship safer.
 colors:
   surface: "#fafaf9"
   surface-alt: "#f5f4f1"
@@ -126,9 +126,9 @@ components:
 
 **Creative North Star: "The Instrument Panel"**
 
-DeployTitan’s site should feel like release infrastructure that learned how to speak clearly. The surface is warm, spare, and exact: bone-tinted neutrals, a single precision amber accent, precise borders, and just enough motion to suggest a live system without turning the page into theater. The design is for founders, engineers, and technical leaders who want the point fast.
+DeployTitan’s site should feel like engineering infrastructure that learned how to speak clearly. The surface is warm, spare, and exact: bone-tinted neutrals, a single precision amber accent, precise borders, and just enough motion to suggest a live system without turning the page into theater. The design is for founders, engineers, and technical leaders who want the point fast.
 
-The homepage and product pages stay in the brand register, but the brand is still operational. The product is not a generic SaaS app and it is not a dark hacker toy. It is a calm instrument for a team that is tired of babysitting GitHub tabs, Jenkins jobs, and Slack approvals at the end of every sprint.
+The homepage, content pages, and product pages stay in the brand register, but the brand is still operational. Phase 1 is content-led: DeployTitan explains how AI changes engineering throughput, where verification and release safety become bottlenecks, and how startups and scaleups can move faster without building distracting internal tools. The product is not a generic AI publication and it is not a dark hacker toy. It is a calm instrument for teams that need to turn AI speed into safe delivery.
 
 **Key Characteristics:**
 - Bone-white and cartridge-paper surfaces carry the page, not pure white
@@ -208,7 +208,7 @@ DeployTitan is flat at rest. Surfaces do not float by default. Depth comes from 
 
 ### Buttons
 - **Shape:** Serious product chrome can stay tight at `6px`; conversion CTAs use the invited radius (`18px`) or pill treatment when the action should feel welcoming.
-- **Primary:** Deep-charcoal fill, bone-white text, gold ring on hover. Used for `Create account`, nav CTA, and primary section actions.
+- **Primary:** Deep-charcoal fill, bone-white text, gold ring on hover. Used for waitlist, early-access, nav CTA, and primary section actions.
 - **Outline:** Transparent fill, ink border, amber-tinted hover state. Used for pricing and secondary conversion actions.
 - **Ghost / Icon / Dismiss:** Text-first controls with no filled background. Hover shifts color rather than adding decoration.
 - **Special case:** `ProductPageHero` uses a smaller amber-filled primary button with serious rounding, distinct from larger invited conversion CTAs.
@@ -252,7 +252,7 @@ DeployTitan is flat at rest. Surfaces do not float by default. Depth comes from 
 - **Don't** drift into the **generic SaaS cream + purple** aesthetic. Rounding should signal approachability by context, not rounded-everything friendliness.
 - **Don't** drift into **dark neon DevOps**. No terminal-green glow, no hacker theatrics, no aggressive gradients on black.
 - **Don't** drift into **enterprise boring**. No stock-photo heroes, no lifeless navy dashboards, no generic corporate-grey marketing layouts.
-- **Don't** introduce **Phase 2/3 feature creep** into the visual or copy system. The current site is about sprint release coordination, not blast radius, traffic routing, or progressive delivery.
+- **Don't** introduce future product creep into the visual or copy system. Phase 1 is about AI engineering content and market education, not presenting backlog products as available.
 - **Don't** use gradient text except for the single dedicated shimmer motif when that motif is explicitly intended.
 - **Don't** use colored side-stripe borders on cards or list items. Use full borders, background tint, or status markers instead.
 - **Don't** fill the page with identical icon-heading-text cards. Vary hierarchy and structure.

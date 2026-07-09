@@ -8,21 +8,21 @@ import { urlFor } from '@/sanity/lib/image'
 const companyPattern = [
   {
     number: '01',
-    title: 'The tools existed, the release record did not.',
+    title: 'AI made code faster, but delivery did not automatically keep up.',
     description:
-      'What teams lacked was one place that made the sprint release itself visible, ordered, and accountable.',
+      'Teams started generating more work than their review, verification, and release systems could absorb.',
   },
   {
     number: '02',
-    title: 'The coordination still lived in people.',
+    title: 'The bottleneck moved downstream.',
     description:
-      'Approvals sat in chat, rollback context lived in memory, and release status depended on whoever happened to be watching.',
+      'CI queues, reviewer attention, release confidence, and deployment ownership became the new constraint.',
   },
   {
     number: '03',
-    title: 'The same anxiety kept repeating.',
+    title: 'Internal tooling became a distraction.',
     description:
-      'Different companies, different stacks, same end-of-sprint: too many tabs open, nobody fully sure what would happen next.',
+      'Startups began building custom AI delivery fixes instead of focusing that energy on their core product.',
   },
 ]
 
@@ -30,15 +30,17 @@ const values = [
   {
     title: 'Specificity before slogans',
     description:
-      'We earn trust by naming the actual moment: the blocked dependency, the approval still stuck in Slack.',
+      'We earn trust by naming the actual constraint: review capacity, verification load, CI queues, or release risk.',
   },
   {
-    title: 'Coordination before execution',
-    description: 'The release happens in your head before it happens in production. We make that structural.',
+    title: 'Education before products',
+    description:
+      'Phase 1 is content because teams need to understand the AI throughput problem before buying another tool.',
   },
   {
     title: 'Respect engineer time',
-    description: 'Every hour chasing release state across four tools is an hour not spent building.',
+    description:
+      'Every hour spent building internal glue for AI adoption is an hour not spent on the product customers pay for.',
   },
 ]
 
@@ -59,20 +61,20 @@ export default function About({ teamMembers = [] }: AboutProps) {
   const [featuredMember, ...supportingTeamMembers] = teamMembers
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="bg-surface min-h-screen">
       {/* Hero */}
       <Section padding="none">
-        <Container className="pb-24 pt-20 lg:pb-32 lg:pt-28">
+        <Container className="pt-20 pb-24 lg:pt-28 lg:pb-32">
           <span className="hero-label text-ink-tertiary font-mono text-[11px] tracking-widest uppercase">
             About
           </span>
           <h1 className="hero-heading font-display text-ink mt-5 max-w-[22ch] text-[clamp(2.8rem,6.5vw,7.2rem)] leading-[0.95] font-medium tracking-[-0.06em]">
-            We build the missing layer between the sprint and the deploy.
+            We help AI-moving teams ship without losing control.
           </h1>
           <p className="hero-body text-ink-secondary mt-8 max-w-[52ch] text-lg leading-relaxed">
-            DeployTitan gives distributed engineering teams one shared release record across
-            GitHub, CI/CD, observability, and Slack so the end of the sprint stops depending on
-            memory, tab-checking, and heroic coordination.
+            DeployTitan publishes practical guidance for startups and scaleups adopting AI in
+            engineering, then turns that learning into products and support for faster, safer
+            delivery.
           </p>
         </Container>
       </Section>
@@ -82,9 +84,9 @@ export default function About({ teamMembers = [] }: AboutProps) {
         <Container className="py-20 lg:py-28">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
             <div>
-              <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
+              <div className="bg-primary/60 mb-6 h-px w-10" aria-hidden="true" />
               <h2 className="font-display text-ink text-2xl leading-[1.1] font-medium tracking-[-0.025em] sm:text-3xl">
-                Built for teams whose releases already span more than one repo.
+                Built for teams whose AI adoption has exposed the next bottleneck.
               </h2>
             </div>
 
@@ -92,7 +94,7 @@ export default function About({ teamMembers = [] }: AboutProps) {
               {companyPattern.map((item) => (
                 <div key={item.number} className="pattern-item flex gap-6">
                   <span
-                    className="pattern-number font-display shrink-0 select-none font-medium leading-none"
+                    className="pattern-number font-display shrink-0 leading-none font-medium select-none"
                     style={{ fontSize: '4.5rem', color: 'var(--color-ink)', opacity: 0.07 }}
                     aria-hidden="true"
                   >
@@ -114,36 +116,15 @@ export default function About({ teamMembers = [] }: AboutProps) {
       {/* Why */}
       <Section border="top" padding="none">
         <Container className="py-20 lg:py-28">
-          <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
+          <div className="bg-primary/60 mb-6 h-px w-10" aria-hidden="true" />
           <h2 className="font-display text-ink text-2xl leading-[1.1] font-medium tracking-[-0.025em] sm:text-3xl">
-            Make every multi-service release feel ordinary again.
+            Make AI speed survive contact with real delivery.
           </h2>
           {/* Belief statement — standalone typographic moment */}
           <p className="text-ink mt-12 max-w-[38ch] text-2xl leading-[1.2] font-medium tracking-[-0.02em] lg:mt-16 lg:text-3xl lg:leading-[1.15]">
-            Teams should not need a spreadsheet, a war room, or one heroic engineer to get a
-            release out safely.
+            Teams should not need a custom internal platform just to turn AI-generated work into
+            safe, shippable product.
           </p>
-        </Container>
-      </Section>
-
-      {/* Values */}
-      <Section border="top" padding="none">
-        <Container className="py-20 lg:py-28">
-          <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
-          <h2 className="font-display text-ink text-2xl font-medium tracking-[-0.025em]">
-            How we work
-          </h2>
-          <div className="mt-12 space-y-10">
-            {values.map((value) => (
-              <div
-                key={value.title}
-                className="value-row grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] sm:gap-10"
-              >
-                <h3 className="value-title text-ink text-base font-semibold">{value.title}</h3>
-                <p className="text-ink-secondary text-sm leading-relaxed">{value.description}</p>
-              </div>
-            ))}
-          </div>
         </Container>
       </Section>
 
@@ -152,12 +133,12 @@ export default function About({ teamMembers = [] }: AboutProps) {
         <Container className="py-20 lg:py-28">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
             <div>
-              <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
+              <div className="bg-primary/60 mb-6 h-px w-10" aria-hidden="true" />
               <h2 className="font-display text-ink text-2xl leading-[1.1] font-medium tracking-[-0.025em] sm:text-3xl">
-                The people turning release anxiety into product.
+                The people turning AI adoption anxiety into operating discipline.
               </h2>
               <p className="text-ink-secondary mt-5 text-base leading-relaxed">
-                Small by design. We stay close to the engineers living through the problem.
+                Small by design. We stay close to the teams living through the bottleneck.
               </p>
             </div>
 
@@ -166,14 +147,14 @@ export default function About({ teamMembers = [] }: AboutProps) {
                 <div>
                   <p className="text-ink-secondary text-base leading-relaxed">
                     DeployTitan is being built by a small founding team in Pune, India. We stay
-                    close to the engineers living through the problem.
+                    close to the engineers and leaders living through AI delivery problems.
                   </p>
                   <Button
                     as="a"
                     href="/contact"
                     variant="outline"
                     size="sm"
-                    className="mt-5 self-start rounded-[8px]"
+                    className="mt-5 self-start"
                   >
                     Get in touch
                   </Button>
@@ -257,25 +238,19 @@ export default function About({ teamMembers = [] }: AboutProps) {
       {/* CTA */}
       <Section border="top" padding="none">
         <Container className="py-20 lg:py-28">
-          <div className="mb-6 h-px w-10 bg-primary/60" aria-hidden="true" />
+          <div className="bg-primary/60 mb-6 h-px w-10" aria-hidden="true" />
           <h2 className="text-ink text-2xl font-medium tracking-[-0.02em]">
-            The best way to understand DeployTitan is to try it on a real sprint.
+            The best way to understand DeployTitan is to bring us your AI delivery bottleneck.
           </h2>
           <p className="text-ink-secondary mt-4 max-w-[48ch] text-base leading-relaxed">
-            Connect the tools you already run and see whether the release window gets quieter in
-            one cycle.
+            Tell us where AI helped, where it slowed the system down, and what your team is building
+            internally to compensate.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button
-              as="a"
-              href={WAITLIST_URL}
-              variant="primary"
-              size="lg"
-              className="rounded-[8px]"
-            >
+            <Button as="a" href={WAITLIST_URL} variant="primary" size="lg">
               Join waitlist
             </Button>
-            <Button as="a" href="/contact" variant="outline" size="lg" className="rounded-[8px]">
+            <Button as="a" href="/contact" variant="outline" size="lg">
               Contact us
             </Button>
           </div>

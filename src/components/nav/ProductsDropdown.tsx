@@ -100,7 +100,7 @@ export function ProductsDropdown({ onClose }: Props) {
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="border-line-subtle border-b px-5 py-2">
             <span className="text-ink-tertiary font-mono text-[9px] tracking-widest uppercase">
-              Available now
+              In Dev
             </span>
           </div>
           {ACTIVE_PRODUCTS.map((product) => (
@@ -138,7 +138,7 @@ export function ProductsDropdown({ onClose }: Props) {
         <div className="flex w-[280px] shrink-0 flex-col">
           <div className="border-line-subtle border-b px-5 py-2">
             <span className="text-ink-tertiary font-mono text-[9px] tracking-widest uppercase">
-              Coming soon
+              On Roadmap
             </span>
           </div>
           <div className="divide-line-subtle flex flex-col divide-y">

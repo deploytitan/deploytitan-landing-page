@@ -14,11 +14,11 @@ export default function Waitlist() {
               className="text-ink max-w-[10ch] text-[2.65rem] leading-[0.96] font-medium tracking-[-0.04em] sm:text-5xl md:text-6xl lg:text-[4.6rem] lg:leading-[0.92] xl:text-[5rem]"
               style={{ textWrap: 'balance' }}
             >
-              Join the DeployTitan waitlist.
+              Join the AI delivery waitlist.
             </h1>
             <p className="text-ink-secondary mt-4 max-w-[48ch] text-base leading-7 sm:text-lg sm:leading-8">
-              Early access for teams coordinating sprint releases across GitHub, Jenkins, Grafana,
-              and Slack.
+              Early access for teams using AI in engineering but still fighting review,
+              verification, and release bottlenecks.
             </p>
           </div>
 
@@ -32,7 +32,7 @@ export default function Waitlist() {
                 Private intake
               </p>
               <p className="text-ink text-2xl leading-tight font-medium">
-                Skip the release war room.
+                Turn AI speed into safer shipping.
               </p>
             </div>
 
