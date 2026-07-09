@@ -193,7 +193,7 @@ export function ArticleReaderExperience({
           role="dialog"
           aria-label="Share selected text"
         >
-          <div className="text-ink-tertiary mb-2 flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase">
+          <div className="text-ink-secondary mb-2 flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase">
             <span>Share quote</span>
             <span className="bg-line h-px w-6" />
           </div>
@@ -201,7 +201,7 @@ export function ArticleReaderExperience({
             <button
               type="button"
               onClick={() => void handleShareClick('x')}
-              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[var(--radius-serious)] border px-2.5 py-1.5 text-xs transition-colors"
+              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-invited)] border px-3 py-2 text-xs transition-colors"
               aria-label="Share on X"
             >
               <span className="flex items-center gap-1.5">
@@ -211,7 +211,7 @@ export function ArticleReaderExperience({
             <button
               type="button"
               onClick={() => void handleShareClick('facebook')}
-              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[var(--radius-serious)] border px-2.5 py-1.5 text-xs transition-colors"
+              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-invited)] border px-3 py-2 text-xs transition-colors"
               aria-label="Share on Facebook"
             >
               <span className="flex items-center gap-1.5">
@@ -221,7 +221,7 @@ export function ArticleReaderExperience({
             <button
               type="button"
               onClick={() => void handleShareClick('reddit')}
-              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[var(--radius-serious)] border px-2.5 py-1.5 text-xs transition-colors"
+              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-invited)] border px-3 py-2 text-xs transition-colors"
               aria-label="Share on Reddit"
             >
               <span className="flex items-center gap-1.5">
@@ -232,7 +232,7 @@ export function ArticleReaderExperience({
             <button
               type="button"
               onClick={() => void handleShareClick('linkedin')}
-              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[var(--radius-serious)] border px-2.5 py-1.5 text-xs transition-colors"
+              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-invited)] border px-3 py-2 text-xs transition-colors"
               aria-label="Share on LinkedIn"
             >
               <span className="flex items-center gap-1.5">
@@ -243,7 +243,7 @@ export function ArticleReaderExperience({
             <button
               type="button"
               onClick={() => void handleShareClick('copy')}
-              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary rounded-[var(--radius-serious)] border px-2.5 py-1.5 text-xs transition-colors"
+              className="border-line text-ink-secondary hover:border-primary/30 hover:text-primary flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-invited)] border px-3 py-2 text-xs transition-colors"
               aria-label="Copy selected quote"
             >
               <span className="flex items-center gap-1.5">

@@ -73,10 +73,10 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
                 type="button"
                 onClick={() => updateCategoryFilter()}
                 className={[
-                  'px-4 py-3 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors',
+                  'min-h-11 px-4 py-3 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors',
                   !selectedCategory
                     ? 'bg-surface-alt text-primary-accessible'
-                    : 'text-ink-tertiary hover:text-ink hover:bg-surface-alt',
+                    : 'text-ink-secondary hover:text-ink hover:bg-surface-alt',
                 ].join(' ')}
                 aria-current={!selectedCategory ? 'page' : undefined}
               >
@@ -90,10 +90,10 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
                     type="button"
                     onClick={() => updateCategoryFilter(cat.slug.current)}
                     className={[
-                      'px-4 py-3 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors',
+                      'min-h-11 px-4 py-3 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase transition-colors',
                       isActive
                         ? 'bg-surface-alt text-primary-accessible'
-                        : 'text-ink-tertiary hover:text-ink hover:bg-surface-alt',
+                        : 'text-ink-secondary hover:text-ink hover:bg-surface-alt',
                     ].join(' ')}
                     aria-current={isActive ? 'page' : undefined}
                   >
@@ -117,8 +117,8 @@ export function BlogClientIndex({ posts, categories }: BlogClientIndexProps) {
             </div>
           ) : (
             <div className="py-24 text-center">
-              <p className="text-ink-tertiary font-mono text-sm">No articles in this category yet.</p>
-              <p className="text-ink-tertiary mt-1 text-sm">Check back soon.</p>
+              <p className="text-ink-secondary font-mono text-sm">No articles in this category yet.</p>
+              <p className="text-ink-secondary mt-1 text-sm">Check back soon.</p>
             </div>
           )}
         </Container>

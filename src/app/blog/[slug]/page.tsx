@@ -162,7 +162,7 @@ export default async function BlogArticlePage({ params }: Props) {
                       <Link
                         key={category.slug.current}
                         href={`/blog?category=${category.slug.current}`}
-                        className="text-primary-accessible border-primary/25 bg-surface/80 inline-flex items-center rounded-[var(--radius-pill)] border px-3 py-1 font-mono text-[10px] tracking-[0.18em] uppercase transition-colors hover:border-primary/50 hover:text-primary"
+                        className="text-primary-accessible border-primary/25 bg-surface/80 inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border px-3 py-2 font-mono text-[10px] tracking-[0.18em] uppercase transition-colors hover:border-primary/50 hover:text-primary"
                       >
                         {category.title}
                       </Link>
@@ -179,19 +179,19 @@ export default async function BlogArticlePage({ params }: Props) {
 
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                 {publishedLabel && (
-                  <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
+                  <p className="text-ink-secondary font-mono text-[11px] tracking-[0.18em] uppercase">
                     Published {publishedLabel}
                   </p>
                 )}
-                <div className="text-ink-tertiary bg-line hidden h-3 w-px sm:block" />
+                <div className="bg-line hidden h-3 w-px sm:block" />
                 {author && (
                   <p className="text-ink-secondary text-sm leading-6">
                     By <span className="text-ink font-medium">{author.name}</span>
                     {author.role ? ` · ${author.role}` : ''}
                   </p>
                 )}
-                <div className="text-ink-tertiary bg-line hidden h-3 w-px sm:block" />
-                <p className="text-ink-tertiary font-mono text-[11px] tracking-[0.18em] uppercase">
+                <div className="bg-line hidden h-3 w-px sm:block" />
+                <p className="text-ink-secondary font-mono text-[11px] tracking-[0.18em] uppercase">
                   Total read time {readTimeMinutes} min
                 </p>
               </div>
@@ -229,7 +229,7 @@ export default async function BlogArticlePage({ params }: Props) {
               {primaryHeadings.length > 0 && (
                 <aside className="mb-10 xl:hidden">
                   <details className="group border-line bg-surface-alt/45 rounded-[var(--radius-standard)] border">
-                    <summary className="text-ink-tertiary flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 font-mono text-[10px] tracking-[0.2em] uppercase">
+                    <summary className="text-ink-secondary flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 font-mono text-[10px] tracking-[0.2em] uppercase">
                       <span>On this page</span>
                       <span className="text-primary-accessible transition-transform group-open:rotate-45">
                         +
@@ -272,7 +272,7 @@ export default async function BlogArticlePage({ params }: Props) {
                   <div className="divide-line border-line divide-y border-y">
                     {faq.map((item) => (
                       <details key={item.question} className="group py-4">
-                        <summary className="text-ink flex cursor-pointer list-none items-start justify-between gap-4 text-base font-semibold">
+                        <summary className="text-ink flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold">
                           <span>{item.question}</span>
                           <span className="text-primary-accessible mt-0.5 font-mono text-sm transition-transform group-open:rotate-45">
                             +
@@ -300,7 +300,7 @@ export default async function BlogArticlePage({ params }: Props) {
                     {article.customerDiscoveryCta.question}
                   </p>
                   {article.customerDiscoveryCta.supportingText && (
-                    <p className="text-ink-tertiary mt-2 text-sm leading-7">
+                    <p className="text-ink-secondary mt-2 text-sm leading-7">
                       {article.customerDiscoveryCta.supportingText}
                     </p>
                   )}
@@ -308,7 +308,7 @@ export default async function BlogArticlePage({ params }: Props) {
                     <div className="mt-4">
                       <TrackedArticleLink
                         href={article.customerDiscoveryCta.href}
-                        className="border-primary/30 text-primary-accessible hover:border-primary/50 hover:text-primary inline-flex items-center rounded-[var(--radius-pill)] border px-4 py-2 text-sm font-medium transition-colors"
+                        className="border-primary/30 text-primary-accessible hover:border-primary/50 hover:text-primary inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border px-4 py-2 text-sm font-medium transition-colors"
                         eventName={
                           /interview|demo|call/i.test(article.customerDiscoveryCta.label)
                             ? 'interviewRequested'
@@ -341,7 +341,7 @@ export default async function BlogArticlePage({ params }: Props) {
 
                 {(article.primaryQuestion || article.topicCluster?.name) && (
                   <section className="border-line mt-8 border-t pt-6">
-                    <h2 className="text-ink-tertiary mb-3 font-mono text-[10px] tracking-[0.2em] uppercase">
+                    <h2 className="text-ink-secondary mb-3 font-mono text-[10px] tracking-[0.2em] uppercase">
                       Article brief
                     </h2>
                     <div className="space-y-4">
@@ -351,7 +351,7 @@ export default async function BlogArticlePage({ params }: Props) {
                         </p>
                       )}
                       {article.topicCluster?.name && (
-                        <p className="text-ink-tertiary text-sm leading-7">
+                        <p className="text-ink-secondary text-sm leading-7">
                           Cluster:{' '}
                           <span className="text-ink-secondary">{article.topicCluster.name}</span>
                         </p>
@@ -361,19 +361,19 @@ export default async function BlogArticlePage({ params }: Props) {
                 )}
 
                 <section className="border-line mt-8 border-t pt-6">
-                  <h2 className="text-ink-tertiary mb-3 font-mono text-[10px] tracking-[0.2em] uppercase">
+                  <h2 className="text-ink-secondary mb-3 font-mono text-[10px] tracking-[0.2em] uppercase">
                     Reader formats
                   </h2>
                   <div className="space-y-2 text-sm">
                     <Link
                       href={getArticleLlmTextUrl(article)}
-                      className="text-ink-secondary hover:text-primary block transition-colors"
+                      className="text-ink-secondary hover:text-primary flex min-h-11 items-center transition-colors"
                     >
                       Plain text / LLM version
                     </Link>
                     <Link
                       href={`${SITE_URL}/feed.xml`}
-                      className="text-ink-secondary hover:text-primary block transition-colors"
+                      className="text-ink-secondary hover:text-primary flex min-h-11 items-center transition-colors"
                     >
                       RSS feed
                     </Link>
@@ -408,7 +408,7 @@ export default async function BlogArticlePage({ params }: Props) {
                       linkContext: 'related-articles',
                     }}
                     articleContext={articleContext}
-                    className="border-line hover:border-primary/25 rounded-[var(--radius-standard)] border px-5 py-5 transition-colors"
+                    className="border-line hover:border-primary/25 block min-h-11 rounded-[var(--radius-standard)] border px-5 py-5 transition-colors"
                   >
                     <h3 className="text-ink text-lg font-semibold">{relatedArticle.title}</h3>
                     {relatedArticle.excerpt && (
@@ -427,7 +427,7 @@ export default async function BlogArticlePage({ params }: Props) {
           <div className="mt-10">
             <Link
               href="/blog"
-              className="text-primary-accessible hover:text-primary text-sm font-medium transition-colors"
+              className="text-primary-accessible hover:text-primary inline-flex min-h-11 items-center text-sm font-medium transition-colors"
             >
               ← Back to blog
             </Link>

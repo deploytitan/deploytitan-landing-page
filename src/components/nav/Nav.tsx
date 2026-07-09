@@ -182,7 +182,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
         />
         <div className="max-w-page mx-auto flex h-20 items-center justify-between gap-8 px-6 md:justify-normal lg:px-12">
           {/* Logo */}
-          <Link href="/" className="group flex shrink-0 items-center">
+          <Link href="/" className="group flex min-h-11 shrink-0 items-center">
             <BrandLogo
               priority
               className="h-6 w-auto transition-opacity duration-200 group-hover:opacity-70"
@@ -197,7 +197,7 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
                 onClick={() => toggleDropdown('products')}
                 aria-expanded={activeDropdown === 'products'}
                 aria-haspopup="menu"
-                className={`nav-link-underline flex items-center gap-1 text-sm transition-colors ${isProductsActive ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
+                className={`nav-link-underline flex min-h-11 min-w-11 items-center justify-center gap-1 text-sm transition-colors ${isProductsActive ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
               >
                 Products
                 <svg
@@ -236,28 +236,28 @@ export function Nav({ barHeight = 0 }: { barHeight?: number }) {
 
             <Link
               href="/blog"
-              className={`nav-link-underline text-sm transition-colors ${pathname.startsWith('/blog') ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
+              className={`nav-link-underline inline-flex min-h-11 min-w-11 items-center justify-center text-sm transition-colors ${pathname.startsWith('/blog') ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
             >
               Blog
             </Link>
 
             <Link
               href="/journey"
-              className={`nav-link-underline text-sm transition-colors ${pathname.startsWith('/journey') ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
+              className={`nav-link-underline inline-flex min-h-11 min-w-11 items-center justify-center text-sm transition-colors ${pathname.startsWith('/journey') ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
             >
               My Journey
             </Link>
 
             <Link
               href="/about"
-              className={`nav-link-underline text-sm transition-colors ${pathname === '/about' ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
+              className={`nav-link-underline inline-flex min-h-11 min-w-11 items-center justify-center text-sm transition-colors ${pathname === '/about' ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
             >
               About
             </Link>
 
             <Link
               href="/contact"
-              className={`nav-link-underline text-sm transition-colors ${pathname === '/contact' ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
+              className={`nav-link-underline inline-flex min-h-11 min-w-11 items-center justify-center text-sm transition-colors ${pathname === '/contact' ? 'nav-link-active text-primary-accessible' : 'text-ink-secondary hover:text-ink'}`}
             >
               Contact
             </Link>

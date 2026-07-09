@@ -47,10 +47,10 @@ export function ThemeToggle({ className }: Props) {
   return (
     <div
       className={cn(
-        'flex items-center border border-line bg-surface-alt p-[2px] gap-[1px]',
+        'flex items-center gap-1 border border-line bg-surface-alt p-1',
         className,
       )}
-      style={{ borderRadius: '2px' }}
+      style={{ borderRadius: 'var(--radius-pill)' }}
       role="radiogroup"
       aria-label="Theme"
     >
@@ -65,13 +65,13 @@ export function ThemeToggle({ className }: Props) {
             aria-label={seg.label}
             title={seg.label}
             className={cn(
-              'flex items-center justify-center w-7 h-6 transition-all duration-200',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
+              'flex items-center justify-center transition-all duration-200',
+              'focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none',
               active
-                ? 'bg-surface text-primary shadow-[0_1px_3px_rgba(0,0,0,0.08)] border border-primary/20'
-                : 'text-ink-tertiary hover:text-ink-secondary',
+                ? 'bg-surface text-primary border-primary/20 h-11 w-11 border shadow-[0_1px_3px_rgba(0,0,0,0.08)]'
+                : 'text-ink-secondary hover:text-ink h-11 w-11 lg:h-8 lg:w-8',
             )}
-            style={{ borderRadius: '1px' }}
+            style={{ borderRadius: 'var(--radius-pill)' }}
           >
             {seg.icon}
           </button>

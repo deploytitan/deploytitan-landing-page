@@ -70,7 +70,7 @@ export function ArticleTableOfContents({
       ) : (
         <h2
           id={headingId}
-          className="text-ink-tertiary mb-4 font-mono text-[10px] tracking-[0.2em] uppercase"
+          className="text-ink-secondary mb-4 font-mono text-[10px] tracking-[0.2em] uppercase"
         >
           On this page
         </h2>
@@ -93,7 +93,7 @@ export function ArticleTableOfContents({
                   isActive
                     ? 'text-primary-accessible'
                     : isRead
-                      ? 'text-ink-quaternary hover:text-primary'
+                      ? 'text-ink-secondary hover:text-primary'
                       : 'text-ink-secondary hover:text-primary',
                 )}
               >

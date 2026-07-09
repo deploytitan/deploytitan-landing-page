@@ -164,7 +164,7 @@ export function CodeBlock({
             <button
               onClick={handleCopy}
               className={cn(
-                'ml-auto flex items-center gap-1.5 text-[11px] font-mono transition-colors',
+                'ml-auto flex items-center gap-1.5 rounded-[var(--radius-invited)] px-3 font-mono text-[11px] transition-colors',
                 textAction,
               )}
               aria-label="Copy code"

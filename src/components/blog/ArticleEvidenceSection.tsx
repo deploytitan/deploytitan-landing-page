@@ -40,14 +40,14 @@ export function ArticleEvidenceSection({ article }: ArticleEvidenceSectionProps)
           >
             Evidence and Sources
           </h2>
-          <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
+          <span className="text-ink-secondary font-mono text-[10px] tracking-widest uppercase">
             Trust surface
           </span>
         </div>
 
         {article.methodologyNote && (
           <div className="mb-6">
-            <p className="text-ink-tertiary mb-2 font-mono text-[10px] tracking-widest uppercase">
+            <p className="text-ink-secondary mb-2 font-mono text-[10px] tracking-widest uppercase">
               Methodology
             </p>
             <p className="text-ink-secondary text-sm leading-relaxed">{article.methodologyNote}</p>
@@ -56,7 +56,7 @@ export function ArticleEvidenceSection({ article }: ArticleEvidenceSectionProps)
 
         {publicEvidence.length > 0 && (
           <div className="mb-6">
-            <p className="text-ink-tertiary mb-3 font-mono text-[10px] tracking-widest uppercase">
+            <p className="text-ink-secondary mb-3 font-mono text-[10px] tracking-widest uppercase">
               Public Evidence
             </p>
             <div className="grid gap-3">
@@ -65,7 +65,7 @@ export function ArticleEvidenceSection({ article }: ArticleEvidenceSectionProps)
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <h3 className="text-sm font-semibold text-ink">{item.title ?? 'Evidence'}</h3>
                     {item.evidenceStrength && (
-                      <span className="text-ink-tertiary font-mono text-[10px] tracking-widest uppercase">
+                      <span className="text-ink-secondary font-mono text-[10px] tracking-widest uppercase">
                         {item.evidenceStrength}
                       </span>
                     )}
@@ -77,7 +77,7 @@ export function ArticleEvidenceSection({ article }: ArticleEvidenceSectionProps)
                   </div>
                   <p className="text-ink-secondary text-sm leading-relaxed">{item.summary}</p>
                   {(item.source?.label || item.source?.url || item.source?.publisher) && (
-                    <p className="mt-3 text-xs leading-relaxed text-ink-tertiary">
+                    <p className="text-ink-secondary mt-3 text-xs leading-relaxed">
                       <span className="font-medium text-ink">Source:</span>{' '}
                       {item.source?.url ? (
                         <a
@@ -106,7 +106,7 @@ export function ArticleEvidenceSection({ article }: ArticleEvidenceSectionProps)
 
         {hasResearchNote && (
           <div className="mb-6 rounded-[var(--radius-serious)] border border-primary/20 bg-primary/5 px-4 py-3">
-            <p className="text-ink-tertiary mb-1 font-mono text-[10px] tracking-widest uppercase">
+            <p className="text-ink-secondary mb-1 font-mono text-[10px] tracking-widest uppercase">
               DeployTitan Research
             </p>
             <p className="text-ink-secondary text-sm leading-relaxed">
@@ -117,7 +117,7 @@ export function ArticleEvidenceSection({ article }: ArticleEvidenceSectionProps)
 
         {citations.length > 0 && (
           <div className="mb-6">
-            <p className="text-ink-tertiary mb-3 font-mono text-[10px] tracking-widest uppercase">
+            <p className="text-ink-secondary mb-3 font-mono text-[10px] tracking-widest uppercase">
               Citations
             </p>
             <ol className="space-y-3 text-sm">
@@ -145,7 +145,7 @@ export function ArticleEvidenceSection({ article }: ArticleEvidenceSectionProps)
         )}
 
         {(lastReviewedLabel || updatedLabel) && (
-          <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-ink-tertiary">
+          <div className="text-ink-secondary flex flex-wrap gap-x-5 gap-y-2 text-xs">
             {lastReviewedLabel && (
               <p>
                 <span className="font-mono tracking-widest uppercase">Last reviewed</span>{' '}

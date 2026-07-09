@@ -68,7 +68,7 @@ export default async function BlogPage() {
         fallback={
           <div className="py-20">
             <Container width="6xl" padding="default">
-              <p className="font-mono text-[10px] tracking-widest uppercase text-ink-quaternary">
+              <p className="font-mono text-[10px] tracking-widest text-ink-secondary uppercase">
                 Loading…
               </p>
             </Container>

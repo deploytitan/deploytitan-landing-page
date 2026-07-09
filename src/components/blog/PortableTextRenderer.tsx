@@ -63,12 +63,12 @@ function HeadingLink({
     <Tag id={id} className={`group/heading scroll-mt-28 ${className}`}>
       <a
         href={`#${id}`}
-        className="hover:text-primary focus-visible:text-primary inline-flex items-baseline gap-2 decoration-transparent transition-colors"
+        className="hover:text-primary focus-visible:text-primary inline-flex min-h-11 items-center gap-2 decoration-transparent transition-colors"
       >
         <span>{children}</span>
         <span
           aria-hidden="true"
-          className="text-ink-quaternary font-mono text-xs opacity-0 transition-opacity group-focus-within/heading:opacity-100 group-hover/heading:opacity-100"
+          className="text-ink-secondary font-mono text-xs opacity-0 transition-opacity group-focus-within/heading:opacity-100 group-hover/heading:opacity-100"
         >
           #
         </span>
@@ -183,7 +183,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
               />
             </div>
             {value.caption && (
-              <figcaption className="text-ink-tertiary mt-3 text-center font-mono text-[11px]">
+              <figcaption className="text-ink-secondary mt-3 text-center font-mono text-[11px]">
                 {value.caption}
               </figcaption>
             )}
@@ -297,7 +297,7 @@ function createComponents(articleContext?: ArticleAnalyticsContext): PortableTex
               </table>
             </div>
             {value?.caption && (
-              <figcaption className="border-line bg-surface-alt/50 text-ink-tertiary border-t px-4 py-3 text-xs">
+              <figcaption className="border-line bg-surface-alt/50 text-ink-secondary border-t px-4 py-3 text-xs">
                 {value.caption}
               </figcaption>
             )}

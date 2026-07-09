@@ -34,7 +34,7 @@ export function ConsentBanner({ initialState }: ConsentBannerProps) {
   if (state !== 'unset') return null
 
   return (
-    <div className="fixed right-4 bottom-4 z-[70] max-w-md rounded-[2px] border border-line bg-surface px-5 py-4 shadow-[0_14px_40px_rgba(26,21,18,0.16)]">
+    <div className="fixed right-4 bottom-4 z-[70] max-w-md rounded-[var(--radius-standard)] border border-line bg-surface px-5 py-4 shadow-[0_14px_40px_rgba(26,21,18,0.16)]">
       <p className="text-sm font-semibold text-ink">Analytics consent</p>
       <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
         We use optional analytics to improve the site. No tracking unless you accept.
@@ -46,7 +46,7 @@ export function ConsentBanner({ initialState }: ConsentBannerProps) {
             persistConsent('denied')
             setState('denied')
           }}
-          className="rounded-[2px] border border-line px-3 py-2 text-sm text-ink-secondary transition-colors hover:border-primary/30 hover:text-ink"
+          className="min-h-11 rounded-[var(--radius-pill)] border border-line px-4 py-2 text-sm text-ink-secondary transition-colors hover:border-primary/30 hover:text-ink"
         >
           Decline
         </button>
@@ -57,7 +57,7 @@ export function ConsentBanner({ initialState }: ConsentBannerProps) {
             setState('granted')
             window.location.reload()
           }}
-          className="rounded-[2px] border border-primary/30 bg-primary/5 px-3 py-2 text-sm text-primary-accessible transition-colors hover:border-primary/50 hover:text-primary"
+          className="min-h-11 rounded-[var(--radius-pill)] border border-primary/30 bg-primary/5 px-4 py-2 text-sm text-primary-accessible transition-colors hover:border-primary/50 hover:text-primary"
         >
           Accept analytics
         </button>

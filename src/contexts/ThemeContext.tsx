@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from 'react'
 
 export type ThemeMode = 'light' | 'dark' | 'system'
 export type ResolvedTheme = 'light' | 'dark'
@@ -33,54 +33,65 @@ function applyTheme(resolved: ResolvedTheme) {
   }
 }
 
+function readStoredMode(): ThemeMode {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (raw === 'light' || raw === 'dark' || raw === 'system') return raw
+  } catch {
+    // ignore
+  }
+  return 'system'
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
   // Always start with 'light' so server HTML and first client render agree.
   // The real stored/system preference is applied after mount in the effect below.
   const [mode, setModeState] = useState<ThemeMode>('light')
+  const [resolved, setResolvedState] = useState<ResolvedTheme>('light')
   const [mounted, setMounted] = useState(false)
 
-  // After mount: read the real preference and sync the DOM once.
-  useEffect(() => {
-    let stored: ThemeMode | null = null
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY)
-      if (raw === 'light' || raw === 'dark' || raw === 'system') stored = raw
-    } catch {
-      // ignore
-    }
-    const real: ThemeMode = stored ?? 'system'
+  // After mount: read the real preference and sync the DOM before normal effects.
+  useLayoutEffect(() => {
+    const real = readStoredMode()
+    const nextResolved = resolveTheme(real)
     setModeState(real)
-    applyTheme(resolveTheme(real))
+    setResolvedState(nextResolved)
+    applyTheme(nextResolved)
     setMounted(true)
   }, [])
 
   // Keep the DOM in sync whenever mode changes after mount.
   useEffect(() => {
     if (!mounted) return
-    applyTheme(resolveTheme(mode))
+    const nextResolved = resolveTheme(mode)
+    setResolvedState(nextResolved)
+    applyTheme(nextResolved)
   }, [mode, mounted])
 
   // Listen for OS preference changes when mode is 'system'.
   useEffect(() => {
     if (mode !== 'system') return
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const handler = () => applyTheme(resolveTheme('system'))
+    const handler = () => {
+      const nextResolved = resolveTheme('system')
+      setResolvedState(nextResolved)
+      applyTheme(nextResolved)
+    }
     mq.addEventListener('change', handler)
     return () => mq.removeEventListener('change', handler)
   }, [mode])
 
   const setMode = (next: ThemeMode) => {
+    const nextResolved = resolveTheme(next)
     setModeState(next)
+    setResolvedState(nextResolved)
     try {
       localStorage.setItem(STORAGE_KEY, next)
     } catch {
       // ignore
     }
-    applyTheme(resolveTheme(next))
+    applyTheme(nextResolved)
   }
-
-  // Expose 'light' until mounted so all children render identically to SSR.
-  const resolved: ResolvedTheme = mounted ? resolveTheme(mode) : 'light'
 
   return (
     <ThemeContext.Provider value={{ mode, resolved, setMode }}>

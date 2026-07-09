@@ -93,7 +93,7 @@ export function ArticleNewsletterSignup({ articleContext }: ArticleNewsletterSig
             onChange={(event) => setName(event.target.value)}
             placeholder="Name"
             aria-label="Name"
-            className="min-h-11 min-w-0 rounded-[var(--radius-pill)] border border-line bg-surface/95 px-4 py-3 text-sm text-ink placeholder:text-ink-quaternary focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/15"
+            className="min-h-11 min-w-0 rounded-[var(--radius-pill)] border border-line bg-surface/95 px-4 py-3 text-sm text-ink placeholder:text-ink-secondary focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/15"
           />
           <input
             type="email"
@@ -102,7 +102,7 @@ export function ArticleNewsletterSignup({ articleContext }: ArticleNewsletterSig
             placeholder="Work email"
             required
             aria-label="Work email"
-            className="min-h-11 min-w-0 rounded-[var(--radius-pill)] border border-line bg-surface/95 px-4 py-3 text-sm text-ink placeholder:text-ink-quaternary focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/15"
+            className="min-h-11 min-w-0 rounded-[var(--radius-pill)] border border-line bg-surface/95 px-4 py-3 text-sm text-ink placeholder:text-ink-secondary focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/15"
           />
           <button
             type="submit"

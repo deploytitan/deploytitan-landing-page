@@ -76,7 +76,7 @@ export function Breadcrumbs({ className = '' }: BreadcrumbsProps) {
             ) : (
               <Link
                 href={crumb.path}
-                className="text-ink-secondary hover:text-ink max-w-[8rem] truncate text-xs transition-colors sm:max-w-[10rem]"
+                className="text-ink-secondary hover:text-ink inline-flex min-h-11 min-w-11 max-w-[8rem] items-center truncate text-xs transition-colors sm:max-w-[10rem]"
               >
                 {crumb.label}
               </Link>

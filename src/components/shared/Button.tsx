@@ -107,9 +107,9 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 
     const classes = cn(
       // Base
-      'inline-flex items-center justify-center gap-2',
+      'inline-flex min-h-11 items-center justify-center gap-2',
       'font-medium leading-none select-none',
-      'rounded-lg',
+      'rounded-[var(--radius-pill)]',
       // Size (only for sized variants)
       isSized && SIZE[size],
       // Variant

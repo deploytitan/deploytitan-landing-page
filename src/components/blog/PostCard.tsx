@@ -63,7 +63,7 @@ export function PostCard({ post }: PostCardProps) {
                   key={cat.slug.current}
                   href={`/blog?category=${cat.slug.current}`}
                   scroll={false}
-                  className="font-mono text-[10px] tracking-widest uppercase text-primary-accessible border border-primary/25 px-3 py-0.5 hover:border-primary/50 hover:text-primary transition-colors"
+                  className="inline-flex min-h-11 items-center border border-primary/25 px-3 py-2 font-mono text-[10px] tracking-widest text-primary-accessible uppercase transition-colors hover:border-primary/50 hover:text-primary"
                   style={{ borderRadius: 'var(--radius-pill)' }}
                 >
                   {cat.title}
@@ -108,14 +108,14 @@ export function PostCard({ post }: PostCardProps) {
 
           <div className="mt-auto flex items-center gap-2 border-t border-line-subtle pt-3">
             {post.author?.name && (
-              <span className="text-xs text-ink-tertiary">{post.author.name}</span>
+              <span className="text-xs text-ink-secondary">{post.author.name}</span>
             )}
             {post.author?.name && date && (
-              <span className="text-ink-tertiary text-xs">·</span>
+              <span className="text-ink-secondary text-xs">·</span>
             )}
-            {date && <span className="text-xs font-mono text-ink-tertiary">{date}</span>}
+            {date && <span className="text-ink-secondary font-mono text-xs">{date}</span>}
             {isFeatured && (
-              <span className="ml-auto font-mono text-[10px] tracking-widest uppercase text-ink-quaternary">
+              <span className="text-ink-secondary ml-auto font-mono text-[10px] tracking-widest uppercase">
                 Featured
               </span>
             )}

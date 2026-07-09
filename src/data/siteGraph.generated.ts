@@ -233,11 +233,6 @@ export const generatedLinks: GraphLink[] = [
     "kind": "link"
   },
   {
-    "source": "/products/-titan-rollout",
-    "target": "/how-it-works",
-    "kind": "link"
-  },
-  {
     "source": "__nav__",
     "target": "/blog",
     "kind": "nav"
