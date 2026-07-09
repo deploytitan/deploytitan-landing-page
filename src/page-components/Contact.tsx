@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { WAITLIST_URL } from '@/lib/env'
 import { trackEvent } from '@/lib/analytics'
 import { Section } from '../components/shared/Section'
 import { Container } from '../components/shared/Container'
@@ -89,7 +88,6 @@ export default function Contact() {
           </div>
         </Container>
       </Section>
-
 
       {/* Other routes */}
       <Section border="top" padding="none">

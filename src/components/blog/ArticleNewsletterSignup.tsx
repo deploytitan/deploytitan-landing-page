@@ -35,7 +35,9 @@ export function ArticleNewsletterSignup({ articleContext }: ArticleNewsletterSig
           articleContext: resolvedArticleContext,
           signupPlacement: 'article-inline',
           referringSite:
-            typeof window !== 'undefined' ? window.location.href : resolvedArticleContext.canonicalUrl,
+            typeof window !== 'undefined'
+              ? window.location.href
+              : resolvedArticleContext.canonicalUrl,
         }),
       })
 
@@ -69,20 +71,23 @@ export function ArticleNewsletterSignup({ articleContext }: ArticleNewsletterSig
   }
 
   return (
-    <section className="mt-14 rounded-[var(--radius-invited)] border border-line bg-surface-alt/55 px-6 py-6">
-      <p id="newsletter" className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary-accessible">
+    <section className="border-line bg-surface-alt/55 mt-14 rounded-[var(--radius-invited)] border px-6 py-6">
+      <p
+        id="newsletter"
+        className="text-primary-accessible font-mono text-[10px] tracking-[0.2em] uppercase"
+      >
         Newsletter
       </p>
-      <h2 className="mt-2 max-w-xl text-3xl font-semibold leading-tight tracking-[-0.015em] text-ink">
-        Get new deployment engineering research.
+      <h2 className="text-ink mt-2 max-w-xl text-3xl leading-tight font-semibold tracking-[-0.015em]">
+        Get new AI delivery research.
       </h2>
-      <p className="mt-3 max-w-2xl text-sm leading-7 text-ink-secondary">
-        Subscribe for practical notes on release coordination, developer tooling, AI-assisted
-        engineering, and the systems that keep teams moving.
+      <p className="text-ink-secondary mt-3 max-w-2xl text-sm leading-7">
+        Subscribe for practical notes on AI adoption, throughput bottlenecks, verification capacity,
+        and the systems that keep teams moving safely.
       </p>
 
       {state === 'success' ? (
-        <div className="mt-5 rounded-[var(--radius-standard)] border border-primary/20 bg-primary/5 px-4 py-4 text-sm text-ink-secondary">
+        <div className="border-primary/20 bg-primary/5 text-ink-secondary mt-5 rounded-[var(--radius-standard)] border px-4 py-4 text-sm">
           You&apos;re subscribed. The next article will land in your inbox.
         </div>
       ) : (
@@ -93,7 +98,7 @@ export function ArticleNewsletterSignup({ articleContext }: ArticleNewsletterSig
             onChange={(event) => setName(event.target.value)}
             placeholder="Name"
             aria-label="Name"
-            className="min-h-11 min-w-0 rounded-[var(--radius-pill)] border border-line bg-surface/95 px-4 py-3 text-sm text-ink placeholder:text-ink-secondary focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/15"
+            className="border-line bg-surface/95 text-ink placeholder:text-ink-secondary focus:border-primary/40 focus:ring-primary/15 min-h-11 min-w-0 rounded-[var(--radius-pill)] border px-4 py-3 text-sm focus:ring-2 focus:outline-none"
           />
           <input
             type="email"
@@ -102,12 +107,12 @@ export function ArticleNewsletterSignup({ articleContext }: ArticleNewsletterSig
             placeholder="Work email"
             required
             aria-label="Work email"
-            className="min-h-11 min-w-0 rounded-[var(--radius-pill)] border border-line bg-surface/95 px-4 py-3 text-sm text-ink placeholder:text-ink-secondary focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/15"
+            className="border-line bg-surface/95 text-ink placeholder:text-ink-secondary focus:border-primary/40 focus:ring-primary/15 min-h-11 min-w-0 rounded-[var(--radius-pill)] border px-4 py-3 text-sm focus:ring-2 focus:outline-none"
           />
           <button
             type="submit"
             disabled={state === 'loading'}
-            className="min-h-11 rounded-[var(--radius-pill)] border border-primary/30 bg-primary/5 px-5 py-3 text-sm font-medium text-primary-accessible transition-colors hover:border-primary/50 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-60"
+            className="border-primary/30 bg-primary/5 text-primary-accessible hover:border-primary/50 hover:text-primary focus:ring-primary/20 min-h-11 rounded-[var(--radius-pill)] border px-5 py-3 text-sm font-medium transition-colors focus:ring-2 focus:outline-none disabled:opacity-60"
           >
             {state === 'loading' ? 'Subscribing…' : 'Subscribe'}
           </button>
@@ -115,7 +120,7 @@ export function ArticleNewsletterSignup({ articleContext }: ArticleNewsletterSig
       )}
 
       {state === 'error' && (
-        <p className="mt-3 text-sm text-signal-danger">
+        <p className="text-signal-danger mt-3 text-sm">
           Subscription failed. Please try again in a minute.
         </p>
       )}

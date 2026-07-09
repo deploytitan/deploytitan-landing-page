@@ -25,9 +25,9 @@ type CategoryListItem = {
 }
 
 export const metadata: Metadata = {
-  title: 'Blog | DeployTitan',
+  title: 'Blog',
   description:
-    'Engineering notes on release coordination, developer tooling, AI-assisted work, and the systems that keep teams shipping.',
+    'Practical notes on AI adoption, engineering throughput bottlenecks, verification capacity, and safer shipping for startups and scaleups.',
   alternates: {
     canonical: `${SITE_URL}/blog`,
     types: {
@@ -48,17 +48,17 @@ export default async function BlogPage() {
   return (
     <>
       {/* Hero */}
-      <section className="blueprint-grid border-b border-line pt-28 pb-16">
+      <section className="blueprint-grid border-line border-b pt-28 pb-16">
         <Container width="4xl" padding="default">
-          <p className="mb-3 font-mono text-[10px] tracking-widest uppercase text-primary-accessible">
+          <p className="text-primary-accessible mb-3 font-mono text-[10px] tracking-widest uppercase">
             Blog
           </p>
-          <h1 className="mb-4 text-4xl font-semibold leading-tight text-ink lg:text-5xl">
-            Engineering insights.
+          <h1 className="text-ink mb-4 text-4xl leading-tight font-semibold lg:text-5xl">
+            AI delivery notes.
           </h1>
-          <p className="max-w-xl text-lg leading-relaxed text-ink-secondary">
-            Notes on release coordination, developer tooling, AI-assisted work, and the systems
-            that keep teams shipping.
+          <p className="text-ink-secondary max-w-xl text-lg leading-relaxed">
+            Practical writing on AI adoption, review capacity, verification bottlenecks, internal
+            tooling distraction, and the systems that keep teams shipping.
           </p>
         </Container>
       </section>
@@ -68,7 +68,7 @@ export default async function BlogPage() {
         fallback={
           <div className="py-20">
             <Container width="6xl" padding="default">
-              <p className="font-mono text-[10px] tracking-widest text-ink-secondary uppercase">
+              <p className="text-ink-secondary font-mono text-[10px] tracking-widest uppercase">
                 Loading…
               </p>
             </Container>

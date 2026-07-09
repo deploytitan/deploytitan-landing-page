@@ -9,7 +9,13 @@ import { ConsentBanner } from '@/components/analytics/ConsentBanner'
 import { PosthogInit } from '@/components/analytics/PosthogInit'
 import { SiteJsonLd } from '@/components/seo/SiteJsonLd'
 import { parseAnalyticsConsent } from '@/lib/consent'
-import { SITE_DESCRIPTION, SITE_NAME, SITE_OG_DESCRIPTION, SITE_OG_IMAGE, SITE_URL } from '@/lib/site'
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_OG_DESCRIPTION,
+  SITE_OG_IMAGE,
+  SITE_URL,
+} from '@/lib/site'
 import './globals.css'
 
 const barlowDisplay = Barlow({
@@ -43,8 +49,8 @@ const bitterSerif = Bitter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — Release Coordination for Distributed Engineering Teams`,
-    template: '%s — DeployTitan',
+    default: `${SITE_NAME} | AI Delivery Throughput for Engineering Teams`,
+    template: '%s | DeployTitan',
   },
   description: SITE_DESCRIPTION,
   alternates: {
@@ -62,7 +68,7 @@ export const metadata: Metadata = {
       : undefined,
   },
   openGraph: {
-    title: `${SITE_NAME} — Release Coordination for Distributed Engineering Teams`,
+    title: `${SITE_NAME} | AI Delivery Throughput for Engineering Teams`,
     description: SITE_OG_DESCRIPTION,
     type: 'website',
     url: SITE_URL,
@@ -71,7 +77,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${SITE_NAME} — Release Coordination for Distributed Engineering Teams`,
+    title: `${SITE_NAME} | AI Delivery Throughput for Engineering Teams`,
     description: SITE_OG_DESCRIPTION,
     images: [SITE_OG_IMAGE],
   },
@@ -86,9 +92,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
   const posthogApiKey = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN
   const posthogApiHost = process.env.NEXT_PUBLIC_POSTHOG_HOST
-  const analyticsConsent = parseAnalyticsConsent(
-    cookieStore.get('dt_analytics_consent')?.value,
-  )
+  const analyticsConsent = parseAnalyticsConsent(cookieStore.get('dt_analytics_consent')?.value)
   const canLoadAnalytics = analyticsConsent === 'granted'
   const draftModeControls = isDraft
     ? await import('@/components/blog/DraftModeControls').then(({ DraftModeControls }) => (

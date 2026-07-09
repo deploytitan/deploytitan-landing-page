@@ -162,7 +162,7 @@ export default async function BlogArticlePage({ params }: Props) {
                       <Link
                         key={category.slug.current}
                         href={`/blog?category=${category.slug.current}`}
-                        className="text-primary-accessible border-primary/25 bg-surface/80 inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border px-3 py-2 font-mono text-[10px] tracking-[0.18em] uppercase transition-colors hover:border-primary/50 hover:text-primary"
+                        className="text-primary-accessible border-primary/25 bg-surface/80 hover:border-primary/50 hover:text-primary inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border px-3 py-2 font-mono text-[10px] tracking-[0.18em] uppercase transition-colors"
                       >
                         {category.title}
                       </Link>

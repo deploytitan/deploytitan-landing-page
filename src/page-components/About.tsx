@@ -26,24 +26,6 @@ const companyPattern = [
   },
 ]
 
-const values = [
-  {
-    title: 'Specificity before slogans',
-    description:
-      'We earn trust by naming the actual constraint: review capacity, verification load, CI queues, or release risk.',
-  },
-  {
-    title: 'Education before products',
-    description:
-      'Phase 1 is content because teams need to understand the AI throughput problem before buying another tool.',
-  },
-  {
-    title: 'Respect engineer time',
-    description:
-      'Every hour spent building internal glue for AI adoption is an hour not spent on the product customers pay for.',
-  },
-]
-
 interface TeamMember {
   _id: string
   name: string
