@@ -10,6 +10,7 @@
     "prebuild": "tsx scripts/build-link-graph.ts",
     "build": "next build",
     "start": "next start",
+    "test": "tsx --test src/lib/revalidation.test.ts",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "content:research": "tsx scripts/run-content-opportunity-research.ts",
